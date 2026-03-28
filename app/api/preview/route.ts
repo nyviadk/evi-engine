@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   }
 
   // 3. Opret en Prismic-klient specifikt til Jens' repo
-  const client = createTenantClient(tenant.repo);
+  const client = createTenantClient(tenant);
 
   // 4. Lad Prismic aktivere "Draft Mode" og sende Jens til den rigtige side
   return await redirectToPreviewURL({ client, request });

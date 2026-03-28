@@ -29,7 +29,7 @@ export default async function Page(props: { params: Params }) {
   }
 
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
-  const client = createTenantClient(tenant.repo);
+  const client = createTenantClient(tenant);
 
   try {
     const page = await client.getByUID("page", prismic_uid, { lang });
@@ -52,7 +52,7 @@ export async function generateMetadata(props: { params: Params }) {
   if (!tenant) return {};
 
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
-  const client = createTenantClient(tenant.repo);
+  const client = createTenantClient(tenant);
 
   const page = await client
     .getByUID("page", prismic_uid, { lang })

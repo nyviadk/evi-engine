@@ -13,7 +13,7 @@ export default async function NotFound() {
   const tenant = await get_tenant_config(domain);
 
   if (tenant) {
-    const client = createTenantClient(tenant.repo);
+    const client = createTenantClient(tenant);
     // Her kan vi hente en specifik 404-side fra Prismic, som Jens selv har skrevet!
     // const content = await client.getByUID("page", "404", { lang }).catch(() => null);
   }

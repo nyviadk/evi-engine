@@ -13,7 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!tenant) return [];
 
   try {
-    const client = createTenantClient(tenant.repo);
+    const client = createTenantClient(tenant);
 
     const pages = await client.getAllByType("page", {
       lang: "*",

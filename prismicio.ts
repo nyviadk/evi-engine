@@ -1,40 +1,38 @@
-import {
-  createClient as baseCreateClient,
-  type ClientConfig,
-  type Route,
-} from "@prismicio/client";
-import { enableAutoPreviews } from "@prismicio/next";
+import * as prismic from "@prismicio/client";
+import * as prismicNext from "@prismicio/next";
+import { type Route } from "@prismicio/client";
+import { TenantConfig } from "./src/lib/tenants";
 
-// Vi opsætter dine Evi-ruter (Den Reusable Type vi lavede før!)
+// Vi opsætter ruterne - bemærk :lang? så vi håndterer både /kontakt og /da-dk/kontakt
 const routes: Route[] = [
   { type: "page", uid: "home", path: "/" },
   { type: "page", path: "/:uid" },
 ];
 
 /**
- * Den dynamiske SaaS-klient!
- * Denne funktion kaldes i din Next.js page.tsx, HVER GANG en side loades.
- * @param repository_name - Kundens specifikke Prismic repo (f.eks. 'evi-jens-test el. evi-engine')
+ * Den "Smarte" SaaS-klient!
+ * Nu sender vi hele 'tenant' objektet med ind.
  */
 export const createTenantClient = (
-  repository_name: string,
-  config: ClientConfig = {},
+  tenant: TenantConfig, // Vi tager hele kunden med i hånden
+  config: prismicNext.CreateClientConfig = {},
 ) => {
-  const client = baseCreateClient(repository_name, {
+  const client = prismic.createClient(tenant.repo, {
     routes,
     fetchOptions:
       process.env.NODE_ENV === "production"
-        ? // Her er den afgørende forskel: Vi tagger Next.js cachen med KUNDENS navn!
-          {
-            next: { tags: [`prismic-${repository_name}`] },
+        ? {
+            next: { tags: [`prismic-${tenant.repo}`] },
             cache: "force-cache",
           }
         : { next: { revalidate: 5 } },
+    // Her bruger vi tokenet fra din tenants.ts automatisk!
+    accessToken: tenant.prismic_token,
     ...config,
   });
 
-  // Giver kunden lov til at bruge "Preview" knappen inde i Prismic
-  enableAutoPreviews({ client });
+  // Aktiverer automatisk Preview (Drafts)
+  prismicNext.enableAutoPreviews({ client });
 
   return client;
 };
