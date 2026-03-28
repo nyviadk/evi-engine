@@ -74,7 +74,7 @@ export async function generateMetadata(props: { params: Params }) {
   });
 
   return {
-    title: page.data.meta_title || "Evi Engine",
+    title: page.data.meta_title,
     description: page.data.meta_description,
     alternates: {
       canonical: `${base_url}${canonical_path}`,
