@@ -12,9 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tenant = await get_tenant_config(domain);
   if (!tenant) return [];
 
-  // 1. Definer variablen herude, så den er tilgængelig i hele funktionen
-  let sitemap_entries: MetadataRoute.Sitemap = [];
-
   try {
     const client = createTenantClient(tenant.repo);
 
