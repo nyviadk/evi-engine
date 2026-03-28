@@ -60,19 +60,21 @@ export async function generateMetadata(props: { params: Params }) {
 
   if (!page) return {};
 
-  // 1. Byg den kanoniske URL via vores nye master-funktion
+  // 1. Byg den kanoniske URL via vores master-funktion (tager højde for force_lang_prefix)
   const canonical_path = build_evi_url(prismic_uid, lang, tenant);
 
   // 2. Byg Alternate Languages (hreflang til Google)
   const alternate_langs: Record<string, string> = {};
 
   page.alternate_languages.forEach((alt) => {
+    // TypeScript sikkerhed: Vi tjekker om UID og lang findes
     if (alt.uid && alt.lang) {
       const alt_path = build_evi_url(alt.uid, alt.lang, tenant);
       alternate_langs[alt.lang] = `${base_url}${alt_path}`;
     }
   });
 
+  // 3. Staging-tjek: Vi vil ikke have Google indekserer test-sider eller localhost
   const is_staging =
     domain.endsWith(".web.nyvia.dk") || domain.includes("localhost");
 
@@ -84,6 +86,7 @@ export async function generateMetadata(props: { params: Params }) {
       languages:
         Object.keys(alternate_langs).length > 0 ? alternate_langs : undefined,
     },
+    // Bloker robotter hvis vi er på et test-domæne (vigtigt for at undgå Duplicate Content)
     robots: is_staging
       ? { index: false, follow: false }
       : { index: true, follow: true },
