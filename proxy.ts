@@ -30,7 +30,10 @@ export async function proxy(request: NextRequest) {
 
   const fuzzy_target = tenant.redirects[pathname];
   if (fuzzy_target) {
-    return NextResponse.redirect(new URL(fuzzy_target, request.url), 307);
+    return NextResponse.redirect(
+      new URL(fuzzy_target.destination, request.url),
+      fuzzy_target.type,
+    );
   }
 
   //  Vi gør pathname til små bogstaver, før vi tjekker sproget
