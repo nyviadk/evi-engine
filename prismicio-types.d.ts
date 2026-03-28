@@ -76,6 +76,17 @@ type PageDocumentDataSlicesSlice = never;
  */
 interface PageDocumentData {
   /**
+   * Forældre side field in *Side*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page.parent_page
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+   */
+  parent_page: prismic.ContentRelationshipField<"page">;
+
+  /**
    * Slice Zone field in *Side*
    *
    * - **Field Type**: Slice Zone

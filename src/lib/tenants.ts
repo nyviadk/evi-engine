@@ -37,8 +37,6 @@ const mock_kv_data: Record<string, TenantConfig> = {
   },
 };
 
-// ... resten af filen (get_tenant_config og build_evi_url) forbliver det samme
-
 export async function get_tenant_config(
   hostname: string,
 ): Promise<TenantConfig | null> {

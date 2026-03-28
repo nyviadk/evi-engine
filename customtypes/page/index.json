@@ -12,6 +12,15 @@
           "label": "URL Sti (f.eks. om-os)"
         }
       },
+      "parent_page": {
+        "type": "Link",
+        "config": {
+          "label": "Forældre side",
+          "select": "document",
+          "repeat": false,
+          "customtypes": ["page"]
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
