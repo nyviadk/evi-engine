@@ -1,23 +1,31 @@
-import * as prismic from "@prismicio/client";
-import * as prismicNext from "@prismicio/next";
-import { type Route } from "@prismicio/client";
-import { TenantConfig } from "./src/lib/tenants";
+import {
+  createClient as baseCreateClient,
+  type ClientConfig,
+  type Route,
+} from "@prismicio/client";
+import { enableAutoPreviews } from "@prismicio/next";
+import { type TenantConfig } from "@/src/lib/tenants";
 
-// Vi opsætter ruterne - bemærk :lang? så vi håndterer både /kontakt og /da-dk/kontakt
+/**
+ * Evi's Rute-definitioner.
+ * Vi bruger :lang? som valgfri parameter, så motoren både kan håndtere
+ * den korte URL (/kontakt) og den lange URL (/da-dk/kontakt).
+ */
 const routes: Route[] = [
-  { type: "page", uid: "home", path: "/" },
-  { type: "page", path: "/:uid" },
+  { type: "page", uid: "home", path: "/:lang?" },
+  { type: "page", path: "/:lang?/:uid" },
 ];
 
 /**
  * Den "Smarte" SaaS-klient!
- * Nu sender vi hele 'tenant' objektet med ind.
+ * Send 'tenant' objektet ind, så sørger funktionen selv for
+ * at finde repo-navn og indsætte det hemmelige accessToken (til Previews).
  */
 export const createTenantClient = (
-  tenant: TenantConfig, // Vi tager hele kunden med i hånden
-  config: prismicNext.CreateClientConfig = {},
+  tenant: TenantConfig,
+  config: ClientConfig = {},
 ) => {
-  const client = prismic.createClient(tenant.repo, {
+  const client = baseCreateClient(tenant.repo, {
     routes,
     fetchOptions:
       process.env.NODE_ENV === "production"
@@ -32,7 +40,7 @@ export const createTenantClient = (
   });
 
   // Aktiverer automatisk Preview (Drafts)
-  prismicNext.enableAutoPreviews({ client });
+  enableAutoPreviews({ client });
 
   return client;
 };
