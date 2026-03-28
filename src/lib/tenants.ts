@@ -25,3 +25,23 @@ export async function get_tenant_config(
   // Simulerer lynhurtigt opslag (senere Cloudflare KV)
   return mock_kv_data[hostname] || null;
 }
+
+/**
+ * Bygger den korrekte Evi-URL baseret på kundens sprogindstillinger.
+ */
+export function build_evi_url(
+  uid: string,
+  lang: string,
+  tenant: TenantConfig,
+): string {
+  const is_default = lang === tenant.default_locale;
+  const base_path = uid === "home" ? "" : `/${uid}`;
+
+  // Hvis det er standardsproget, og vi IKKE tvinger præfiks, så fjern sproget fra URL'en
+  if (is_default && !tenant.force_lang_prefix) {
+    return base_path === "" ? "/" : base_path;
+  }
+
+  // Ellers tilføj sproget (f.eks. /da-dk/kontakt)
+  return `/${lang}${base_path}`;
+}

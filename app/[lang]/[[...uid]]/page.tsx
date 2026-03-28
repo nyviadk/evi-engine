@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 
 import { createTenantClient } from "@/prismicio";
 import { components } from "@/slices";
-import { get_tenant_config } from "@/src/lib/tenants";
+import { build_evi_url, get_tenant_config } from "@/src/lib/tenants";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -45,6 +45,9 @@ export async function generateMetadata(props: { params: Params }) {
   const headers_list = await headers();
   const domain = headers_list.get("host") || "localhost:3000";
 
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const base_url = `${protocol}://${domain}`;
+
   const tenant = await get_tenant_config(domain);
   if (!tenant) return {};
 
@@ -57,9 +60,27 @@ export async function generateMetadata(props: { params: Params }) {
 
   if (!page) return {};
 
+  // 1. Byg den kanoniske URL via vores nye master-funktion
+  const canonical_path = build_evi_url(prismic_uid, lang, tenant);
+
+  // 2. Byg Alternate Languages (hreflang til Google)
+  const alternate_langs: Record<string, string> = {};
+
+  page.alternate_languages.forEach((alt) => {
+    if (alt.uid && alt.lang) {
+      const alt_path = build_evi_url(alt.uid, alt.lang, tenant);
+      alternate_langs[alt.lang] = `${base_url}${alt_path}`;
+    }
+  });
+
   return {
-    title: page.data.meta_title,
+    title: page.data.meta_title || "Evi Engine",
     description: page.data.meta_description,
+    alternates: {
+      canonical: `${base_url}${canonical_path}`,
+      languages:
+        Object.keys(alternate_langs).length > 0 ? alternate_langs : undefined,
+    },
     openGraph: {
       images: [page.data.meta_image?.url || ""],
     },
