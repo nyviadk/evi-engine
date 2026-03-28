@@ -14,7 +14,7 @@ const routes: Route[] = [
 /**
  * Den dynamiske SaaS-klient!
  * Denne funktion kaldes i din Next.js page.tsx, HVER GANG en side loades.
- * @param repository_name - Kundens specifikke Prismic repo (f.eks. 'evi-jens-test')
+ * @param repository_name - Kundens specifikke Prismic repo (f.eks. 'evi-jens-test el. evi-engine')
  */
 export const createTenantClient = (
   repository_name: string,

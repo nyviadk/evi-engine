@@ -11,7 +11,7 @@ export interface TenantConfig {
 
 const mock_kv_data: Record<string, TenantConfig> = {
   "localhost:3000": {
-    repo: "evi-jens-test",
+    repo: "evi-engine.",
     locales: ["da-dk", "en-eu"],
     default_locale: "da-dk",
     force_lang_prefix: false,
@@ -28,7 +28,7 @@ const mock_kv_data: Record<string, TenantConfig> = {
 
   // Vi tilføjer lige dit staging-domæne for at simulere virkeligheden!
   "jens.web.nyvia.dk": {
-    repo: "evi-jens-test",
+    repo: "evi-engine.",
     locales: ["da-dk", "en-eu"],
     default_locale: "da-dk",
     force_lang_prefix: false,
