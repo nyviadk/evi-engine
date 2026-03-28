@@ -9,6 +9,9 @@ export interface TenantConfig {
   resend_api_key?: string; // Til kontaktformularer (valgfri)
 }
 
+// Når data skal hentes fra Prismic, så brug kun master lang - ellers skal
+// kunden oprette samme "settings" i forskellige sprog.
+
 const mock_kv_data: Record<string, TenantConfig> = {
   "localhost:3000": {
     repo: "evi-engine",
