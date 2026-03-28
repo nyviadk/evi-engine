@@ -73,6 +73,9 @@ export async function generateMetadata(props: { params: Params }) {
     }
   });
 
+  const is_staging =
+    domain.endsWith(".web.nyvia.dk") || domain.includes("localhost");
+
   return {
     title: page.data.meta_title,
     description: page.data.meta_description,
@@ -81,6 +84,9 @@ export async function generateMetadata(props: { params: Params }) {
       languages:
         Object.keys(alternate_langs).length > 0 ? alternate_langs : undefined,
     },
+    robots: is_staging
+      ? { index: false, follow: false }
+      : { index: true, follow: true },
     openGraph: {
       images: [page.data.meta_image?.url || ""],
     },
