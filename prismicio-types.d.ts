@@ -130,7 +130,91 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-export type AllDocumentTypes = PageDocument;
+/**
+ * Item in *Indstillinger → Viderestillinger*
+ */
+export interface SettingsDocumentDataRedirectsItem {
+  /**
+   * Fra URL field in *Indstillinger → Viderestillinger*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: f.eks. /sommer
+   * - **API ID Path**: settings.redirects[].from_url
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  from_url: prismic.KeyTextField;
+
+  /**
+   * Til URL field in *Indstillinger → Viderestillinger*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: f.eks. /tilbud
+   * - **API ID Path**: settings.redirects[].to_url
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  to_url: prismic.KeyTextField;
+
+  /**
+   * Hvorfor laver du dette link? field in *Indstillinger → Viderestillinger*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: 301 (Siden er slettet/flyttet for altid)
+   * - **API ID Path**: settings.redirects[].redirect_type
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  redirect_type: prismic.SelectField<
+    | "301 (Siden er slettet/flyttet for altid)"
+    | "307 (Dette er blot en midlertidig genvej)",
+    "filled"
+  >;
+}
+
+/**
+ * Content for Indstillinger documents
+ */
+interface SettingsDocumentData {
+  /**
+   * Tving sprog i URL? (fx /da-dk) field in *Indstillinger*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: settings.force_lang_prefix
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  force_lang_prefix: prismic.BooleanField;
+
+  /**
+   * Viderestillinger field in *Indstillinger*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.redirects[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  redirects: prismic.GroupField<Simplify<SettingsDocumentDataRedirectsItem>>;
+}
+
+/**
+ * Indstillinger document from Prismic
+ *
+ * - **API ID**: `settings`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SettingsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<SettingsDocumentData>,
+    "settings",
+    Lang
+  >;
+
+export type AllDocumentTypes = PageDocument | SettingsDocument;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -156,6 +240,9 @@ declare module "@prismicio/client" {
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
+      SettingsDocument,
+      SettingsDocumentData,
+      SettingsDocumentDataRedirectsItem,
       AllDocumentTypes,
     };
   }

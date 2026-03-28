@@ -1,0 +1,55 @@
+{
+  "format": "custom",
+  "id": "settings",
+  "label": "Indstillinger",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "force_lang_prefix": {
+        "type": "Boolean",
+        "config": {
+          "label": "Tving sprog i URL? (fx /da-dk)",
+          "placeholder_false": "Nej",
+          "placeholder_true": "Ja",
+          "default_value": false
+        }
+      },
+      "redirects": {
+        "type": "Group",
+        "config": {
+          "label": "Viderestillinger",
+          "repeat": true,
+          "fields": {
+            "from_url": {
+              "type": "Text",
+              "config": {
+                "label": "Fra URL",
+                "placeholder": "f.eks. /sommer"
+              }
+            },
+            "to_url": {
+              "type": "Text",
+              "config": {
+                "label": "Til URL",
+                "placeholder": "f.eks. /tilbud"
+              }
+            },
+            "redirect_type": {
+              "type": "Select",
+              "config": {
+                "label": "Hvorfor laver du dette link?",
+                "placeholder": "",
+                "options": [
+                  "301 (Siden er slettet/flyttet for altid)",
+                  "307 (Dette er blot en midlertidig genvej)"
+                ],
+                "default_value": "301 (Siden er slettet/flyttet for altid)"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
