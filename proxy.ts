@@ -22,29 +22,24 @@ function get_browser_locale(
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const hostname = request.headers.get("host") || "localhost:3000";
 
-  console.log("--- Middleware Debug ---");
-  console.log("Pathname:", pathname);
-
   const tenant = await get_tenant_config(hostname);
-  if (!tenant) {
-    console.log("FEJL: Ingen tenant fundet for", hostname);
-    return NextResponse.next();
-  }
+  if (!tenant) return NextResponse.next();
 
-  // 1. Tjek redirects (lynhurtigt opslag i objektet)
   const fuzzy_target = tenant.redirects[pathname];
   if (fuzzy_target) {
     return NextResponse.redirect(new URL(fuzzy_target, request.url), 307);
   }
 
-  // 2. Sprog-tjek
   const locale_from_path = tenant.locales.find(
     (loc) => pathname === `/${loc}` || pathname.startsWith(`/${loc}/`),
   );
 
+  // 1. Vi klargør en NY header-liste, som vi sender IND til serveren (not-found.tsx)
+  const request_headers = new Headers(request.headers);
+
+  // 2. Hvis sproget MANGLER i URL'en
   if (!locale_from_path) {
     const target_locale = get_browser_locale(
       request,
@@ -52,18 +47,28 @@ export async function proxy(request: NextRequest) {
       tenant.default_locale,
     );
     const new_path = `/${target_locale}${pathname === "/" ? "" : pathname}`;
-    console.log("Omdirigerer/Rewriter til:", new_path); // <--- VIGTIG LOG
+
+    // Fortæl Next.js hvilket sprog vi har valgt at bruge
+    request_headers.set("x-evi-locale", target_locale);
 
     if (tenant.force_lang_prefix) {
       return NextResponse.redirect(new URL(new_path, request.url));
     } else {
-      return NextResponse.rewrite(new URL(new_path, request.url));
+      // Husk at sende vores nye headers med i Rewritet!
+      return NextResponse.rewrite(new URL(new_path, request.url), {
+        request: { headers: request_headers },
+      });
     }
   }
 
-  const response = NextResponse.next();
-  response.headers.set("x-evi-locale", locale_from_path);
-  return response;
+  // 3. Hvis sproget ER i URL'en (f.eks. /en-eu/noget)
+  // Sæt headeren, så not-found.tsx kan læse "en-eu"
+  request_headers.set("x-evi-locale", locale_from_path);
+
+  // Send requestet videre med den nye header i bagagen
+  return NextResponse.next({
+    request: { headers: request_headers },
+  });
 }
 
 export const config = {
