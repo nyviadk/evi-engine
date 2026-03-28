@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
-import { get_tenant_config, build_evi_url } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/tenants";
 import { createTenantClient } from "@/prismicio";
+import { build_page_tree, resolve_page_url } from "@/src/lib/paths";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const headers_list = await headers();
@@ -14,10 +15,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const client = createTenantClient(tenant);
+    const tree = await build_page_tree(client);
 
     const pages = await client.getAllByType("page", {
       lang: "*",
-      // Vi henter kun det vi absolut skal bruge for at spare på båndbredden
       fetch: [
         "page.uid",
         "page.last_publication_date",
@@ -26,59 +27,51 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ],
     });
 
-    const resolvableDocs = pages.filter((doc) => doc.uid);
+    const resolvable = pages.filter((doc) => doc.uid);
 
-    // 2. GRUPPERINGS-LOGIK (Inspireret af dit gamle projekt)
-    // Vi grupperer alle oversættelser under ID'et på den version, der matcher default_locale
-    const groupedDocs = new Map<string, typeof resolvableDocs>();
+    // Gruppér oversættelser under default-locale versionen (til hreflang)
+    const grouped = new Map<string, typeof resolvable>();
 
-    resolvableDocs.forEach((doc) => {
-      let groupId: string;
+    for (const doc of resolvable) {
+      let group_id: string;
 
       if (doc.lang === tenant.default_locale) {
-        // Hvis dokumentet er på standardsproget, er det selv ankeret
-        groupId = doc.id;
+        group_id = doc.id;
       } else {
-        // Find ID'et på den version, der matcher vores default_locale i tenant.ts
-        const defaultLangAlternate = doc.alternate_languages.find(
+        const default_alt = doc.alternate_languages.find(
           (alt) => alt.lang === tenant.default_locale,
         );
-        // Fallback til sit eget ID, hvis der ikke er linket en version på standardsproget
-        groupId = defaultLangAlternate?.id || doc.id;
+        group_id = default_alt?.id || doc.id;
       }
 
-      const translations = groupedDocs.get(groupId) || [];
+      const translations = grouped.get(group_id) || [];
       translations.push(doc);
-      groupedDocs.set(groupId, translations);
-    });
+      grouped.set(group_id, translations);
+    }
 
-    // 3. GENERER ENTRIES
-    const entries = Array.from(groupedDocs.values()).flatMap((translations) => {
+    // Generér sitemap-entries med korrekte fulde stier fra sti-træet
+    const entries = Array.from(grouped.values()).flatMap((translations) => {
       const alternates: { languages: Record<string, string> } = {
         languages: {},
       };
 
-      // Byg alternates-objektet (Hreflang) først for denne gruppe
-      translations.forEach((translation) => {
-        if (translation.uid) {
-          const path = build_evi_url(translation.uid, translation.lang, tenant);
-          alternates.languages[translation.lang] = `${base_url}${path}`;
+      for (const t of translations) {
+        if (t.uid) {
+          const path = resolve_page_url(t.id, t.lang, tree, tenant);
+          alternates.languages[t.lang] = `${base_url}${path}`;
         }
-      });
+      }
 
-      // Returner en sitemap-entry for hvert sprog i gruppen
-      return translations.map((doc) => {
-        return {
-          url: `${base_url}${build_evi_url(doc.uid!, doc.lang, tenant)}`,
-          lastModified: new Date(doc.last_publication_date),
-          alternates: alternates,
-        };
-      });
+      return translations.map((doc) => ({
+        url: `${base_url}${resolve_page_url(doc.id, doc.lang, tree, tenant)}`,
+        lastModified: new Date(doc.last_publication_date),
+        alternates,
+      }));
     });
 
     return entries;
   } catch (error) {
     console.error("Sitemap fejl:", error);
-    return []; // Returner et tomt sitemap i stedet for at crashe hele motoren
+    return [];
   }
 }

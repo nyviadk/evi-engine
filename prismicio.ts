@@ -13,7 +13,14 @@ import { type TenantConfig } from "@/src/lib/tenants";
  */
 const routes: Route[] = [
   { type: "page", uid: "home", path: "/:lang?" },
-  { type: "page", path: "/:lang?/:uid" },
+  {
+    type: "page",
+    resolvers: {
+      parent: "parent_page",
+      grandparent: "parent_page.parent_page",
+    },
+    path: "/:lang?/:grandparent?/:parent?/:uid",
+  },
 ];
 
 /**
