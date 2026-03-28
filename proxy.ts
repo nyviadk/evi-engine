@@ -14,9 +14,10 @@ function get_browser_locale(
   };
   const languages = new Negotiator({ headers }).languages();
   try {
-    return match(languages, locales, default_locale);
+    // Vi tvinger localematcher til at bruge små bogstaver
+    return match(languages, locales, default_locale).toLowerCase();
   } catch (e) {
-    return default_locale;
+    return default_locale.toLowerCase();
   }
 }
 
@@ -32,8 +33,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(fuzzy_target, request.url), 307);
   }
 
+  //  Vi gør pathname til små bogstaver, før vi tjekker sproget
+  const lower_pathname = pathname.toLowerCase();
   const locale_from_path = tenant.locales.find(
-    (loc) => pathname === `/${loc}` || pathname.startsWith(`/${loc}/`),
+    (loc) =>
+      lower_pathname === `/${loc}` || lower_pathname.startsWith(`/${loc}/`),
   );
 
   // 1. Vi klargør en NY header-liste, som vi sender IND til serveren (not-found.tsx)
