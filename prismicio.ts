@@ -4,42 +4,36 @@ import {
   type Route,
 } from "@prismicio/client";
 import { enableAutoPreviews } from "@prismicio/next";
-import sm from "./slicemachine.config.json";
 
-/**
- * The project's Prismic repository name.
- */
-export const repositoryName =
-  process.env.NEXT_PUBLIC_PRISMIC_ENVIRONMENT || sm.repositoryName;
-
-/**
- * A list of Route Resolver objects that define how a document's `url` field is resolved.
- *
- * {@link https://prismic.io/docs/route-resolver#route-resolver}
- */
-// TODO: Update the routes array to match your project's route structure.
+// Vi opsætter dine Evi-ruter (Den Reusable Type vi lavede før!)
 const routes: Route[] = [
-  // Examples:
-  // { type: "homepage", path: "/" },
-  // { type: "page", path: "/:uid" },
+  { type: "page", uid: "home", path: "/" },
+  { type: "page", path: "/:uid" },
 ];
 
 /**
- * Creates a Prismic client for the project's repository. The client is used to
- * query content from the Prismic API.
- *
- * @param config - Configuration for the Prismic client.
+ * Den dynamiske SaaS-klient!
+ * Denne funktion kaldes i din Next.js page.tsx, HVER GANG en side loades.
+ * @param repository_name - Kundens specifikke Prismic repo (f.eks. 'evi-jens-test')
  */
-export const createClient = (config: ClientConfig = {}) => {
-  const client = baseCreateClient(repositoryName, {
+export const createTenantClient = (
+  repository_name: string,
+  config: ClientConfig = {},
+) => {
+  const client = baseCreateClient(repository_name, {
     routes,
     fetchOptions:
       process.env.NODE_ENV === "production"
-        ? { next: { tags: ["prismic"] }, cache: "force-cache" }
+        ? // Her er den afgørende forskel: Vi tagger Next.js cachen med KUNDENS navn!
+          {
+            next: { tags: [`prismic-${repository_name}`] },
+            cache: "force-cache",
+          }
         : { next: { revalidate: 5 } },
     ...config,
   });
 
+  // Giver kunden lov til at bruge "Preview" knappen inde i Prismic
   enableAutoPreviews({ client });
 
   return client;
