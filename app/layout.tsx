@@ -1,7 +1,18 @@
-export default function RootLayout({
+import { headers } from "next/headers";
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children; // Den gør intet andet end at sende trafikken videre ind i [lang]
+  const h = await headers();
+  const lang = h.get("x-evi-locale") || "da-dk";
+
+  return (
+    <html lang={lang}>
+      <body className="antialiased selection:bg-slate-200">
+        {children}
+      </body>
+    </html>
+  );
 }
