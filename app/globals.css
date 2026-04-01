@@ -1,26 +1,114 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-evi-light: var(--color-light);
+  --color-evi-dark: var(--color-dark);
+  --color-evi-primary: var(--color-primary);
+  --color-evi-secondary: var(--color-secondary);
+  --color-evi-text-on-light: var(--text-on-light);
+  --color-evi-text-on-dark: var(--text-on-dark);
+  --color-evi-text-on-primary: var(--text-on-primary);
+  --color-evi-text-on-secondary: var(--text-on-secondary);
+  --radius-evi: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Kundens 4 valg fra Prismic (overskrives dynamisk af Next.js på <body>) */
+    --color-light: #fafafa;
+    --color-dark: #302031;
+    --color-primary: #0c6170;
+    --color-secondary: #4d3b4d;
+
+    /* Auto-beregnede kontraster (solide) */
+    --text-on-light: var(--color-dark);
+    --text-on-dark: var(--color-light);
+    --text-on-primary: var(--color-light);
+    --text-on-secondary: var(--color-light);
+
+    /* Auto-beregnede kontraster (soft) */
+    --text-on-light-soft: var(--color-dark);
+    --text-on-dark-soft: var(--color-light);
+    --text-on-primary-soft: var(--color-dark);
+    --text-on-secondary-soft: var(--color-dark);
+
+    --radius-evi: 0.5rem;
+  }
+
+  body {
+    background-color: var(--color-light);
+    color: var(--text-on-light);
+    font-family: Arial, Helvetica, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* A. Solide temaer */
+  .theme-light {
+    background-color: var(--color-light);
+    color: var(--text-on-light);
+  }
+  .theme-dark {
+    background-color: var(--color-dark);
+    color: var(--text-on-dark);
+  }
+  .theme-primary {
+    background-color: var(--color-primary);
+    color: var(--text-on-primary);
+  }
+  .theme-secondary {
+    background-color: var(--color-secondary);
+    color: var(--text-on-secondary);
+  }
+
+  /* B. Bløde (soft) temaer — altid 10% af farven mikset ind i light-basen */
+  .theme-light-soft {
+    background-color: color-mix(in oklch, var(--color-light) 10%, var(--color-light));
+    color: var(--text-on-light-soft);
+  }
+  .theme-dark-soft {
+    background-color: color-mix(in oklch, var(--color-dark) 10%, var(--color-light));
+    color: var(--text-on-dark-soft);
+  }
+  .theme-primary-soft {
+    background-color: color-mix(
+      in oklch,
+      var(--color-primary) 10%,
+      var(--color-light)
+    );
+    color: var(--text-on-primary-soft);
+  }
+  .theme-secondary-soft {
+    background-color: color-mix(
+      in oklch,
+      var(--color-secondary) 10%,
+      var(--color-light)
+    );
+    color: var(--text-on-secondary-soft);
+  }
+
+  /* C. Surface bokse (kasser indeni sektioner) */
+  .theme-surface-neutral {
+    background-color: color-mix(in oklch, currentColor 5%, transparent);
+  }
+  .theme-surface-primary {
+    background-color: color-mix(
+      in oklch,
+      var(--color-primary) 10%,
+      transparent
+    );
+  }
+  .theme-surface-secondary {
+    background-color: color-mix(
+      in oklch,
+      var(--color-secondary) 10%,
+      transparent
+    );
+  }
+  .theme-surface-light {
+    background-color: color-mix(in oklch, var(--color-light) 10%, transparent);
+  }
+  .theme-surface-dark {
+    background-color: color-mix(in oklch, var(--color-dark) 10%, transparent);
+  }
 }

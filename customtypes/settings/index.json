@@ -49,6 +49,34 @@
             }
           }
         }
+      },
+      "color_light": {
+        "type": "Color",
+        "config": {
+          "label": "Lys farve",
+          "placeholder": ""
+        }
+      },
+      "color_dark": {
+        "type": "Color",
+        "config": {
+          "label": "Mørk farve",
+          "placeholder": ""
+        }
+      },
+      "color_primary": {
+        "type": "Color",
+        "config": {
+          "label": "Primær brandfarve",
+          "placeholder": ""
+        }
+      },
+      "color_secondary": {
+        "type": "Color",
+        "config": {
+          "label": "Sekundær brandfarve",
+          "placeholder": ""
+        }
       }
     }
   }

@@ -207,6 +207,50 @@ interface SettingsDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
    */
   redirects: prismic.GroupField<Simplify<SettingsDocumentDataRedirectsItem>>;
+
+  /**
+   * Lys farve field in *Indstillinger*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.color_light
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_light: prismic.ColorField;
+
+  /**
+   * Mørk farve field in *Indstillinger*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.color_dark
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_dark: prismic.ColorField;
+
+  /**
+   * Primær brandfarve field in *Indstillinger*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.color_primary
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_primary: prismic.ColorField;
+
+  /**
+   * Sekundær brandfarve field in *Indstillinger*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.color_secondary
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_secondary: prismic.ColorField;
 }
 
 /**

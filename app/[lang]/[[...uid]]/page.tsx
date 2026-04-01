@@ -11,6 +11,7 @@ import {
   resolve_page_url,
   create_link_resolver,
 } from "@/src/lib/paths";
+import { compute_slice_contexts } from "@/src/lib/slices";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -54,12 +55,13 @@ export default async function Page(props: { params: Params }) {
   }
 
   const linkResolver = create_link_resolver(tree, tenant);
+  const sliceContexts = compute_slice_contexts(page.data.slices);
 
   return (
     <SliceZone
       slices={page.data.slices}
       components={components}
-      context={{ linkResolver }}
+      context={{ linkResolver, sliceContexts }}
     />
   );
 }
