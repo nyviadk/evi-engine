@@ -95,7 +95,8 @@ export const config = {
      * 1. System-mapper (api, _next, assets)
      * 2. Alle filer med punktum (favicon.ico, sitemap.xml)
      * 3. Særlige skjulte mapper/filer der starter med punktum (som .well-known)
+     * 4. Slice-simulator
      */
-    "/((?!api|_next/static|_next/image|assets|favicon.ico|sitemap.xml|robots.txt|\\..*|.*\\..*).*)",
+    "/((?!api|_next/static|_next/image|assets|slice-simulator|favicon.ico|sitemap.xml|robots.txt|\\..*|.*\\..*).*)",
   ],
 };
