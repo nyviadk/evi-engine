@@ -20,6 +20,7 @@ export function EviSection({
       className={twMerge(
         clsx(
           `theme-${theme}`,
+          "pb-16 md:pb-24",
           collapsePadding ? "pt-0" : "pt-16 md:pt-24",
         ),
         className,

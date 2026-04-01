@@ -15,8 +15,23 @@ function hex_to_rgb(hex: string): [number, number, number] {
   ];
 }
 
-function yiq(r: number, g: number, b: number): number {
-  return (r * 299 + g * 587 + b * 114) / 1000;
+function srgb_to_linear(c: number): number {
+  const s = c / 255;
+  return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+}
+
+function luminance(r: number, g: number, b: number): number {
+  return (
+    0.2126 * srgb_to_linear(r) +
+    0.7152 * srgb_to_linear(g) +
+    0.0722 * srgb_to_linear(b)
+  );
+}
+
+function contrast_ratio(l1: number, l2: number): number {
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
 }
 
 function contrast_color(
@@ -24,12 +39,10 @@ function contrast_color(
   color_a: string,
   color_b: string,
 ): string {
-  const surface_yiq = yiq(...hex_to_rgb(surface_hex));
-  const a_yiq = yiq(...hex_to_rgb(color_a));
-  const b_yiq = yiq(...hex_to_rgb(color_b));
-  return Math.abs(surface_yiq - a_yiq) >= Math.abs(surface_yiq - b_yiq)
-    ? color_a
-    : color_b;
+  const surface_l = luminance(...hex_to_rgb(surface_hex));
+  const a_ratio = contrast_ratio(surface_l, luminance(...hex_to_rgb(color_a)));
+  const b_ratio = contrast_ratio(surface_l, luminance(...hex_to_rgb(color_b)));
+  return a_ratio >= b_ratio ? color_a : color_b;
 }
 
 function mix_rgb(

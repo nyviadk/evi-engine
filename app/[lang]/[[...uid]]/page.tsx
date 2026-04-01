@@ -22,7 +22,10 @@ const get_evi_context = cache(async (domain: string) => {
   if (!tenant) return null;
   const client = createTenantClient(tenant);
   const tree = await build_page_tree(client);
-  return { tenant, client, tree };
+  const settings = await client
+    .getSingle("settings", { lang: tenant.default_locale })
+    .catch(() => null);
+  return { tenant, client, tree, settings };
 });
 
 export default async function Page(props: { params: Params }) {
@@ -34,7 +37,7 @@ export default async function Page(props: { params: Params }) {
   const ctx = await get_evi_context(domain);
   if (!ctx) return notFound();
 
-  const { client, tree, tenant } = ctx;
+  const { client, tree, tenant, settings } = ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
   // .catch() i stedet for try/catch — redirect() kaster NEXT_REDIRECT internt
@@ -55,7 +58,13 @@ export default async function Page(props: { params: Params }) {
   }
 
   const linkResolver = create_link_resolver(tree, tenant);
-  const sliceContexts = compute_slice_contexts(page.data.slices);
+  const colors = {
+    light: settings?.data?.color_light || "#ffffff",
+    dark: settings?.data?.color_dark || "#171717",
+    primary: settings?.data?.color_primary || "#3b82f6",
+    secondary: settings?.data?.color_secondary || "#8b5cf6",
+  };
+  const sliceContexts = compute_slice_contexts(page.data.slices, colors);
 
   return (
     <SliceZone
