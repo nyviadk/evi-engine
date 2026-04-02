@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { EviSection } from "@/src/components/EviSection";
+import { EviButton } from "@/src/components/EviButton";
 import { compute_slice_contexts } from "@/src/lib/slices";
 
 // ── Client-side WCAG contrast (mirrors src/lib/colors.ts) ──
@@ -179,6 +180,11 @@ export function EviTestBench() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
+              <div className="flex gap-3 flex-wrap mb-4">
+                <EviButton variant="solid" size="sm">Solid</EviButton>
+                <EviButton variant="outline" size="sm">Outline</EviButton>
+                <EviButton variant="ghost" size="sm">Ghost</EviButton>
+              </div>
               <div className="flex gap-3 flex-wrap">
                 <div className="theme-surface-neutral rounded-lg p-4 flex-1 min-w-48">
                   <p className="text-sm font-semibold">surface-neutral</p>

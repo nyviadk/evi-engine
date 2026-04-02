@@ -1,4 +1,4 @@
-const DEFAULTS = {
+export const DEFAULTS_COLORS = {
   color_light: "#FAFAFA",
   color_dark: "#302031",
   color_primary: "#0C6170",
@@ -67,10 +67,10 @@ export function compute_theme_vars(colors: {
   color_primary?: string | null;
   color_secondary?: string | null;
 }): React.CSSProperties {
-  const light = colors.color_light || DEFAULTS.color_light;
-  const dark = colors.color_dark || DEFAULTS.color_dark;
-  const primary = colors.color_primary || DEFAULTS.color_primary;
-  const secondary = colors.color_secondary || DEFAULTS.color_secondary;
+  const light = colors.color_light || DEFAULTS_COLORS.color_light;
+  const dark = colors.color_dark || DEFAULTS_COLORS.color_dark;
+  const primary = colors.color_primary || DEFAULTS_COLORS.color_primary;
+  const secondary = colors.color_secondary || DEFAULTS_COLORS.color_secondary;
 
   // Solid contrast
   const text_on_light = contrast_color(light, dark, light);

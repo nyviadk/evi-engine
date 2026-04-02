@@ -12,6 +12,7 @@ import {
   create_link_resolver,
 } from "@/src/lib/paths";
 import { compute_slice_contexts } from "@/src/lib/slices";
+import { DEFAULTS_COLORS } from "@/src/lib/colors";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -59,10 +60,11 @@ export default async function Page(props: { params: Params }) {
 
   const linkResolver = create_link_resolver(tree, tenant);
   const colors = {
-    light: settings?.data?.color_light || "#ffffff",
-    dark: settings?.data?.color_dark || "#171717",
-    primary: settings?.data?.color_primary || "#3b82f6",
-    secondary: settings?.data?.color_secondary || "#8b5cf6",
+    light: settings?.data?.color_light || DEFAULTS_COLORS.color_light,
+    dark: settings?.data?.color_dark || DEFAULTS_COLORS.color_dark,
+    primary: settings?.data?.color_primary || DEFAULTS_COLORS.color_primary,
+    secondary:
+      settings?.data?.color_secondary || DEFAULTS_COLORS.color_secondary,
   };
   const sliceContexts = compute_slice_contexts(page.data.slices, colors);
 

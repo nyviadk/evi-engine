@@ -45,72 +45,68 @@
 @layer components {
   /* A. Solide temaer */
   .theme-light {
-    background-color: var(--color-light);
-    color: var(--text-on-light);
+    --theme-bg: var(--color-light);
+    --theme-text: var(--text-on-light);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-dark {
-    background-color: var(--color-dark);
-    color: var(--text-on-dark);
+    --theme-bg: var(--color-dark);
+    --theme-text: var(--text-on-dark);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-primary {
-    background-color: var(--color-primary);
-    color: var(--text-on-primary);
+    --theme-bg: var(--color-primary);
+    --theme-text: var(--text-on-primary);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-secondary {
-    background-color: var(--color-secondary);
-    color: var(--text-on-secondary);
+    --theme-bg: var(--color-secondary);
+    --theme-text: var(--text-on-secondary);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
 
   /* B. Bløde (soft) temaer — altid 10% af farven mikset ind i light-basen */
   .theme-light-soft {
-    background-color: color-mix(
-      in oklch,
-      var(--color-light) 10%,
-      var(--color-light)
-    );
-    color: var(--text-on-light-soft);
+    --theme-bg: color-mix(in oklch, var(--color-light) 10%, var(--color-light));
+    --theme-text: var(--text-on-light-soft);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-dark-soft {
-    background-color: color-mix(
-      in oklch,
-      var(--color-dark) 10%,
-      var(--color-light)
-    );
-    color: var(--text-on-dark-soft);
+    --theme-bg: color-mix(in oklch, var(--color-dark) 10%, var(--color-light));
+    --theme-text: var(--text-on-dark-soft);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-primary-soft {
-    background-color: color-mix(
-      in oklch,
-      var(--color-primary) 10%,
-      var(--color-light)
-    );
-    color: var(--text-on-primary-soft);
+    --theme-bg: color-mix(in oklch, var(--color-primary) 10%, var(--color-light));
+    --theme-text: var(--text-on-primary-soft);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-secondary-soft {
-    background-color: color-mix(
-      in oklch,
-      var(--color-secondary) 10%,
-      var(--color-light)
-    );
-    color: var(--text-on-secondary-soft);
+    --theme-bg: color-mix(in oklch, var(--color-secondary) 10%, var(--color-light));
+    --theme-text: var(--text-on-secondary-soft);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
 
   /* C. Tint temaer — 10% af farven mikset ind i transparent (stærkere end soft) */
   .theme-primary-tint {
-    background-color: color-mix(
-      in oklch,
-      var(--color-primary) 10%,
-      transparent
-    );
-    color: var(--text-on-primary-soft);
+    --theme-bg: color-mix(in oklch, var(--color-primary) 10%, transparent);
+    --theme-text: var(--text-on-primary-soft);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
   .theme-secondary-tint {
-    background-color: color-mix(
-      in oklch,
-      var(--color-secondary) 10%,
-      transparent
-    );
-    color: var(--text-on-secondary-soft);
+    --theme-bg: color-mix(in oklch, var(--color-secondary) 10%, transparent);
+    --theme-text: var(--text-on-secondary-soft);
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
   }
 
   /* D. Surface bokse (kasser indeni sektioner) */
