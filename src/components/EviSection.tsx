@@ -4,6 +4,7 @@ import clsx from "clsx";
 
 interface EviSectionProps {
   theme?: string;
+  hero?: boolean;
   collapsePadding?: boolean;
   children: ReactNode;
   className?: string;
@@ -11,20 +12,21 @@ interface EviSectionProps {
 
 export function EviSection({
   theme = "light",
+  hero = false,
   collapsePadding = false,
   children,
   className,
 }: EviSectionProps) {
+  const pb = hero ? "pb-20 md:pb-32" : "pb-16 md:pb-24";
+  const pt = collapsePadding
+    ? "pt-0"
+    : hero
+      ? "pt-20 md:pt-32"
+      : "pt-16 md:pt-24";
+
   return (
     <section
-      className={twMerge(
-        clsx(
-          `theme-${theme}`,
-          "pb-16 md:pb-24",
-          collapsePadding ? "pt-0" : "pt-16 md:pt-24",
-        ),
-        className,
-      )}
+      className={twMerge(clsx(`theme-${theme}`, pb, pt), className)}
     >
       <div className="mx-auto max-w-7xl px-6">{children}</div>
     </section>
