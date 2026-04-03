@@ -13,6 +13,68 @@
 }
 
 @layer base {
+  /* ── Reset ── */
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    corner-shape: squircle;
+  }
+
+  html {
+    scrollbar-gutter: stable;
+    hanging-punctuation: first last;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-block-size: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ul,
+  ol,
+  dl {
+    list-style-position: inside;
+
+    ul,
+    ol,
+    dl {
+      padding-inline-start: 1lh;
+    }
+  }
+
+  /* ── Theme vars ── */
+
   :root {
     /* Kundens 4 valg fra Prismic (overskrives dynamisk af Next.js på <body>) */
     --color-light: #fafafa;
