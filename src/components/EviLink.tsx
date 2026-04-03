@@ -1,8 +1,19 @@
-import { PrismicNextLink, type PrismicNextLinkProps } from "@prismicio/next";
-import type { LinkResolverFunction } from "@prismicio/client";
+import { PrismicNextLink } from "@prismicio/next";
+import { type LinkResolverFunction, type LinkField, isFilled } from "@prismicio/client";
 
-export function EviLink(
-  props: PrismicNextLinkProps & { linkResolver: LinkResolverFunction },
-) {
-  return <PrismicNextLink {...props} />;
+type EviLinkProps = {
+  field: LinkField;
+  linkResolver: LinkResolverFunction;
+  className?: string;
+  children?: React.ReactNode;
+};
+
+export function EviLink({ field, linkResolver, className, children }: EviLinkProps) {
+  if (!isFilled.link(field)) return null;
+
+  return (
+    <PrismicNextLink field={field} linkResolver={linkResolver} className={className}>
+      {children}
+    </PrismicNextLink>
+  );
 }

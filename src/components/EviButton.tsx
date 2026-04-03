@@ -1,59 +1,64 @@
 import { type ComponentPropsWithoutRef, type ElementType } from "react";
-import { PrismicNextLink, type PrismicNextLinkProps } from "@prismicio/next";
-import type { LinkResolverFunction } from "@prismicio/client";
-import { twMerge } from "tailwind-merge";
+import { PrismicNextLink } from "@prismicio/next";
+import { type LinkResolverFunction, type LinkField, isFilled } from "@prismicio/client";
 import clsx from "clsx";
+import { ArrowRight } from "lucide-react";
 
-type Variant = "solid" | "outline" | "ghost";
+type Variant = "primary" | "secondary" | "neutral";
+type Appearance = "solid" | "outline" | "text";
+type Size = "sm" | "md" | "lg";
 
-// Shared visual styles — no layout opinions
-const base =
-  "inline-flex items-center justify-center gap-2 font-medium rounded-[var(--radius-evi)] transition-all duration-200 ease-out cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:pointer-events-none disabled:opacity-40";
-
-const sizes = {
-  sm: "px-4 py-2 text-sm",
-  md: "px-6 py-2.5 text-base",
-  lg: "px-8 py-3.5 text-lg",
-} as const;
-
-const variants: Record<Variant, string> = {
-  solid: [
-    "bg-[var(--theme-text)] text-[var(--theme-bg)]",
-    "hover:brightness-110 hover:scale-[1.02]",
-    "active:scale-[0.98] active:brightness-95",
-  ].join(" "),
-  outline: [
-    "bg-transparent text-current",
-    "border-2 border-current",
-    "hover:bg-[color-mix(in_oklch,currentColor_8%,transparent)] hover:scale-[1.02]",
-    "active:scale-[0.98] active:bg-[color-mix(in_oklch,currentColor_12%,transparent)]",
-  ].join(" "),
-  ghost: [
-    "bg-transparent text-current",
-    "hover:bg-[color-mix(in_oklch,currentColor_8%,transparent)]",
-    "active:bg-[color-mix(in_oklch,currentColor_12%,transparent)]",
-  ].join(" "),
+const iconSizes: Record<Size, number> = {
+  sm: 14,
+  md: 20,
+  lg: 24,
 };
 
 // ── Link button (renders <a> via PrismicNextLink) ──
 
-type LinkProps = PrismicNextLinkProps & {
+type LinkProps = {
+  field: LinkField;
   variant?: Variant;
-  size?: keyof typeof sizes;
+  appearance?: Appearance;
+  size?: Size;
+  arrow?: boolean;
+  className?: string;
+  children?: React.ReactNode;
   linkResolver: LinkResolverFunction;
 };
 
 export function EviButtonLink({
-  variant = "solid",
+  variant = "primary",
+  appearance = "solid",
   size = "md",
+  arrow = false,
   className,
-  ...props
+  children,
+  field,
+  linkResolver,
 }: LinkProps) {
+  if (!isFilled.link(field)) return null;
+
   return (
     <PrismicNextLink
-      className={twMerge(clsx(base, sizes[size], variants[variant]), className)}
-      {...props}
-    />
+      field={field}
+      linkResolver={linkResolver}
+      className={clsx(
+        "btn",
+        `btn-${size}`,
+        `btn-${variant}-${appearance}`,
+        arrow && "btn-arrow",
+        className,
+      )}
+    >
+      {children}
+      {arrow && (
+        <ArrowRight
+          size={iconSizes[size]}
+          className="btn-arrow-icon"
+        />
+      )}
+    </PrismicNextLink>
   );
 }
 
@@ -63,22 +68,41 @@ type ButtonProps<T extends ElementType = "button"> =
   ComponentPropsWithoutRef<T> & {
     as?: T;
     variant?: Variant;
-    size?: keyof typeof sizes;
+    appearance?: Appearance;
+    size?: Size;
+    arrow?: boolean;
     className?: string;
   };
 
 export function EviButton<T extends ElementType = "button">({
   as,
-  variant = "solid",
+  variant = "primary",
+  appearance = "solid",
   size = "md",
+  arrow = false,
   className,
+  children,
   ...props
 }: ButtonProps<T>) {
   const Tag = as || "button";
   return (
     <Tag
-      className={twMerge(clsx(base, sizes[size], variants[variant]), className)}
+      className={clsx(
+        "btn",
+        `btn-${size}`,
+        `btn-${variant}-${appearance}`,
+        arrow && "btn-arrow",
+        className,
+      )}
       {...props}
-    />
+    >
+      {children}
+      {arrow && (
+        <ArrowRight
+          size={iconSizes[size]}
+          className="btn-arrow-icon"
+        />
+      )}
+    </Tag>
   );
 }

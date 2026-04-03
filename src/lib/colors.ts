@@ -61,6 +61,32 @@ function rgb_to_hex(r: number, g: number, b: number): string {
   return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
 }
 
+function compute_btn_on_section(
+  btn_color: string,
+  btn_text: string,
+  section_bg: string,
+  section_text: string,
+): { bg: string; text: string } {
+  const ratio = contrast_ratio(
+    luminance(...hex_to_rgb(btn_color)),
+    luminance(...hex_to_rgb(section_bg)),
+  );
+  // Threshold for graphical objects
+  // Boundaries
+  // This success criterion does not require that controls have a visual boundary indicating the hit area,
+  // but if the visual indicator of the control is the only way to identify the control,
+  // then that indicator must have sufficient contrast. If text (or an icon)
+  // within a button or placeholder text inside a text input is visible and there is no visual
+  // indication of the hit area then the success criterion is passed. If a button with text also has a colored border,
+  // since the border does not provide the only indication there is no contrast requirement beyond the text contrast (1.4.3 Contrast (Minimum)).
+  // Note that for people with cognitive disabilities it is recommended to delineate the boundary of controls
+  // to aid in the recognition of controls and therefore the completion of activities.
+  // https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html
+  if (ratio >= 1.5) return { bg: btn_color, text: btn_text };
+  // Fallback: section's own contrast pair (guaranteed readable)
+  return { bg: section_text, text: section_bg };
+}
+
 export function compute_theme_vars(colors: {
   color_light?: string | null;
   color_dark?: string | null;
@@ -95,6 +121,57 @@ export function compute_theme_vars(colors: {
   const text_on_primary_soft = contrast_color(soft_primary, dark, light);
   const text_on_secondary_soft = contrast_color(soft_secondary, dark, light);
 
+  // Button safety vars — {primary, secondary} × {light, dark, primary, secondary}
+  const pri_on_light = compute_btn_on_section(
+    primary,
+    text_on_primary,
+    light,
+    text_on_light,
+  );
+  const pri_on_dark = compute_btn_on_section(
+    primary,
+    text_on_primary,
+    dark,
+    text_on_dark,
+  );
+  const pri_on_primary = compute_btn_on_section(
+    primary,
+    text_on_primary,
+    primary,
+    text_on_primary,
+  );
+  const pri_on_secondary = compute_btn_on_section(
+    primary,
+    text_on_primary,
+    secondary,
+    text_on_secondary,
+  );
+
+  const sec_on_light = compute_btn_on_section(
+    secondary,
+    text_on_secondary,
+    light,
+    text_on_light,
+  );
+  const sec_on_dark = compute_btn_on_section(
+    secondary,
+    text_on_secondary,
+    dark,
+    text_on_dark,
+  );
+  const sec_on_primary = compute_btn_on_section(
+    secondary,
+    text_on_secondary,
+    primary,
+    text_on_primary,
+  );
+  const sec_on_secondary = compute_btn_on_section(
+    secondary,
+    text_on_secondary,
+    secondary,
+    text_on_secondary,
+  );
+
   return {
     "--color-light": light,
     "--color-dark": dark,
@@ -108,5 +185,23 @@ export function compute_theme_vars(colors: {
     "--text-on-dark-soft": text_on_dark_soft,
     "--text-on-primary-soft": text_on_primary_soft,
     "--text-on-secondary-soft": text_on_secondary_soft,
+    // Button safety: primary on each section
+    "--btn-primary-bg-on-light": pri_on_light.bg,
+    "--btn-primary-text-on-light": pri_on_light.text,
+    "--btn-primary-bg-on-dark": pri_on_dark.bg,
+    "--btn-primary-text-on-dark": pri_on_dark.text,
+    "--btn-primary-bg-on-primary": pri_on_primary.bg,
+    "--btn-primary-text-on-primary": pri_on_primary.text,
+    "--btn-primary-bg-on-secondary": pri_on_secondary.bg,
+    "--btn-primary-text-on-secondary": pri_on_secondary.text,
+    // Button safety: secondary on each section
+    "--btn-secondary-bg-on-light": sec_on_light.bg,
+    "--btn-secondary-text-on-light": sec_on_light.text,
+    "--btn-secondary-bg-on-dark": sec_on_dark.bg,
+    "--btn-secondary-text-on-dark": sec_on_dark.text,
+    "--btn-secondary-bg-on-primary": sec_on_primary.bg,
+    "--btn-secondary-text-on-primary": sec_on_primary.text,
+    "--btn-secondary-bg-on-secondary": sec_on_secondary.bg,
+    "--btn-secondary-text-on-secondary": sec_on_secondary.text,
   } as React.CSSProperties;
 }
