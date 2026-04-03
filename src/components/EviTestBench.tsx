@@ -239,7 +239,6 @@ export function EviTestBench() {
             theme={ctx.theme}
             collapsePadding={ctx.collapsePadding}
           >
-            <div className="mx-auto max-w-4xl px-6">
               <p className="text-sm font-mono opacity-50 mb-2">
                 #{index + 1} — theme-{ctx.theme}
                 {ctx.collapsePadding && " — pt collapsed (same as above)"}
@@ -349,7 +348,6 @@ export function EviTestBench() {
                   ),
                 )}
               </div>
-            </div>
           </EviSection>
         );
       })}
