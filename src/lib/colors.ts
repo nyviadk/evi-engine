@@ -61,30 +61,26 @@ function rgb_to_hex(r: number, g: number, b: number): string {
   return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
 }
 
+// Compute safe button colors for a given section background.
+// Returns three values from one contrast check:
+//   bg/text  — for solid buttons (1.5 graphical-object threshold)
+//   ink      — for outline/text buttons (4.5 WCAG text threshold)
+// https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html
 function compute_btn_on_section(
   btn_color: string,
   btn_text: string,
   section_bg: string,
   section_text: string,
-): { bg: string; text: string } {
+): { bg: string; text: string; ink: string } {
   const ratio = contrast_ratio(
     luminance(...hex_to_rgb(btn_color)),
     luminance(...hex_to_rgb(section_bg)),
   );
-  // Threshold for graphical objects
-  // Boundaries
-  // This success criterion does not require that controls have a visual boundary indicating the hit area,
-  // but if the visual indicator of the control is the only way to identify the control,
-  // then that indicator must have sufficient contrast. If text (or an icon)
-  // within a button or placeholder text inside a text input is visible and there is no visual
-  // indication of the hit area then the success criterion is passed. If a button with text also has a colored border,
-  // since the border does not provide the only indication there is no contrast requirement beyond the text contrast (1.4.3 Contrast (Minimum)).
-  // Note that for people with cognitive disabilities it is recommended to delineate the boundary of controls
-  // to aid in the recognition of controls and therefore the completion of activities.
-  // https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html
-  if (ratio >= 1.5) return { bg: btn_color, text: btn_text };
-  // Fallback: section's own contrast pair (guaranteed readable)
-  return { bg: section_text, text: section_bg };
+  return {
+    bg: ratio >= 1.5 ? btn_color : section_text,
+    text: ratio >= 1.5 ? btn_text : section_bg,
+    ink: ratio >= 4.5 ? btn_color : section_text,
+  };
 }
 
 export function compute_theme_vars(colors: {
@@ -203,5 +199,14 @@ export function compute_theme_vars(colors: {
     "--btn-secondary-text-on-primary": sec_on_primary.text,
     "--btn-secondary-bg-on-secondary": sec_on_secondary.bg,
     "--btn-secondary-text-on-secondary": sec_on_secondary.text,
+    // Ink vars for outline / text buttons (4.5:1 text contrast)
+    "--btn-primary-ink-on-light": pri_on_light.ink,
+    "--btn-primary-ink-on-dark": pri_on_dark.ink,
+    "--btn-primary-ink-on-primary": pri_on_primary.ink,
+    "--btn-primary-ink-on-secondary": pri_on_secondary.ink,
+    "--btn-secondary-ink-on-light": sec_on_light.ink,
+    "--btn-secondary-ink-on-dark": sec_on_dark.ink,
+    "--btn-secondary-ink-on-primary": sec_on_primary.ink,
+    "--btn-secondary-ink-on-secondary": sec_on_secondary.ink,
   } as React.CSSProperties;
 }

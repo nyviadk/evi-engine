@@ -113,6 +113,17 @@
     --btn-secondary-bg-on-secondary: var(--text-on-secondary);
     --btn-secondary-text-on-secondary: var(--color-secondary);
 
+    /* Ink vars for outline / text buttons (4.5:1 text contrast) */
+    --btn-primary-ink-on-light: var(--color-primary);
+    --btn-primary-ink-on-dark: var(--text-on-dark);
+    --btn-primary-ink-on-primary: var(--text-on-primary);
+    --btn-primary-ink-on-secondary: var(--text-on-secondary);
+
+    --btn-secondary-ink-on-light: var(--color-secondary);
+    --btn-secondary-ink-on-dark: var(--text-on-dark);
+    --btn-secondary-ink-on-primary: var(--text-on-primary);
+    --btn-secondary-ink-on-secondary: var(--text-on-secondary);
+
     --radius-evi: 0.5rem;
   }
 
@@ -130,8 +141,10 @@
     --theme-text: var(--text-on-light);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -141,8 +154,10 @@
     --theme-text: var(--text-on-dark);
     --btn-primary-bg: var(--btn-primary-bg-on-dark);
     --btn-primary-text: var(--btn-primary-text-on-dark);
+    --btn-primary-ink: var(--btn-primary-ink-on-dark);
     --btn-secondary-bg: var(--btn-secondary-bg-on-dark);
     --btn-secondary-text: var(--btn-secondary-text-on-dark);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-dark);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -152,8 +167,10 @@
     --theme-text: var(--text-on-primary);
     --btn-primary-bg: var(--btn-primary-bg-on-primary);
     --btn-primary-text: var(--btn-primary-text-on-primary);
+    --btn-primary-ink: var(--btn-primary-ink-on-primary);
     --btn-secondary-bg: var(--btn-secondary-bg-on-primary);
     --btn-secondary-text: var(--btn-secondary-text-on-primary);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-primary);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -163,8 +180,10 @@
     --theme-text: var(--text-on-secondary);
     --btn-primary-bg: var(--btn-primary-bg-on-secondary);
     --btn-primary-text: var(--btn-primary-text-on-secondary);
+    --btn-primary-ink: var(--btn-primary-ink-on-secondary);
     --btn-secondary-bg: var(--btn-secondary-bg-on-secondary);
     --btn-secondary-text: var(--btn-secondary-text-on-secondary);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-secondary);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -177,8 +196,10 @@
     --theme-text: var(--text-on-light-soft);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -188,8 +209,10 @@
     --theme-text: var(--text-on-dark-soft);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -199,8 +222,10 @@
     --theme-text: var(--text-on-primary-soft);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -210,8 +235,10 @@
     --theme-text: var(--text-on-secondary-soft);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
@@ -223,8 +250,10 @@
     --theme-text: var(--text-on-primary-soft);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
     color: var(--theme-text);
@@ -234,8 +263,10 @@
     --theme-text: var(--text-on-secondary-soft);
     --btn-primary-bg: var(--btn-primary-bg-on-light);
     --btn-primary-text: var(--btn-primary-text-on-light);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
     --btn-secondary-bg: var(--btn-secondary-bg-on-light);
     --btn-secondary-text: var(--btn-secondary-text-on-light);
+    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
 
     background-color: color-mix(in oklch, var(--color-secondary) 10%, transparent);
     color: var(--theme-text);
@@ -480,27 +511,27 @@
 
   .btn-primary-outline {
     background-color: transparent;
-    color: var(--btn-primary-bg);
-    box-shadow: inset 0 0 0 2px var(--btn-primary-bg);
+    color: var(--btn-primary-ink);
+    box-shadow: inset 0 0 0 2px var(--btn-primary-ink);
   }
   .btn-primary-outline:hover {
-    background-color: color-mix(in oklch, var(--btn-primary-bg) 10%, transparent);
+    background-color: color-mix(in oklch, var(--btn-primary-ink) 10%, transparent);
   }
   .btn-primary-outline:active {
-    background-color: color-mix(in oklch, var(--btn-primary-bg) 16%, transparent);
+    background-color: color-mix(in oklch, var(--btn-primary-ink) 16%, transparent);
   }
 
   /* ── Primary: text ── */
 
   .btn-primary-text {
     background-color: transparent;
-    color: var(--btn-primary-bg);
+    color: var(--btn-primary-ink);
   }
   .btn-primary-text:hover {
-    background-color: color-mix(in oklch, var(--btn-primary-bg) 10%, transparent);
+    background-color: color-mix(in oklch, var(--btn-primary-ink) 10%, transparent);
   }
   .btn-primary-text:active {
-    background-color: color-mix(in oklch, var(--btn-primary-bg) 16%, transparent);
+    background-color: color-mix(in oklch, var(--btn-primary-ink) 16%, transparent);
   }
 
   /* ── Secondary: solid ── */
@@ -523,27 +554,27 @@
 
   .btn-secondary-outline {
     background-color: transparent;
-    color: var(--btn-secondary-bg);
-    box-shadow: inset 0 0 0 2px var(--btn-secondary-bg);
+    color: var(--btn-secondary-ink);
+    box-shadow: inset 0 0 0 2px var(--btn-secondary-ink);
   }
   .btn-secondary-outline:hover {
-    background-color: color-mix(in oklch, var(--btn-secondary-bg) 10%, transparent);
+    background-color: color-mix(in oklch, var(--btn-secondary-ink) 10%, transparent);
   }
   .btn-secondary-outline:active {
-    background-color: color-mix(in oklch, var(--btn-secondary-bg) 16%, transparent);
+    background-color: color-mix(in oklch, var(--btn-secondary-ink) 16%, transparent);
   }
 
   /* ── Secondary: text ── */
 
   .btn-secondary-text {
     background-color: transparent;
-    color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-ink);
   }
   .btn-secondary-text:hover {
-    background-color: color-mix(in oklch, var(--btn-secondary-bg) 10%, transparent);
+    background-color: color-mix(in oklch, var(--btn-secondary-ink) 10%, transparent);
   }
   .btn-secondary-text:active {
-    background-color: color-mix(in oklch, var(--btn-secondary-bg) 16%, transparent);
+    background-color: color-mix(in oklch, var(--btn-secondary-ink) 16%, transparent);
   }
 
   /* ── Neutral: uses theme's own text/bg (always has contrast) ── */

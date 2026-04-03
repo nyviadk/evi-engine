@@ -64,13 +64,16 @@ function compute_btn_on_section(
   btn_text: string,
   section_bg: string,
   section_text: string,
-): { bg: string; text: string } {
+): { bg: string; text: string; ink: string } {
   const ratio = contrast_ratio(
     luminance(...hex_to_rgb(btn_color)),
     luminance(...hex_to_rgb(section_bg)),
   );
-  if (ratio >= 1.5) return { bg: btn_color, text: btn_text };
-  return { bg: section_text, text: section_bg };
+  return {
+    bg: ratio >= 1.5 ? btn_color : section_text,
+    text: ratio >= 1.5 ? btn_text : section_bg,
+    ink: ratio >= 4.5 ? btn_color : section_text,
+  };
 }
 
 function apply_theme(
@@ -120,6 +123,7 @@ function apply_theme(
       );
       btn_vars[`--btn-${btn.name}-bg-on-${section.name}`] = result.bg;
       btn_vars[`--btn-${btn.name}-text-on-${section.name}`] = result.text;
+      btn_vars[`--btn-${btn.name}-ink-on-${section.name}`] = result.ink;
     }
   }
 
