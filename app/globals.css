@@ -9,9 +9,9 @@
   --color-evi-text-on-dark: var(--text-on-dark);
   --color-evi-text-on-primary: var(--text-on-primary);
   --color-evi-text-on-secondary: var(--text-on-secondary);
-  --radius-evi: var(--radius-evi, 0.5rem);
 
-  /* Vi opretter en custom max-width klasse i Tailwind til vores sektioner */
+  /* Vi opretter en custom max-width og radius klasse i Tailwind til vores sektioner */
+  --radius-evi: var(--radius-evi, 0.5rem);
   --container-evi: var(--evi-max-width, 1280px);
 }
 
