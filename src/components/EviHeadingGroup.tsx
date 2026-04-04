@@ -22,9 +22,9 @@ export function EviHeadingGroup({
   if (!isFilled.richText(title) && !isFilled.richText(description)) return null;
 
   return (
-    <hgroup className={twMerge("col-span-12 max-w-prose", className)}>
-      <EviRichText field={title} linkResolver={linkResolver} />
-      <EviRichText field={description} linkResolver={linkResolver} />
+    <hgroup className={twMerge("col-span-12 evi-prose max-w-prose", className)}>
+      <EviRichText field={title} linkResolver={linkResolver} bare />
+      <EviRichText field={description} linkResolver={linkResolver} bare />
     </hgroup>
   );
 }

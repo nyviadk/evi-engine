@@ -10,28 +10,36 @@ import { twMerge } from "tailwind-merge";
 type EviRichTextProps = {
   field: RichTextField | null | undefined;
   linkResolver: LinkResolverFunction;
+  bare?: boolean;
   className?: string;
 };
 
 export function EviRichText({
   field,
   linkResolver,
+  bare = false,
   className,
 }: EviRichTextProps) {
   if (!isFilled.richText(field)) return null;
 
+  const content = (
+    <PrismicRichText
+      field={field}
+      components={{
+        hyperlink: ({ node, children }) => (
+          <PrismicNextLink field={node.data} linkResolver={linkResolver}>
+            {children}
+          </PrismicNextLink>
+        ),
+      }}
+    />
+  );
+
+  if (bare) return content;
+
   return (
     <div className={twMerge("evi-prose", className)}>
-      <PrismicRichText
-        field={field}
-        components={{
-          hyperlink: ({ node, children }) => (
-            <PrismicNextLink field={node.data} linkResolver={linkResolver}>
-              {children}
-            </PrismicNextLink>
-          ),
-        }}
-      />
+      {content}
     </div>
   );
 }
