@@ -105,6 +105,31 @@
             "Pilleformet (Fuld radius)"
           ]
         }
+      },
+      "font_select": {
+        "type": "Select",
+        "config": {
+          "label": "Skrifttype (Anbefalet - Hurtig)",
+          "placeholder": "Vælg en optimeret skrifttype",
+          "options": [
+            "Inter",
+            "Montserrat",
+            "Rethink Sans",
+            "Comfortaa",
+            "Poppins",
+            "Abel",
+            "Roboto",
+            "Open Sans"
+          ],
+          "default_value": "Inter"
+        }
+      },
+      "custom_font_input": {
+        "type": "Text",
+        "config": {
+          "label": "Avanceret skrifttype (Bunny Fonts)",
+          "placeholder": "Navn fra fonts.bunny.net (f.eks. \"Playfair Display\"). Dette felt overstyrer valget ovenfor."
+        }
       }
     }
   }

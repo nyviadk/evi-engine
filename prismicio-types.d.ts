@@ -285,6 +285,39 @@ interface SettingsDocumentData {
     | "Blød (16px)"
     | "Pilleformet (Fuld radius)"
   >;
+
+  /**
+   * Skrifttype (Anbefalet - Hurtig) field in *Indstillinger*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Vælg en optimeret skrifttype
+   * - **Default Value**: Inter
+   * - **API ID Path**: settings.font_select
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  font_select: prismic.SelectField<
+    | "Inter"
+    | "Montserrat"
+    | "Rethink Sans"
+    | "Comfortaa"
+    | "Poppins"
+    | "Abel"
+    | "Roboto"
+    | "Open Sans",
+    "filled"
+  >;
+
+  /**
+   * Avanceret skrifttype (Bunny Fonts) field in *Indstillinger*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Navn fra fonts.bunny.net (f.eks. "Playfair Display"). Dette felt overstyrer valget ovenfor.
+   * - **API ID Path**: settings.custom_font_input
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  custom_font_input: prismic.KeyTextField;
 }
 
 /**
