@@ -420,7 +420,7 @@ export function EviTestBench() {
                   {g[i].collapsePadding && " — pt collapsed"}
                 </p>
                 <EviSplit preset={preset}>
-                  <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                  <div className="rounded-evi theme-surface-neutral p-6">
                     <p className="text-sm font-mono opacity-60 mb-2">
                       Venstre ({preset.split("-")[0]}%)
                     </p>
@@ -431,7 +431,7 @@ export function EviTestBench() {
                       exercitation.
                     </p>
                   </div>
-                  <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                  <div className="rounded-evi theme-surface-neutral p-6">
                     <p className="text-sm font-mono opacity-60 mb-2">
                       Højre ({preset.split("-")[1]}%)
                     </p>
@@ -453,7 +453,7 @@ export function EviTestBench() {
                   {g[5 + i].collapsePadding && " — pt collapsed"}
                 </p>
                 <EviSplit preset="60-40" align={align}>
-                  <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                  <div className="rounded-evi theme-surface-neutral p-6">
                     <p className="text-sm font-mono opacity-60 mb-2">
                       Venstre — lang tekst
                     </p>
@@ -468,7 +468,7 @@ export function EviTestBench() {
                       esse cillum dolore eu fugiat nulla pariatur.
                     </p>
                   </div>
-                  <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                  <div className="rounded-evi theme-surface-neutral p-6">
                     <p className="text-sm font-mono opacity-60 mb-2">
                       Højre — kort
                     </p>
@@ -518,9 +518,9 @@ export function EviTestBench() {
                 {Array.from({ length: 8 }, (_, i) => (
                   <div
                     key={i}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4 text-center"
+                    className="rounded-evi theme-surface-neutral p-4 text-center"
                   >
-                    <div className="h-12 w-12 mx-auto rounded bg-[color-mix(in_oklch,currentColor_12%,transparent)]" />
+                    <div className="h-12 w-12 mx-auto rounded-evi theme-surface-neutral opacity-60" />
                     <p className="text-xs font-mono opacity-60 mt-2">
                       Logo {i + 1}
                     </p>
@@ -541,9 +541,9 @@ export function EviTestBench() {
                 {Array.from({ length: 7 }, (_, i) => (
                   <div
                     key={i}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6"
+                    className="rounded-evi theme-surface-neutral p-6"
                   >
-                    <div className="h-32 rounded bg-[color-mix(in_oklch,currentColor_12%,transparent)] mb-3" />
+                    <div className="h-32 rounded-evi theme-surface-neutral opacity-60 mb-3" />
                     <p className="font-semibold">Feature {i + 1}</p>
                     <p className="text-sm opacity-70 mt-1">
                       Kort beskrivelse af denne feature.
@@ -565,7 +565,7 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={4}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-8 text-center"
+                    className="rounded-evi theme-surface-neutral p-8 text-center"
                   >
                     <p className="text-xs font-mono opacity-50 uppercase tracking-wider">
                       {name}
@@ -618,9 +618,9 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={4}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4"
+                    className="rounded-evi theme-surface-neutral p-4"
                   >
-                    <div className="h-24 rounded bg-[color-mix(in_oklch,currentColor_12%,transparent)]" />
+                    <div className="h-24 rounded-evi theme-surface-neutral opacity-60" />
                     <h3 className="text-lg font-semibold mt-3">{item.title}</h3>
                     <p className="text-sm opacity-70 mt-1">{item.desc}</p>
                     <div className="mt-3">
@@ -659,7 +659,7 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={3}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6"
+                    className="rounded-evi theme-surface-neutral p-6"
                   >
                     <h3 className="text-lg font-semibold">{item.title}</h3>
                     <p className="text-sm opacity-70 mt-1">{item.desc}</p>
@@ -706,7 +706,7 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={2}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4"
+                    className="rounded-evi theme-surface-neutral p-4"
                   >
                     <h4 className="font-semibold">{item.title}</h4>
                     <p className="text-sm opacity-70 mt-1">{item.desc}</p>
@@ -738,9 +738,9 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={4}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6"
+                    className="rounded-evi theme-surface-neutral p-6"
                   >
-                    <div className="h-20 rounded bg-[color-mix(in_oklch,currentColor_12%,transparent)]" />
+                    <div className="h-20 rounded-evi theme-surface-neutral opacity-60" />
                     <h3 className="text-lg font-semibold mt-3">{item.title}</h3>
                     <div>
                       {item.desc && (
@@ -779,7 +779,7 @@ export function EviTestBench() {
                     {Array.from({ length: 6 }, (_, i) => (
                       <div
                         key={i}
-                        className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4 text-center"
+                        className="rounded-evi theme-surface-neutral p-4 text-center"
                       >
                         <p className="text-sm font-mono opacity-60">
                           Item {i + 1}
@@ -788,7 +788,7 @@ export function EviTestBench() {
                     ))}
                   </EviAutoGrid>
                 </div>
-                <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                <div className="rounded-evi theme-surface-neutral p-6">
                   <p className="text-sm font-mono opacity-60 mb-2">
                     33% sidebar
                   </p>
@@ -809,7 +809,7 @@ export function EviTestBench() {
                 EviCard i 67%-pane
               </p>
               <EviSplit preset="33-67">
-                <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                <div className="rounded-evi theme-surface-neutral p-6">
                   <p className="text-sm font-mono opacity-60 mb-2">
                     33% sidebar
                   </p>
@@ -829,7 +829,7 @@ export function EviTestBench() {
                       <EviCard
                         key={i}
                         rows={3}
-                        className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4"
+                        className="rounded-evi theme-surface-neutral p-4"
                       >
                         <h4 className="font-semibold">{item.title}</h4>
                         <p className="text-sm opacity-70 mt-1">{item.desc}</p>
@@ -873,7 +873,7 @@ export function EviTestBench() {
                       <EviCard
                         key={i}
                         rows={2}
-                        className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4"
+                        className="rounded-evi theme-surface-neutral p-4"
                       >
                         <p className="font-semibold">Card {i + 1}</p>
                         <p className="text-sm opacity-70 mt-1">
@@ -908,7 +908,7 @@ export function EviTestBench() {
                       Primær solid
                     </EviButton>
                   </div>
-                  <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                  <div className="rounded-evi theme-surface-neutral p-6">
                     <p className="text-sm opacity-70">
                       Højre kolonne med surface-neutral baggrund.
                     </p>
@@ -940,13 +940,13 @@ export function EviTestBench() {
                 </p>
               </div>
               <EviSplit preset="50-50" align="center">
-                <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                <div className="rounded-evi theme-surface-neutral p-6">
                   <p className="font-semibold mb-2">Venstre blok</p>
                   <p className="text-sm opacity-70">
                     Denne blok er en del af et 50-50 split midt i sektionen.
                   </p>
                 </div>
-                <div className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-6">
+                <div className="rounded-evi theme-surface-neutral p-6">
                   <p className="font-semibold mb-2">Højre blok</p>
                   <p className="text-sm opacity-70">Og her er højre side.</p>
                 </div>
@@ -956,7 +956,7 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={3}
-                    className="rounded-lg bg-[color-mix(in_oklch,currentColor_8%,transparent)] p-4"
+                    className="rounded-evi theme-surface-neutral p-4"
                   >
                     <h4 className="font-semibold">Kort {i + 1}</h4>
                     <p className="text-sm opacity-70 mt-1">
