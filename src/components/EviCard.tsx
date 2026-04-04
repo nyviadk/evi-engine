@@ -20,7 +20,7 @@ export function EviCard({ rows, children, className }: EviCardProps) {
   if (process.env.NODE_ENV === "development") {
     const count = Children.count(children);
     if (count !== rows) {
-      console.warn(
+      console.error(
         `[EviCard] Expected ${rows} children but received ${count}. ` +
           `Subgrid row alignment will break. Wrap empty slots in <div />.`,
       );
