@@ -77,6 +77,34 @@
           "label": "Sekundær brandfarve",
           "placeholder": ""
         }
+      },
+      "layout_width": {
+        "type": "Select",
+        "config": {
+          "label": "Layoutbredde",
+          "placeholder": "Bredden på dit hjemmesideindhold",
+          "options": [
+            "Klassisk (1200px)",
+            "Standard (1280px)",
+            "Moderne (1440px)",
+            "Ekspansiv (1664px)",
+            "Cinematic (1920px)"
+          ]
+        }
+      },
+      "border_radius": {
+        "type": "Select",
+        "config": {
+          "label": "Hjørner / radius",
+          "placeholder": "Hvor skape eller bløde kanterne skal være på fx kasser og billeder",
+          "options": [
+            "Skarpe hjørner (0px)",
+            "Lille afrunding (4px)",
+            "Standard (8px)",
+            "Blød (16px)",
+            "Pilleformet (Fuld radius)"
+          ]
+        }
       }
     }
   }

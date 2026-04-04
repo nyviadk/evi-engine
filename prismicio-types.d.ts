@@ -251,6 +251,40 @@ interface SettingsDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/color
    */
   color_secondary: prismic.ColorField;
+
+  /**
+   * Layoutbredde field in *Indstillinger*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Bredden på dit hjemmesideindhold
+   * - **API ID Path**: settings.layout_width
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  layout_width: prismic.SelectField<
+    | "Klassisk (1200px)"
+    | "Standard (1280px)"
+    | "Moderne (1440px)"
+    | "Ekspansiv (1664px)"
+    | "Cinematic (1920px)"
+  >;
+
+  /**
+   * Hjørner / radius field in *Indstillinger*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Hvor skape eller bløde kanterne skal være på fx kasser og billeder
+   * - **API ID Path**: settings.border_radius
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  border_radius: prismic.SelectField<
+    | "Skarpe hjørner (0px)"
+    | "Lille afrunding (4px)"
+    | "Standard (8px)"
+    | "Blød (16px)"
+    | "Pilleformet (Fuld radius)"
+  >;
 }
 
 /**

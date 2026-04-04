@@ -9,7 +9,10 @@
   --color-evi-text-on-dark: var(--text-on-dark);
   --color-evi-text-on-primary: var(--text-on-primary);
   --color-evi-text-on-secondary: var(--text-on-secondary);
-  --radius-evi: 0.5rem;
+  --radius-evi: var(--radius-evi, 0.5rem);
+
+  /* Vi opretter en custom max-width klasse i Tailwind til vores sektioner */
+  --container-evi: var(--evi-max-width, 1280px);
 }
 
 @layer base {
@@ -128,8 +131,6 @@
     --btn-secondary-ink-on-dark: var(--text-on-dark);
     --btn-secondary-ink-on-primary: var(--text-on-primary);
     --btn-secondary-ink-on-secondary: var(--text-on-secondary);
-
-    --radius-evi: 0.5rem;
   }
 
   body {
