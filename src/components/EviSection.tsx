@@ -28,7 +28,9 @@ export function EviSection({
     <section
       className={twMerge(clsx(`theme-${theme}`, pb, pt), className)}
     >
-      <div className="mx-auto max-w-7xl px-6">{children}</div>
+      <div className="isolate mx-auto grid max-w-7xl grid-cols-12 gap-x-4 gap-y-12 px-4 md:gap-x-8 md:gap-y-16 @container/section">
+        {children}
+      </div>
     </section>
   );
 }
