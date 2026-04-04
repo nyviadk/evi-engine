@@ -6,6 +6,7 @@ import { EviButton } from "@/src/components/EviButton";
 import { EviSplit } from "@/src/components/EviSplit";
 import { EviAutoGrid } from "@/src/components/EviAutoGrid";
 import { EviCard } from "@/src/components/EviCard";
+import { EviStack } from "@/src/components/EviStack";
 import { compute_slice_contexts } from "@/src/lib/slices";
 
 // ── Client-side WCAG contrast (mirrors src/lib/colors.ts) ──
@@ -337,9 +338,9 @@ export function EviTestBench() {
             </div>
 
             {/* ── Button grid: 3 variants × 3 appearances × 3 sizes ── */}
-            <div className="col-span-12 space-y-4 mb-4">
+            <EviStack gap="lg" className="col-span-12 mb-4">
               {(["primary", "secondary", "neutral"] as const).map((variant) => (
-                <div key={variant} className="space-y-2">
+                <EviStack key={variant} gap="sm">
                   <p className="text-xs font-mono opacity-40 uppercase">
                     {variant}
                   </p>
@@ -382,9 +383,9 @@ export function EviTestBench() {
                       </EviButton>
                     </div>
                   ))}
-                </div>
+                </EviStack>
               ))}
-            </div>
+            </EviStack>
           </EviSection>
         );
       })}
@@ -494,14 +495,14 @@ export function EviTestBench() {
                     se professionelle ud online. Ingen kode, ingen besvær.
                   </p>
                 </div>
-                <div className="flex flex-col gap-4">
+                <EviStack gap="md">
                   <EviButton variant="primary" appearance="solid" size="lg">
                     Kom i gang
                   </EviButton>
                   <EviButton variant="secondary" appearance="outline" size="lg">
                     Læs mere
                   </EviButton>
-                </div>
+                </EviStack>
               </EviSplit>
             </EviSection>
 
