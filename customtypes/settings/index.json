@@ -112,16 +112,17 @@
           "label": "Skrifttype (Anbefalet - Hurtig)",
           "placeholder": "Vælg en optimeret skrifttype",
           "options": [
-            "Inter",
+            "System standard",
             "Montserrat",
             "Rethink Sans",
             "Comfortaa",
             "Poppins",
             "Abel",
             "Roboto",
-            "Open Sans"
+            "Open Sans",
+            "Inter"
           ],
-          "default_value": "Inter"
+          "default_value": "System standard"
         }
       },
       "custom_font_input": {

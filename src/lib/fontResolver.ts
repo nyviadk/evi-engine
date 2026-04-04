@@ -30,7 +30,7 @@ export interface FontConfig {
 
 /**
  * Resolver kundens font-valg fra Prismic settings.
- * Prioritet: custom_font_input → font_select → "Inter"
+ * Prioritet: custom_font_input → font_select → "System standard"
  *
  * Hvis kunden skriver en lokal font (fx "Inter") i custom-feltet,
  * bruges den lokale next/font version i stedet for Bunny.
@@ -41,15 +41,21 @@ export function resolveFonts(settings: {
 }): FontConfig {
   const customInput = (settings.custom_font_input ?? "").trim();
   const selectValue = (settings.font_select ?? "").trim();
-  const chosenName = customInput || selectValue || "Inter";
+  const chosenName = customInput || selectValue || "System standard";
 
-  console.log("[fontResolver] input:", { customInput, selectValue, chosenName });
+  if (chosenName === "System standard") {
+    return {
+      htmlClass: "",
+      bunny: null,
+      headingFont: SYSTEM_FALLBACK,
+      bodyFont: SYSTEM_FALLBACK,
+    };
+  }
 
   const localMatch = findLocalFont(chosenName);
 
   if (localMatch) {
     const fontValue = `${localMatch.name}, ${SYSTEM_FALLBACK}`;
-    console.log("[fontResolver] LOCAL match:", { chosenName, class: localMatch.class, fontValue });
     return {
       htmlClass: localMatch.class,
       bunny: null,
@@ -62,7 +68,6 @@ export function resolveFonts(settings: {
   const safeName = `"${chosenName}"`;
   const fontValue = `${safeName}, ${SYSTEM_FALLBACK}`;
   const bunnyUrl = buildBunnyUrl(chosenName);
-  console.log("[fontResolver] BUNNY font:", { chosenName, bunnyUrl, fontValue });
   return {
     htmlClass: "",
     bunny: {

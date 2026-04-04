@@ -291,20 +291,21 @@ interface SettingsDocumentData {
    *
    * - **Field Type**: Select
    * - **Placeholder**: Vælg en optimeret skrifttype
-   * - **Default Value**: Inter
+   * - **Default Value**: System standard
    * - **API ID Path**: settings.font_select
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/fields/select
    */
   font_select: prismic.SelectField<
-    | "Inter"
+    | "System standard"
     | "Montserrat"
     | "Rethink Sans"
     | "Comfortaa"
     | "Poppins"
     | "Abel"
     | "Roboto"
-    | "Open Sans",
+    | "Open Sans"
+    | "Inter",
     "filled"
   >;
 

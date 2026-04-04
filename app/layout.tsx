@@ -56,7 +56,7 @@ export default async function RootLayout({
   } as React.CSSProperties;
 
   return (
-    <html lang={lang} className={fonts.htmlClass}>
+    <html lang={lang} className={fonts.htmlClass || undefined}>
       <head>
         {fonts.bunny && (
           <>
