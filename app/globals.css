@@ -13,6 +13,12 @@
   /* Vi opretter en custom max-width og radius klasse i Tailwind til vores sektioner */
   --radius-evi: var(--radius-evi, 0.5rem);
   --container-evi: var(--evi-max-width, 1280px);
+
+  /* Font-system: --evi-heading-font / --evi-body-font injiceres på <body> via style attr.
+     --font-sans overrider Tailwinds default, som flyder via --default-font-family til alle elementer.
+     --font-heading giver font-heading utility-klassen til headings. */
+  --font-sans: var(--evi-body-font, ui-sans-serif, system-ui, sans-serif);
+  --font-heading: var(--evi-heading-font, ui-sans-serif, system-ui, sans-serif);
 }
 
 @layer base {
@@ -136,7 +142,15 @@
   body {
     background-color: var(--color-light);
     color: var(--text-on-light);
-    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--evi-heading-font, ui-sans-serif, system-ui, sans-serif);
   }
 }
 
