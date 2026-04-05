@@ -16,8 +16,10 @@ import { DEFAULTS_COLORS } from "@/src/lib/colors";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
-// React cache() deduplicerer inden for ét request.
-// Både Page() og generateMetadata() kalder dette — det kører kun én gang.
+/**
+ * React cache() deduplikerer kald inden for samme request.
+ * Både Page() og generateMetadata() kalder dette — data hentes kun én gang.
+ */
 const get_evi_context = cache(async (domain: string) => {
   const tenant = await get_tenant_config(domain);
   if (!tenant) return null;
@@ -31,7 +33,6 @@ const get_evi_context = cache(async (domain: string) => {
 
 export default async function Page(props: { params: Params }) {
   const { lang, uid } = await props.params;
-
   const headers_list = await headers();
   const domain = headers_list.get("host") || "localhost:3000";
 
@@ -41,7 +42,6 @@ export default async function Page(props: { params: Params }) {
   const { client, tree, tenant, settings } = ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
-  // .catch() i stedet for try/catch — redirect() kaster NEXT_REDIRECT internt
   const page = await client
     .getByUID("page", prismic_uid, { lang })
     .catch(() => null);
@@ -88,7 +88,7 @@ export async function generateMetadata(props: { params: Params }) {
   const ctx = await get_evi_context(domain);
   if (!ctx) return {};
 
-  const { client, tree, tenant } = ctx;
+  const { client, tree, tenant, settings } = ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
   const page = await client
@@ -96,13 +96,20 @@ export async function generateMetadata(props: { params: Params }) {
     .catch(() => null);
 
   if (!page) return {};
+  const pageTitle =
+    page.data.meta_title ||
+    page.uid.charAt(0).toUpperCase() + page.uid.slice(1);
+  const siteName = settings?.data?.site_name;
 
-  // Kanonisk URL fra sti-træet (håndterer alle dybder)
+  // Byg den fulde titel: "Side | Firma" eller bare "Side" (hvis Firma mangler)
+  const fullTitle = siteName ? `${pageTitle} | ${siteName}` : pageTitle;
+
+  // URL-generering til SEO
   const canonical_path = resolve_page_url(page.id, lang, tree, tenant);
+  const full_canonical_url = `${base_url}${canonical_path}`;
 
-  // Alternate Languages (hreflang til Google)
+  // Alternate Languages (hreflang)
   const alternate_langs: Record<string, string> = {};
-
   for (const alt of page.alternate_languages) {
     if (alt.uid && alt.lang) {
       const alt_path = resolve_page_url(alt.id, alt.lang, tree, tenant);
@@ -110,22 +117,49 @@ export async function generateMetadata(props: { params: Params }) {
     }
   }
 
-  // Staging-tjek: Bloker indeksering på test-domæner
+  // Staging-tjek
   const is_staging =
     domain.endsWith(".web.nyvia.dk") || domain.includes("localhost");
 
   return {
-    title: page.data.meta_title,
+    title: fullTitle,
     description: page.data.meta_description,
+
+    // Canonical Tag
     alternates: {
-      canonical: `${base_url}${canonical_path}`,
+      canonical: full_canonical_url,
       languages:
         Object.keys(alternate_langs).length > 0 ? alternate_langs : undefined,
     },
+
+    // SEO Robots
     robots: is_staging
       ? { index: false, follow: false }
       : { index: true, follow: true },
+
+    // Open Graph (Facebook, LinkedIn)
     openGraph: {
+      title: fullTitle,
+      description: page.data.meta_description,
+      url: full_canonical_url,
+      siteName: siteName,
+      locale: lang,
+      type: "website",
+      images: [
+        {
+          url: page.data.meta_image?.url || "",
+          width: 1200,
+          height: 630,
+          alt: fullTitle || "",
+        },
+      ],
+    },
+
+    // Twitter Cards (X)
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description: page.data.meta_description,
       images: [page.data.meta_image?.url || ""],
     },
   };

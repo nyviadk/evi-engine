@@ -186,6 +186,17 @@ export interface SettingsDocumentDataRedirectsItem {
  */
 interface SettingsDocumentData {
   /**
+   * Sidenavn field in *Indstillinger*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: F.eks. Jensen Frisør
+   * - **API ID Path**: settings.site_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  site_name: prismic.KeyTextField;
+
+  /**
    * Tving sprog i URL? (fx /da-dk) field in *Indstillinger*
    *
    * - **Field Type**: Boolean
