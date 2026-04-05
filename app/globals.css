@@ -613,7 +613,7 @@
   .btn-primary-text {
     background-color: transparent;
     color: var(--btn-primary-ink);
-    padding-inline: 0;
+    padding: 0;
   }
   .btn-primary-text:hover {
     opacity: 0.7;
@@ -673,7 +673,7 @@
   .btn-secondary-text {
     background-color: transparent;
     color: var(--btn-secondary-ink);
-    padding-inline: 0;
+    padding: 0;
   }
   .btn-secondary-text:hover {
     opacity: 0.7;
@@ -721,7 +721,7 @@
   .btn-neutral-text {
     background-color: transparent;
     color: currentColor;
-    padding-inline: 0;
+    padding: 0;
   }
   .btn-neutral-text:hover {
     opacity: 0.7;
