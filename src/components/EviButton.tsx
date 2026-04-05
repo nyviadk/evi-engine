@@ -13,7 +13,7 @@ type Appearance = "solid" | "outline" | "text";
 type Size = "sm" | "md" | "lg";
 
 const iconSizes: Record<Size, number> = {
-  sm: 14,
+  sm: 16,
   md: 20,
   lg: 24,
 };
