@@ -237,7 +237,7 @@ export function EviTestBench() {
             value={light}
             onChange={(e) => setLight(e.target.value)}
           />
-          <span className=" text-xs opacity-60">{light}</span>
+          <span className="text-xs opacity-60">{light}</span>
         </label>
         <label className="flex items-center gap-2">
           Dark
@@ -246,7 +246,7 @@ export function EviTestBench() {
             value={dark}
             onChange={(e) => setDark(e.target.value)}
           />
-          <span className=" text-xs opacity-60">{dark}</span>
+          <span className="text-xs opacity-60">{dark}</span>
         </label>
         <label className="flex items-center gap-2">
           Primary
@@ -255,7 +255,7 @@ export function EviTestBench() {
             value={primary}
             onChange={(e) => setPrimary(e.target.value)}
           />
-          <span className=" text-xs opacity-60">{primary}</span>
+          <span className="text-xs opacity-60">{primary}</span>
         </label>
         <label className="flex items-center gap-2">
           Secondary
@@ -264,7 +264,7 @@ export function EviTestBench() {
             value={secondary}
             onChange={(e) => setSecondary(e.target.value)}
           />
-          <span className=" text-xs opacity-60">{secondary}</span>
+          <span className="text-xs opacity-60">{secondary}</span>
         </label>
       </div>
 
@@ -280,7 +280,7 @@ export function EviTestBench() {
             theme={ctx.theme}
             collapsePadding={ctx.collapsePadding}
           >
-            <p className="col-span-12 text-sm  opacity-50 mb-2">
+            <p className="col-span-12 text-sm opacity-50 mb-2">
               #{index + 1} — theme-{ctx.theme}
               {ctx.collapsePadding && " — pt collapsed (same as above)"}
             </p>
@@ -341,13 +341,13 @@ export function EviTestBench() {
             <EviStack gap="lg" className="col-span-12 mb-4">
               {(["primary", "secondary", "neutral"] as const).map((variant) => (
                 <EviStack key={variant} gap="sm">
-                  <p className="text-xs  opacity-40 uppercase">{variant}</p>
+                  <p className="text-xs opacity-40 uppercase">{variant}</p>
                   {(["sm", "md", "lg"] as const).map((size) => (
                     <div
                       key={size}
                       className="flex items-center gap-4 flex-wrap"
                     >
-                      <span className="text-xs  opacity-40 w-8">{size}</span>
+                      <span className="text-xs opacity-40 w-8">{size}</span>
                       <EviButton
                         variant={variant}
                         appearance="solid"
@@ -411,13 +411,13 @@ export function EviTestBench() {
                 theme={g[i].theme}
                 collapsePadding={g[i].collapsePadding}
               >
-                <p className="col-span-12 text-sm  opacity-50">
+                <p className="col-span-12 text-sm opacity-50">
                   A. EviSplit preset=&quot;{preset}&quot;
                   {g[i].collapsePadding && " — pt collapsed"}
                 </p>
                 <EviSplit preset={preset}>
                   <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm  opacity-60 mb-2">
+                    <p className="text-sm opacity-60 mb-2">
                       Venstre ({preset.split("-")[0]}%)
                     </p>
                     <p>
@@ -428,7 +428,7 @@ export function EviTestBench() {
                     </p>
                   </div>
                   <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm  opacity-60 mb-2">
+                    <p className="text-sm opacity-60 mb-2">
                       Højre ({preset.split("-")[1]}%)
                     </p>
                     <p>Kort tekst til sammenligning.</p>
@@ -444,13 +444,13 @@ export function EviTestBench() {
                 theme={g[5 + i].theme}
                 collapsePadding={g[5 + i].collapsePadding}
               >
-                <p className="col-span-12 text-sm  opacity-50">
+                <p className="col-span-12 text-sm opacity-50">
                   B. EviSplit preset=&quot;60-40&quot; align=&quot;{align}&quot;
                   {g[5 + i].collapsePadding && " — pt collapsed"}
                 </p>
                 <EviSplit preset="60-40" align={align}>
                   <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm  opacity-60 mb-2">
+                    <p className="text-sm opacity-60 mb-2">
                       Venstre — lang tekst
                     </p>
                     <p>
@@ -465,7 +465,7 @@ export function EviTestBench() {
                     </p>
                   </div>
                   <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm  opacity-60 mb-2">Højre — kort</p>
+                    <p className="text-sm opacity-60 mb-2">Højre — kort</p>
                     <p>Kort indhold.</p>
                   </div>
                 </EviSplit>
@@ -477,7 +477,7 @@ export function EviTestBench() {
               theme={g[9].theme}
               collapsePadding={g[9].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 C. EviSplit 50-50 — prose venstre, knapper højre (realistisk
                 slice)
               </p>
@@ -505,7 +505,7 @@ export function EviTestBench() {
               theme={g[10].theme}
               collapsePadding={g[10].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 D. EviAutoGrid size=&quot;sm&quot; — 8 items (logos/tags)
               </p>
               <EviAutoGrid size="sm">
@@ -515,7 +515,7 @@ export function EviTestBench() {
                     className="rounded-evi theme-surface-neutral p-4 text-center"
                   >
                     <div className="h-12 w-12 mx-auto rounded-evi theme-surface-neutral opacity-60" />
-                    <p className="text-xs  opacity-60 mt-2">Logo {i + 1}</p>
+                    <p className="text-xs opacity-60 mt-2">Logo {i + 1}</p>
                   </div>
                 ))}
               </EviAutoGrid>
@@ -525,7 +525,7 @@ export function EviTestBench() {
               theme={g[11].theme}
               collapsePadding={g[11].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 D. EviAutoGrid size=&quot;md&quot; — 7 items (standard cards,
                 wrapping test)
               </p>
@@ -549,7 +549,7 @@ export function EviTestBench() {
               theme={g[12].theme}
               collapsePadding={g[12].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 D. EviAutoGrid size=&quot;lg&quot; — 3 items (pricing cards)
               </p>
               <EviAutoGrid size="lg">
@@ -559,7 +559,7 @@ export function EviTestBench() {
                     rows={4}
                     className="rounded-evi theme-surface-neutral p-8 text-center"
                   >
-                    <p className="text-xs  opacity-50 uppercase tracking-wider">
+                    <p className="text-xs opacity-50 uppercase tracking-wider">
                       {name}
                     </p>
                     <p className="text-4xl font-bold mt-2">{(i + 1) * 99} kr</p>
@@ -583,7 +583,7 @@ export function EviTestBench() {
               theme={g[13].theme}
               collapsePadding={g[13].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 E. EviCard rows=4 — titler med forskellig længde
               </p>
               <EviAutoGrid size="md">
@@ -629,7 +629,7 @@ export function EviTestBench() {
               theme={g[14].theme}
               collapsePadding={g[14].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 E. EviCard rows=3 — kun titel + beskrivelse + CTA
               </p>
               <EviAutoGrid size="md">
@@ -674,7 +674,7 @@ export function EviTestBench() {
               theme={g[15].theme}
               collapsePadding={g[15].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 E. EviCard rows=2 — minimal (kun titel + beskrivelse)
               </p>
               <EviAutoGrid size="sm">
@@ -711,7 +711,7 @@ export function EviTestBench() {
               theme={g[16].theme}
               collapsePadding={g[16].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 E. EviCard rows=4 — tomt beskrivelse-felt (empty wrapper keeps
                 alignment)
               </p>
@@ -758,13 +758,13 @@ export function EviTestBench() {
               theme={g[17].theme}
               collapsePadding={g[17].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 F. Nested: EviSplit 67-33 → EviAutoGrid size=&quot;sm&quot; i
                 67%-pane
               </p>
               <EviSplit preset="67-33">
                 <div>
-                  <p className="text-sm  opacity-60 mb-4">
+                  <p className="text-sm opacity-60 mb-4">
                     67% pane — AutoGrid reagerer på sin egen bredde
                   </p>
                   <EviAutoGrid size="sm">
@@ -773,13 +773,13 @@ export function EviTestBench() {
                         key={i}
                         className="rounded-evi theme-surface-neutral p-4 text-center"
                       >
-                        <p className="text-sm  opacity-60">Item {i + 1}</p>
+                        <p className="text-sm opacity-60">Item {i + 1}</p>
                       </div>
                     ))}
                   </EviAutoGrid>
                 </div>
                 <div className="rounded-evi theme-surface-neutral p-6">
-                  <p className="text-sm  opacity-60 mb-2">33% sidebar</p>
+                  <p className="text-sm opacity-60 mb-2">33% sidebar</p>
                   <p>
                     AutoGrid i venstre pane reagerer på sin egen bredde, ikke
                     sektionens.
@@ -792,13 +792,13 @@ export function EviTestBench() {
               theme={g[18].theme}
               collapsePadding={g[18].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 F. Nested: EviSplit 33-67 → EviAutoGrid size=&quot;md&quot; +
                 EviCard i 67%-pane
               </p>
               <EviSplit preset="33-67">
                 <div className="rounded-evi theme-surface-neutral p-6">
-                  <p className="text-sm  opacity-60 mb-2">33% sidebar</p>
+                  <p className="text-sm opacity-60 mb-2">33% sidebar</p>
                   <p>Navigation, filtre, eller andet smalt indhold.</p>
                 </div>
                 <div>
@@ -840,7 +840,7 @@ export function EviTestBench() {
               theme={g[19].theme}
               collapsePadding={g[19].collapsePadding}
             >
-              <p className="col-span-12 text-sm  opacity-50">
+              <p className="col-span-12 text-sm opacity-50">
                 F. Stress test: EviSplit 67-33 → EviAutoGrid size=&quot;md&quot;
                 i 33%-pane (smal!)
               </p>
@@ -879,7 +879,7 @@ export function EviTestBench() {
                 theme={g[20 + i].theme}
                 collapsePadding={g[20 + i].collapsePadding}
               >
-                <p className="col-span-12 text-sm  opacity-50">
+                <p className="col-span-12 text-sm opacity-50">
                   G. EviSplit 60-40 på theme-{theme}
                   {g[20 + i].collapsePadding && " — pt collapsed"}
                 </p>
