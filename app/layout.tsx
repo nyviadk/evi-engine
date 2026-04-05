@@ -56,7 +56,11 @@ export default async function RootLayout({
   } as React.CSSProperties;
 
   return (
-    <html lang={lang} className={fonts.htmlClass || undefined}>
+    <html
+      lang={lang}
+      className={fonts.htmlClass || undefined}
+      style={themeStyle}
+    >
       <head>
         {fonts.bunny && (
           <>
@@ -69,9 +73,7 @@ export default async function RootLayout({
           </>
         )}
       </head>
-      <body className="antialiased" style={themeStyle}>
-        {children}
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

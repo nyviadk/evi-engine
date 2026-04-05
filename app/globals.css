@@ -17,6 +17,13 @@
   /* Font-system: --evi-heading-font / --evi-body-font injiceres på <body> via style attr.
      --font-sans overrider Tailwinds default, som flyder via --default-font-family til alle elementer.
      --font-heading giver font-heading utility-klassen til headings. */
+  /* 1. Fortæl Tailwinds indbyggede reset, hvad standarden er */
+  --default-font-family: var(
+    --evi-body-font,
+    ui-sans-serif,
+    system-ui,
+    sans-serif
+  );
   --font-sans: var(--evi-body-font, ui-sans-serif, system-ui, sans-serif);
   --font-heading: var(--evi-heading-font, ui-sans-serif, system-ui, sans-serif);
 }
