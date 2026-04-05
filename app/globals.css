@@ -68,6 +68,11 @@
     font: inherit;
     color: inherit;
   }
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em); /* Sikrer at den aldrig dykker under 16px! */
+  }
 
   h1,
   h2,
