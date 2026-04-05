@@ -63,7 +63,7 @@ export function EviButtonLink({
       {arrow && (
         <ArrowRight
           size={iconSizes[size]}
-          className="btn-arrow-icon shrink-0 relative top-[1.5px]"
+          className="btn-arrow-icon shrink-0"
         />
       )}
     </PrismicNextLink>
@@ -108,7 +108,7 @@ export function EviButton<T extends ElementType = "button">({
       {arrow && (
         <ArrowRight
           size={iconSizes[size]}
-          className="btn-arrow-icon shrink-0 relative top-[1.5px]"
+          className="btn-arrow-icon shrink-0"
         />
       )}
     </Tag>
