@@ -108,13 +108,18 @@ export async function generateMetadata(props: { params: Params }) {
   let fullTitle: string;
 
   if (isHome && !metaTitle && siteName) {
-    // Case: Forsiden uden manuel SEO-titel -> Brug kun firmanavnet (f.eks. "Jensen Frisør")
+    // Scenarie: Forsiden uden manuel titel -> "Frisør Jensen"
     fullTitle = siteName;
   } else if (siteName) {
-    // Case: Standard underside -> "Ydelser | Jensen Frisør"
-    fullTitle = `${pageLabel} | ${siteName}`;
+    // Tjek om kunden selv har lavet branding (brugt en pipe | )
+    if (metaTitle?.includes("|")) {
+      fullTitle = metaTitle; // De har selv styret det, lad det være
+    } else {
+      // Standard: "Ydelser | Frisør Jensen"
+      fullTitle = `${pageLabel} | ${siteName}`;
+    }
   } else {
-    // Case: Hvis kunden helt har glemt sit firmanavn i Settings -> Bare sidens navn
+    // Fallback hvis firma-navn slet ikke er udfyldt
     fullTitle = pageLabel;
   }
   // URL-generering til SEO
