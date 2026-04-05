@@ -59,7 +59,7 @@ export function EviButtonLink({
         className,
       )}
     >
-      {children}
+      <span className="trim-text">{children}</span>
       {arrow && (
         <ArrowRight
           size={iconSizes[size]}
@@ -104,7 +104,7 @@ export function EviButton<T extends ElementType = "button">({
       )}
       {...props}
     >
-      {children}
+      <span className="trim-text">{children}</span>
       {arrow && (
         <ArrowRight
           size={iconSizes[size]}
