@@ -1,6 +1,10 @@
 import { type ComponentPropsWithoutRef, type ElementType } from "react";
 import { PrismicNextLink } from "@prismicio/next";
-import { type LinkResolverFunction, type LinkField, isFilled } from "@prismicio/client";
+import {
+  type LinkResolverFunction,
+  type LinkField,
+  isFilled,
+} from "@prismicio/client";
 import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
 
@@ -22,6 +26,7 @@ type LinkProps = {
   appearance?: Appearance;
   size?: Size;
   arrow?: boolean;
+  isParentLink?: boolean;
   className?: string;
   children?: React.ReactNode;
   linkResolver: LinkResolverFunction;
@@ -32,6 +37,7 @@ export function EviButtonLink({
   appearance = "solid",
   size = "md",
   arrow = false,
+  isParentLink = false,
   className,
   children,
   field,
@@ -48,15 +54,14 @@ export function EviButtonLink({
         `btn-${size}`,
         `btn-${variant}-${appearance}`,
         arrow && "btn-arrow",
+        isParentLink &&
+          "before:absolute before:inset-0 before:z-10 before:content-['']",
         className,
       )}
     >
       {children}
       {arrow && (
-        <ArrowRight
-          size={iconSizes[size]}
-          className="btn-arrow-icon"
-        />
+        <ArrowRight size={iconSizes[size]} className="btn-arrow-icon" />
       )}
     </PrismicNextLink>
   );
@@ -98,10 +103,7 @@ export function EviButton<T extends ElementType = "button">({
     >
       {children}
       {arrow && (
-        <ArrowRight
-          size={iconSizes[size]}
-          className="btn-arrow-icon"
-        />
+        <ArrowRight size={iconSizes[size]} className="btn-arrow-icon" />
       )}
     </Tag>
   );

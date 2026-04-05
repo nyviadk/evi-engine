@@ -30,7 +30,7 @@ export function EviCard({ rows, children, className }: EviCardProps) {
   return (
     <div
       className={twMerge(
-        clsx("isolate grid grid-rows-subgrid gap-0", rowClasses[rows]),
+        clsx("relative isolate grid grid-rows-subgrid gap-0", rowClasses[rows]),
         className,
       )}
     >
