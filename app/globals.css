@@ -345,7 +345,6 @@
     font-weight: 400; /* Regular — body weight */
     letter-spacing: 0.01em;
     overflow-wrap: break-word; /* Prevent long words/URLs from blowing out grid columns */
-    hyphens: auto;
   }
 
   /* Strip margins on first/last children to prevent double spacing */
