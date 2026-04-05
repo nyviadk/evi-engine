@@ -96,14 +96,27 @@ export async function generateMetadata(props: { params: Params }) {
     .catch(() => null);
 
   if (!page) return {};
-  const pageTitle =
-    page.data.meta_title ||
-    page.uid.charAt(0).toUpperCase() + page.uid.slice(1);
+  const metaTitle = page.data.meta_title;
   const siteName = settings?.data?.site_name;
+  const isHome = page.uid === "home";
 
-  // Byg den fulde titel: "Side | Firma" eller bare "Side" (hvis Firma mangler)
-  const fullTitle = siteName ? `${pageTitle} | ${siteName}` : pageTitle;
+  // 2. Find sidens navn (Prioritet: Meta felt -> Capitalized UID)
+  const pageLabel =
+    metaTitle || page.uid.charAt(0).toUpperCase() + page.uid.slice(1);
 
+  // 3. Den "Smarte" Titel-logik
+  let fullTitle: string;
+
+  if (isHome && !metaTitle && siteName) {
+    // Case: Forsiden uden manuel SEO-titel -> Brug kun firmanavnet (f.eks. "Jensen Frisør")
+    fullTitle = siteName;
+  } else if (siteName) {
+    // Case: Standard underside -> "Ydelser | Jensen Frisør"
+    fullTitle = `${pageLabel} | ${siteName}`;
+  } else {
+    // Case: Hvis kunden helt har glemt sit firmanavn i Settings -> Bare sidens navn
+    fullTitle = pageLabel;
+  }
   // URL-generering til SEO
   const canonical_path = resolve_page_url(page.id, lang, tree, tenant);
   const full_canonical_url = `${base_url}${canonical_path}`;
