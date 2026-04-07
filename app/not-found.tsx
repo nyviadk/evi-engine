@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { get_tenant_config } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
 // Senere importerer vi din rigtige Evi-layout/komponent
 

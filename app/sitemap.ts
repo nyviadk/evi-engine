@@ -1,8 +1,8 @@
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
-import { get_tenant_config } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
-import { build_page_tree, resolve_page_url } from "@/src/lib/paths";
+import { build_page_tree, resolve_page_url } from "@/src/lib/prismic/paths";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const headers_list = await headers();

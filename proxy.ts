@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import { get_tenant_config } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/kv/tenants";
 
 function get_browser_locale(
   request: NextRequest,

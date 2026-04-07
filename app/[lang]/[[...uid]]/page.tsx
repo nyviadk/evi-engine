@@ -5,16 +5,16 @@ import { cache } from "react";
 
 import { createTenantClient } from "@/prismicio";
 import { components } from "@/slices";
-import { get_tenant_config } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/kv/tenants";
 import {
   build_page_tree,
   resolve_page_url,
   create_link_resolver,
-} from "@/src/lib/paths";
-import { compute_slice_contexts } from "@/src/lib/slices";
-import { DEFAULTS_COLORS } from "@/src/lib/colors";
-import { collectSchemaGraph } from "@/src/lib/schemaCollector";
-import { safeJsonLdStringify } from "@/src/lib/safeJsonLdStringify";
+} from "@/src/lib/prismic/paths";
+import { compute_slice_contexts } from "@/src/lib/prismic/slices";
+import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
+import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
+import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 

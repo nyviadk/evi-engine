@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { redirectToPreviewURL } from "@prismicio/next";
-import { get_tenant_config } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
 
 export async function GET(request: NextRequest) {

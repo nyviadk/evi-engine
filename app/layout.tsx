@@ -2,12 +2,12 @@ import "./globals.css";
 import { headers } from "next/headers";
 import { cache } from "react";
 
-import { get_tenant_config } from "@/src/lib/tenants";
+import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
-import { compute_theme_vars } from "@/src/lib/colors";
-import { WIDTH_MAP } from "@/src/lib/width";
-import { RADIUS_MAP } from "@/src/lib/radius";
-import { resolveFonts } from "@/src/lib/fontResolver";
+import { compute_theme_vars } from "@/src/lib/theme/colors";
+import { WIDTH_MAP } from "@/src/lib/theme/width";
+import { RADIUS_MAP } from "@/src/lib/theme/radius";
+import { resolveFonts } from "@/src/lib/theme/fontResolver";
 
 const get_evi_settings = cache(async (hostname: string) => {
   const tenant = await get_tenant_config(hostname);

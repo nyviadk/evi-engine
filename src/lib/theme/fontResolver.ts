@@ -1,4 +1,4 @@
-import { localFontMap } from "@/src/lib/fonts";
+import { localFontMap } from "@/src/lib/theme/fonts";
 
 const SYSTEM_FALLBACK =
   'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';

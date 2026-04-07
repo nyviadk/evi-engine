@@ -4,7 +4,7 @@ import {
   type Route,
 } from "@prismicio/client";
 import { enableAutoPreviews } from "@prismicio/next";
-import { type TenantConfig } from "@/src/lib/tenants";
+import { type TenantConfig } from "@/src/lib/kv/tenants";
 
 /**
  * Evi's Rute-definitioner.

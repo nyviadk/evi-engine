@@ -7,7 +7,7 @@ import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { compute_slice_contexts } from "@/src/lib/slices";
+import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 
 // ── Client-side WCAG contrast (mirrors src/lib/colors.ts) ──
 
