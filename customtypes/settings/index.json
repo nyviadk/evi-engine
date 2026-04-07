@@ -5,7 +5,7 @@
   "repeatable": false,
   "status": true,
   "json": {
-    "Main": {
+    "Generelt": {
       "site_name": {
         "type": "Text",
         "config": {
@@ -21,42 +21,9 @@
           "placeholder_true": "Ja",
           "default_value": false
         }
-      },
-      "redirects": {
-        "type": "Group",
-        "config": {
-          "label": "Viderestillinger",
-          "repeat": true,
-          "fields": {
-            "from_url": {
-              "type": "Text",
-              "config": {
-                "label": "Fra URL",
-                "placeholder": "f.eks. /sommer"
-              }
-            },
-            "to_url": {
-              "type": "Text",
-              "config": {
-                "label": "Til URL",
-                "placeholder": "f.eks. /tilbud"
-              }
-            },
-            "redirect_type": {
-              "type": "Select",
-              "config": {
-                "label": "Hvorfor laver du dette link?",
-                "placeholder": "",
-                "options": [
-                  "301 (Siden er slettet/flyttet for altid)",
-                  "307 (Dette er blot en midlertidig genvej)"
-                ],
-                "default_value": "301 (Siden er slettet/flyttet for altid)"
-              }
-            }
-          }
-        }
-      },
+      }
+    },
+    "Udseende og layout": {
       "color_light": {
         "type": "Color",
         "config": {
@@ -103,20 +70,20 @@
         "type": "Select",
         "config": {
           "label": "Hjørner / radius",
-          "placeholder": "Hvor skape eller bløde kanterne skal være på fx kasser og billeder",
+          "placeholder": "Hvor skarpe eller bløde kanterne skal være på fx kasser og billeder",
           "options": [
             "Skarpe hjørner (0px)",
             "Lille afrunding (4px)",
             "Standard (8px)",
             "Blød (16px)",
-            "Pilleformet (Fuld radius)"
+            "Pilleformet (fuld radius)"
           ]
         }
       },
       "font_select": {
         "type": "Select",
         "config": {
-          "label": "Skrifttype (Anbefalet - Hurtig)",
+          "label": "Skrifttype (anbefalet - hurtig)",
           "placeholder": "Vælg en optimeret skrifttype",
           "options": [
             "System standard",
@@ -137,6 +104,43 @@
         "config": {
           "label": "Avanceret skrifttype (Bunny Fonts)",
           "placeholder": "Navn fra fonts.bunny.net (f.eks. \"Playfair Display\"). Dette felt overstyrer valget ovenfor."
+        }
+      }
+    },
+    "Viderestillinger": {
+      "redirects": {
+        "type": "Group",
+        "config": {
+          "label": "Viderestillinger",
+          "repeat": true,
+          "fields": {
+            "from_url": {
+              "type": "Text",
+              "config": {
+                "label": "Fra URL",
+                "placeholder": "f.eks. /sommer"
+              }
+            },
+            "to_url": {
+              "type": "Text",
+              "config": {
+                "label": "Til URL",
+                "placeholder": "f.eks. /tilbud"
+              }
+            },
+            "redirect_type": {
+              "type": "Select",
+              "config": {
+                "label": "Hvorfor laver du dette link?",
+                "placeholder": "",
+                "options": [
+                  "301 (siden er slettet/flyttet for altid)",
+                  "307 (dette er blot en midlertidig genvej)"
+                ],
+                "default_value": "301 (siden er slettet/flyttet for altid)"
+              }
+            }
+          }
         }
       }
     }

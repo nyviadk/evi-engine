@@ -69,6 +69,187 @@ type ContentRelationshipFieldWithData<
   >;
 }[Exclude<TCustomType[number], string>["id"]];
 
+/**
+ * Item in *Business → Sociale profiler (sameAs)*
+ */
+export interface BusinessDocumentDataSocialProfilesItem {
+  /**
+   * Platform field in *Business → Sociale profiler (sameAs)*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Vælg medie...
+   * - **API ID Path**: business.social_profiles[].platform
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  platform: prismic.SelectField<
+    "LinkedIn" | "Facebook" | "Instagram" | "YouTube" | "X" | "Wikipedia"
+  >;
+
+  /**
+   * Profil URL field in *Business → Sociale profiler (sameAs)*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: https://linkedin.com/company/dit-brand
+   * - **API ID Path**: business.social_profiles[].profile_url
+   * - **Documentation**: https://prismic.io/docs/fields/link
+   */
+  profile_url: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+}
+
+/**
+ * Content for Business documents
+ */
+interface BusinessDocumentData {
+  /**
+   * Virksomhedstype field in *Business*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Vælg type...
+   * - **API ID Path**: business.schema_type
+   * - **Tab**: Stamdata
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  schema_type: prismic.SelectField<
+    "Organization" | "LocalBusiness" | "Person" | "Corporation"
+  >;
+
+  /**
+   * Juridisk navn field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Skal matche evt. CVR
+   * - **API ID Path**: business.legal_name
+   * - **Tab**: Stamdata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  legal_name: prismic.KeyTextField;
+
+  /**
+   * Alternativt navn field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: F.eks. forkortelse
+   * - **API ID Path**: business.alternate_name
+   * - **Tab**: Stamdata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  alternate_name: prismic.KeyTextField;
+
+  /**
+   * CVR Nummer field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: F.eks. 12345678
+   * - **API ID Path**: business.vat_id
+   * - **Tab**: Stamdata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  vat_id: prismic.KeyTextField;
+
+  /**
+   * Logo (Min. 112x112px, hvid bg) field in *Business*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: business.brand_logo
+   * - **Tab**: Stamdata
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  brand_logo: prismic.ImageField<never>;
+
+  /**
+   * Kort beskrivelse field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: En ultrakort, faktuel beskrivelse af virksomheden...
+   * - **API ID Path**: business.description
+   * - **Tab**: Stamdata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField; /**
+   * Global email field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: F.eks. kontakt@virksomhed.dk
+   * - **API ID Path**: business.contact_email
+   * - **Tab**: Kontakt & social
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  contact_email: prismic.KeyTextField;
+
+  /**
+   * Global telefon field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: F.eks. +45 12 34 56 78
+   * - **API ID Path**: business.global_telephone
+   * - **Tab**: Kontakt & social
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  global_telephone: prismic.KeyTextField;
+
+  /**
+   * Sociale profiler (sameAs) field in *Business*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: business.social_profiles[]
+   * - **Tab**: Kontakt & social
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  social_profiles: prismic.GroupField<
+    Simplify<BusinessDocumentDataSocialProfilesItem>
+  >; /**
+   * Schema mode (Kill Switch) field in *Business*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: Auto (Virksomhed + Brødkrummer)
+   * - **API ID Path**: business.schema_mode
+   * - **Tab**: Avanceret SEO
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  schema_mode: prismic.SelectField<
+    | "Auto (Virksomhed + Brødkrummer)"
+    | "Kun brødkrummer"
+    | "Deaktiver alt (kun Custom JSON)",
+    "filled"
+  >;
+
+  /**
+   * Custom JSON-LD (Power User) field in *Business*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Indsæt valid JSON-LD kode her. Brug kun hvis du ved, hvad du laver!
+   * - **API ID Path**: business.custom_schema_json
+   * - **Tab**: Avanceret SEO
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  custom_schema_json: prismic.KeyTextField;
+}
+
+/**
+ * Business document from Prismic
+ *
+ * - **API ID**: `business`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BusinessDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<BusinessDocumentData>,
+    "business",
+    Lang
+  >;
+
 type PageDocumentDataSlicesSlice = never;
 
 /**
@@ -170,13 +351,13 @@ export interface SettingsDocumentDataRedirectsItem {
    *
    * - **Field Type**: Select
    * - **Placeholder**: *None*
-   * - **Default Value**: 301 (Siden er slettet/flyttet for altid)
+   * - **Default Value**: 301 (siden er slettet/flyttet for altid)
    * - **API ID Path**: settings.redirects[].redirect_type
    * - **Documentation**: https://prismic.io/docs/fields/select
    */
   redirect_type: prismic.SelectField<
-    | "301 (Siden er slettet/flyttet for altid)"
-    | "307 (Dette er blot en midlertidig genvej)",
+    | "301 (siden er slettet/flyttet for altid)"
+    | "307 (dette er blot en midlertidig genvej)",
     "filled"
   >;
 }
@@ -191,7 +372,7 @@ interface SettingsDocumentData {
    * - **Field Type**: Text
    * - **Placeholder**: F.eks. Jensen Frisør
    * - **API ID Path**: settings.site_name
-   * - **Tab**: Main
+   * - **Tab**: Generelt
    * - **Documentation**: https://prismic.io/docs/fields/text
    */
   site_name: prismic.KeyTextField;
@@ -203,29 +384,16 @@ interface SettingsDocumentData {
    * - **Placeholder**: *None*
    * - **Default Value**: false
    * - **API ID Path**: settings.force_lang_prefix
-   * - **Tab**: Main
+   * - **Tab**: Generelt
    * - **Documentation**: https://prismic.io/docs/fields/boolean
    */
-  force_lang_prefix: prismic.BooleanField;
-
-  /**
-   * Viderestillinger field in *Indstillinger*
-   *
-   * - **Field Type**: Group
-   * - **Placeholder**: *None*
-   * - **API ID Path**: settings.redirects[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-   */
-  redirects: prismic.GroupField<Simplify<SettingsDocumentDataRedirectsItem>>;
-
-  /**
+  force_lang_prefix: prismic.BooleanField; /**
    * Lys farve field in *Indstillinger*
    *
    * - **Field Type**: Color
    * - **Placeholder**: *None*
    * - **API ID Path**: settings.color_light
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/color
    */
   color_light: prismic.ColorField;
@@ -236,7 +404,7 @@ interface SettingsDocumentData {
    * - **Field Type**: Color
    * - **Placeholder**: *None*
    * - **API ID Path**: settings.color_dark
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/color
    */
   color_dark: prismic.ColorField;
@@ -247,7 +415,7 @@ interface SettingsDocumentData {
    * - **Field Type**: Color
    * - **Placeholder**: *None*
    * - **API ID Path**: settings.color_primary
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/color
    */
   color_primary: prismic.ColorField;
@@ -258,7 +426,7 @@ interface SettingsDocumentData {
    * - **Field Type**: Color
    * - **Placeholder**: *None*
    * - **API ID Path**: settings.color_secondary
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/color
    */
   color_secondary: prismic.ColorField;
@@ -269,7 +437,7 @@ interface SettingsDocumentData {
    * - **Field Type**: Select
    * - **Placeholder**: Bredden på dit hjemmesideindhold
    * - **API ID Path**: settings.layout_width
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/select
    */
   layout_width: prismic.SelectField<
@@ -284,9 +452,9 @@ interface SettingsDocumentData {
    * Hjørner / radius field in *Indstillinger*
    *
    * - **Field Type**: Select
-   * - **Placeholder**: Hvor skape eller bløde kanterne skal være på fx kasser og billeder
+   * - **Placeholder**: Hvor skarpe eller bløde kanterne skal være på fx kasser og billeder
    * - **API ID Path**: settings.border_radius
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/select
    */
   border_radius: prismic.SelectField<
@@ -294,17 +462,17 @@ interface SettingsDocumentData {
     | "Lille afrunding (4px)"
     | "Standard (8px)"
     | "Blød (16px)"
-    | "Pilleformet (Fuld radius)"
+    | "Pilleformet (fuld radius)"
   >;
 
   /**
-   * Skrifttype (Anbefalet - Hurtig) field in *Indstillinger*
+   * Skrifttype (anbefalet - hurtig) field in *Indstillinger*
    *
    * - **Field Type**: Select
    * - **Placeholder**: Vælg en optimeret skrifttype
    * - **Default Value**: System standard
    * - **API ID Path**: settings.font_select
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/select
    */
   font_select: prismic.SelectField<
@@ -326,10 +494,19 @@ interface SettingsDocumentData {
    * - **Field Type**: Text
    * - **Placeholder**: Navn fra fonts.bunny.net (f.eks. "Playfair Display"). Dette felt overstyrer valget ovenfor.
    * - **API ID Path**: settings.custom_font_input
-   * - **Tab**: Main
+   * - **Tab**: Udseende og layout
    * - **Documentation**: https://prismic.io/docs/fields/text
    */
-  custom_font_input: prismic.KeyTextField;
+  custom_font_input: prismic.KeyTextField; /**
+   * Viderestillinger field in *Indstillinger*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.redirects[]
+   * - **Tab**: Viderestillinger
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  redirects: prismic.GroupField<Simplify<SettingsDocumentDataRedirectsItem>>;
 }
 
 /**
@@ -348,7 +525,10 @@ export type SettingsDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = PageDocument | SettingsDocument;
+export type AllDocumentTypes =
+  | BusinessDocument
+  | PageDocument
+  | SettingsDocument;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -371,6 +551,9 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      BusinessDocument,
+      BusinessDocumentData,
+      BusinessDocumentDataSocialProfilesItem,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,

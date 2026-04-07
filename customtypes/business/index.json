@@ -1,0 +1,124 @@
+{
+  "format": "custom",
+  "id": "business",
+  "label": "Business",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Stamdata": {
+      "schema_type": {
+        "type": "Select",
+        "config": {
+          "label": "Virksomhedstype",
+          "placeholder": "Vælg type...",
+          "options": ["Organization", "LocalBusiness", "Person", "Corporation"]
+        }
+      },
+      "legal_name": {
+        "type": "Text",
+        "config": {
+          "label": "Juridisk navn",
+          "placeholder": "Skal matche evt. CVR"
+        }
+      },
+      "alternate_name": {
+        "type": "Text",
+        "config": {
+          "label": "Alternativt navn",
+          "placeholder": "F.eks. forkortelse"
+        }
+      },
+      "vat_id": {
+        "type": "Text",
+        "config": {
+          "label": "CVR Nummer",
+          "placeholder": "F.eks. 12345678"
+        }
+      },
+      "brand_logo": {
+        "type": "Image",
+        "config": {
+          "label": "Logo (Min. 112x112px, hvid bg)",
+          "thumbnails": []
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Kort beskrivelse",
+          "placeholder": "En ultrakort, faktuel beskrivelse af virksomheden..."
+        }
+      }
+    },
+    "Kontakt & social": {
+      "contact_email": {
+        "type": "Text",
+        "config": {
+          "label": "Global email",
+          "placeholder": "F.eks. kontakt@virksomhed.dk"
+        }
+      },
+      "global_telephone": {
+        "type": "Text",
+        "config": {
+          "label": "Global telefon",
+          "placeholder": "F.eks. +45 12 34 56 78"
+        }
+      },
+      "social_profiles": {
+        "type": "Group",
+        "config": {
+          "label": "Sociale profiler (sameAs)",
+          "repeat": true,
+          "fields": {
+            "platform": {
+              "type": "Select",
+              "config": {
+                "label": "Platform",
+                "placeholder": "Vælg medie...",
+                "options": [
+                  "LinkedIn",
+                  "Facebook",
+                  "Instagram",
+                  "YouTube",
+                  "X",
+                  "Wikipedia"
+                ]
+              }
+            },
+            "profile_url": {
+              "type": "Link",
+              "config": {
+                "label": "Profil URL",
+                "placeholder": "https://linkedin.com/company/dit-brand",
+                "select": "web"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Avanceret SEO": {
+      "schema_mode": {
+        "type": "Select",
+        "config": {
+          "label": "Schema mode (Kill Switch)",
+          "placeholder": "",
+          "options": [
+            "Auto (Virksomhed + Brødkrummer)",
+            "Kun brødkrummer",
+            "Deaktiver alt (kun Custom JSON)"
+          ],
+          "default_value": "Auto (Virksomhed + Brødkrummer)"
+        }
+      },
+      "custom_schema_json": {
+        "type": "Text",
+        "config": {
+          "label": "Custom JSON-LD (Power User)",
+          "placeholder": "Indsæt valid JSON-LD kode her. Brug kun hvis du ved, hvad du laver!"
+        }
+      }
+    }
+  }
+}
