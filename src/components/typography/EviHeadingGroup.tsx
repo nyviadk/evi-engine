@@ -3,7 +3,7 @@ import {
   type LinkResolverFunction,
   isFilled,
 } from "@prismicio/client";
-import { EviRichText } from "@/src/components/EviRichText";
+import { EviRichText } from "@/src/components/typography/EviRichText";
 import { twMerge } from "tailwind-merge";
 
 interface EviHeadingGroupProps {

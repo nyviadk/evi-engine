@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { EviSection } from "@/src/components/EviSection";
-import { EviButton } from "@/src/components/EviButton";
-import { EviSplit } from "@/src/components/EviSplit";
-import { EviAutoGrid } from "@/src/components/EviAutoGrid";
-import { EviCard } from "@/src/components/EviCard";
-import { EviStack } from "@/src/components/EviStack";
+import { EviSection } from "@/src/components/layout/EviSection";
+import { EviButton } from "@/src/components/ui/EviButton";
+import { EviSplit } from "@/src/components/layout/EviSplit";
+import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
+import { EviCard } from "@/src/components/ui/EviCard";
+import { EviStack } from "@/src/components/layout/EviStack";
 import { compute_slice_contexts } from "@/src/lib/slices";
 
 // ── Client-side WCAG contrast (mirrors src/lib/colors.ts) ──
