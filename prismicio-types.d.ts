@@ -88,18 +88,12 @@ export interface BusinessDocumentDataSocialProfilesItem {
   /**
    * Profil URL field in *Business → Sociale profiler (sameAs)*
    *
-   * - **Field Type**: Link
+   * - **Field Type**: Text
    * - **Placeholder**: https://linkedin.com/company/dit-brand
    * - **API ID Path**: business.social_profiles[].profile_url
-   * - **Documentation**: https://prismic.io/docs/fields/link
+   * - **Documentation**: https://prismic.io/docs/fields/text
    */
-  profile_url: prismic.LinkField<
-    string,
-    string,
-    unknown,
-    prismic.FieldState,
-    never
-  >;
+  profile_url: prismic.KeyTextField;
 }
 
 /**

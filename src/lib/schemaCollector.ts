@@ -37,8 +37,8 @@ function buildSameAs(
 ): string[] {
   const urls: string[] = [];
   for (const p of profiles) {
-    if (isFilled.link(p.profile_url) && p.profile_url.url) {
-      urls.push(p.profile_url.url);
+    if (isFilled.keyText(p.profile_url) && p.profile_url) {
+      urls.push(p.profile_url);
     }
   }
   return urls;

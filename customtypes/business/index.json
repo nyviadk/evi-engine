@@ -87,11 +87,10 @@
               }
             },
             "profile_url": {
-              "type": "Link",
+              "type": "Text",
               "config": {
                 "label": "Profil URL",
-                "placeholder": "https://linkedin.com/company/dit-brand",
-                "select": "web"
+                "placeholder": "https://linkedin.com/company/dit-brand"
               }
             }
           }
