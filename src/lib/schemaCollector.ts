@@ -1,4 +1,13 @@
-import type { Graph, BreadcrumbList, ListItem, Thing } from "schema-dts";
+import type {
+  Graph,
+  BreadcrumbList,
+  ListItem,
+  Thing,
+  OrganizationLeaf,
+  LocalBusinessLeaf,
+  PersonLeaf,
+  CorporationLeaf,
+} from "schema-dts";
 import { isFilled } from "@prismicio/client";
 import type {
   BusinessDocumentData,
@@ -80,41 +89,52 @@ function buildBreadcrumbs(
   };
 }
 
+// Fælles felter der deles på tværs af alle 4 schema-typer
+function sharedFields(data: BusinessDocumentData, baseUrl: string) {
+  return {
+    "@id": `${baseUrl}/#organization`,
+    url: baseUrl,
+    ...(isFilled.keyText(data.legal_name) && { name: data.legal_name }),
+    ...(isFilled.keyText(data.alternate_name) && {
+      alternateName: data.alternate_name,
+    }),
+    ...(isFilled.keyText(data.description) && {
+      description: data.description,
+    }),
+    ...(isFilled.keyText(data.vat_id) && { vatID: data.vat_id }),
+    ...(isFilled.keyText(data.contact_email) && {
+      email: data.contact_email,
+    }),
+    ...(isFilled.keyText(data.global_telephone) && {
+      telephone: data.global_telephone,
+    }),
+    ...(isFilled.image(data.brand_logo) && {
+      logo: { "@type": "ImageObject" as const, url: data.brand_logo.url },
+      image: data.brand_logo.url,
+    }),
+    ...(data.social_profiles.length > 0 && {
+      sameAs: buildSameAs(data.social_profiles),
+    }),
+  };
+}
+
 function buildOrganizationSchema(
   data: BusinessDocumentData,
   baseUrl: string,
-): Thing {
-  const schemaType = data.schema_type || "Organization";
-  const sameAs = buildSameAs(data.social_profiles);
+): OrganizationLeaf | LocalBusinessLeaf | PersonLeaf | CorporationLeaf {
+  const shared = sharedFields(data, baseUrl);
+  const type = data.schema_type || "Organization";
 
-  // Schema-dts's union-typer er for brede til dynamisk @type,
-  // så vi bygger et rent JSON-LD objekt og caster til Thing.
-  const org: Record<string, unknown> = {
-    "@type": schemaType,
-    "@id": `${baseUrl}/#organization`,
-    url: baseUrl,
-  };
-
-  if (isFilled.keyText(data.legal_name)) org.name = data.legal_name;
-  if (isFilled.keyText(data.alternate_name))
-    org.alternateName = data.alternate_name;
-  if (isFilled.keyText(data.description)) org.description = data.description;
-  if (isFilled.keyText(data.vat_id)) org.vatID = data.vat_id;
-  if (isFilled.keyText(data.contact_email)) org.email = data.contact_email;
-  if (isFilled.keyText(data.global_telephone))
-    org.telephone = data.global_telephone;
-
-  if (isFilled.image(data.brand_logo)) {
-    org.logo = {
-      "@type": "ImageObject",
-      url: data.brand_logo.url,
-    };
-    org.image = data.brand_logo.url;
+  switch (type) {
+    case "LocalBusiness":
+      return { "@type": "LocalBusiness", ...shared };
+    case "Person":
+      return { "@type": "Person", ...shared };
+    case "Corporation":
+      return { "@type": "Corporation", ...shared };
+    default:
+      return { "@type": "Organization", ...shared };
   }
-
-  if (sameAs.length > 0) org.sameAs = sameAs;
-
-  return org as unknown as Thing;
 }
 
 // ── Main collector ──
@@ -138,9 +158,10 @@ export function collectSchemaGraph(input: SchemaInput): Graph | null {
   // 3. Custom JSON-LD (altid, uanset mode — hvis feltet har indhold)
   if (isFilled.keyText(business?.custom_schema_json)) {
     try {
-      const parsed = JSON.parse(business!.custom_schema_json!);
+      const parsed: unknown = JSON.parse(business!.custom_schema_json!);
+      // Custom JSON er power-user input — vi stoler på strukturen
       if (Array.isArray(parsed)) {
-        graph.push(...(parsed as Thing[]));
+        for (const item of parsed) graph.push(item as Thing);
       } else {
         graph.push(parsed as Thing);
       }
@@ -157,5 +178,5 @@ export function collectSchemaGraph(input: SchemaInput): Graph | null {
   return {
     "@context": "https://schema.org",
     "@graph": graph,
-  } as unknown as Graph;
+  };
 }
