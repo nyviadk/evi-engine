@@ -13,6 +13,8 @@ import {
 } from "@/src/lib/paths";
 import { compute_slice_contexts } from "@/src/lib/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/colors";
+import { collectSchemaGraph } from "@/src/lib/schemaCollector";
+import { safeJsonLdStringify } from "@/src/lib/safeJsonLdStringify";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -25,10 +27,15 @@ const get_evi_context = cache(async (domain: string) => {
   if (!tenant) return null;
   const client = createTenantClient(tenant);
   const tree = await build_page_tree(client);
-  const settings = await client
-    .getSingle("settings", { lang: tenant.default_locale })
-    .catch(() => null);
-  return { tenant, client, tree, settings };
+  const [settings, business] = await Promise.all([
+    client
+      .getSingle("settings", { lang: tenant.default_locale })
+      .catch(() => null),
+    client
+      .getSingle("business", { lang: tenant.default_locale })
+      .catch(() => null),
+  ]);
+  return { tenant, client, tree, settings, business };
 });
 
 export default async function Page(props: { params: Params }) {
@@ -39,7 +46,7 @@ export default async function Page(props: { params: Params }) {
   const ctx = await get_evi_context(domain);
   if (!ctx) return notFound();
 
-  const { client, tree, tenant, settings } = ctx;
+  const { client, tree, tenant, settings, business } = ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
   const page = await client
@@ -68,12 +75,36 @@ export default async function Page(props: { params: Params }) {
   };
   const sliceContexts = compute_slice_contexts(page.data.slices, colors);
 
+  // JSON-LD Schema
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const baseUrl = `${protocol}://${domain}`;
+  const pagePath = resolve_page_url(page.id, lang, tree, tenant);
+
+  const schemaGraph = collectSchemaGraph({
+    business: business?.data ?? null,
+    baseUrl,
+    pagePath,
+    pageTitle: page.data.meta_title || page.uid,
+    lang,
+    siteName: settings?.data?.site_name,
+  });
+
   return (
-    <SliceZone
-      slices={page.data.slices}
-      components={components}
-      context={{ linkResolver, sliceContexts }}
-    />
+    <>
+      {schemaGraph && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: safeJsonLdStringify(schemaGraph),
+          }}
+        />
+      )}
+      <SliceZone
+        slices={page.data.slices}
+        components={components}
+        context={{ linkResolver, sliceContexts }}
+      />
+    </>
   );
 }
 
