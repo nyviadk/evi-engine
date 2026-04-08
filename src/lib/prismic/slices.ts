@@ -1,11 +1,6 @@
-interface SliceWithPrimary {
-  primary?: {
-    theme?: string;
-    backgroundSectionImage?: { url?: string } | null;
-    [key: string]: unknown;
-  };
-  [key: string]: unknown;
-}
+export type SliceWithPrimary = {
+  primary?: Record<string, any>;
+};
 
 export interface SliceContext {
   theme: string;
@@ -48,11 +43,11 @@ export function compute_slice_contexts(
     const sameType = theme_type(theme) === theme_type(prevTheme);
 
     // Compare by theme name first, then fall back to resolved color
-    const sameVisual = sameType && (
-      theme === prevTheme || (
-        colors != null && resolve_bg(theme, colors) === resolve_bg(prevTheme, colors)
-      )
-    );
+    const sameVisual =
+      sameType &&
+      (theme === prevTheme ||
+        (colors != null &&
+          resolve_bg(theme, colors) === resolve_bg(prevTheme, colors)));
 
     return {
       theme,

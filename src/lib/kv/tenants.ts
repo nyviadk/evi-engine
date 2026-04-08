@@ -13,7 +13,7 @@ export interface TenantConfig {
 // Når global data skal hentes fra Prismic, så brug kun master lang - ellers skal
 // kunden oprette samme "settings" og "business" i forskellige sprog.
 
-const mock_kv_data: Record<string, TenantConfig> = {
+export const mock_kv_data: Record<string, TenantConfig> = {
   "localhost:3000": {
     repo: "evi-engine",
     locales: ["da-dk", "en-eu"],
