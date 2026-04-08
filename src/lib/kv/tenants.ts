@@ -5,12 +5,13 @@ export interface TenantConfig {
   force_lang_prefix: boolean;
   redirects: Record<string, { destination: string; type: 301 | 307 }>;
 
-  prismic_token?: string; // Nødvendig for Preview af kladder
+  prismic_token: string; // Nødvendig for Preview af kladder
+  prismic_write_api_token: string; // Nødvendig for sync af slices
   resend_api_key?: string; // Til kontaktformularer (valgfri)
 }
 
-// Når data skal hentes fra Prismic, så brug kun master lang - ellers skal
-// kunden oprette samme "settings" i forskellige sprog.
+// Når global data skal hentes fra Prismic, så brug kun master lang - ellers skal
+// kunden oprette samme "settings" og "business" i forskellige sprog.
 
 const mock_kv_data: Record<string, TenantConfig> = {
   "localhost:3000": {
@@ -25,8 +26,9 @@ const mock_kv_data: Record<string, TenantConfig> = {
       "/gamleside": { destination: "/kontakt", type: 301 },
       "/booking": { destination: "https://planway.com/jens", type: 307 },
     },
-    // Husk at indsætte et rigtigt token her senere for at teste Previews!
-    prismic_token: "dit_hemmelige_prismic_token_her",
+    // Husk at indsætte rigtige tokens her senere for at teste Previews og sync slices!
+    prismic_token: "dit_hemmelige_prismic_token_her", // Content API fane
+    prismic_write_api_token: "dit_hemmelige_prismic_write_token_her", // Write APIs fane
   },
 
   // Vi tilføjer lige dit staging-domæne for at simulere virkeligheden!
@@ -37,6 +39,7 @@ const mock_kv_data: Record<string, TenantConfig> = {
     force_lang_prefix: false,
     redirects: {},
     prismic_token: "dit_hemmelige_prismic_token_her",
+    prismic_write_api_token: "dit_hemmelige_prismic_write_token_her",
   },
 };
 
