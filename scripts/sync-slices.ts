@@ -10,7 +10,7 @@ import { mock_kv_data, TenantConfig } from "@/src/lib/kv/tenants";
 // (I produktion ville dette være et kald til Cloudflare KV)
 
 const API_BASE = "https://customtypes.prismic.io";
-const MAX_CONCURRENCY = 5;
+const MAX_CONCURRENCY = 1;
 
 interface LocalResource {
   id: string;
@@ -145,7 +145,7 @@ async function main() {
   const program = new Command();
   program
     .version("1.0.0")
-    .option("--all", "Sync alle kunder")
+    .option("--all", "Sync alle kunder fra KV data")
     .option("--target <repo>", "Sync en specifik kunde-repo")
     .option("--dry-run", "Simulering - sender intet")
     .parse(process.argv);
@@ -161,10 +161,12 @@ async function main() {
     process.exit(1);
   }
 
-  // 2. Vi bruger mock_kv_data direkte!.
-  const tenants = Object.values(mock_kv_data);
+  // RETTELSE HER: Vi trækker BÅDE domænet (nøglen) og indstillingerne (værdien) ud!
+  const tenants = Object.entries(mock_kv_data).map(([hostname, config]) => ({
+    hostname,
+    ...config,
+  }));
 
-  // 3. Filtrér baseret på om vi vil ramme alle eller én specifik
   const targetRepos = options.target
     ? tenants.filter((t) => t.repo === options.target)
     : tenants;
@@ -182,6 +184,7 @@ async function main() {
   const localTypes = ResourceManager.getCustomTypes();
 
   console.log(chalk.blue.bold(`\nEvi Sync Engine 🚀`));
+  console.log(chalk.gray(`Database kilde: src/lib/kv/tenants.ts`));
   console.log(
     chalk.gray(
       `Fundet lokalt: ${localSlices.length} slices og ${localTypes.length} custom types.\n`,
@@ -189,16 +192,55 @@ async function main() {
   );
 
   const limit = pLimit(MAX_CONCURRENCY);
+
   const tasks = targetRepos.map((tenant) => {
-    const client = new PrismicSyncClient(
-      tenant.repo,
-      tenant.prismic_write_api_token,
-    );
-    return limit(() => client.sync(localSlices, localTypes, !!options.dryRun));
+    return limit(async () => {
+      const client = new PrismicSyncClient(
+        tenant.repo,
+        tenant.prismic_write_api_token,
+      );
+      try {
+        await client.sync(localSlices, localTypes, !!options.dryRun);
+        // Vi gemmer hostname til vores succes-rapport
+        return { hostname: tenant.hostname, repo: tenant.repo, success: true };
+      } catch (error: any) {
+        // Vi gemmer hostname til vores fejl-rapport
+        return {
+          hostname: tenant.hostname,
+          repo: tenant.repo,
+          success: false,
+          error: error.message,
+        };
+      }
+    });
   });
 
-  await Promise.allSettled(tasks);
-  console.log(chalk.bold("\n--- Synkronisering afsluttet ---\n"));
+  const results = await Promise.all(tasks);
+
+  const successful = results.filter((r) => r.success);
+  const failed = results.filter((r) => !r.success);
+
+  console.log(chalk.bold("\n=== Synkronisering Opsummering ==="));
+  console.log(`Forsøgt: ${targetRepos.length} kunder`);
+
+  if (successful.length > 0) {
+    console.log(chalk.green(`✅ Succes: ${successful.length}`));
+  }
+
+  if (failed.length > 0) {
+    console.log(chalk.red(`❌ Fejlede: ${failed.length}\n`));
+    console.log(chalk.red.bold("Detaljer om fejl:"));
+    failed.forEach((f) => {
+      // RETTELSE HER: Udskriver domænet i klammerne og repo-navnet i parentes
+      console.log(
+        chalk.red(` - [${f.hostname}] (Repo: ${f.repo}): ${f.error}`),
+      );
+    });
+  } else {
+    console.log(chalk.green.bold("\n🚀 Alt gik perfekt! Ingen fejl."));
+  }
+
+  console.log("\n");
 }
 
 main();
