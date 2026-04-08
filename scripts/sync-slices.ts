@@ -146,7 +146,10 @@ async function main() {
   program
     .version("1.0.0")
     .option("--all", "Sync alle kunder fra KV data")
-    .option("--target <repo>", "Sync en specifik kunde-repo")
+    .option(
+      "--target <repo>",
+      "Sync specifikke kunde-repos (adskilt med komma)",
+    )
     .option("--dry-run", "Simulering - sender intet")
     .parse(process.argv);
 
@@ -161,14 +164,14 @@ async function main() {
     process.exit(1);
   }
 
-  // RETTELSE HER: Vi trækker BÅDE domænet (nøglen) og indstillingerne (værdien) ud!
   const tenants = Object.entries(mock_kv_data).map(([hostname, config]) => ({
     hostname,
     ...config,
   }));
 
+  // Vi gør det muligt at sende en kommasepareret liste ind (f.eks. repo1,repo2)
   const targetRepos = options.target
-    ? tenants.filter((t) => t.repo === options.target)
+    ? tenants.filter((t) => options.target.split(",").includes(t.repo))
     : tenants;
 
   if (targetRepos.length === 0) {
@@ -230,17 +233,31 @@ async function main() {
   if (failed.length > 0) {
     console.log(chalk.red(`❌ Fejlede: ${failed.length}\n`));
     console.log(chalk.red.bold("Detaljer om fejl:"));
+
+    // Vi samler alle unikke fejl-repos i et Set, så vi kan bygge retry-kommandoen
+    const failedRepos = new Set<string>();
+
     failed.forEach((f) => {
-      // RETTELSE HER: Udskriver domænet i klammerne og repo-navnet i parentes
       console.log(
         chalk.red(` - [${f.hostname}] (Repo: ${f.repo}): ${f.error}`),
       );
+      failedRepos.add(f.repo);
     });
-  } else {
-    console.log(chalk.green.bold("\n🚀 Alt gik perfekt! Ingen fejl."));
-  }
 
-  console.log("\n");
+    // MAGIEN SKER HER: Den genererer den præcise kommando til dig!
+    console.log(
+      chalk.yellow.bold("\n🔄 Kør fejlede repos igen med denne kommando:"),
+    );
+    const retryTargets = Array.from(failedRepos).join(",");
+    const dryRunFlag = options.dryRun ? " --dry-run" : "";
+    console.log(
+      chalk.cyan(
+        `npm run evi:sync-slices -- --target=${retryTargets}${dryRunFlag}\n`,
+      ),
+    );
+  } else {
+    console.log(chalk.green.bold("\n🚀 Alt gik perfekt! Ingen fejl.\n"));
+  }
 }
 
 main();
