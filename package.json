@@ -10,7 +10,7 @@
     "lint": "eslint",
     "slicemachine": "start-slicemachine",
     "format": "prettier --write .",
-    "evi:sync": "tsx scripts/sync-slices.ts"
+    "evi:sync-slices": "tsx scripts/sync-slices.ts"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.8.2",
