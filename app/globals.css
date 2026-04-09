@@ -44,6 +44,10 @@
     scrollbar-gutter: stable;
     hanging-punctuation: first last;
     -webkit-font-smoothing: antialiased;
+    /* Default accent for checkboxes/radios/range/progress.
+       Bruger den kontrast-validerede primary-ink mod light (4.5:1).
+       Tema-klasserne overrider via deres egen --btn-primary-ink. */
+    accent-color: var(--btn-primary-ink-on-light);
   }
 
   body {
@@ -180,6 +184,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-dark {
     --theme-bg: var(--color-dark);
@@ -193,6 +198,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-primary {
     --theme-bg: var(--color-primary);
@@ -206,6 +212,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-secondary {
     --theme-bg: var(--color-secondary);
@@ -219,6 +226,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
 
   /* B. Bløde (soft) temaer — altid 10% af farven mikset ind i light-basen
@@ -235,6 +243,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-dark-soft {
     --theme-bg: color-mix(in oklch, var(--color-dark) 10%, var(--color-light));
@@ -248,6 +257,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-primary-soft {
     --theme-bg: color-mix(
@@ -265,6 +275,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-secondary-soft {
     --theme-bg: color-mix(
@@ -282,6 +293,7 @@
 
     background-color: var(--theme-bg);
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
 
   /* C. Tint temaer — transparent baggrund, men opaque --theme-bg til komponenter (knapper mv.) */
@@ -305,6 +317,7 @@
       transparent
     );
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
   .theme-secondary-tint {
     --theme-bg: color-mix(
@@ -326,6 +339,7 @@
       transparent
     );
     color: var(--theme-text);
+    accent-color: var(--btn-primary-ink);
   }
 
   /* D. Surface bokse (kasser indeni sektioner) */
