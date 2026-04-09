@@ -44,6 +44,20 @@ export async function proxy(request: NextRequest) {
       lower_pathname === `/${loc}` || lower_pathname.startsWith(`/${loc}/`),
   );
 
+  // Home må aldrig bo på /home — canonical er roden.
+  // Kort-circuit: hvis URL'en ender på /home (med eller uden lang-prefix),
+  // redirect til den korrekte rod i ÉT hop i stedet for at lade page.tsx gøre det.
+  const path_without_locale = locale_from_path
+    ? lower_pathname.replace(`/${locale_from_path}`, "") || "/"
+    : lower_pathname;
+  if (path_without_locale === "/home") {
+    const needs_prefix =
+      tenant.force_lang_prefix || locale_from_path !== tenant.default_locale;
+    const target_locale = locale_from_path || tenant.default_locale;
+    const clean_root = needs_prefix ? `/${target_locale}` : "/";
+    return NextResponse.redirect(new URL(clean_root, request.url), 301);
+  }
+
   const request_headers = new Headers(request.headers);
 
   // 2. SCENARIE: SPROGET MANGLER I URL'EN (f.eks. /kontakt)

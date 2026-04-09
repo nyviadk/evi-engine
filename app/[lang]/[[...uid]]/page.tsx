@@ -55,6 +55,12 @@ export default async function Page(props: { params: Params }) {
 
   if (!page) return notFound();
 
+  // Home må kun tilgås på roden — aldrig på /home eller /<noget>/home.
+  // Catcher fx /da-dk/home, gamle indekserede links, copy-paste fejl.
+  if (page.uid === "home" && uid && uid.length > 0) {
+    redirect(resolve_page_url(page.id, lang, tree, tenant));
+  }
+
   // Validér at URL-stien matcher parent_page-kæden
   // F.eks. /om-os/vores-historie/kontakt er kun gyldig
   // hvis kontakt → parent: vores-historie → parent: om-os

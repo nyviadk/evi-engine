@@ -36,15 +36,24 @@ export async function build_page_tree(
     // Sæt midlertidig værdi — beskytter mod cirkulære parent-referencer
     cache.set(id, [doc.uid]);
 
+    // Home er altid roden — ignorér enhver parent_page editoren måtte have sat ved en fejl
+    if (doc.uid === "home") {
+      return [doc.uid];
+    }
+
     if (
       isFilled.contentRelationship(doc.data.parent_page) &&
       doc.data.parent_page.id !== id
     ) {
-      const parent_segments = resolve(doc.data.parent_page.id);
-      if (parent_segments.length > 0) {
-        const segments = [...parent_segments, doc.uid];
-        cache.set(id, segments);
-        return segments;
+      const parent_doc = by_id.get(doc.data.parent_page.id);
+      // Home må aldrig optræde som forælder — det ville give /home/<child> stier
+      if (parent_doc && parent_doc.uid !== "home") {
+        const parent_segments = resolve(doc.data.parent_page.id);
+        if (parent_segments.length > 0) {
+          const segments = [...parent_segments, doc.uid];
+          cache.set(id, segments);
+          return segments;
+        }
       }
     }
 
