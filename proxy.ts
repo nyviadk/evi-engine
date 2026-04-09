@@ -3,6 +3,10 @@ import type { NextRequest } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { get_tenant_config } from "@/src/lib/kv/tenants";
+import {
+  create_response_with_hsts,
+  create_secure_url,
+} from "./src/lib/utils/security";
 
 function get_browser_locale(
   request: NextRequest,
@@ -20,20 +24,23 @@ function get_browser_locale(
     return default_locale.toLowerCase();
   }
 }
+// --- HOVEDLOGIK ---
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get("host") || "localhost:3000";
 
   const tenant = await get_tenant_config(hostname);
-  if (!tenant) return NextResponse.next();
+  if (!tenant) return create_response_with_hsts(NextResponse.next());
 
   // 1. Tjek manuelle Redirects (Vanity URLs som /sommer)
   const fuzzy_target = tenant.redirects[pathname];
   if (fuzzy_target) {
-    return NextResponse.redirect(
-      new URL(fuzzy_target.destination, request.url),
-      fuzzy_target.type,
+    return create_response_with_hsts(
+      NextResponse.redirect(
+        create_secure_url(fuzzy_target.destination, request),
+        fuzzy_target.type,
+      ),
     );
   }
 
@@ -50,12 +57,15 @@ export async function proxy(request: NextRequest) {
   const path_without_locale = locale_from_path
     ? lower_pathname.replace(`/${locale_from_path}`, "") || "/"
     : lower_pathname;
+
   if (path_without_locale === "/home") {
     const needs_prefix =
       tenant.force_lang_prefix || locale_from_path !== tenant.default_locale;
     const target_locale = locale_from_path || tenant.default_locale;
     const clean_root = needs_prefix ? `/${target_locale}` : "/";
-    return NextResponse.redirect(new URL(clean_root, request.url), 301);
+    return create_response_with_hsts(
+      NextResponse.redirect(create_secure_url(clean_root, request), 301),
+    );
   }
 
   const request_headers = new Headers(request.headers);
@@ -74,12 +84,16 @@ export async function proxy(request: NextRequest) {
     // Hvis Jens vil TVINGE sprogpræfiks (force_lang_prefix: true)
     if (tenant.force_lang_prefix) {
       // 301 Redirect: Vi sender dem fra /kontakt -> /da-dk/kontakt
-      return NextResponse.redirect(new URL(new_path, request.url), 301);
+      return create_response_with_hsts(
+        NextResponse.redirect(create_secure_url(new_path, request), 301),
+      );
     } else {
       // Skjult præfiks: Vi viser indholdet, men beholder den pæne URL (/kontakt)
-      return NextResponse.rewrite(new URL(new_path, request.url), {
-        request: { headers: request_headers },
-      });
+      return create_response_with_hsts(
+        NextResponse.rewrite(create_secure_url(new_path, request), {
+          request: { headers: request_headers },
+        }),
+      );
     }
   }
 
@@ -90,16 +104,20 @@ export async function proxy(request: NextRequest) {
   if (locale_from_path === tenant.default_locale && !tenant.force_lang_prefix) {
     const clean_path = pathname.replace(`/${locale_from_path}`, "") || "/";
     // 301 Redirect: Vi rydder op og sender dem fra /da-dk/kontakt -> /kontakt
-    return NextResponse.redirect(new URL(clean_path, request.url), 301);
+    return create_response_with_hsts(
+      NextResponse.redirect(create_secure_url(clean_path, request), 301),
+    );
   }
 
   // Ellers: Alt er som det skal være (f.eks. det er en /en-eu/ side eller force er true)
   request_headers.set("x-evi-locale", locale_from_path);
 
   // Send requestet videre med den nye header i bagagen
-  return NextResponse.next({
-    request: { headers: request_headers },
-  });
+  return create_response_with_hsts(
+    NextResponse.next({
+      request: { headers: request_headers },
+    }),
+  );
 }
 
 export const config = {
