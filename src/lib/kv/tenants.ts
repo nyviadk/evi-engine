@@ -7,7 +7,7 @@ export interface TenantConfig {
 
   prismic_token: string; // Nødvendig for Preview af kladder
   prismic_write_api_token: string; // Nødvendig for sync af slices
-  resend_api_key?: string; // Til kontaktformularer (valgfri)
+  synced_hash: string; // til synkronisering med KV
 }
 
 // Når global data skal hentes fra Prismic, så brug kun master lang - ellers skal
@@ -29,6 +29,7 @@ export const mock_kv_data: Record<string, TenantConfig> = {
     // Husk at indsætte rigtige tokens her senere for at teste Previews og sync slices!
     prismic_token: "dit_hemmelige_prismic_token_her", // Content API fane
     prismic_write_api_token: "dit_hemmelige_prismic_write_token_her", // Write APIs fane
+    synced_hash: "",
   },
 
   // Vi tilføjer lige dit staging-domæne for at simulere virkeligheden!
@@ -40,6 +41,7 @@ export const mock_kv_data: Record<string, TenantConfig> = {
     redirects: {},
     prismic_token: "dit_hemmelige_prismic_token_her",
     prismic_write_api_token: "dit_hemmelige_prismic_write_token_her",
+    synced_hash: "",
   },
 };
 
