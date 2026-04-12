@@ -11,6 +11,7 @@ interface EviHeadingGroupProps {
   description?: RichTextField | null | undefined;
   linkResolver: LinkResolverFunction;
   className?: string;
+  isHero?: boolean;
 }
 
 export function EviHeadingGroup({
@@ -18,12 +19,13 @@ export function EviHeadingGroup({
   description,
   linkResolver,
   className,
+  isHero,
 }: EviHeadingGroupProps) {
   if (!isFilled.richText(title) && !isFilled.richText(description)) return null;
 
   return (
     <hgroup className={twMerge("col-span-12 evi-prose max-w-prose", className)}>
-      <EviRichText field={title} linkResolver={linkResolver} bare />
+      <EviRichText field={title} linkResolver={linkResolver} bare isHero={isHero} />
       <EviRichText field={description} linkResolver={linkResolver} bare />
     </hgroup>
   );

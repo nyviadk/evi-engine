@@ -5,6 +5,7 @@ export type SliceWithPrimary = {
 export interface SliceContext {
   theme: string;
   collapsePadding: boolean;
+  isHero: boolean;
 }
 
 export interface EviColors {
@@ -33,7 +34,7 @@ export function compute_slice_contexts(
     const theme = slice.primary?.theme || "light";
     const hasImage = !!slice.primary?.backgroundSectionImage?.url;
 
-    if (index === 0) return { theme, collapsePadding: false };
+    if (index === 0) return { theme, collapsePadding: false, isHero: true };
 
     const prev = slices[index - 1];
     const prevTheme = prev.primary?.theme || "light";
@@ -52,6 +53,7 @@ export function compute_slice_contexts(
     return {
       theme,
       collapsePadding: sameVisual && !hasImage && !prevHasImage,
+      isHero: false,
     };
   });
 }
