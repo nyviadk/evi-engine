@@ -44,3 +44,8 @@ next-env.d.ts
 
 # OpenNext
 .open-next
+
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+.wrangler/
