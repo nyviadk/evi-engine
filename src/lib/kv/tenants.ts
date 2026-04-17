@@ -16,52 +16,28 @@ export interface TenantMetadata {
   repo: string;
 }
 
-// Når global data skal hentes fra Prismic, så brug kun master lang - ellers skal
-// kunden oprette samme "settings" og "business" i forskellige sprog.
-
-export const mock_kv_data: Record<string, TenantConfig> = {
+// Dev-only fallback.
+// I 'npm run preview' og prod læses altid fra rigtig KV.
+const mock_kv_data: Record<string, TenantConfig> = {
   "localhost:3000": {
     repo: "evi-engine",
-    locales: ["da-dk", "en-eu"],
-    default_locale: "da-dk",
-    force_lang_prefix: true,
-    redirects: {
-      // 307: Midlertidig genvej (f.eks. til en flyer)
-      "/sommer": { destination: "/kampagner/sommer-2026", type: 307 },
-      // 301: Permanent flyttet (f.eks. en gammel slettet side)
-      "/gamleside": { destination: "/kontakt", type: 301 },
-      "/booking": { destination: "https://planway.com/jens", type: 307 },
-    },
-    // Husk at indsætte rigtige tokens her senere for at teste Previews og sync slices!
-    prismic_token: "dit_hemmelige_prismic_token_her", // Content API fane
-    prismic_write_api_token: "dit_hemmelige_prismic_write_token_her", // Write APIs fane
-    synced_hash: "",
-  },
-  "127.0.0.1:8787": {
-    repo: "evi-engine",
-    locales: ["da-dk", "en-eu"],
+    locales: ["da-dk"],
     default_locale: "da-dk",
     force_lang_prefix: false,
     redirects: {},
-    prismic_token: "dit_hemmelige_prismic_token_her",
-    prismic_write_api_token: "dit_hemmelige_prismic_write_token_her",
-    synced_hash: "",
-  },
-
-  // Vi tilføjer lige dit staging-domæne for at simulere virkeligheden!
-  "jens.web.nyvia.dk": {
-    repo: "evi-engine",
-    locales: ["da-dk", "en-eu"],
-    default_locale: "da-dk",
-    force_lang_prefix: false,
-    redirects: {},
-    prismic_token: "dit_hemmelige_prismic_token_her",
-    prismic_write_api_token: "dit_hemmelige_prismic_write_token_her",
+    prismic_token: "dit_token",
+    prismic_write_api_token: "",
     synced_hash: "",
   },
 };
 
 async function get_kv_binding(): Promise<KVNamespace | null> {
+  // next dev har ingen Worker-runtime — getCloudflareContext er upålidelig der.
+  // Hop direkte til mock-fallback i dev. 'npm run preview' og prod kører
+  // begge i production mode og bruger rigtig KV.
+  if (process.env.NODE_ENV === "development") {
+    return null;
+  }
   try {
     const ctx = await getCloudflareContext({ async: true });
     return ctx?.env?.TENANTS ?? null;
@@ -75,9 +51,9 @@ export async function get_tenant_config(
 ): Promise<TenantConfig | null> {
   const kv = await get_kv_binding();
   if (kv) {
-    const value = await kv.get<TenantConfig>(hostname, "json");
-    return value;
+    return kv.get<TenantConfig>(hostname, "json");
   }
+  // Dev fallback
   return mock_kv_data[hostname] ?? null;
 }
 
@@ -88,7 +64,7 @@ export async function put_tenant_config(
   const kv = await get_kv_binding();
   if (!kv) {
     throw new Error(
-      `put_tenant_config(${hostname}) called without TENANTS KV binding — only valid in deployed Worker or wrangler preview.`,
+      "TENANTS KV binding missing — put_tenant_config virker kun i Worker/preview.",
     );
   }
   const metadata: TenantMetadata = { repo: config.repo };
@@ -106,9 +82,9 @@ export async function put_tenant_config(
 export async function find_hostnames_by_repo(repo: string): Promise<string[]> {
   const kv = await get_kv_binding();
   if (!kv) {
-    return Object.entries(mock_kv_data)
-      .filter(([, cfg]) => cfg.repo === repo)
-      .map(([host]) => host);
+    throw new Error(
+      "TENANTS KV binding missing — find_hostnames_by_repo kaldes kun fra webhook i Worker.",
+    );
   }
 
   const cache_key = new Request(

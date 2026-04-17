@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
+import { execSync } from "child_process";
 import { Command } from "commander";
 import pLimit from "p-limit";
 import chalk from "chalk";
 import ora from "ora";
-import { mock_kv_data, TenantConfig } from "@/src/lib/kv/tenants";
+import type { TenantConfig, TenantMetadata } from "@/src/lib/kv/tenants";
 
-// Vi importerer din mock data direkte til scriptet
-// (I produktion ville dette være et kald til Cloudflare KV)
+// Tenants hentes live fra Cloudflare KV via wrangler CLI.
+// Ingen lokal mock — kør 'wrangler login' hvis du ikke allerede er autentificeret.
 
 const API_BASE = "https://customtypes.prismic.io";
 const MAX_CONCURRENCY = 1;
@@ -19,6 +20,77 @@ interface LocalResource {
 
 interface PrismicResource {
   id: string;
+}
+
+interface KVKeyEntry {
+  name: string;
+  metadata?: TenantMetadata;
+  expiration?: number;
+}
+
+interface TenantRow extends TenantConfig {
+  hostname: string;
+}
+
+/**
+ * Tenants fra Cloudflare KV (remote) via wrangler CLI.
+ * Filtrerer på metadata.repo inden vi fetcher values — så kun relevante
+ * hostnames koster et 'get'-kald.
+ */
+function fetch_tenants_from_kv(target_repos: string[] | null): TenantRow[] {
+  const list_spinner = ora("Henter tenants fra Cloudflare KV...").start();
+
+  let raw_list: string;
+  try {
+    raw_list = execSync(
+      "npx wrangler kv key list --binding TENANTS --remote",
+      { encoding: "utf-8", cwd: process.cwd() },
+    );
+  } catch (error: any) {
+    list_spinner.fail("Kunne ikke hente KV-liste.");
+    throw new Error(
+      `wrangler kv key list fejlede: ${error.message}\n` +
+        `Er du logget ind? Prøv 'npx wrangler login'.`,
+    );
+  }
+
+  const entries: KVKeyEntry[] = JSON.parse(raw_list.trim());
+
+  const relevant_entries = target_repos
+    ? entries.filter(
+        (e) => e.metadata?.repo && target_repos.includes(e.metadata.repo),
+      )
+    : entries;
+
+  list_spinner.succeed(
+    `Fandt ${entries.length} tenants (${relevant_entries.length} matcher filter).`,
+  );
+
+  const tenants: TenantRow[] = [];
+  for (const entry of relevant_entries) {
+    const fetch_spinner = ora(`Henter config for ${entry.name}...`).start();
+    try {
+      const raw_value = execSync(
+        `npx wrangler kv key get "${entry.name}" --binding TENANTS --remote`,
+        { encoding: "utf-8", cwd: process.cwd() },
+      );
+      const config = JSON.parse(raw_value.trim()) as TenantConfig;
+
+      if (!config.repo || !config.prismic_write_api_token) {
+        fetch_spinner.warn(
+          `${entry.name}: mangler bootstrap-felter (repo/write-token). Springer over.`,
+        );
+        continue;
+      }
+
+      tenants.push({ hostname: entry.name, ...config });
+      fetch_spinner.succeed(`${entry.name}: OK (${config.repo})`);
+    } catch (error: any) {
+      fetch_spinner.fail(`${entry.name}: ${error.message}`);
+    }
+  }
+
+  return tenants;
 }
 
 /**
@@ -151,7 +223,7 @@ async function main() {
   const program = new Command();
   program
     .version("1.0.0")
-    .option("--all", "Sync alle kunder fra KV data")
+    .option("--all", "Sync alle kunder fra Cloudflare KV")
     .option(
       "--target <repo>",
       "Sync specifikke kunde-repos (adskilt med komma)",
@@ -170,20 +242,16 @@ async function main() {
     process.exit(1);
   }
 
-  const tenants = Object.entries(mock_kv_data).map(([hostname, config]) => ({
-    hostname,
-    ...config,
-  }));
+  const target_repos: string[] | null = options.target
+    ? options.target.split(",").map((s: string) => s.trim())
+    : null;
 
-  // Vi gør det muligt at sende en kommasepareret liste ind (f.eks. repo1,repo2)
-  const targetRepos = options.target
-    ? tenants.filter((t) => options.target.split(",").includes(t.repo))
-    : tenants;
+  const tenants = fetch_tenants_from_kv(target_repos);
 
-  if (targetRepos.length === 0) {
+  if (tenants.length === 0) {
     console.log(
       chalk.yellow(
-        "⚠️ Ingen kunder fundet i databasen der matcher din søgning.",
+        "⚠️ Ingen kunder fundet i Cloudflare KV der matcher din søgning.",
       ),
     );
     return;
@@ -193,7 +261,7 @@ async function main() {
   const localTypes = ResourceManager.getCustomTypes();
 
   console.log(chalk.blue.bold(`\nEvi Sync Engine 🚀`));
-  console.log(chalk.gray(`Database kilde: src/lib/kv/tenants.ts`));
+  console.log(chalk.gray(`Database kilde: Cloudflare KV (TENANTS, remote)`));
   console.log(
     chalk.gray(
       `Fundet lokalt: ${localSlices.length} slices og ${localTypes.length} custom types.\n`,
@@ -202,7 +270,7 @@ async function main() {
 
   const limit = pLimit(MAX_CONCURRENCY);
 
-  const tasks = targetRepos.map((tenant) => {
+  const tasks = tenants.map((tenant) => {
     return limit(async () => {
       const client = new PrismicSyncClient(
         tenant.repo,
@@ -210,10 +278,8 @@ async function main() {
       );
       try {
         await client.sync(localSlices, localTypes, !!options.dryRun);
-        // Vi gemmer hostname til vores succes-rapport
         return { hostname: tenant.hostname, repo: tenant.repo, success: true };
       } catch (error: any) {
-        // Vi gemmer hostname til vores fejl-rapport
         return {
           hostname: tenant.hostname,
           repo: tenant.repo,
@@ -230,7 +296,7 @@ async function main() {
   const failed = results.filter((r) => !r.success);
 
   console.log(chalk.bold("\n=== Synkronisering Opsummering ==="));
-  console.log(`Forsøgt: ${targetRepos.length} kunder`);
+  console.log(`Forsøgt: ${tenants.length} kunder`);
 
   if (successful.length > 0) {
     console.log(chalk.green(`✅ Succes: ${successful.length}`));
@@ -240,7 +306,6 @@ async function main() {
     console.log(chalk.red(`❌ Fejlede: ${failed.length}\n`));
     console.log(chalk.red.bold("Detaljer om fejl:"));
 
-    // Vi samler alle unikke fejl-repos i et Set, så vi kan bygge retry-kommandoen
     const failedRepos = new Set<string>();
 
     failed.forEach((f) => {
@@ -250,7 +315,6 @@ async function main() {
       failedRepos.add(f.repo);
     });
 
-    // MAGIEN SKER HER: Den genererer den præcise kommando til dig!
     console.log(
       chalk.yellow.bold("\n🔄 Kør fejlede repos igen med denne kommando:"),
     );
