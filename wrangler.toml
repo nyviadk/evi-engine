@@ -1,0 +1,6 @@
+name = "evi-engine"
+compatibility_date = "2024-11-01"
+compatibility_flags = [ "nodejs_compat" ]
+
+[site]
+bucket = ".open-next/assets"

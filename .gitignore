@@ -49,3 +49,6 @@ next-env.d.ts
 *.sqlite3
 *.sqlite-journal
 .wrangler/
+
+
+.dev.vars

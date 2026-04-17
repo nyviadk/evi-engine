@@ -2,6 +2,8 @@ import "./globals.css";
 import { headers } from "next/headers";
 import { cache } from "react";
 
+export const dynamic = "force-dynamic";
+
 import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
 import { compute_theme_vars } from "@/src/lib/theme/colors";

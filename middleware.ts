@@ -8,6 +8,8 @@ import {
   create_secure_url,
 } from "./src/lib/utils/security";
 
+export const runtime = "experimental-edge";
+
 function get_browser_locale(
   request: NextRequest,
   locales: string[],
@@ -26,9 +28,13 @@ function get_browser_locale(
 }
 // --- HOVEDLOGIK ---
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get("host") || "localhost:3000";
+
+  if (hostname === "nyvia.dk" || hostname === "www.nyvia.dk") {
+    return NextResponse.next();
+  }
 
   const tenant = await get_tenant_config(hostname);
   if (!tenant) return create_response_with_hsts(NextResponse.next());

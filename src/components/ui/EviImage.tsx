@@ -72,7 +72,7 @@ export function EviImage({
         field={field}
         className={imgClasses}
         fallbackAlt=""
-        preload={priority}
+        priority={priority}
       />
     </div>
   );

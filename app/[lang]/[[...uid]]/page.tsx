@@ -3,6 +3,8 @@ import { SliceZone } from "@prismicio/react";
 import { headers } from "next/headers";
 import { cache } from "react";
 
+export const dynamic = "force-dynamic";
+
 import { createTenantClient } from "@/prismicio";
 import { components } from "@/slices";
 import { get_tenant_config } from "@/src/lib/kv/tenants";

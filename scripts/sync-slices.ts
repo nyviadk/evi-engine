@@ -14,7 +14,11 @@ const MAX_CONCURRENCY = 1;
 
 interface LocalResource {
   id: string;
-  data: any;
+  data: unknown;
+}
+
+interface PrismicResource {
+  id: string;
 }
 
 /**
@@ -73,11 +77,11 @@ class PrismicSyncClient {
     private token: string,
   ) {}
 
-  private async apiCall(
+  private async apiCall<T = unknown>(
     path: string,
     method: "GET" | "POST" = "GET",
-    body?: any,
-  ) {
+    body?: unknown,
+  ): Promise<T | null> {
     const res = await fetch(`${API_BASE}${path}`, {
       method,
       headers: {
@@ -106,11 +110,13 @@ class PrismicSyncClient {
 
     try {
       // 1. Hent nuværende state for at lave "Upsert" (Insert vs Update)
-      const remoteSlices = await this.apiCall("/slices");
-      const remoteTypes = await this.apiCall("/customtypes");
+      const remoteSlices =
+        (await this.apiCall<PrismicResource[]>("/slices")) ?? [];
+      const remoteTypes =
+        (await this.apiCall<PrismicResource[]>("/customtypes")) ?? [];
 
-      const existingSliceIds = remoteSlices.map((s: any) => s.id);
-      const existingTypeIds = remoteTypes.map((t: any) => t.id);
+      const existingSliceIds = remoteSlices.map((s) => s.id);
+      const existingTypeIds = remoteTypes.map((t) => t.id);
 
       // 2. Sync Slices først (vigtigt for afhængigheder)
       for (const slice of slices) {

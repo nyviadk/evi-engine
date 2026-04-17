@@ -5,7 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "concurrently \"npm run next:dev\" \"npm run slicemachine\" --names \"next,slice\" --prefix-colors blue,magenta",
-    "next:dev": "next dev --turbo",
+    "next:dev": "next dev",
     "start": "next start",
     "lint": "eslint",
     "slicemachine": "start-slicemachine",
@@ -25,9 +25,9 @@
     "clsx": "^2.1.1",
     "lucide-react": "^1.7.0",
     "negotiator": "^1.0.0",
-    "next": "16.2.1",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "next": "^15.1.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "commander": "^14.0.3",
     "concurrently": "^9.2.1",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "^15.1.7",
     "ora": "^9.3.0",
     "p-limit": "^7.3.0",
     "prettier": "^3.8.1",
