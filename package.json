@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "next build",
     "dev": "concurrently \"npm run next:dev\" \"npm run slicemachine\" --names \"next,slice\" --prefix-colors blue,magenta",
     "next:dev": "next dev --turbo",
-    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "slicemachine": "start-slicemachine",
     "format": "prettier --write .",
-    "evi:sync-slices": "tsx scripts/sync-slices.ts"
+    "evi:sync-slices": "tsx scripts/sync-slices.ts",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.8.2",
+    "@opennextjs/cloudflare": "^1.19.1",
     "@prismicio/client": "^7.21.6",
     "@prismicio/next": "^2.2.2",
     "@prismicio/react": "^3.4.0",
@@ -45,6 +50,7 @@
     "slice-machine-ui": "^2.21.2",
     "tailwindcss": "^4.2.2",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.83.0"
   }
 }
