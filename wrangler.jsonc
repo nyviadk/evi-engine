@@ -42,7 +42,7 @@
         "class_name": "DOQueueHandler",
       },
       {
-        "name": "NEXT_CACHE_DO_SHARDED_TAG_CACHE",
+        "name": "NEXT_TAG_CACHE_DO_SHARDED",
         "class_name": "DOShardedTagCache",
       },
       {

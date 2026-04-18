@@ -83,7 +83,13 @@ export async function sync_one_tenant(hostname: string): Promise<SyncStatus> {
 async function fetch_synced_fields_from_prismic(
   tenant: TenantConfig,
 ): Promise<SyncedFields> {
-  const client = createTenantClient(tenant);
+  // Sync skal ALDRIG læse fra cache — ellers risikerer vi at sammenligne
+  // hash mod stale settings og konkludere "unchanged" når brugeren lige
+  // har publiceret nye redirects. revalidateTag kaldes først EFTER sync,
+  // så force-cache fra default-klienten ville give os gammel data.
+  const client = createTenantClient(tenant, {
+    fetchOptions: { cache: "no-store" },
+  });
 
   const repository = await client.getRepository();
   const languages = repository.languages ?? [];
