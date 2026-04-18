@@ -23,7 +23,7 @@ const config = {
 
 // ==========================================
 
-// 2. Vi bygger Cloudflares "Bulk"-format og auto-genererer WWW
+// 2. Vi bygger Cloudflares "Bulk"-format
 const bulkData = [
   {
     key: testDomain,
@@ -32,11 +32,6 @@ const bulkData = [
   },
   {
     key: customDomain,
-    value: JSON.stringify(config),
-    metadata: { repo: config.repo },
-  },
-  {
-    key: `www.${customDomain}`, // <- Her tilføjer scriptet selv www automatisk!
     value: JSON.stringify(config),
     metadata: { repo: config.repo },
   },

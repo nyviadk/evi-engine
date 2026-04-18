@@ -1,4 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { normalize_hostname } from "./normalize";
 
 export interface TenantConfig {
   repo: string;
@@ -49,12 +50,13 @@ async function get_kv_binding(): Promise<KVNamespace | null> {
 export async function get_tenant_config(
   hostname: string,
 ): Promise<TenantConfig | null> {
+  const key = normalize_hostname(hostname);
   const kv = await get_kv_binding();
   if (kv) {
-    return kv.get<TenantConfig>(hostname, "json");
+    return kv.get<TenantConfig>(key, "json");
   }
   // Dev fallback
-  return mock_kv_data[hostname] ?? null;
+  return mock_kv_data[key] ?? null;
 }
 
 export async function put_tenant_config(
@@ -67,8 +69,9 @@ export async function put_tenant_config(
       "TENANTS KV binding missing — put_tenant_config virker kun i Worker/preview.",
     );
   }
+  const key = normalize_hostname(hostname);
   const metadata: TenantMetadata = { repo: config.repo };
-  await kv.put(hostname, JSON.stringify(config), { metadata });
+  await kv.put(key, JSON.stringify(config), { metadata });
 }
 
 /**
