@@ -29,7 +29,16 @@ function get_browser_locale(
 // --- HOVEDLOGIK ---
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  // Browseren sender æøå URL-encoded ("/%C3%A6blekage"), men i Prismic/KV
+  // står de som læsbare tegn ("/æblekage"). Decode så lookups matcher.
+  // try/catch fordi decodeURIComponent smider ved malformet input.
+  const raw_pathname = request.nextUrl.pathname;
+  let pathname: string;
+  try {
+    pathname = decodeURIComponent(raw_pathname);
+  } catch {
+    pathname = raw_pathname;
+  }
   const hostname = request.headers.get("host") || "localhost:3000";
 
   if (hostname === "nyvia.dk" || hostname === "www.nyvia.dk") {
