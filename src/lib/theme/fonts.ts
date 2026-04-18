@@ -7,6 +7,7 @@ import {
   Rethink_Sans,
   Roboto,
   Open_Sans,
+  Lato,
 } from "next/font/google";
 
 // preload: false bruges da vi ellers risikerer at Next js sender alle fonte med alligevel
@@ -71,6 +72,13 @@ export const fontOpenSans = Open_Sans({
   display: "swap",
   preload: false,
 });
+export const fontLato = Lato({
+  weight: ["300", "400", "700", "900"],
+  subsets: ["latin"],
+  variable: "--font-lato",
+  display: "swap",
+  preload: false,
+});
 
 // Vores lookup-map, som vi bruger i layout.tsx
 export const localFontMap: Record<string, { class: string; name: string }> = {
@@ -85,4 +93,5 @@ export const localFontMap: Record<string, { class: string; name: string }> = {
   Abel: { class: fontAbel.variable, name: "var(--font-abel)" },
   Roboto: { class: fontRoboto.variable, name: "var(--font-roboto)" },
   "Open Sans": { class: fontOpenSans.variable, name: "var(--font-opensans)" },
+  Lato: { class: fontLato.variable, name: "var(--font-lato)" },
 };

@@ -94,7 +94,8 @@
             "Abel",
             "Roboto",
             "Open Sans",
-            "Inter"
+            "Inter",
+            "Lato"
           ],
           "default_value": "System standard"
         }
