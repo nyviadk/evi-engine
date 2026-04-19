@@ -1,3 +1,4 @@
+import { is_staging_domain } from "@/src/lib/seo/domains";
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
 
@@ -7,8 +8,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
   // MAGIEN: Er dette et Evi test-domæne?
-  const is_staging =
-    domain.endsWith(".web.nyvia.dk") || domain.includes("localhost");
+  const is_staging = is_staging_domain(domain);
 
   if (is_staging) {
     // Fortæl Google: BLIV VÆK!
@@ -17,7 +17,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     };
   }
 
-  // Hvis det er et ægte domæne (frisoer.dk), så giv fuld adgang
+  // Hvis det er et ægte domæne (eller officielt Nyvia-domæne), så giv fuld adgang
   return {
     rules: { userAgent: "*", allow: "/" },
     sitemap: `${protocol}://${domain}/sitemap.xml`,

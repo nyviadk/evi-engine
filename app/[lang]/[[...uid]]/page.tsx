@@ -17,6 +17,7 @@ import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
 import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
+import { is_staging_domain } from "@/src/lib/seo/domains";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -175,8 +176,7 @@ export async function generateMetadata(props: { params: Params }) {
   }
 
   // Staging-tjek
-  const is_staging =
-    domain.endsWith(".web.nyvia.dk") || domain.includes("localhost");
+  const is_staging = is_staging_domain(domain);
 
   return {
     title: fullTitle,
