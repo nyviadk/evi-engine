@@ -202,6 +202,8 @@ const gridDemoThemes: string[] = [
   "secondary-tint",
   // H. Full composition
   "light",
+  // I. 3-kolonne grid med variable blok-bredder
+  "secondary-soft",
 ];
 const gridDemoSlices: FakeSlice[] = gridDemoThemes.map((t) => ({
   primary: { theme: t },
@@ -960,6 +962,48 @@ export function EviTestBench() {
                   </EviCard>
                 ))}
               </EviAutoGrid>
+            </EviSection>
+
+            {/* ── I. 3-kolonne grid med variable blok-bredder ── */}
+            <EviSection
+              theme={g[25].theme}
+              collapsePadding={g[25].collapsePadding}
+              collapseGapY
+            >
+              <p className="col-span-12 text-sm opacity-50">
+                I. 3-kolonne grid — blokke med width=1/2, collapseGapY=true
+                (gap-y = gap-x)
+              </p>
+              {/*
+                EviSection's grid er 12-kolonne. 1 "kolonne" = col-span-4,
+                2 "kolonner" = col-span-8. Auto-flow wrapper til næste række
+                når 12 er fyldt. På mobil falder alle blokke til fuld bredde.
+              */}
+              {[
+                { width: 2, label: "Blok 1 — width=2 (2 kol)" },
+                { width: 1, label: "Blok 2 — width=1 (1 kol)" },
+                { width: 1, label: "Blok 3 — width=1 (1 kol)" },
+                { width: 2, label: "Blok 4 — width=2 (2 kol)" },
+                { width: 1, label: "Blok 5 — width=1 (1 kol)" },
+                { width: 1, label: "Blok 6 — width=1 (1 kol)" },
+                { width: 1, label: "Blok 7 — width=1 (1 kol)" },
+              ].map((block, i) => (
+                <div
+                  key={i}
+                  className={
+                    block.width === 2
+                      ? "col-span-12 md:col-span-8 rounded-evi theme-surface-neutral p-6"
+                      : "col-span-12 md:col-span-4 rounded-evi theme-surface-neutral p-6"
+                  }
+                >
+                  <p className="text-sm opacity-60 mb-2">{block.label}</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </p>
+                </div>
+              ))}
             </EviSection>
           </>
         );
