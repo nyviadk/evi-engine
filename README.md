@@ -534,20 +534,4 @@ Never committed. `.dev.vars` is `.gitignore`d.
 
 ---
 
-## Project Status
-
-### Greenfield by design
-
-- `slices/` — empty. Base design system comes first.
-- Custom hostname onboarding API — not built; hostnames added manually via KV for now.
-- Admin dashboard — not built; tenants are managed through Cloudflare + Prismic directly.
-
-### Planned
-
-- **Cloudflare for SaaS integration** — programmatic customer-domain onboarding via CF API.
-- **Resend transactional emails** — for contact-form submissions.
-- **Periodic webhook-less sync** — current known edge: changing a Prismic master-locale _without_ publishing doesn't trigger the webhook. A cron-driven sync would close that gap.
-
----
-
 **Live:** [evi.nyvia.dk](https://evi.nyvia.dk)
