@@ -229,7 +229,7 @@ export function EviTestBench() {
     <>
       {/* Floating color picker bar */}
       <div
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-6 px-4 py-3"
+        className="sm:fixed sm:top-0 sm:left-0 sm:right-0 sm:z-50 flex flex-wrap sm:items-center sm:justify-center gap-6 px-4 py-3"
         style={{ background: "rgba(0,0,0,0.85)", color: "#fff", fontSize: 13 }}
       >
         <label className="flex items-center gap-2">
@@ -998,8 +998,8 @@ export function EviTestBench() {
                 >
                   <p className="text-sm opacity-60 mb-2">{block.label}</p>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                   </p>
                 </div>
