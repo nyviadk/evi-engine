@@ -5,6 +5,7 @@ import fs from "fs";
 // 1. UDFYLD KUNDENS INFO HER
 // ==========================================
 const testDomain = "evitest.nyvia.dk"; // Interne test domæne
+// KV always stores Punycode (ift. æøå) - use punycoder.com
 const customDomain = "evi.nyvia.dk"; // Kundens domæne - ALTID UDEN WWW HER!
 
 const config = {
