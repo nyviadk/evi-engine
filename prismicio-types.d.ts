@@ -381,7 +381,18 @@ interface SettingsDocumentData {
    * - **Tab**: Generelt
    * - **Documentation**: https://prismic.io/docs/fields/boolean
    */
-  force_lang_prefix: prismic.BooleanField; /**
+  force_lang_prefix: prismic.BooleanField;
+
+  /**
+   * Standard billede (sociale medier) field in *Indstillinger*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.default_og_image
+   * - **Tab**: Generelt
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  default_og_image: prismic.ImageField<never>; /**
    * Lys farve field in *Indstillinger*
    *
    * - **Field Type**: Color
@@ -478,7 +489,8 @@ interface SettingsDocumentData {
     | "Abel"
     | "Roboto"
     | "Open Sans"
-    | "Inter",
+    | "Inter"
+    | "Lato",
     "filled"
   >;
 

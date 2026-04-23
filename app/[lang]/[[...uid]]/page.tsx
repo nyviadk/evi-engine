@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
 import { headers } from "next/headers";
 import { cache } from "react";
@@ -60,8 +60,9 @@ export default async function Page(props: { params: Params }) {
 
   // Home må kun tilgås på roden — aldrig på /home eller /<noget>/home.
   // Catcher fx /da-dk/home, gamle indekserede links, copy-paste fejl.
+  // 308 (permanent) fordi /home aldrig er en kanonisk URL i denne engine.
   if (page.uid === "home" && uid && uid.length > 0) {
-    redirect(resolve_page_url(page.id, lang, tree, tenant));
+    permanentRedirect(resolve_page_url(page.id, lang, tree, tenant));
   }
 
   // Validér at URL-stien matcher parent_page-kæden
@@ -167,13 +168,35 @@ export async function generateMetadata(props: { params: Params }) {
   const full_canonical_url = `${base_url}${canonical_path}`;
 
   // Alternate Languages (hreflang)
-  const alternate_langs: Record<string, string> = {};
+  // Kun relevant når siden reelt findes på flere sprog. En enkeltsproget
+  // tenant, eller en side der kun er publiceret på ét sprog, skal ikke
+  // have hreflang — det er støj der forvirrer Google.
+  const alt_entries: Record<string, string> = {};
   for (const alt of page.alternate_languages) {
     if (alt.uid && alt.lang) {
       const alt_path = resolve_page_url(alt.id, alt.lang, tree, tenant);
-      alternate_langs[alt.lang] = `${base_url}${alt_path}`;
+      alt_entries[alt.lang] = `${base_url}${alt_path}`;
     }
   }
+
+  let alternate_langs: Record<string, string> | undefined;
+  if (Object.keys(alt_entries).length > 0) {
+    // Inkluder den aktuelle side + alle faktiske oversættelser.
+    alternate_langs = { [lang]: full_canonical_url, ...alt_entries };
+    // x-default: peger på default-locale versionen hvis den findes.
+    // Findes den ikke (side ikke oversat til default), udelader vi x-default.
+    const x_default_url = alternate_langs[tenant.default_locale];
+    if (x_default_url) {
+      alternate_langs["x-default"] = x_default_url;
+    }
+  }
+
+  // OG image fallback: page.meta_image → settings.default_og_image → null.
+  // Hvis null, udelader vi images-arrayet helt — aldrig en tom <meta> tag.
+  const og_image_url =
+    page.data.meta_image?.url ||
+    settings?.data?.default_og_image?.url ||
+    null;
 
   // Staging-tjek
   const is_staging = is_staging_domain(domain);
@@ -185,8 +208,7 @@ export async function generateMetadata(props: { params: Params }) {
     // Canonical Tag
     alternates: {
       canonical: full_canonical_url,
-      languages:
-        Object.keys(alternate_langs).length > 0 ? alternate_langs : undefined,
+      languages: alternate_langs,
     },
 
     // SEO Robots
@@ -202,14 +224,16 @@ export async function generateMetadata(props: { params: Params }) {
       siteName: siteName,
       locale: lang,
       type: "website",
-      images: [
-        {
-          url: page.data.meta_image?.url || "",
-          width: 1200,
-          height: 630,
-          alt: fullTitle || "",
-        },
-      ],
+      ...(og_image_url && {
+        images: [
+          {
+            url: og_image_url,
+            width: 1200,
+            height: 630,
+            alt: fullTitle || "",
+          },
+        ],
+      }),
     },
 
     // Twitter Cards (X)
@@ -217,7 +241,7 @@ export async function generateMetadata(props: { params: Params }) {
       card: "summary_large_image",
       title: fullTitle,
       description: page.data.meta_description,
-      images: [page.data.meta_image?.url || ""],
+      ...(og_image_url && { images: [og_image_url] }),
     },
   };
 }

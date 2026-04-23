@@ -21,6 +21,17 @@
           "placeholder_true": "Ja",
           "default_value": false
         }
+      },
+      "default_og_image": {
+        "type": "Image",
+        "config": {
+          "label": "Standard billede (sociale medier)",
+          "constraint": {
+            "width": 2400,
+            "height": 1260
+          },
+          "thumbnails": []
+        }
       }
     },
     "Udseende og layout": {

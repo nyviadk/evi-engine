@@ -41,7 +41,17 @@ export async function middleware(request: NextRequest) {
   }
   const hostname = request.headers.get("host") || "localhost:3000";
 
-  if (hostname === "nyvia.dk" || hostname === "www.nyvia.dk") {
+  // www → apex 301. Begge værter serverer samme indhold; uden denne
+  // redirect splittes SEO-signaler mellem www.kunde.dk og kunde.dk.
+  if (hostname.startsWith("www.")) {
+    const apex = hostname.slice(4);
+    const target = new URL(request.nextUrl);
+    target.host = apex;
+    target.protocol = "https:";
+    return create_response_with_hsts(NextResponse.redirect(target, 301));
+  }
+
+  if (hostname === "nyvia.dk") {
     return NextResponse.next();
   }
 

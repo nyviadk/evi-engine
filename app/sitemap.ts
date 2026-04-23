@@ -51,21 +51,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Generér sitemap-entries med korrekte fulde stier fra sti-træet
     const entries = Array.from(grouped.values()).flatMap((translations) => {
-      const alternates: { languages: Record<string, string> } = {
-        languages: {},
-      };
-
+      // Kun udstil hreflang når siden reelt findes på flere sprog.
+      // Enkeltsproget tenant eller side kun på ét sprog → ingen alternates.
+      const languages: Record<string, string> = {};
       for (const t of translations) {
         if (t.uid) {
           const path = resolve_page_url(t.id, t.lang, tree, tenant);
-          alternates.languages[t.lang] = `${base_url}${path}`;
+          languages[t.lang] = `${base_url}${path}`;
+        }
+      }
+
+      const has_real_alternates = Object.keys(languages).length > 1;
+      if (has_real_alternates) {
+        const x_default_url = languages[tenant.default_locale];
+        if (x_default_url) {
+          languages["x-default"] = x_default_url;
         }
       }
 
       return translations.map((doc) => ({
         url: `${base_url}${resolve_page_url(doc.id, doc.lang, tree, tenant)}`,
         lastModified: new Date(doc.last_publication_date),
-        alternates,
+        ...(has_real_alternates && { alternates: { languages } }),
       }));
     });
 
