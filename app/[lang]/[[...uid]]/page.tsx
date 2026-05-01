@@ -52,9 +52,19 @@ export default async function Page(props: { params: Params }) {
   const { client, tree, tenant, settings, business } = ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
-  const page = await client
+  // Stille fallback til default-locale hvis siden ikke findes på det forespurgte
+  // sprog. Bedre end 404 når kunden har 2 sprog men kun oversat forsiden.
+  // Ingen "ikke oversat endnu"-banner — det ville selv være en oversættelse
+  // vi ikke kan vide hvilket sprog skal vises på.
+  let page = await client
     .getByUID("page", prismic_uid, { lang })
     .catch(() => null);
+
+  if (!page && lang !== tenant.default_locale) {
+    page = await client
+      .getByUID("page", prismic_uid, { lang: tenant.default_locale })
+      .catch(() => null);
+  }
 
   if (!page) return notFound();
 
@@ -132,9 +142,16 @@ export async function generateMetadata(props: { params: Params }) {
   const { client, tree, tenant, settings } = ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
-  const page = await client
+  // Samme locale-fallback som i Page() så metadata matcher det viste indhold.
+  let page = await client
     .getByUID("page", prismic_uid, { lang })
     .catch(() => null);
+
+  if (!page && lang !== tenant.default_locale) {
+    page = await client
+      .getByUID("page", prismic_uid, { lang: tenant.default_locale })
+      .catch(() => null);
+  }
 
   if (!page) return {};
   const metaTitle = page.data.meta_title;

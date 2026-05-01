@@ -1,4 +1,4 @@
-import { PrismicRichText } from "@prismicio/react";
+import { PrismicRichText, type JSXMapSerializer } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
 import {
   type LinkResolverFunction,
@@ -24,7 +24,7 @@ export function EviRichText({
 }: EviRichTextProps) {
   if (!isFilled.richText(field)) return null;
 
-  const headingOverrides: Record<string, any> = {};
+  const headingOverrides: JSXMapSerializer = {};
 
   if (isHero === true) {
     // Slice med h2-default brugt som hero → h2 bliver h1

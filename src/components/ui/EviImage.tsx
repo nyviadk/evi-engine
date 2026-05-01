@@ -59,6 +59,7 @@ export function EviImage({
             alt={field.alt ?? ""}
             className={imgClasses}
             loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
           />
         </picture>
       </div>
@@ -73,6 +74,7 @@ export function EviImage({
         className={imgClasses}
         fallbackAlt=""
         priority={priority}
+        fetchPriority={priority ? "high" : "auto"}
       />
     </div>
   );

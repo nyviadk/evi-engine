@@ -32,6 +32,45 @@
           },
           "thumbnails": []
         }
+      },
+      "favicon_light": {
+        "type": "Image",
+        "config": {
+          "label": "Favicon (lys baggrund)",
+          "constraint": {
+            "width": 512,
+            "height": 512
+          },
+          "thumbnails": []
+        }
+      },
+      "favicon_dark": {
+        "type": "Image",
+        "config": {
+          "label": "Favicon (mørk baggrund)",
+          "constraint": {
+            "width": 512,
+            "height": 512
+          },
+          "thumbnails": []
+        }
+      },
+      "timezone": {
+        "type": "Select",
+        "config": {
+          "label": "Tidszone",
+          "placeholder": "Kundens tidszone",
+          "options": [
+            "Europe/Copenhagen",
+            "Europe/Oslo",
+            "Europe/Stockholm",
+            "Europe/Helsinki",
+            "Europe/Berlin",
+            "Europe/London",
+            "UTC"
+          ],
+          "default_value": "Europe/Copenhagen"
+        }
       }
     },
     "Udseende og layout": {

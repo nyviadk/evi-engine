@@ -3,6 +3,7 @@ export const OFFICIAL_NYVIA_DOMAINS = [
   "nyvia.dk",
   "evi.nyvia.dk",
   "horizon.nyvia.dk",
+  "rise.nyvia.dk",
   "nexus.nyvia.dk",
 ];
 

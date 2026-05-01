@@ -3,7 +3,7 @@
  * Gør PRÆCIS det samme som 'serialize-javascript' pakken gør for XSS-beskyttelse,
  * men uden overhead, da JSON-LD ikke indeholder funktioner eller Regex.
  */
-export function safeJsonLdStringify(data: any): string {
+export function safeJsonLdStringify(data: unknown): string {
   return JSON.stringify(data)
     .replace(/</g, "\\u003c") // Forhindrer </script> breakout
     .replace(/>/g, "\\u003e") // Ekstra sikkerhed for HTML tags

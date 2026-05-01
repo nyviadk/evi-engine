@@ -1,7 +1,5 @@
 import { headers } from "next/headers";
 import { get_tenant_config } from "@/src/lib/kv/tenants";
-import { createTenantClient } from "@/prismicio";
-// Senere importerer vi din rigtige Evi-layout/komponent
 
 export default async function NotFound() {
   const headers_list = await headers();
@@ -10,13 +8,9 @@ export default async function NotFound() {
   // Vi griber det sprog, som dørmanden (proxy.ts) fandt ud af gæsten skulle have
   const lang = headers_list.get("x-evi-locale") || "da-dk";
 
-  const tenant = await get_tenant_config(domain);
-
-  if (tenant) {
-    const client = createTenantClient(tenant);
-    // Her kan vi hente en specifik 404-side fra Prismic, som Jens selv har skrevet!
-    // const content = await client.getByUID("page", "404", { lang }).catch(() => null);
-  }
+  // Tenant slås op så vi kan hente en dedikeret 404-side fra Prismic når den kommer.
+  // Pt. har vi ingen Prismic 404 — senere: client.getByUID("page", "404", { lang })
+  await get_tenant_config(domain);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 text-slate-900">

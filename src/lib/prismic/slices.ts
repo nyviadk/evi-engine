@@ -1,5 +1,9 @@
 export type SliceWithPrimary = {
-  primary?: Record<string, any>;
+  primary?: {
+    theme?: string;
+    backgroundSectionImage?: { url?: string | null };
+    [key: string]: unknown;
+  };
 };
 
 export interface SliceContext {

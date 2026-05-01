@@ -6,10 +6,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Temp header — replace with real <EviNavigation /> later */}
       <header></header>
 
-      <main>
-        <EviTestBench />
-        {children}
-      </main>
+      <EviTestBench />
+      {children}
 
       {/* Temp footer — replace with real <EviFooter /> later */}
       <footer></footer>

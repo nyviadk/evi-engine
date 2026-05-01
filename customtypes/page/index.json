@@ -54,6 +54,22 @@
           "thumbnails": []
         },
         "type": "Image"
+      },
+      "noindex": {
+        "type": "Boolean",
+        "config": {
+          "label": "Skjul siden fra Google (noindex)",
+          "placeholder_false": "Synlig i Google",
+          "placeholder_true": "Skjult fra Google",
+          "default_value": false
+        }
+      },
+      "canonical_override": {
+        "type": "Text",
+        "config": {
+          "label": "Canonical URL (avanceret)",
+          "placeholder": "Kun hvis siden skal pege på en anden URL i Google"
+        }
       }
     }
   }

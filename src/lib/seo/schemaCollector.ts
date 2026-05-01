@@ -7,6 +7,7 @@ import type {
   LocalBusinessLeaf,
   PersonLeaf,
   CorporationLeaf,
+  WebSiteLeaf,
 } from "schema-dts";
 import { isFilled } from "@prismicio/client";
 import type {
@@ -137,6 +138,35 @@ function buildOrganizationSchema(
   }
 }
 
+// WebSite node — fodrer Googles brand knowledge panels.
+// Ingen SearchAction (der er ingen on-site søgning i motoren).
+function buildWebSiteSchema(
+  baseUrl: string,
+  business: BusinessDocumentData | null,
+  siteName?: string | null,
+): WebSiteLeaf {
+  const name =
+    (business && isFilled.keyText(business.legal_name)
+      ? business.legal_name
+      : null) ||
+    siteName ||
+    baseUrl;
+  const alternateName =
+    business && isFilled.keyText(business.alternate_name)
+      ? business.alternate_name
+      : null;
+  return {
+    "@type": "WebSite",
+    "@id": `${baseUrl}/#website`,
+    url: baseUrl,
+    name,
+    ...(alternateName && { alternateName }),
+    ...(business && {
+      publisher: { "@id": `${baseUrl}/#organization` },
+    }),
+  };
+}
+
 // ── Main collector ──
 
 export function collectSchemaGraph(input: SchemaInput): Graph | null {
@@ -150,12 +180,17 @@ export function collectSchemaGraph(input: SchemaInput): Graph | null {
     graph.push(buildOrganizationSchema(business, baseUrl));
   }
 
-  // 2. BreadcrumbList (Auto + Kun brødkrummer)
+  // 2. WebSite (Auto-mode) — altid hvis vi overhovedet emitter graf
+  if (mode === MODE_AUTO) {
+    graph.push(buildWebSiteSchema(baseUrl, business, siteName));
+  }
+
+  // 3. BreadcrumbList (Auto + Kun brødkrummer)
   if (mode === MODE_AUTO || mode === MODE_BREADCRUMBS) {
     graph.push(buildBreadcrumbs(baseUrl, pagePath, lang, siteName));
   }
 
-  // 3. Custom JSON-LD (altid, uanset mode — hvis feltet har indhold)
+  // 4. Custom JSON-LD (altid, uanset mode — hvis feltet har indhold)
   if (isFilled.keyText(business?.custom_schema_json)) {
     try {
       const parsed: unknown = JSON.parse(business!.custom_schema_json!);

@@ -100,6 +100,17 @@ export function compute_theme_vars(colors: {
   const text_on_primary = contrast_color(primary, dark, light);
   const text_on_secondary = contrast_color(secondary, dark, light);
 
+  // Link/ink contrast — 4.5:1 threshold: vælg primary hvis den passer,
+  // ellers fald tilbage til sektionens egen text-farve.
+  const link_on_light =
+    contrast_ratio(luminance(...hex_to_rgb(primary)), luminance(...hex_to_rgb(light))) >= 4.5
+      ? primary
+      : text_on_light;
+  const link_on_dark =
+    contrast_ratio(luminance(...hex_to_rgb(primary)), luminance(...hex_to_rgb(dark))) >= 4.5
+      ? primary
+      : text_on_dark;
+
   // Soft contrast — simulate 10% of color mixed into the light background
   const light_rgb = hex_to_rgb(light);
 
@@ -177,6 +188,9 @@ export function compute_theme_vars(colors: {
     "--text-on-dark": text_on_dark,
     "--text-on-primary": text_on_primary,
     "--text-on-secondary": text_on_secondary,
+    // Link/focus-ink vars — 4.5:1 kontrast
+    "--theme-link-on-light": link_on_light,
+    "--theme-link-on-dark": link_on_dark,
     "--text-on-light-soft": text_on_light_soft,
     "--text-on-dark-soft": text_on_dark_soft,
     "--text-on-primary-soft": text_on_primary_soft,

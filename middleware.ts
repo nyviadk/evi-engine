@@ -22,7 +22,7 @@ function get_browser_locale(
   try {
     // Vi tvinger localematcher til at bruge små bogstaver for at undgå loops (f.eks. da-DK -> da-dk)
     return match(languages, locales, default_locale).toLowerCase();
-  } catch (e) {
+  } catch {
     return default_locale.toLowerCase();
   }
 }
@@ -97,11 +97,14 @@ export async function middleware(request: NextRequest) {
 
   // 2. SCENARIE: SPROGET MANGLER I URL'EN (f.eks. /kontakt)
   if (!locale_from_path) {
-    const target_locale = get_browser_locale(
-      request,
-      tenant.locales,
-      tenant.default_locale,
-    );
+    // Når vi laver et 301 til den præfiks-version, SKAL det være til
+    // tenant.default_locale — ikke browser-locale. Googlebot sender
+    // Accept-Language: en-US; hvis default er da-dk ville vi 301'e
+    // Googlebot til /en-gb/kontakt som så 404'er. Browser-locale er
+    // kun relevant for den hemmelige rewrite (hvor URL'en bevares).
+    const target_locale = tenant.force_lang_prefix
+      ? tenant.default_locale
+      : get_browser_locale(request, tenant.locales, tenant.default_locale);
 
     const new_path = `/${target_locale}${pathname === "/" ? "" : pathname}`;
     request_headers.set("x-evi-locale", target_locale);
