@@ -36,13 +36,13 @@ export function compute_slice_contexts(
 ): SliceContext[] {
   return slices.map((slice, index) => {
     const theme = slice.primary?.theme || "light";
-    const hasImage = !!slice.primary?.backgroundSectionImage?.url;
+    const hasImage = Boolean(slice.primary?.backgroundSectionImage?.url);
 
     if (index === 0) return { theme, collapsePadding: false, isHero: true };
 
     const prev = slices[index - 1];
     const prevTheme = prev.primary?.theme || "light";
-    const prevHasImage = !!prev.primary?.backgroundSectionImage?.url;
+    const prevHasImage = Boolean(prev.primary?.backgroundSectionImage?.url);
 
     // Only collapse within the same type (solid/soft/tint)
     const sameType = theme_type(theme) === theme_type(prevTheme);

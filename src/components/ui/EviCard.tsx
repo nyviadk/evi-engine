@@ -1,14 +1,14 @@
-import { Children, type ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
+import { Children } from "react";
+import { cn } from "@/src/lib/utils/cn";
 
-interface EviCardProps {
-  rows: 2 | 3 | 4 | 5 | 6;
-  children: ReactNode;
-  className?: string;
-}
+type CardRows = 2 | 3 | 4 | 5 | 6;
 
-const rowClasses: Record<2 | 3 | 4 | 5 | 6, string> = {
+export type EviCardProps = React.ComponentProps<"div"> & {
+  /** Antal subgrid-rækker. Skal matche antallet af direkte børn — tomme slots wrappes i `<div />`. */
+  rows: CardRows;
+};
+
+const rowClasses: Record<CardRows, string> = {
   2: "row-span-2",
   3: "row-span-3",
   4: "row-span-4",
@@ -16,7 +16,12 @@ const rowClasses: Record<2 | 3 | 4 | 5 | 6, string> = {
   6: "row-span-6",
 };
 
-export function EviCard({ rows, children, className }: EviCardProps) {
+export function EviCard({
+  rows,
+  className,
+  children,
+  ...props
+}: EviCardProps): React.ReactElement {
   if (process.env.NODE_ENV === "development") {
     const count = Children.count(children);
     if (count !== rows) {
@@ -29,10 +34,14 @@ export function EviCard({ rows, children, className }: EviCardProps) {
 
   return (
     <div
-      className={twMerge(
-        clsx("relative isolate grid grid-rows-subgrid gap-0", rowClasses[rows]),
+      data-slot="evi-card"
+      data-rows={rows}
+      className={cn(
+        "relative isolate grid grid-rows-subgrid gap-0",
+        rowClasses[rows],
         className,
       )}
+      {...props}
     >
       {children}
     </div>

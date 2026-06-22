@@ -1,24 +1,25 @@
-import { type ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
+import { cn } from "@/src/lib/utils/cn";
 
-interface EviSectionProps {
+export type EviSectionProps = React.ComponentProps<"section"> & {
+  /** Tema-klasse, fx "light", "dark", "primary-soft". @default "light" */
   theme?: string;
+  /** Større top/bund padding på hero-sektioner. @default false */
   hero?: boolean;
+  /** Drop top-padding når sektionen visuelt smelter sammen med den ovenfor. */
   collapsePadding?: boolean;
+  /** Matcher vertikal gap til horisontal gap — bruges af "gitter"-layouts. */
   collapseGapY?: boolean;
-  children: ReactNode;
-  className?: string;
-}
+};
 
 export function EviSection({
   theme = "light",
   hero = false,
   collapsePadding = false,
   collapseGapY = false,
-  children,
   className,
-}: EviSectionProps) {
+  children,
+  ...props
+}: EviSectionProps): React.ReactElement {
   const pb = hero ? "pb-20 md:pb-32" : "pb-16 md:pb-24";
   const pt = collapsePadding
     ? "pt-0"
@@ -32,9 +33,18 @@ export function EviSection({
   const gapY = collapseGapY ? "gap-y-4 md:gap-y-8" : "gap-y-12 md:gap-y-16";
 
   return (
-    <section className={twMerge(clsx(`theme-${theme}`, pb, pt), className)}>
+    <section
+      data-slot="evi-section"
+      data-theme={theme}
+      data-hero={hero || undefined}
+      className={cn(`theme-${theme}`, pt, pb, className)}
+      {...props}
+    >
       <div
-        className={`isolate mx-auto grid max-w-evi grid-cols-12 gap-x-4 ${gapY} px-4 md:gap-x-8 @container/section`}
+        className={cn(
+          "@container/section isolate mx-auto grid max-w-evi grid-cols-12 gap-x-4 px-4 md:gap-x-8",
+          gapY,
+        )}
       >
         {children}
       </div>

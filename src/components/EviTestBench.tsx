@@ -292,8 +292,8 @@ export function EviTestBench() {
               <p>
                 Denne tekst demonstrerer det fulde typografi-system. Brødteksten
                 bruger 16px / 1rem med en linjehøjde på 1.5 (24px rytme-enhed).
-                Her er et <a href="#">inline link med underline</a> der reagerer
-                på hover.
+                Her er et <a href="#link-demo">inline link med underline</a>{" "}
+                der reagerer på hover.
               </p>
               <h2>Heading 2 — sektion</h2>
               <p>

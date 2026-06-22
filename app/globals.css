@@ -818,10 +818,11 @@
      H. Navigation — container-query baseret mobil/desktop-skifte
 
      På smal container (mobil) er .evi-nav-panel skjult som default
-     og rulles ud som overlay når hamburger-knappen sætter [data-open].
+     og rulles ud som overlay når hamburger-knappen sætter
+     [data-state=open].
 
      På bred container (@nav >= 48rem) er panelet altid synligt og
-     vandret — [data-open] ignoreres helt. Samme DOM, ingen duplikat
+     vandret — [data-state] ignoreres helt. Samme DOM, ingen duplikat
      liste der skal skjules med display:none.
      ═══════════════════════════════════════════════════════ */
   .evi-nav-panel {
@@ -834,7 +835,7 @@
       color-mix(in oklch, currentColor 12%, transparent);
     z-index: 40;
   }
-  .evi-nav-panel[data-open] {
+  .evi-nav-panel[data-state="open"] {
     display: block;
   }
 

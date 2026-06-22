@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx prismic *)"
+      "Bash(npx prismic *)",
+      "Bash(npx eslint *)"
     ]
   }
 }

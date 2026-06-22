@@ -1,12 +1,6 @@
-import { type ComponentPropsWithoutRef, type ElementType } from "react";
-import { PrismicNextLink } from "@prismicio/next";
-import {
-  type LinkResolverFunction,
-  type LinkField,
-  isFilled,
-} from "@prismicio/client";
-import clsx from "clsx";
+import { Slot } from "@radix-ui/react-slot";
 import { ArrowRight } from "lucide-react";
+import { cn } from "@/src/lib/utils/cn";
 
 type Variant = "primary" | "secondary" | "neutral";
 type Appearance = "solid" | "outline" | "text";
@@ -18,47 +12,51 @@ const iconSizes: Record<Size, number> = {
   lg: 24,
 };
 
-// ── Link button (renders <a> via PrismicNextLink) ──
-
-type LinkProps = {
-  field: LinkField;
+export type EviButtonProps = React.ComponentProps<"button"> & {
+  /** Visuel rolle: primary, secondary, eller neutral. @default "primary" */
   variant?: Variant;
+  /** Fyld-stil: solid, outline, eller text. @default "solid" */
   appearance?: Appearance;
+  /** Knappens størrelse. @default "md" */
   size?: Size;
+  /** Vis pil-ikon der animerer ved hover (kun når asChild=false). @default false */
   arrow?: boolean;
-  isParentLink?: boolean;
-  className?: string;
-  children?: React.ReactNode;
-  linkResolver: LinkResolverFunction;
+  /**
+   * Render det første child som rod-elementet i stedet for `<button>`, og
+   * komponer button-stylingen + alle props/handlers på det. Brug fx til at
+   * style et `<PrismicNextLink>` som en knap uden at duplikere markup:
+   *
+   * @example
+   * <EviButton asChild variant="primary">
+   *   <PrismicNextLink field={cta_link}>Læs mere</PrismicNextLink>
+   * </EviButton>
+   *
+   * Når asChild=true er `arrow`-prop'en uden effekt; consumer komponerer
+   * selv evt. ikon ind i sit child-element.
+   *
+   * @default false
+   */
+  asChild?: boolean;
 };
 
-export function EviButtonLink({
+export function EviButton({
   variant = "primary",
   appearance = "solid",
   size = "md",
   arrow = false,
-  isParentLink = false,
+  asChild = false,
   className,
   children,
-  field,
-  linkResolver,
-}: LinkProps) {
-  if (!isFilled.link(field)) return null;
+  ...props
+}: EviButtonProps): React.ReactElement {
+  const Comp = asChild ? Slot : "button";
 
-  return (
-    <PrismicNextLink
-      field={field}
-      linkResolver={linkResolver}
-      className={clsx(
-        "btn",
-        `btn-${size}`,
-        `btn-${variant}-${appearance}`,
-        arrow && "btn-arrow",
-        isParentLink &&
-          "before:absolute before:inset-0 before:z-10 before:content-['']",
-        className,
-      )}
-    >
+  // Slot kræver præcis ét direkte child og merger props på det.
+  // Når vi selv render <button>, wrapper vi i vores standard text+icon layout.
+  const content = asChild ? (
+    children
+  ) : (
+    <>
       <span className="trim-text">{children}</span>
       {arrow && (
         <ArrowRight
@@ -66,36 +64,16 @@ export function EviButtonLink({
           className="btn-arrow-icon shrink-0"
         />
       )}
-    </PrismicNextLink>
+    </>
   );
-}
 
-// ── Native button (renders <button> or custom element) ──
-
-type ButtonProps<T extends ElementType = "button"> =
-  ComponentPropsWithoutRef<T> & {
-    as?: T;
-    variant?: Variant;
-    appearance?: Appearance;
-    size?: Size;
-    arrow?: boolean;
-    className?: string;
-  };
-
-export function EviButton<T extends ElementType = "button">({
-  as,
-  variant = "primary",
-  appearance = "solid",
-  size = "md",
-  arrow = false,
-  className,
-  children,
-  ...props
-}: ButtonProps<T>) {
-  const Tag = as || "button";
   return (
-    <Tag
-      className={clsx(
+    <Comp
+      data-slot="evi-button"
+      data-variant={variant}
+      data-appearance={appearance}
+      data-size={size}
+      className={cn(
         "btn",
         `btn-${size}`,
         `btn-${variant}-${appearance}`,
@@ -104,13 +82,7 @@ export function EviButton<T extends ElementType = "button">({
       )}
       {...props}
     >
-      <span className="trim-text">{children}</span>
-      {arrow && (
-        <ArrowRight
-          size={iconSizes[size]}
-          className="btn-arrow-icon shrink-0"
-        />
-      )}
-    </Tag>
+      {content}
+    </Comp>
   );
 }

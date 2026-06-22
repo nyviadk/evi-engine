@@ -1,19 +1,23 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
-import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
+import { cn } from "@/src/lib/utils/cn";
 
 type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
 
-interface EviImageProps {
+export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
+  /** Prismic image field. Komponenten rendrer ingenting hvis feltet er tomt. */
   field: ImageField;
+  /** Separat image til mobil (art direction via <picture>). */
   mobileField?: ImageField;
+  /** Aspect ratio på containeren. @default "auto" */
   aspectRatio?: AspectRatio;
+  /** Soft baggrund + padding rundt om billedet. @default true */
   withBackground?: boolean;
+  /** LCP-hero: loading="eager" + fetchPriority="high". @default false */
   priority?: boolean;
-  className?: string;
+  /** Klasse på selve <img> / <PrismicNextImage>. */
   imageClassName?: string;
-}
+};
 
 const aspectClasses: Record<AspectRatio, string> = {
   landscape: "aspect-4/3",
@@ -31,27 +35,23 @@ export function EviImage({
   priority = false,
   className,
   imageClassName,
-}: EviImageProps) {
+  ...props
+}: EviImageProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
 
-  const containerClasses = twMerge(
-    clsx(
-      "relative w-full overflow-hidden rounded-evi",
-      aspectClasses[aspectRatio],
-      withBackground && "theme-surface-neutral p-6 md:p-8",
-    ),
+  const containerClasses = cn(
+    "relative w-full overflow-hidden rounded-evi",
+    aspectClasses[aspectRatio],
+    withBackground && "theme-surface-neutral p-6 md:p-8",
     className,
   );
 
-  const imgClasses = twMerge(
-    clsx("w-full h-full object-contain"),
-    imageClassName,
-  );
+  const imgClasses = cn("size-full object-contain", imageClassName);
 
   // Hero art direction: separate desktop/mobile images via <picture>
   if (isFilled.image(mobileField)) {
     return (
-      <div className={containerClasses}>
+      <div data-slot="evi-image" className={containerClasses} {...props}>
         <picture>
           <source media="(max-width: 768px)" srcSet={mobileField.url ?? ""} />
           <img
@@ -68,7 +68,7 @@ export function EviImage({
 
   // Standard: PrismicNextImage for Next.js optimering
   return (
-    <div className={containerClasses}>
+    <div data-slot="evi-image" className={containerClasses} {...props}>
       <PrismicNextImage
         field={field}
         className={imgClasses}

@@ -58,7 +58,7 @@ function mix_rgb(
 }
 
 function rgb_to_hex(r: number, g: number, b: number): string {
-  return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
+  return `#${[r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
 }
 
 // Compute safe button colors for a given section background.
@@ -179,7 +179,9 @@ export function compute_theme_vars(colors: {
     text_on_secondary,
   );
 
-  return {
+  // React.CSSProperties tillader ikke vilkårlige --custom-properties direkte —
+  // vi udvider med en Record over CSS-var-keys.
+  const vars: React.CSSProperties & Record<`--${string}`, string> = {
     "--color-light": light,
     "--color-dark": dark,
     "--color-primary": primary,
@@ -222,5 +224,6 @@ export function compute_theme_vars(colors: {
     "--btn-secondary-ink-on-dark": sec_on_dark.ink,
     "--btn-secondary-ink-on-primary": sec_on_primary.ink,
     "--btn-secondary-ink-on-secondary": sec_on_secondary.ink,
-  } as React.CSSProperties;
+  };
+  return vars;
 }

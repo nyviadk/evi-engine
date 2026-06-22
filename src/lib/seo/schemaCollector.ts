@@ -191,9 +191,10 @@ export function collectSchemaGraph(input: SchemaInput): Graph | null {
   }
 
   // 4. Custom JSON-LD (altid, uanset mode — hvis feltet har indhold)
-  if (isFilled.keyText(business?.custom_schema_json)) {
+  const custom_schema_json = business?.custom_schema_json;
+  if (isFilled.keyText(custom_schema_json)) {
     try {
-      const parsed: unknown = JSON.parse(business!.custom_schema_json!);
+      const parsed: unknown = JSON.parse(custom_schema_json);
       // Custom JSON er power-user input — vi stoler på strukturen
       if (Array.isArray(parsed)) {
         for (const item of parsed) graph.push(item as Thing);

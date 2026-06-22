@@ -81,14 +81,15 @@ export default async function RootLayout({
     font_select: settings?.data?.font_select as string,
   });
 
-  // Byg det endelige style-objekt, der skydes ind på <body>
-  const themeStyle = {
+  // Byg det endelige style-objekt, der skydes ind på <body>.
+  // React.CSSProperties tillader ikke vilkårlige --custom-properties direkte.
+  const themeStyle: React.CSSProperties & Record<`--${string}`, string> = {
     ...computedColors,
     "--evi-max-width": WIDTH_MAP[userWidthChoice] || "1280px",
     "--radius-evi": RADIUS_MAP[userRadiusChoice] || "0.5rem",
     "--evi-heading-font": fonts.headingFont,
     "--evi-body-font": fonts.bodyFont,
-  } as React.CSSProperties;
+  };
 
   return (
     <html

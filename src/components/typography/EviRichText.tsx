@@ -5,13 +5,21 @@ import {
   type RichTextField,
   isFilled,
 } from "@prismicio/client";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/src/lib/utils/cn";
 
-type EviRichTextProps = {
+export type EviRichTextProps = Omit<React.ComponentProps<"div">, "children"> & {
+  /** Prismic rich-text field. Komponenten rendrer ingenting hvis feltet er tomt. */
   field: RichTextField | null | undefined;
+  /** Bruges til at resolve interne dokument-links. */
   linkResolver: LinkResolverFunction;
+  /** Drop `<div class="evi-prose">` wrapper — fx når en parent (EviHeadingGroup) allerede har den. @default false */
   bare?: boolean;
-  className?: string;
+  /**
+   * Heading-niveau-shift:
+   * - `true` (hero brugt med h2-default): h2 → h1
+   * - `false` (alm. slice med h1-default): h1 → h2
+   * - `undefined`: ingen ændring
+   */
   isHero?: boolean;
 };
 
@@ -21,7 +29,8 @@ export function EviRichText({
   bare = false,
   className,
   isHero,
-}: EviRichTextProps) {
+  ...props
+}: EviRichTextProps): React.ReactElement | null {
   if (!isFilled.richText(field)) return null;
 
   const headingOverrides: JSXMapSerializer = {};
@@ -55,7 +64,11 @@ export function EviRichText({
   if (bare) return content;
 
   return (
-    <div className={twMerge("evi-prose", className)}>
+    <div
+      data-slot="evi-rich-text"
+      className={cn("evi-prose", className)}
+      {...props}
+    >
       {content}
     </div>
   );

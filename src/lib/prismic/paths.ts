@@ -28,7 +28,8 @@ export async function build_page_tree(
   const cache = new Map<string, string[]>();
 
   function resolve(id: string): string[] {
-    if (cache.has(id)) return cache.get(id)!;
+    const cached = cache.get(id);
+    if (cached) return cached;
 
     const doc = by_id.get(id);
     if (!doc || !doc.uid) return [];
