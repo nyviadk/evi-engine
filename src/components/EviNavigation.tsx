@@ -21,6 +21,12 @@ export async function EviNavigation() {
       ? settings?.data?.site_name
       : null) || hostname;
 
+  // Default: bevar originalt sitenavn (translate="no") — beskytter brand
+  // mod at fx Google Translate forvrænger det. Tenant kan slå fra i Prismic
+  // hvis brandet faktisk SKAL oversættes på tværs af sprog.
+  const allow_brand_translation = settings?.data?.translate_brand === true;
+  const brand_translate_attr = allow_brand_translation ? undefined : "no";
+
   const links = navigation?.data?.links ?? [];
 
   return (
@@ -28,6 +34,7 @@ export async function EviNavigation() {
       <div className="mx-auto flex max-w-evi items-center justify-between gap-4 px-4 py-3">
         <a
           href={home_href}
+          translate={brand_translate_attr}
           className="evi-nav-brand font-heading text-lg font-semibold text-current hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 rounded-evi"
         >
           {brand}

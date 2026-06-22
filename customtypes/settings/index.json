@@ -69,6 +69,14 @@
             "UTC"
           ]
         }
+      },
+      "translate_brand": {
+        "type": "Boolean",
+        "config": {
+          "label": "Tillad oversættelse af sitenavn (fx Google Translate)",
+          "placeholder_true": "Tillad oversættelse",
+          "placeholder_false": "Bevar originalt navn"
+        }
       }
     },
     "Udseende og layout": {
@@ -153,6 +161,19 @@
         "config": {
           "label": "Avanceret skrifttype (Bunny Fonts)",
           "placeholder": "Navn fra fonts.bunny.net (f.eks. \"Playfair Display\"). Dette felt overstyrer valget ovenfor."
+        }
+      },
+      "color_scheme": {
+        "type": "Select",
+        "config": {
+          "label": "Browser-tema (scrollbars + formularer)",
+          "placeholder": "Hvilket tema browseren tilpasser sine egne kontroller til",
+          "default_value": "Lys",
+          "options": [
+            "Lys",
+            "Mørk",
+            "Lys & mørk (auto)"
+          ]
         }
       }
     },

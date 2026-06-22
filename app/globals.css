@@ -567,7 +567,12 @@
     cursor: pointer;
     user-select: none;
     border: none;
-    transition: all 200ms ease-out;
+    /* touch-action: manipulation fjerner 300ms double-tap zoom-delay på touch. */
+    touch-action: manipulation;
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out,
+      opacity 200ms ease-out;
   }
 
   .btn:focus-visible {
@@ -834,6 +839,9 @@
     border-block-start: 1px solid
       color-mix(in oklch, currentColor 12%, transparent);
     z-index: 40;
+    /* Forhindrer at scroll bobler til document når listen rammer sin grænse.
+       Især vigtigt på iOS/Android hvor body ellers ruller med. */
+    overscroll-behavior: contain;
   }
   .evi-nav-panel[data-state="open"] {
     display: block;

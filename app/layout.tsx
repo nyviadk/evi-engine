@@ -81,6 +81,16 @@ export default async function RootLayout({
     font_select: settings?.data?.font_select as string,
   });
 
+  // Browser-tema: styrer scrollbars + native form-kontroller (select, date-picker).
+  // Tenant kan vælge "Lys" | "Mørk" | "Lys & mørk (auto)" i Prismic; default "Lys".
+  const colorSchemeChoice = settings?.data?.color_scheme || "Lys";
+  const colorScheme =
+    colorSchemeChoice === "Mørk"
+      ? "dark"
+      : colorSchemeChoice === "Lys & mørk (auto)"
+        ? "light dark"
+        : "light";
+
   // Byg det endelige style-objekt, der skydes ind på <body>.
   // React.CSSProperties tillader ikke vilkårlige --custom-properties direkte.
   const themeStyle: React.CSSProperties & Record<`--${string}`, string> = {
@@ -89,6 +99,7 @@ export default async function RootLayout({
     "--radius-evi": RADIUS_MAP[userRadiusChoice] || "0.5rem",
     "--evi-heading-font": fonts.headingFont,
     "--evi-body-font": fonts.bodyFont,
+    colorScheme,
   };
 
   return (

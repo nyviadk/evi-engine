@@ -432,7 +432,18 @@ interface SettingsDocumentData {
 	 * - **Tab**: Generelt
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	timezone: prismic.SelectField<"Europe/Copenhagen" | "Europe/Oslo" | "Europe/Stockholm" | "Europe/Helsinki" | "Europe/Berlin" | "Europe/London" | "UTC", "filled">;/**
+	timezone: prismic.SelectField<"Europe/Copenhagen" | "Europe/Oslo" | "Europe/Stockholm" | "Europe/Helsinki" | "Europe/Berlin" | "Europe/London" | "UTC", "filled">;
+	
+	/**
+	 * Tillad oversættelse af sitenavn (fx Google Translate) field in *Indstillinger*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.translate_brand
+	 * - **Tab**: Generelt
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	translate_brand: prismic.BooleanField;/**
 	 * Lys farve field in *Indstillinger*
 	 *
 	 * - **Field Type**: Color
@@ -519,7 +530,19 @@ interface SettingsDocumentData {
 	 * - **Tab**: Udseende og layout
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	custom_font_input: prismic.KeyTextField;/**
+	custom_font_input: prismic.KeyTextField;
+	
+	/**
+	 * Browser-tema (scrollbars + formularer) field in *Indstillinger*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Hvilket tema browseren tilpasser sine egne kontroller til
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: settings.color_scheme
+	 * - **Tab**: Udseende og layout
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	color_scheme: prismic.SelectField<"Lys" | "Mørk" | "Lys & mørk (auto)", "filled">;/**
 	 * Viderestillinger field in *Indstillinger*
 	 *
 	 * - **Field Type**: Group

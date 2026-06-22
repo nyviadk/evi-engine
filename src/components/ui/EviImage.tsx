@@ -66,6 +66,11 @@ export function EviImage({
 
   // Hero art direction: separate desktop/mobile images via <picture>
   if (isFilled.image(mobileField)) {
+    // width/height fra Prismic forhindrer Cumulative Layout Shift mens
+    // billedet loader. PrismicNextImage gør det automatisk; vores manuelle
+    // <img> skal hente det fra field.dimensions.
+    const width = field.dimensions?.width ?? undefined;
+    const height = field.dimensions?.height ?? undefined;
     return (
       <div
         data-slot="evi-image"
@@ -78,6 +83,8 @@ export function EviImage({
           <img
             src={field.url ?? ""}
             alt={field.alt ?? ""}
+            width={width}
+            height={height}
             className={imgClasses}
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : "auto"}
