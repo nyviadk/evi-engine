@@ -1,22 +1,16 @@
 import { MetadataRoute } from "next";
-import { headers } from "next/headers";
-import { get_tenant_config } from "@/src/lib/kv/tenants";
-import { createTenantClient } from "@/prismicio";
-import { build_page_tree, resolve_page_url } from "@/src/lib/prismic/paths";
+import { get_evi_context } from "@/src/lib/prismic/context";
+import { resolve_page_url } from "@/src/lib/prismic/paths";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const headers_list = await headers();
-  const domain = headers_list.get("host") || "localhost:3000";
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const base_url = `${protocol}://${domain}`;
+  const ctx = await get_evi_context();
+  if (!ctx) return [];
 
-  const tenant = await get_tenant_config(domain);
-  if (!tenant) return [];
+  const { client, tree, tenant, hostname } = ctx;
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const base_url = `${protocol}://${hostname}`;
 
   try {
-    const client = createTenantClient(tenant);
-    const tree = await build_page_tree(client);
-
     const pages = await client.getAllByType("page", {
       lang: "*",
       fetch: [

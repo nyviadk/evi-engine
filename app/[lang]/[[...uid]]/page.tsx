@@ -1,18 +1,11 @@
 import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
-import { headers } from "next/headers";
-import { cache } from "react";
 
 export const dynamic = "force-dynamic";
 
-import { createTenantClient } from "@/prismicio";
 import { components } from "@/slices";
-import { get_tenant_config } from "@/src/lib/kv/tenants";
-import {
-  build_page_tree,
-  resolve_page_url,
-  create_link_resolver,
-} from "@/src/lib/prismic/paths";
+import { resolve_page_url } from "@/src/lib/prismic/paths";
+import { get_evi_context } from "@/src/lib/prismic/context";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
@@ -21,35 +14,14 @@ import { is_staging_domain } from "@/src/lib/seo/domains";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
-/**
- * React cache() deduplikerer kald inden for samme request.
- * Både Page() og generateMetadata() kalder dette — data hentes kun én gang.
- */
-const get_evi_context = cache(async (domain: string) => {
-  const tenant = await get_tenant_config(domain);
-  if (!tenant) return null;
-  const client = createTenantClient(tenant);
-  const tree = await build_page_tree(client);
-  const [settings, business] = await Promise.all([
-    client
-      .getSingle("settings", { lang: tenant.default_locale })
-      .catch(() => null),
-    client
-      .getSingle("business", { lang: tenant.default_locale })
-      .catch(() => null),
-  ]);
-  return { tenant, client, tree, settings, business };
-});
-
 export default async function Page(props: { params: Params }) {
   const { lang, uid } = await props.params;
-  const headers_list = await headers();
-  const domain = headers_list.get("host") || "localhost:3000";
 
-  const ctx = await get_evi_context(domain);
+  const ctx = await get_evi_context();
   if (!ctx) return notFound();
 
-  const { client, tree, tenant, settings, business } = ctx;
+  const { client, tree, tenant, settings, business, link_resolver, hostname } =
+    ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
   // Stille fallback til default-locale hvis siden ikke findes på det forespurgte
@@ -85,7 +57,6 @@ export default async function Page(props: { params: Params }) {
     redirect(resolve_page_url(page.id, lang, tree, tenant));
   }
 
-  const linkResolver = create_link_resolver(tree, tenant);
   const colors = {
     light: settings?.data?.color_light || DEFAULTS_COLORS.color_light,
     dark: settings?.data?.color_dark || DEFAULTS_COLORS.color_dark,
@@ -97,7 +68,7 @@ export default async function Page(props: { params: Params }) {
 
   // JSON-LD Schema
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const baseUrl = `${protocol}://${domain}`;
+  const baseUrl = `${protocol}://${hostname}`;
   const pagePath = resolve_page_url(page.id, lang, tree, tenant);
 
   const schemaGraph = collectSchemaGraph({
@@ -122,7 +93,7 @@ export default async function Page(props: { params: Params }) {
       <SliceZone
         slices={page.data.slices}
         components={components}
-        context={{ linkResolver, sliceContexts }}
+        context={{ linkResolver: link_resolver, sliceContexts }}
       />
     </>
   );
@@ -130,16 +101,13 @@ export default async function Page(props: { params: Params }) {
 
 export async function generateMetadata(props: { params: Params }) {
   const { lang, uid } = await props.params;
-  const headers_list = await headers();
-  const domain = headers_list.get("host") || "localhost:3000";
 
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const base_url = `${protocol}://${domain}`;
-
-  const ctx = await get_evi_context(domain);
+  const ctx = await get_evi_context();
   if (!ctx) return {};
 
-  const { client, tree, tenant, settings } = ctx;
+  const { client, tree, tenant, settings, hostname } = ctx;
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const base_url = `${protocol}://${hostname}`;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
   // Samme locale-fallback som i Page() så metadata matcher det viste indhold.
@@ -216,7 +184,7 @@ export async function generateMetadata(props: { params: Params }) {
     null;
 
   // Staging-tjek
-  const is_staging = is_staging_domain(domain);
+  const is_staging = is_staging_domain(hostname);
 
   return {
     title: fullTitle,

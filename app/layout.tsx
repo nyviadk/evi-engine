@@ -1,25 +1,13 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
-import { cache } from "react";
 
 export const dynamic = "force-dynamic";
 
-import { get_tenant_config } from "@/src/lib/kv/tenants";
-import { createTenantClient } from "@/prismicio";
 import { compute_theme_vars, DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { WIDTH_MAP } from "@/src/lib/theme/width";
 import { RADIUS_MAP } from "@/src/lib/theme/radius";
 import { resolveFonts } from "@/src/lib/theme/fontResolver";
-
-const get_evi_settings = cache(async (hostname: string) => {
-  const tenant = await get_tenant_config(hostname);
-  if (!tenant) return null;
-  const client = createTenantClient(tenant);
-  return client
-    .getSingle("settings", { lang: tenant.default_locale })
-    .catch(() => null);
-});
+import { get_evi_context } from "@/src/lib/prismic/context";
 
 // Favicon-felter der endnu ikke er med i prismicio-types.d.ts (auto-gen).
 // Typerne regenereres af Slice Machine på næste dev/build.
@@ -29,13 +17,11 @@ type SettingsWithIcons = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const h = await headers();
-  const hostname = h.get("host") || "localhost:3000";
-  const settings = await get_evi_settings(hostname);
-  const d = settings?.data as (typeof settings extends null
-    ? never
-    : NonNullable<typeof settings>["data"]) &
-    SettingsWithIcons;
+  const ctx = await get_evi_context();
+  const d = ctx?.settings?.data as
+    | (NonNullable<NonNullable<typeof ctx>["settings"]>["data"] &
+        SettingsWithIcons)
+    | undefined;
   const light = d?.favicon_light?.url || null;
   const dark = d?.favicon_dark?.url || null;
 
@@ -59,12 +45,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export async function generateViewport(): Promise<Viewport> {
-  const h = await headers();
-  const hostname = h.get("host") || "localhost:3000";
-  const settings = await get_evi_settings(hostname);
+  const ctx = await get_evi_context();
   return {
     themeColor:
-      (settings?.data?.color_primary as string | null | undefined) ||
+      (ctx?.settings?.data?.color_primary as string | null | undefined) ||
       DEFAULTS_COLORS.color_primary,
     width: "device-width",
     initialScale: 1,
@@ -76,11 +60,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const h = await headers();
-  const lang = h.get("x-evi-locale") || "da-dk";
-  const hostname = h.get("host") || "localhost:3000";
-
-  const settings = await get_evi_settings(hostname);
+  const ctx = await get_evi_context();
+  const settings = ctx?.settings;
+  const lang = ctx?.lang || "da-dk";
 
   // Udregn farverne (din nuværende motor)
   const computedColors = compute_theme_vars({

@@ -1,51 +1,14 @@
-import { headers } from "next/headers";
-import { cache } from "react";
 import { PrismicNextLink } from "@prismicio/next";
 import { isFilled } from "@prismicio/client";
 
-import { get_tenant_config } from "@/src/lib/kv/tenants";
-import { createTenantClient } from "@/prismicio";
-import { build_page_tree, create_link_resolver } from "@/src/lib/prismic/paths";
+import { get_evi_context } from "@/src/lib/prismic/context";
 import { EviNavigationDisclosure } from "@/src/components/EviNavigationDisclosure";
 
-const get_nav_context = cache(async (hostname: string, lang: string) => {
-  const tenant = await get_tenant_config(hostname);
-  if (!tenant) return null;
-
-  const client = createTenantClient(tenant);
-
-  // Hent nav-dokumentet på det aktuelle sprog, fald stille tilbage til
-  // default_locale hvis det ikke er oversat. Page-træet bruges til at
-  // resolve interne dokument-links til faktiske URL'er.
-  const [tree, nav_current, settings] = await Promise.all([
-    build_page_tree(client),
-    client.getSingle("navigation", { lang }).catch(() => null),
-    client
-      .getSingle("settings", { lang: tenant.default_locale })
-      .catch(() => null),
-  ]);
-
-  let nav = nav_current;
-  if (!nav && lang !== tenant.default_locale) {
-    nav = await client
-      .getSingle("navigation", { lang: tenant.default_locale })
-      .catch(() => null);
-  }
-
-  return { tenant, tree, nav, settings };
-});
-
 export async function EviNavigation() {
-  const h = await headers();
-  const hostname = h.get("host") || "localhost:3000";
-  const lang = h.get("x-evi-locale") || "da-dk";
-
-  const ctx = await get_nav_context(hostname, lang);
+  const ctx = await get_evi_context();
   if (!ctx) return null;
 
-  const { tenant, tree, nav, settings } = ctx;
-
-  const link_resolver = create_link_resolver(tree, tenant);
+  const { tenant, lang, link_resolver, settings, navigation, hostname } = ctx;
 
   // Home-URL respekterer force_lang_prefix og default-locale uden prefix.
   const home_href =
@@ -58,7 +21,7 @@ export async function EviNavigation() {
       ? settings?.data?.site_name
       : null) || hostname;
 
-  const links = nav?.data?.links ?? [];
+  const links = navigation?.data?.links ?? [];
 
   return (
     <header className="evi-nav theme-light @container/nav relative border-b border-current/10">
