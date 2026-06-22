@@ -36,13 +36,12 @@ export function EviHeadingGroup({
       className={cn("evi-prose col-span-12 max-w-prose", className)}
       {...props}
     >
-      <EviRichText
+      <EviRichText.Raw
         field={title}
         linkResolver={linkResolver}
-        bare
         isHero={isHero}
       />
-      <EviRichText field={description} linkResolver={linkResolver} bare />
+      <EviRichText.Raw field={description} linkResolver={linkResolver} />
     </hgroup>
   );
 }

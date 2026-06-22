@@ -1,57 +1,51 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { use, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
+import {
+  EviDisclosure,
+  EviDisclosureContext,
+} from "@/src/components/ui/EviDisclosure";
 
 /**
- * Klient-ø der KUN holder hamburger-knappen og open/closed state.
+ * Mobil hamburger-trigger + nav-panel.
  *
- * Selve link-listen rendres server-side og sendes ind som `children`.
- * Sådan undgår vi at bloate klient-bundlen med Prismic data, link-resolver
- * og hele listen — kun selve toggle-logikken er klient-kode.
+ * Tynd orchestration oven på EviDisclosure-primitiven: tilføjer bare det
+ * navigation-specifikke (icon-swap, sr-only label, panel-styling). Selve
+ * open/closed-state, aria-wiring og context-eksponering håndteres af
+ * EviDisclosure.
  *
  * Container queries i Tailwind (@3xl/nav) bestemmer om navigationen vises
- * som hamburger (mobil, smal container) eller inline (desktop, bred container).
- * På desktop ignoreres `data-state` helt — CSS tvinger listen synlig.
- *
- * `data-state="open" | "closed"` følger Radix-konventionen så fremtidige
- * primitiver kan dele samme selector-mønster.
+ * som hamburger (mobil, smal container) eller inline (desktop, bred
+ * container). På desktop ignoreres [data-state] helt — CSS tvinger
+ * listen synlig via container-query reglerne i globals.css.
  */
+
+/** Læser åben/lukket fra context og rendrer det rigtige hamburger-ikon. */
+function HamburgerIcon(): React.ReactElement {
+  const ctx = use(EviDisclosureContext);
+  const open = ctx?.state.open ?? false;
+  return open ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />;
+}
+
 export type EviNavigationDisclosureProps = {
   children: ReactNode;
-  panelId?: string;
   toggleLabel?: string;
 };
 
 export function EviNavigationDisclosure({
   children,
-  panelId = "evi-nav-panel",
   toggleLabel = "Menu",
 }: EviNavigationDisclosureProps): React.ReactElement {
-  const [open, setOpen] = useState(false);
-  const state = open ? "open" : "closed";
-
   return (
-    <>
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        data-state={state}
-        onClick={() => setOpen((o) => !o)}
-        className="@3xl/nav:hidden inline-flex cursor-pointer items-center justify-center rounded-evi p-2 text-current focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
-        {open ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />}
+    <EviDisclosure.Provider>
+      <EviDisclosure.Trigger className="@3xl/nav:hidden inline-flex cursor-pointer items-center justify-center rounded-evi p-2 text-current focus-visible:outline-2 focus-visible:outline-offset-2">
+        <HamburgerIcon />
         <span className="sr-only">{toggleLabel}</span>
-      </button>
-      <div
-        id={panelId}
-        data-slot="evi-nav-panel"
-        data-state={state}
-        className="evi-nav-panel"
-      >
+      </EviDisclosure.Trigger>
+      <EviDisclosure.Panel className="evi-nav-panel">
         {children}
-      </div>
-    </>
+      </EviDisclosure.Panel>
+    </EviDisclosure.Provider>
   );
 }

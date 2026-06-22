@@ -4,18 +4,29 @@ import { cn } from "@/src/lib/utils/cn";
 
 type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
 
+/**
+ * Visuel ramme:
+ * - `framed`: soft baggrund + padding rundt om billedet.
+ * - `plain`: ingen baggrund, ingen padding — billedet fylder containeren.
+ *
+ * Eksplicit variant fremfor booleans (jf. vercel-composition-patterns):
+ * fremtidige visuelle stilarter ("bordered", "shadow", "card") tilføjes
+ * her uden at sprænge prop-API'et.
+ */
+type ImageVariant = "framed" | "plain";
+
 export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
   /** Prismic image field. Komponenten rendrer ingenting hvis feltet er tomt. */
   field: ImageField;
-  /** Separat image til mobil (art direction via <picture>). */
+  /** Separat image til mobil (art direction via `<picture>`). */
   mobileField?: ImageField;
   /** Aspect ratio på containeren. @default "auto" */
   aspectRatio?: AspectRatio;
-  /** Soft baggrund + padding rundt om billedet. @default true */
-  withBackground?: boolean;
+  /** Visuel ramme — se `ImageVariant`. @default "framed" */
+  variant?: ImageVariant;
   /** LCP-hero: loading="eager" + fetchPriority="high". @default false */
   priority?: boolean;
-  /** Klasse på selve <img> / <PrismicNextImage>. */
+  /** Klasse på selve `<img>` / `<PrismicNextImage>`. */
   imageClassName?: string;
 };
 
@@ -27,11 +38,16 @@ const aspectClasses: Record<AspectRatio, string> = {
   auto: "aspect-auto",
 };
 
+const variantClasses: Record<ImageVariant, string> = {
+  framed: "theme-surface-neutral p-6 md:p-8",
+  plain: "",
+};
+
 export function EviImage({
   field,
   mobileField,
   aspectRatio = "auto",
-  withBackground = true,
+  variant = "framed",
   priority = false,
   className,
   imageClassName,
@@ -42,7 +58,7 @@ export function EviImage({
   const containerClasses = cn(
     "relative w-full overflow-hidden rounded-evi",
     aspectClasses[aspectRatio],
-    withBackground && "theme-surface-neutral p-6 md:p-8",
+    variantClasses[variant],
     className,
   );
 
@@ -51,7 +67,12 @@ export function EviImage({
   // Hero art direction: separate desktop/mobile images via <picture>
   if (isFilled.image(mobileField)) {
     return (
-      <div data-slot="evi-image" className={containerClasses} {...props}>
+      <div
+        data-slot="evi-image"
+        data-variant={variant}
+        className={containerClasses}
+        {...props}
+      >
         <picture>
           <source media="(max-width: 768px)" srcSet={mobileField.url ?? ""} />
           <img
@@ -68,7 +89,12 @@ export function EviImage({
 
   // Standard: PrismicNextImage for Next.js optimering
   return (
-    <div data-slot="evi-image" className={containerClasses} {...props}>
+    <div
+      data-slot="evi-image"
+      data-variant={variant}
+      className={containerClasses}
+      {...props}
+    >
       <PrismicNextImage
         field={field}
         className={imgClasses}

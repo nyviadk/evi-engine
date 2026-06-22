@@ -1,4 +1,4 @@
-import { PrismicRichText, type JSXMapSerializer } from "@prismicio/react";
+import { PrismicRichText, type RichTextComponents } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
 import {
   type LinkResolverFunction,
@@ -7,13 +7,25 @@ import {
 } from "@prismicio/client";
 import { cn } from "@/src/lib/utils/cn";
 
-export type EviRichTextProps = Omit<React.ComponentProps<"div">, "children"> & {
+/**
+ * EviRichText — Prismic rich-text renderer.
+ *
+ * - `<EviRichText>` (default): wrapper'er output i `<div class="evi-prose">`
+ *   så typografi-stylingen aktiveres. Bruges fra slices direkte.
+ * - `<EviRichText.Raw>`: returnerer den serialiserede markup uden wrapper.
+ *   Bruges når en parent (fx EviHeadingGroup) allerede har `.evi-prose`-class
+ *   og du ikke vil have et ekstra DOM-niveau.
+ *
+ * Hyperlinks routes automatisk gennem PrismicNextLink med linkResolver.
+ * isHero shifter h1 ↔ h2 så slice-defaults kan matche faktisk brug uden
+ * at content-editoren skal vide om heading-niveauer.
+ */
+
+type SharedProps = {
   /** Prismic rich-text field. Komponenten rendrer ingenting hvis feltet er tomt. */
   field: RichTextField | null | undefined;
-  /** Bruges til at resolve interne dokument-links. */
+  /** Resolver til interne dokument-links. */
   linkResolver: LinkResolverFunction;
-  /** Drop `<div class="evi-prose">` wrapper — fx når en parent (EviHeadingGroup) allerede har den. @default false */
-  bare?: boolean;
   /**
    * Heading-niveau-shift:
    * - `true` (hero brugt med h2-default): h2 → h1
@@ -23,31 +35,35 @@ export type EviRichTextProps = Omit<React.ComponentProps<"div">, "children"> & {
   isHero?: boolean;
 };
 
-export function EviRichText({
+export type EviRichTextRawProps = SharedProps;
+export type EviRichTextProps = SharedProps &
+  Omit<React.ComponentProps<"div">, "children">;
+
+/** Returnerer den serialiserede PrismicRichText uden wrapper-element. */
+function Raw({
   field,
   linkResolver,
-  bare = false,
-  className,
   isHero,
-  ...props
-}: EviRichTextProps): React.ReactElement | null {
+}: EviRichTextRawProps): React.ReactElement | null {
   if (!isFilled.richText(field)) return null;
 
-  const headingOverrides: JSXMapSerializer = {};
+  const headingOverrides: RichTextComponents = {};
 
   if (isHero === true) {
-    // Slice med h2-default brugt som hero → h2 bliver h1
-    headingOverrides.heading2 = ({ children }: { children: React.ReactNode }) => (
-      <h1>{children}</h1>
-    );
+    headingOverrides.heading2 = ({
+      children,
+    }: {
+      children: React.ReactNode;
+    }) => <h1>{children}</h1>;
   } else if (isHero === false) {
-    // Slice med h1-default brugt som alm. slice → h1 bliver h2
-    headingOverrides.heading1 = ({ children }: { children: React.ReactNode }) => (
-      <h2>{children}</h2>
-    );
+    headingOverrides.heading1 = ({
+      children,
+    }: {
+      children: React.ReactNode;
+    }) => <h2>{children}</h2>;
   }
 
-  const content = (
+  return (
     <PrismicRichText
       field={field}
       components={{
@@ -60,8 +76,16 @@ export function EviRichText({
       }}
     />
   );
+}
 
-  if (bare) return content;
+function Root({
+  field,
+  linkResolver,
+  isHero,
+  className,
+  ...props
+}: EviRichTextProps): React.ReactElement | null {
+  if (!isFilled.richText(field)) return null;
 
   return (
     <div
@@ -69,7 +93,9 @@ export function EviRichText({
       className={cn("evi-prose", className)}
       {...props}
     >
-      {content}
+      <Raw field={field} linkResolver={linkResolver} isHero={isHero} />
     </div>
   );
 }
+
+export const EviRichText = Object.assign(Root, { Raw });
