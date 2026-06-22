@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 import { components } from "@/slices";
 import { resolve_page_url } from "@/src/lib/prismic/paths";
-import { get_evi_context } from "@/src/lib/prismic/context";
+import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
@@ -16,29 +16,21 @@ type Params = Promise<{ lang: string; uid?: string[] }>;
 
 export default async function Page(props: { params: Params }) {
   const { lang, uid } = await props.params;
-
-  const ctx = await get_evi_context();
-  if (!ctx) return notFound();
-
-  const { client, tree, tenant, settings, business, link_resolver, hostname } =
-    ctx;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
-  // Stille fallback til default-locale hvis siden ikke findes på det forespurgte
-  // sprog. Bedre end 404 når kunden har 2 sprog men kun oversat forsiden.
-  // Ingen "ikke oversat endnu"-banner — det ville selv være en oversættelse
-  // vi ikke kan vide hvilket sprog skal vises på.
-  let page = await client
-    .getByUID("page", prismic_uid, { lang })
-    .catch(() => null);
-
-  if (!page && lang !== tenant.default_locale) {
-    page = await client
-      .getByUID("page", prismic_uid, { lang: tenant.default_locale })
-      .catch(() => null);
-  }
-
+  // Fyr side-fetch parallelt med det globale context-batch. get_evi_context()
+  // henter tree+settings+business+navigation; get_evi_page() henter selve
+  // siden (med stille fallback til default-locale). De er uafhængige, så
+  // de skal IKKE await'es sequentielt. cache() i context.ts sikrer at
+  // tenant-lookup'et kun sker én gang selvom begge helpers internt bruger det.
+  const [ctx, page] = await Promise.all([
+    get_evi_context(),
+    get_evi_page(prismic_uid, lang),
+  ]);
+  if (!ctx) return notFound();
   if (!page) return notFound();
+
+  const { tree, tenant, settings, business, link_resolver, hostname } = ctx;
 
   // Home må kun tilgås på roden — aldrig på /home eller /<noget>/home.
   // Catcher fx /da-dk/home, gamle indekserede links, copy-paste fejl.
@@ -101,27 +93,21 @@ export default async function Page(props: { params: Params }) {
 
 export async function generateMetadata(props: { params: Params }) {
   const { lang, uid } = await props.params;
-
-  const ctx = await get_evi_context();
-  if (!ctx) return {};
-
-  const { client, tree, tenant, settings, hostname } = ctx;
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const base_url = `${protocol}://${hostname}`;
   const prismic_uid = uid ? uid[uid.length - 1] : "home";
 
-  // Samme locale-fallback som i Page() så metadata matcher det viste indhold.
-  let page = await client
-    .getByUID("page", prismic_uid, { lang })
-    .catch(() => null);
-
-  if (!page && lang !== tenant.default_locale) {
-    page = await client
-      .getByUID("page", prismic_uid, { lang: tenant.default_locale })
-      .catch(() => null);
-  }
-
+  // Samme parallel-mønster som Page(): context-batch + side-fetch fyres
+  // samtidig. get_evi_page håndterer locale-fallback internt, så metadata
+  // og rendret indhold altid matcher.
+  const [ctx, page] = await Promise.all([
+    get_evi_context(),
+    get_evi_page(prismic_uid, lang),
+  ]);
+  if (!ctx) return {};
   if (!page) return {};
+
+  const { tree, tenant, settings, hostname } = ctx;
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const base_url = `${protocol}://${hostname}`;
   const metaTitle = page.data.meta_title;
   const siteName = settings?.data?.site_name;
   const isHome = page.uid === "home";

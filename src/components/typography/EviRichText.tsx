@@ -27,10 +27,20 @@ type SharedProps = {
   /** Resolver til interne dokument-links. */
   linkResolver: LinkResolverFunction;
   /**
-   * Heading-niveau-shift:
-   * - `true` (hero brugt med h2-default): h2 → h1
-   * - `false` (alm. slice med h1-default): h1 → h2
-   * - `undefined`: ingen ændring
+   * Heading-niveau-shift baseret på slice-position på siden.
+   *
+   * Hver slice-template har sin egen "default" heading-level (h1 for
+   * hero-templates, h2 for normale tekst-slices). Når en slice ender i
+   * den modsatte position af sit default, shifter vi:
+   *
+   * - `true` — slice er nu hero (typisk sidens første slice). Hvis dens
+   *   template skriver h2 som default, opgrader til h1, så siden har
+   *   præcis én h1.
+   * - `false` — slice er ikke hero (slice #2 og frem). Hvis dens template
+   *   skriver h1 som default, degrader til h2, så vi ikke får flere h1'er.
+   * - `undefined` — ingen shift; slice'ens default heading-level beholdes.
+   *
+   * Sættes automatisk af `compute_slice_contexts` ud fra index.
    */
   isHero?: boolean;
 };
@@ -38,6 +48,20 @@ type SharedProps = {
 export type EviRichTextRawProps = SharedProps;
 export type EviRichTextProps = SharedProps &
   Omit<React.ComponentProps<"div">, "children">;
+
+// Heading-overrides hoistes til modul-niveau — de capture ingen variabler,
+// så de kan deles på tværs af alle render-kald i stedet for at blive
+// genskabt hver gang. (jf. vercel-react-best-practices: rerender-no-inline-components)
+const HEADING_OVERRIDES_HERO: RichTextComponents = {
+  heading2: ({ children }: { children: React.ReactNode }) => (
+    <h1>{children}</h1>
+  ),
+};
+const HEADING_OVERRIDES_NON_HERO: RichTextComponents = {
+  heading1: ({ children }: { children: React.ReactNode }) => (
+    <h2>{children}</h2>
+  ),
+};
 
 /** Returnerer den serialiserede PrismicRichText uden wrapper-element. */
 function Raw({
@@ -47,22 +71,16 @@ function Raw({
 }: EviRichTextRawProps): React.ReactElement | null {
   if (!isFilled.richText(field)) return null;
 
-  const headingOverrides: RichTextComponents = {};
+  const headingOverrides =
+    isHero === true
+      ? HEADING_OVERRIDES_HERO
+      : isHero === false
+        ? HEADING_OVERRIDES_NON_HERO
+        : null;
 
-  if (isHero === true) {
-    headingOverrides.heading2 = ({
-      children,
-    }: {
-      children: React.ReactNode;
-    }) => <h1>{children}</h1>;
-  } else if (isHero === false) {
-    headingOverrides.heading1 = ({
-      children,
-    }: {
-      children: React.ReactNode;
-    }) => <h2>{children}</h2>;
-  }
-
+  // hyperlink-serializeren capture'r linkResolver-prop'en og må derfor
+  // blive defineret pr. render. Sjælden hot path og ingen remount-bivirkninger
+  // (server component), så det er acceptabelt indtil resolver kommer fra context.
   return (
     <PrismicRichText
       field={field}
