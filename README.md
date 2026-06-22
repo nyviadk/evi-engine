@@ -4,7 +4,7 @@
 
 A multi-tenant SaaS platform that spins up N client websites from a single Next.js codebase. Each tenant gets their own content, domain, and branding — all served by one Cloudflare Worker at near-zero marginal cost per tenant.
 
-**Stack:** Next.js 15.1 (App Router, RSC) · React 19 · Prismic CMS · Cloudflare Workers (via `@opennextjs/cloudflare`) · R2 · KV · Durable Objects · Tailwind v4 · TypeScript strict.
+**Stack:** Next.js 16 (App Router, RSC) · React 19.2 + React Compiler · Prismic CMS · Cloudflare Workers (via `@opennextjs/cloudflare`) · R2 · KV · Durable Objects · Tailwind v4 · TypeScript strict.
 
 This README walks through the non-obvious decisions. Every claim links to the file and line that backs it.
 
@@ -15,6 +15,7 @@ This README walks through the non-obvious decisions. Every claim links to the fi
 3. [Multi-Tenant Routing](#multi-tenant-routing)
 4. [Tenant Config System (KV)](#tenant-config-system-kv)
 5. [Performance & Caching (OpenNext)](#performance--caching-opennext)
+   - [Why no `cacheComponents` (PPR)](#why-no-cachecomponents-ppr)
 6. [Security & Tenant Isolation](#security--tenant-isolation)
 7. [Scalability](#scalability)
 8. [Multi-Locale Content Model](#multi-locale-content-model)
@@ -24,7 +25,6 @@ This README walks through the non-obvious decisions. Every claim links to the fi
 12. [Slice Architecture](#slice-architecture)
 13. [Developer Experience](#developer-experience)
 14. [Deployment](#deployment)
-15. [Project Status](#project-status)
 
 ---
 
@@ -68,9 +68,15 @@ Cite: [middleware.ts](middleware.ts) · [src/lib/kv/tenants.ts](src/lib/kv/tenan
 
 Each choice names the alternative that was rejected and the reason.
 
-### Next.js 15 App Router
+### Next.js 16 App Router
 
-RSC for per-request data fetching without round-tripping through the client. Streaming HTML. And — the one that matters most here — `React.cache()` for per-request fetch dedup. `Page()` and `generateMetadata()` both need the tenant config, Prismic settings, and page tree; wrapping the loader in `cache()` means the data is fetched **once per request**, not twice. See [app/[lang]/[[...uid]]/page.tsx:28-42](app/[lang]/[[...uid]]/page.tsx#L28-L42).
+RSC for per-request data fetching without round-tripping through the client. Streaming HTML. And — the one that matters most here — `React.cache()` for per-request fetch dedup. `Page()` and `generateMetadata()` both need the tenant config, Prismic settings, and page tree; wrapping the loader in `cache()` means the data is fetched **once per request**, not twice. See [src/lib/prismic/context.ts](src/lib/prismic/context.ts) and [app/[lang]/[[...uid]]/page.tsx:26-29](app/[lang]/[[...uid]]/page.tsx#L26-L29).
+
+**React Compiler 1.0 is enabled** (`reactCompiler: true` in [next.config.ts](next.config.ts)). Components are auto-memoized at build time — no manual `useMemo`/`useCallback` needed for typical work.
+
+**`cacheComponents` (PPR) is deliberately OFF** — see [Cache Components decision](#why-no-cachecomponents-ppr) below. Our root layout reads the `Host` header to set per-tenant theme on `<html>`, which makes the entire tree dynamic. The PPR static-shell model doesn't fit; OpenNext's R2 incremental cache already gives us full per-tenant edge caching at a different layer.
+
+**Build flag: `next build --webpack`** ([package.json:6](package.json#L6)). Next 16 defaults to Turbopack, but `@opennextjs/cloudflare` cannot load Turbopack output yet ([opennextjs-cloudflare#569](https://github.com/opennextjs/opennextjs-cloudflare/issues/569)). Without `--webpack`, the deployed Worker boots into `500 Internal Server Error` on every request. Track #569; remove the flag when it lands.
 
 ### Prismic CMS
 
@@ -102,7 +108,11 @@ Brand colors are stored in Prismic, read at request time, and injected as CSS cu
 
 ### Host → tenant resolution
 
-[middleware.ts:42-49](middleware.ts#L42-L49) reads `Host`, passes it to `get_tenant_config(hostname)`, which normalizes the hostname (stripping `www.`) and does a single `KV.get()`. Cold path ~15ms; warm path ~1-5ms via Cloudflare's regional KV cache.
+[middleware.ts:42-49](middleware.ts#L42-L49) reads `Host`, passes it to `get_tenant_config(hostname)`, which normalizes the hostname via [src/lib/kv/normalize.ts](src/lib/kv/normalize.ts) (lowercases, strips `www.`, and lets browsers' Punycode form match KV's Punycode-stored keys) and does a single `KV.get()`. Cold path ~15ms; warm path ~1-5ms via Cloudflare's regional KV cache.
+
+### Punycode-canonical KV keys
+
+KV always stores tenants under their **Punycode** hostname (`xn--frisr-jensen-...` for `frisør-jensen.dk`). Spec-compliant browsers send Punycode in the `Host` header already, but `curl` and some webhook clients send raw Unicode. `normalize_hostname` wraps the input in a `URL` constructor, which the runtime canonicalizes to Punycode — so a lookup matches regardless of what the client sent. Onboarding script: [scripts/push-tenant.mjs](scripts/push-tenant.mjs).
 
 ### Danish character handling
 
@@ -130,7 +140,7 @@ Three scenarios in order ([middleware.ts:62-135](middleware.ts#L62-L135)):
 
 ### Home-at-root invariant
 
-`/home` never exists as a reachable URL. [middleware.ts:76-84](middleware.ts#L76-L84) catches `/home` and `/{locale}/home` and 301s to the canonical root in **one hop**. [app/[lang]/[[...uid]]/page.tsx:63-65](app/[lang]/[[...uid]]/page.tsx#L63-L65) enforces the same invariant at render time as a belt-and-braces check. And [src/lib/prismic/paths.ts:40-41](src/lib/prismic/paths.ts#L40-L41) refuses to emit `home` in the path tree even if a content editor mis-sets `parent_page`.
+`/home` never exists as a reachable URL. [middleware.ts:76-84](middleware.ts#L76-L84) catches `/home` and `/{locale}/home` and 301s to the canonical root in **one hop**. [app/[lang]/[[...uid]]/page.tsx:36-37](app/[lang]/[[...uid]]/page.tsx#L36-L37) enforces the same invariant at render time as a belt-and-braces check. And [src/lib/prismic/paths.ts:40-41](src/lib/prismic/paths.ts#L40-L41) refuses to emit `home` in the path tree even if a content editor mis-sets `parent_page`.
 
 ### Domain classes
 
@@ -150,7 +160,7 @@ This is the crown jewel of the architecture and gets its own section.
 
 ### Two categories of tenant fields
 
-[src/lib/kv/tenants.ts:4-14](src/lib/kv/tenants.ts#L4-L14) splits the `TenantConfig` interface into two groups:
+[src/lib/kv/tenants.ts:4-13](src/lib/kv/tenants.ts#L4-L13) splits the `TenantConfig` interface into two groups:
 
 **Bootstrap (manual, one-time):**
 
@@ -182,7 +192,7 @@ The result is cached for 5 minutes in the Cloudflare Cache API so publish bursts
 
 ### Localhost dev fallback
 
-[src/lib/kv/tenants.ts:35-48](src/lib/kv/tenants.ts#L35-L48) short-circuits to an in-memory mock when `NODE_ENV === "development"`. `getCloudflareContext` is unreliable in `next dev`, so rather than crashing or forcing every dev to run `wrangler dev`, the UI-only workflow just works with `npm run dev`.
+[src/lib/kv/tenants.ts:39-48](src/lib/kv/tenants.ts#L39-L48) short-circuits to an in-memory mock when `NODE_ENV === "development"`. `getCloudflareContext` is unreliable in `next dev`, so rather than crashing or forcing every dev to run `wrangler dev`, the UI-only workflow just works with `npm run dev`.
 
 ---
 
@@ -249,7 +259,7 @@ The math: a single DO throttles at ~10 writes/sec. With 100 tenants publishing s
 
 ### Per-tenant fetch tags
 
-[prismicio.ts:31-34](prismicio.ts#L31-L34) tags every Prismic fetch with `prismic-${tenant.repo}`:
+[prismicio.ts:30-36](prismicio.ts#L30-L36) tags every Prismic fetch with `prismic-${tenant.repo}`:
 
 ```ts
 fetchOptions: process.env.NODE_ENV === "production"
@@ -257,7 +267,36 @@ fetchOptions: process.env.NODE_ENV === "production"
   : { next: { revalidate: 5 } },
 ```
 
-A single `revalidateTag("prismic-example")` in the webhook ([app/api/revalidate/route.ts:35](app/api/revalidate/route.ts#L35)) invalidates every R2-cached page for that tenant **across all hostnames** — prod and staging stay in sync automatically.
+A single `revalidateTag("prismic-example", "max")` in the webhook ([app/api/revalidate/route.ts:63](app/api/revalidate/route.ts#L63)) invalidates every R2-cached page for that tenant **across all hostnames** — prod and staging stay in sync automatically. The `"max"` second argument is required as of Next.js 16; previous single-arg form is now a TypeScript error.
+
+### Request-scope helpers in `src/lib/prismic/context.ts`
+
+Every Prismic-fetch in the app lives in [src/lib/prismic/context.ts](src/lib/prismic/context.ts) — route files never call `client.getX()` directly. Three tiers, each wrapped in React `cache()` for per-request dedup:
+
+- **Tier 0 — `get_evi_tenant()`** — header lookup + KV resolve + client construction. No Prismic round-trip.
+- **Tier 1 — per-route helpers** — `get_evi_page(uid, lang)`, `get_evi_tree()`, `get_evi_sitemap_pages()`. Single-purpose; safe to `Promise.all` together.
+- **Tier 2 — `get_evi_context()`** — the layout batch: `tree + settings + business + navigation` in one parallel fetch.
+
+The pattern in route files is "context batch parallel with route fetch":
+
+```ts
+const [ctx, page] = await Promise.all([
+  get_evi_context(),       // layout batch
+  get_evi_page(uid, lang), // per-route, parallel with batch
+]);
+```
+
+`get_evi_page` also handles silent locale-fallback to `tenant.default_locale` so metadata and rendered content always align.
+
+### Why no `cacheComponents` (PPR)
+
+Decided permanently off. Three reasons in order of weight:
+
+1. **Every level of the tree depends on `Host`.** The `<html>` style (theme colors, fonts, layout-width, radius, color-scheme), `<head>` favicons, navigation, brand text — all driven by per-tenant Prismic + KV. There is nothing prerenderable above the body.
+2. **The three theoretical workarounds are all worse.** Client-side theming → FOUC + bad LCP + bad SEO. Build-time `generateStaticParams` over hostnames → tenants are KV-driven, not statically known. Path-based tenant routing → breaks customer-owned domains.
+3. **We already get the PPR win at a different layer.** R2 incremental cache + DO sharded tag cache deliver per-tenant edge-cached HTML invalidated via `revalidateTag('prismic-<repo>')`. Serving a fully-cached page in one shot from R2 is faster than streaming a static shell + dynamic island for our request pattern.
+
+Setting: `cacheComponents` omitted from [next.config.ts](next.config.ts) (default = false). With `cacheComponents` off, `await headers()` automatically marks routes as dynamic, so the previous defensive `export const dynamic = "force-dynamic"` markers were removed across `app/`.
 
 ---
 
@@ -290,7 +329,7 @@ Client-bundled code accepts `PathConfig`, not `TenantConfig`. TypeScript prevent
 
 ### Webhook signature verification
 
-[app/api/revalidate/route.ts:17-22](app/api/revalidate/route.ts#L17-L22): Prismic's `secret` field is checked against `PRISMIC_WEBHOOK_SECRET`, stored as a Wrangler secret (never in committed files). The only side-effects of a bogus webhook are a 401 and a log line.
+[app/api/revalidate/route.ts:41-49](app/api/revalidate/route.ts#L41-L49): Prismic's `secret` field is checked against `PRISMIC_WEBHOOK_SECRET` via a timing-safe comparison ([app/api/revalidate/route.ts:11-29](app/api/revalidate/route.ts#L11-L29)), stored as a Wrangler secret (never in committed files). The only side-effects of a bogus webhook are a 401 and a log line.
 
 ### JSON-LD XSS escaping
 
@@ -344,7 +383,7 @@ Safeguards:
 
 ### URL canonicalization at render time
 
-[app/[lang]/[[...uid]]/page.tsx:67-75](app/[lang]/[[...uid]]/page.tsx#L67-L75) compares the actual URL segments against the expected tree and 301s to canonical on mismatch. Protects against old indexed URLs (e.g. a page moved under a new parent still works — Google gets redirected to the new canonical URL and eventually updates).
+[app/[lang]/[[...uid]]/page.tsx:43-50](app/[lang]/[[...uid]]/page.tsx#L43-L50) compares the actual URL segments against the expected tree and 301s to canonical on mismatch. Protects against old indexed URLs (e.g. a page moved under a new parent still works — Google gets redirected to the new canonical URL and eventually updates).
 
 ### Locale prefix rules
 
@@ -370,7 +409,7 @@ Typed with `schema-dts` for compile-time Schema.org validation — typos in `@ty
 
 ### Smart title generation
 
-[app/[lang]/[[...uid]]/page.tsx:144-164](app/[lang]/[[...uid]]/page.tsx#L144-L164) handles three cases:
+[app/[lang]/[[...uid]]/page.tsx:114-135](app/[lang]/[[...uid]]/page.tsx#L114-L135) handles three cases:
 
 - Home without `meta_title` → site name alone (`"Frisør Jensen"`).
 - `meta_title` containing `|` → trusted verbatim (the editor is branding manually).
@@ -393,6 +432,14 @@ Stops the "Untitled | MySite" anti-pattern without overruling editors who want e
 ### WCAG 2.1 contrast math in the theme generator
 
 `src/lib/theme/colors.ts` computes `text-on-{light,dark,primary,secondary}` from relative luminance and contrast-ratio formulas. The customer picks any two brand colors in Prismic; black or white text is auto-chosen so every text/background pair meets AA contrast. **No manual adjustments needed** per customer.
+
+### Per-tenant browser-chrome settings
+
+Three Prismic `settings` fields drive browser-level chrome on top of the theme colors:
+
+- **`color_scheme`** — `"Lys" | "Mørk" | "Lys & mørk (auto)"`. Maps to the CSS `color-scheme` property on `<html>` in [app/layout.tsx](app/layout.tsx), which controls how the browser renders scrollbars and native form-controls (`<select>`, date-picker). Default `"Lys"`.
+- **`favicon_light` / `favicon_dark`** — separate favicons per `prefers-color-scheme`. `generateMetadata` in [app/layout.tsx](app/layout.tsx) emits two `<link rel="icon">` tags with `media` attributes when both are provided. With only one uploaded, it serves unconditionally. With none, Next falls back to `app/favicon.ico`.
+- **`translate_brand`** — `boolean`. When `false` (default), the brand-name in [src/components/EviNavigation.tsx](src/components/EviNavigation.tsx) gets `translate="no"` to prevent Google Translate (and similar) from mangling proper nouns. Tenants can opt in if their brand actually should be translated.
 
 ### Button safety variables
 
@@ -428,16 +475,18 @@ Live design system playground — driven by [src/components/EviTestBench.tsx](sr
 
 ## Component Architecture
 
-| Component     | Purpose                                                                   |
-| ------------- | ------------------------------------------------------------------------- |
-| `EviSection`  | 12-col grid, theme, `collapsePadding` / `collapseGapY` props              |
-| `EviSplit`    | Subgrid, 5 presets (50-50, 60-40, 40-60, 70-30, 30-70), 4 vertical aligns |
-| `EviAutoGrid` | Container-query breakpoints (`sm`, `md`, `lg`)                            |
-| `EviCard`     | `grid-rows-subgrid` for cross-card alignment                              |
-| `EviStack`    | Vertical flex with 5 gap presets                                          |
-| `EviButton`   | variant × appearance × size (3 × 3 × 3), theme-safe color fallbacks       |
-| `EviImage`    | `PrismicNextImage` + `<picture>` art direction + CF IMAGES pipeline       |
-| `EviRichText` | `PrismicRichText` wrapped in `evi-prose`                                  |
+| Component                  | Purpose                                                                   |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `EviSection`               | 12-col grid, theme, `collapsePadding` / `collapseGapY` props              |
+| `EviSplit`                 | Subgrid, 5 presets (50-50, 60-40, 40-60, 70-30, 30-70), 4 vertical aligns |
+| `EviAutoGrid`              | Container-query breakpoints (`sm`, `md`, `lg`)                            |
+| `EviCard`                  | `grid-rows-subgrid` for cross-card alignment                              |
+| `EviStack`                 | Vertical flex with 5 gap presets                                          |
+| `EviButton`                | variant × appearance × size (3 × 3 × 3), theme-safe color fallbacks       |
+| `EviImage`                 | `PrismicNextImage` + `<picture>` art direction + CF IMAGES pipeline       |
+| `EviRichText`              | `PrismicRichText` wrapped in `evi-prose`                                  |
+| `EviNavigation`            | Server-side header brand + nav, sourced from per-tenant `navigation` doc  |
+| `EviNavigationDisclosure`  | Client wrapper: responsive disclosure (mobile menu) with container query  |
 
 ---
 
@@ -485,6 +534,10 @@ opennextjs-cloudflare build && opennextjs-cloudflare preview
 
 Runs the fully-built Worker with wrangler dev for cache-behavior testing locally. Required when touching anything in the OpenNext cache layer.
 
+### ESLint flat config
+
+[eslint.config.mjs](eslint.config.mjs) uses ESLint v9 flat-config, composed from `eslint-config-next/core-web-vitals` and `eslint-config-next/typescript` (Next 16's flat-config-native packages). The legacy `FlatCompat` wrapper was removed when Next 16's eslint-config dropped its legacy entry-point. Tailwind v4 rules layered on top via `eslint-plugin-tailwindcss`. Run with `npm run lint`.
+
 ---
 
 ## Deployment
@@ -492,10 +545,14 @@ Runs the fully-built Worker with wrangler dev for cache-behavior testing locally
 ### Build + deploy
 
 ```
-npm run deploy
+npm run deploy:clean
 ```
 
-Runs `opennextjs-cloudflare build && opennextjs-cloudflare deploy` — Worker + assets uploaded in one step.
+Runs `rimraf .next .open-next && opennextjs-cloudflare build && opennextjs-cloudflare deploy` — Worker + assets uploaded in one step from a fresh build. `npm run deploy` skips the cleanup; use it only when `.next` and `.open-next` are known to be in sync with the source tree.
+
+**Build script must include `--webpack`** ([package.json:6](package.json#L6)). Next 16 defaults to Turbopack, but `@opennextjs/cloudflare` can't load Turbopack output ([opennextjs-cloudflare#569](https://github.com/opennextjs/opennextjs-cloudflare/issues/569)). Without the flag the deployed Worker boots into `500 Internal Server Error` immediately.
+
+**Never connect Cloudflare Pages Git-build integration.** Pages compiles the final `_worker.js` with a hard-pinned `wrangler 3.114.17`, regardless of what's in `package.json`. Wrangler `3.x` through `4.32.x` have a compile regression that breaks Next 16 + OpenNext bundles at boot (`components.ComponentMod.handler is not a function`). Local `wrangler ^4.83` is past the fix, so `deploy:clean` is the safe path. See [opennextjs-cloudflare#1286](https://github.com/opennextjs/opennextjs-cloudflare/issues/1286).
 
 ### Bindings
 
@@ -529,6 +586,9 @@ Never committed. `.dev.vars` is `.gitignore`d.
 ### Deployment gotchas
 
 - **Cloudflare Bot Fight Mode** must stay OFF on the zone. Blocks Prismic's webhook with 403 at the edge before the Worker runs. (Free plan has no WAF Custom Rules to carve out an exception.)
+- **`next build --webpack`** is non-negotiable until OpenNext issue #569 closes. Do not "modernize" the build script by removing it.
+- **Don't deploy via Cloudflare Pages Git-build.** The Pages build pipeline pins a wrangler version with a known compile regression that breaks Next 16 + OpenNext. Local `deploy:clean` is the only supported path.
+- **Middleware runtime** must stay `export const runtime = "experimental-edge"` in [middleware.ts:11](middleware.ts#L11). Next 16's dev server explicitly errors with `Use runtime 'experimental-edge' instead` if it sees plain `"edge"` for middleware. Despite the route-segment-config docs marking `experimental-edge` deprecated, that deprecation applies to pages/route-handlers, not to middleware.
 - **Debug logs** require `NEXT_PRIVATE_DEBUG_CACHE=true` (not `OPEN_NEXT_DEBUG` — common mistake).
 - **DO binding names** are hardcoded in OpenNext source: `NEXT_CACHE_DO_QUEUE`, `NEXT_TAG_CACHE_DO_SHARDED`, `NEXT_CACHE_DO_PURGE`. Don't rename.
 
