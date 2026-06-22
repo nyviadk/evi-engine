@@ -1,9 +1,7 @@
 {
-  "format": "page",
   "id": "page",
   "label": "Side",
   "repeatable": true,
-  "status": true,
   "json": {
     "Main": {
       "uid": {
@@ -17,8 +15,10 @@
         "config": {
           "label": "Forældre side",
           "select": "document",
-          "repeat": false,
-          "customtypes": ["page"]
+          "customtypes": [
+            "page"
+          ],
+          "repeat": false
         }
       },
       "slices": {
@@ -31,37 +31,37 @@
     },
     "SEO & Metadata": {
       "meta_title": {
+        "type": "Text",
         "config": {
           "label": "SEO titel",
           "placeholder": "Vises i Google og i browser-fanen"
-        },
-        "type": "Text"
+        }
       },
       "meta_description": {
+        "type": "Text",
         "config": {
           "label": "SEO beskrivelse",
           "placeholder": "Den lille tekst der vises under linket i Google"
-        },
-        "type": "Text"
+        }
       },
       "meta_image": {
+        "type": "Image",
         "config": {
           "label": "Billede (Sociale Medier)",
           "constraint": {
-            "height": 1260,
-            "width": 2400
+            "width": 2400,
+            "height": 1260
           },
           "thumbnails": []
-        },
-        "type": "Image"
+        }
       },
       "noindex": {
         "type": "Boolean",
         "config": {
           "label": "Skjul siden fra Google (noindex)",
-          "placeholder_false": "Synlig i Google",
+          "default_value": false,
           "placeholder_true": "Skjult fra Google",
-          "default_value": false
+          "placeholder_false": "Synlig i Google"
         }
       },
       "canonical_override": {
@@ -72,5 +72,7 @@
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "page"
 }

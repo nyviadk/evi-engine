@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "business",
   "label": "Business",
   "repeatable": false,
-  "status": true,
   "json": {
     "Stamdata": {
       "schema_type": {
@@ -11,7 +9,12 @@
         "config": {
           "label": "Virksomhedstype",
           "placeholder": "Vælg type...",
-          "options": ["Organization", "LocalBusiness", "Person", "Corporation"]
+          "options": [
+            "Organization",
+            "LocalBusiness",
+            "Person",
+            "Corporation"
+          ]
         }
       },
       "legal_name": {
@@ -103,12 +106,12 @@
         "config": {
           "label": "Schema mode (Kill Switch)",
           "placeholder": "",
+          "default_value": "Auto (Virksomhed + Brødkrummer)",
           "options": [
             "Auto (Virksomhed + Brødkrummer)",
             "Kun brødkrummer",
             "Deaktiver alt (kun Custom JSON)"
-          ],
-          "default_value": "Auto (Virksomhed + Brødkrummer)"
+          ]
         }
       },
       "custom_schema_json": {
@@ -119,5 +122,7 @@
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }

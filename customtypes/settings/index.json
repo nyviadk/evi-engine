@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "settings",
   "label": "Indstillinger",
   "repeatable": false,
-  "status": true,
   "json": {
     "Generelt": {
       "site_name": {
@@ -17,9 +15,9 @@
         "type": "Boolean",
         "config": {
           "label": "Tving sprog i URL? (fx /da-dk)",
-          "placeholder_false": "Nej",
+          "default_value": false,
           "placeholder_true": "Ja",
-          "default_value": false
+          "placeholder_false": "Nej"
         }
       },
       "default_og_image": {
@@ -60,6 +58,7 @@
         "config": {
           "label": "Tidszone",
           "placeholder": "Kundens tidszone",
+          "default_value": "Europe/Copenhagen",
           "options": [
             "Europe/Copenhagen",
             "Europe/Oslo",
@@ -68,8 +67,7 @@
             "Europe/Berlin",
             "Europe/London",
             "UTC"
-          ],
-          "default_value": "Europe/Copenhagen"
+          ]
         }
       }
     },
@@ -135,6 +133,7 @@
         "config": {
           "label": "Skrifttype (anbefalet - hurtig)",
           "placeholder": "Vælg en optimeret skrifttype",
+          "default_value": "System standard",
           "options": [
             "System standard",
             "Montserrat",
@@ -146,8 +145,7 @@
             "Open Sans",
             "Inter",
             "Lato"
-          ],
-          "default_value": "System standard"
+          ]
         }
       },
       "custom_font_input": {
@@ -184,16 +182,18 @@
               "config": {
                 "label": "Hvorfor laver du dette link?",
                 "placeholder": "",
+                "default_value": "301 (siden er slettet/flyttet for altid)",
                 "options": [
                   "301 (siden er slettet/flyttet for altid)",
                   "307 (dette er blot en midlertidig genvej)"
-                ],
-                "default_value": "301 (siden er slettet/flyttet for altid)"
+                ]
               }
             }
           }
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }

@@ -1,0 +1,12 @@
+{
+  "repositoryName": "evi-engine",
+  "libraries": [
+    "./slices"
+  ],
+  "routes": [
+    {
+      "type": "page",
+      "path": "/:uid"
+    }
+  ]
+}
