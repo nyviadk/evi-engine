@@ -1,8 +1,6 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 
-export const dynamic = "force-dynamic";
-
 import { compute_theme_vars, DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { WIDTH_MAP } from "@/src/lib/theme/width";
 import { RADIUS_MAP } from "@/src/lib/theme/radius";

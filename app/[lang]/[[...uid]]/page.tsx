@@ -1,8 +1,6 @@
 import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
 
-export const dynamic = "force-dynamic";
-
 import { components } from "@/slices";
 import { resolve_page_url } from "@/src/lib/prismic/paths";
 import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";

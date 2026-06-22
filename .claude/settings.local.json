@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(npx prismic *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "WebFetch(domain:opennext.js.org)",
+      "Bash(npm view *)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"TSC exit: $?\")",
+      "Bash(echo \"ESLINT exit: $?\")",
+      "Bash(node -e \"import\\('eslint-config-next'\\).then\\(m => console.log\\(Object.keys\\(m.default || m\\)\\)\\)\")",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

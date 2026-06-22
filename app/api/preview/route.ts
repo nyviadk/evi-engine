@@ -3,8 +3,6 @@ import { redirectToPreviewURL } from "@prismicio/next";
 import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
 
-export const dynamic = "force-dynamic";
-
 export async function GET(request: NextRequest) {
   // 1. Aflæs domænet (f.eks. jens.web.nyvia.dk)
   const hostname = request.headers.get("host") || "localhost:3000";

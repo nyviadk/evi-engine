@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { sync_tenants_for_repo } from "@/src/lib/kv/sync";
 
-export const dynamic = "force-dynamic";
-
 /**
  * Konstant-tids sammenligning af to strings via crypto.subtle.timingSafeEqual.
  * Standard `!==` afslører længden og første forskellige byte via timing —
@@ -62,7 +60,7 @@ export async function POST(request: Request) {
 
     // 4. Ryd indholds-cachen for denne ene kunde (delt tag på tværs af alle
     //    hostnames der bruger samme repo — staging + prod invalideres samlet).
-    revalidateTag(`prismic-${prismic_repo}`);
+    revalidateTag(`prismic-${prismic_repo}`, "max");
 
     return NextResponse.json({
       revalidated: true,

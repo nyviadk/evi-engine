@@ -1,36 +1,11 @@
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 import tailwind from "eslint-plugin-tailwindcss";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  basePath: __dirname,
-  recommendedConfig: js.configs.recommended,
-});
-
-const eslintConfig = [
-  {
-    ignores: [
-      ".next/**",
-      ".open-next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-      "cloudflare-env.d.ts",
-      "worker-configuration.d.ts",
-      "prismicio-types.d.ts",
-      "slices/index.ts",
-      "scripts/**",
-    ],
-  },
-
-  // Next.js — Core Web Vitals + TypeScript. Brings in eslint-plugin-react,
-  // react-hooks, jsx-a11y, import, @next/next, and the TS parser/plugin.
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
 
   // Tailwind CSS (v4-compatible). Adds the plugin + recommended rules
   // scoped to JS/TS/JSX/TSX via the plugin's own `files` glob.
@@ -153,6 +128,19 @@ const eslintConfig = [
       "no-console": "off",
     },
   },
-];
+
+  globalIgnores([
+    ".next/**",
+    ".open-next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "cloudflare-env.d.ts",
+    "worker-configuration.d.ts",
+    "prismicio-types.d.ts",
+    "slices/index.ts",
+    "scripts/**",
+  ]),
+]);
 
 export default eslintConfig;
