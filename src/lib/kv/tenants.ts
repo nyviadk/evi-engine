@@ -22,7 +22,7 @@ export interface TenantMetadata {
 const mock_kv_data: Record<string, TenantConfig> = {
   "localhost:3000": {
     repo: "evi-engine",
-    locales: ["da-dk"],
+    locales: ["da-dk", "en-eu"],
     default_locale: "da-dk",
     force_lang_prefix: false,
     redirects: {},

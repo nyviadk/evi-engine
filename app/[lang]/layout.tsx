@@ -1,10 +1,10 @@
 import { EviTestBench } from "@/src/components/EviTestBench";
+import { EviNavigation } from "@/src/components/EviNavigation";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* Temp header — replace with real <EviNavigation /> later */}
-      <header></header>
+      <EviNavigation />
 
       <EviTestBench />
       {children}

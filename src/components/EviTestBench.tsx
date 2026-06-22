@@ -229,7 +229,7 @@ export function EviTestBench() {
     <>
       {/* Floating color picker bar */}
       <div
-        className="sm:fixed sm:top-0 sm:left-0 sm:right-0 sm:z-50 flex flex-wrap sm:items-center sm:justify-center gap-6 px-4 py-3"
+        className="sm:sticky sm:top-0 sm:left-0 sm:right-0 sm:z-50 flex flex-wrap sm:items-center sm:justify-center gap-6 px-4 py-3"
         style={{ background: "rgba(0,0,0,0.85)", color: "#fff", fontSize: 13 }}
       >
         <label className="flex items-center gap-2">

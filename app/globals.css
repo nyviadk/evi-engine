@@ -815,6 +815,54 @@
   }
 
   /* ═══════════════════════════════════════════════════════
+     H. Navigation — container-query baseret mobil/desktop-skifte
+
+     På smal container (mobil) er .evi-nav-panel skjult som default
+     og rulles ud som overlay når hamburger-knappen sætter [data-open].
+
+     På bred container (@nav >= 48rem) er panelet altid synligt og
+     vandret — [data-open] ignoreres helt. Samme DOM, ingen duplikat
+     liste der skal skjules med display:none.
+     ═══════════════════════════════════════════════════════ */
+  .evi-nav-panel {
+    display: none;
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    background-color: var(--theme-bg, var(--color-light));
+    border-block-start: 1px solid
+      color-mix(in oklch, currentColor 12%, transparent);
+    z-index: 40;
+  }
+  .evi-nav-panel[data-open] {
+    display: block;
+  }
+
+  .evi-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  @container nav (min-width: 48rem) {
+    .evi-nav-panel {
+      display: block;
+      position: static;
+      background-color: transparent;
+      border-block-start: 0;
+      z-index: auto;
+    }
+    .evi-nav-list {
+      flex-direction: row;
+      gap: 0.25rem;
+      padding: 0;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════
      G. Form-focus — kontrastsikker outline på inputs
      Bruger --theme-link (4.5:1 pga. compute_theme_vars) hvor det er sat,
      ellers falder vi tilbage til --theme-text som er solid-kontrast.

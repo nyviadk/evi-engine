@@ -205,6 +205,33 @@ interface BusinessDocumentData {
  */
 export type BusinessDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<BusinessDocumentData>, "business", Lang>;
 
+/**
+ * Content for Navigation documents
+ */
+interface NavigationDocumentData {
+	/**
+	 * Menupunkter field in *Navigation*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: navigation.links
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+}
+
+/**
+ * Navigation document from Prismic
+ *
+ * - **API ID**: `navigation`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
+
 type PageDocumentDataSlicesSlice = never
 
 /**
@@ -515,7 +542,7 @@ interface SettingsDocumentData {
  */
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
-export type AllDocumentTypes = BusinessDocument | PageDocument | SettingsDocument;
+export type AllDocumentTypes = BusinessDocument | NavigationDocument | PageDocument | SettingsDocument;
 
 declare module "@prismicio/client" {
 	interface CreateClient {
@@ -535,6 +562,8 @@ declare module "@prismicio/client" {
 			BusinessDocument,
 			BusinessDocumentData,
 			BusinessDocumentDataSocialProfilesItem,
+			NavigationDocument,
+			NavigationDocumentData,
 			PageDocument,
 			PageDocumentData,
 			PageDocumentDataSlicesSlice,
