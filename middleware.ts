@@ -97,11 +97,13 @@ export async function middleware(request: NextRequest) {
 
   // 2. SCENARIE: SPROGET MANGLER I URL'EN (f.eks. /kontakt)
   if (!locale_from_path) {
-    // Når vi laver et 301 til den præfiks-version, SKAL det være til
-    // tenant.default_locale — ikke browser-locale. Googlebot sender
-    // Accept-Language: en-US; hvis default er da-dk ville vi 301'e
-    // Googlebot til /en-gb/kontakt som så 404'er. Browser-locale er
-    // kun relevant for den hemmelige rewrite (hvor URL'en bevares).
+    // force_lang_prefix: styrer hvilken locale non-prefix URL'er mapper til.
+    //   - true:  altid tenant.default_locale (deterministisk, bot-venligt)
+    //   - false: browser-locale (skjult prefix, indhold varierer per Accept-Language)
+    //
+    // Googlebot sender ofte Accept-Language: en-US; hvis vi mappede til
+    // browser-locale i force-mode ville /kontakt ende på /en-eu/kontakt
+    // som måske ikke findes. default_locale garanterer at siden findes.
     const target_locale = tenant.force_lang_prefix
       ? tenant.default_locale
       : get_browser_locale(request, tenant.locales, tenant.default_locale);
@@ -109,20 +111,23 @@ export async function middleware(request: NextRequest) {
     const new_path = `/${target_locale}${pathname === "/" ? "" : pathname}`;
     request_headers.set("x-evi-locale", target_locale);
 
-    // Hvis Jens vil TVINGE sprogpræfiks (force_lang_prefix: true)
-    if (tenant.force_lang_prefix) {
-      // 301 Redirect: Vi sender dem fra /kontakt -> /da-dk/kontakt
-      return create_response_with_hsts(
-        NextResponse.redirect(create_secure_url(new_path, request), 301),
-      );
-    } else {
-      // Skjult præfiks: Vi viser indholdet, men beholder den pæne URL (/kontakt)
-      return create_response_with_hsts(
-        NextResponse.rewrite(create_secure_url(new_path, request), {
-          request: { headers: request_headers },
-        }),
-      );
-    }
+    // Rewrite (ikke redirect) i BEGGE modes: bots får 200 OK direkte i
+    // stedet for 301 som visse form-URL-validatorer afviser (fx Google
+    // Forms input). Canonical-tag i generateMetadata peger stadig på den
+    // præfikserede URL når force_lang_prefix er true, så SEO forbliver
+    // korrekt — Google indekserer /da-dk/kontakt som canonical, /kontakt
+    // som alias. Se resolve_page_url i src/lib/prismic/paths.ts.
+    //
+    // Vary: Accept-Language sikrer at caches (browser, CDN, R2) ikke
+    // serverer forkert sprogindhold til efterfølgende brugere — kun
+    // strengt nødvendigt når force er false, men sat i begge modes
+    // for at gøre cache-nøglen entydig hvis en tenant flipper indstillingen.
+    const response = NextResponse.rewrite(
+      create_secure_url(new_path, request),
+      { request: { headers: request_headers } },
+    );
+    response.headers.set("Vary", "Accept-Language");
+    return create_response_with_hsts(response);
   }
 
   // 3. SCENARIE: SPROGET ER I URL'EN (f.eks. /da-dk/kontakt)
