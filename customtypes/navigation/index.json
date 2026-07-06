@@ -4,13 +4,27 @@
   "repeatable": false,
   "json": {
     "Main": {
-      "links": {
-        "type": "Link",
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
         "config": {
-          "label": "Menupunkter",
-          "allowTargetBlank": true,
-          "allowText": true,
-          "repeat": true
+          "choices": {
+            "header_classic": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      },
+      "language_selector": {
+        "type": "Select",
+        "config": {
+          "label": "Sprogvælger",
+          "placeholder": "Vises kun hvis tenant har flere sprog",
+          "default_value": "Slået fra",
+          "options": [
+            "Slået fra",
+            "Slået til"
+          ]
         }
       }
     }

@@ -1,0 +1,43 @@
+{
+  "id": "header_classic",
+  "type": "SharedSlice",
+  "name": "HeaderClassic",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "imageUrl": "",
+      "docURL": "",
+      "version": "",
+      "primary": {
+        "logo": {
+          "type": "Image",
+          "config": {
+            "label": "Logo",
+            "placeholder": "Valgfri — hvis tom vises sitenavn som tekst"
+          }
+        },
+        "nav_items": {
+          "type": "Link",
+          "config": {
+            "label": "Menupunkter",
+            "placeholder": "Tilføj links med tekst",
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": true
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Call-to-action",
+            "placeholder": "Valgfri — hvis tom vises ingen knap",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        }
+      }
+    }
+  ]
+}

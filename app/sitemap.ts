@@ -4,7 +4,10 @@ import {
   get_evi_tree,
   get_evi_sitemap_pages,
 } from "@/src/lib/prismic/context";
-import { resolve_page_url } from "@/src/lib/prismic/paths";
+import {
+  build_translation_url_map,
+  resolve_page_url,
+} from "@/src/lib/prismic/paths";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Tenant skal være kendt før vi kan bygge base_url; tree + pages fyres
@@ -50,13 +53,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const entries = Array.from(grouped.values()).flatMap((translations) => {
       // Kun udstil hreflang når siden reelt findes på flere sprog.
       // Enkeltsproget tenant eller side kun på ét sprog → ingen alternates.
-      const languages: Record<string, string> = {};
-      for (const t of translations) {
-        if (t.uid) {
-          const path = resolve_page_url(t.id, t.lang, tree, tenant);
-          languages[t.lang] = `${base_url}${path}`;
-        }
-      }
+      const languages = build_translation_url_map(
+        translations,
+        tree,
+        tenant,
+        base_url,
+      );
 
       const has_real_alternates = Object.keys(languages).length > 1;
       if (has_real_alternates) {

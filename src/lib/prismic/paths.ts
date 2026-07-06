@@ -91,6 +91,40 @@ export function resolve_page_url(
 }
 
 /**
+ * Bygger en `locale -> URL`-map fra et sæt Prismic translation-lignende
+ * entries (alternate_languages-items eller sitemap-page-docs). Entries der
+ * mangler `id`, `lang` eller `uid` springes over — resolve_page_url har
+ * brug for alle tre for at slå den hierarkiske sti op i sti-træet.
+ *
+ * `base_url` prepender fuld origin ("https://kunde.com") til absolute URLs.
+ * Udelad for relative stier (in-app language selector).
+ *
+ * Bruges af:
+ *  - app/sitemap.ts — sitemap-alternates per side-gruppe
+ *  - app/[lang]/[[...uid]]/page.tsx generateMetadata — hreflang links
+ *  - app/[lang]/layout.tsx — LanguageSelector URLs
+ */
+export function build_translation_url_map(
+  translations: readonly {
+    id?: string | null;
+    lang?: string | null;
+    uid?: string | null;
+  }[],
+  tree: Map<string, string[]>,
+  config: PathConfig,
+  base_url?: string,
+): Record<string, string> {
+  const urls: Record<string, string> = {};
+  for (const t of translations) {
+    if (t.uid && t.id && t.lang) {
+      const path = resolve_page_url(t.id, t.lang, tree, config);
+      urls[t.lang] = base_url ? `${base_url}${path}` : path;
+    }
+  }
+  return urls;
+}
+
+/**
  * Opretter en linkResolver-funktion baseret på sti-træet.
  * Kan bruges direkte i PrismicNextLink og PrismicRichText som server-prop.
  */

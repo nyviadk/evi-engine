@@ -205,20 +205,34 @@ interface BusinessDocumentData {
  */
 export type BusinessDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<BusinessDocumentData>, "business", Lang>;
 
+type NavigationDocumentDataSlicesSlice = HeaderClassicSlice
+
 /**
  * Content for Navigation documents
  */
 interface NavigationDocumentData {
 	/**
-	 * Menupunkter field in *Navigation*
+	 * Slice Zone field in *Navigation*
 	 *
-	 * - **Field Type**: Link
+	 * - **Field Type**: Slice Zone
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: navigation.links
+	 * - **API ID Path**: navigation.slices[]
 	 * - **Tab**: Main
-	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 * - **Documentation**: https://prismic.io/docs/slices
 	 */
-	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+	slices: prismic.SliceZone<NavigationDocumentDataSlicesSlice>;
+	
+	/**
+	 * Sprogvælger field in *Navigation*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Vises kun hvis tenant har flere sprog
+	 * - **Default Value**: Slået fra
+	 * - **API ID Path**: navigation.language_selector
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	language_selector: prismic.SelectField<"Slået fra" | "Slået til", "filled">;
 }
 
 /**
@@ -567,6 +581,64 @@ export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocu
 
 export type AllDocumentTypes = BusinessDocument | NavigationDocument | PageDocument | SettingsDocument;
 
+/**
+ * Primary content in *HeaderClassic → Default → Primary*
+ */
+export interface HeaderClassicSliceDefaultPrimary {
+	/**
+	 * Logo field in *HeaderClassic → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Valgfri — hvis tom vises sitenavn som tekst
+	 * - **API ID Path**: header_classic.default.primary.logo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	logo: prismic.ImageField<never>;
+	
+	/**
+	 * Menupunkter field in *HeaderClassic → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Tilføj links med tekst
+	 * - **API ID Path**: header_classic.default.primary.nav_items
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	nav_items: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+	
+	/**
+	 * Call-to-action field in *HeaderClassic → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Valgfri — hvis tom vises ingen knap
+	 * - **API ID Path**: header_classic.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Default variation for HeaderClassic Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeaderClassicSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HeaderClassicSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *HeaderClassic*
+ */
+type HeaderClassicSliceVariation = HeaderClassicSliceDefault
+
+/**
+ * HeaderClassic Shared Slice
+ *
+ * - **API ID**: `header_classic`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeaderClassicSlice = prismic.SharedSlice<"header_classic", HeaderClassicSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -587,13 +659,18 @@ declare module "@prismicio/client" {
 			BusinessDocumentDataSocialProfilesItem,
 			NavigationDocument,
 			NavigationDocumentData,
+			NavigationDocumentDataSlicesSlice,
 			PageDocument,
 			PageDocumentData,
 			PageDocumentDataSlicesSlice,
 			SettingsDocument,
 			SettingsDocumentData,
 			SettingsDocumentDataRedirectsItem,
-			AllDocumentTypes
+			AllDocumentTypes,
+			HeaderClassicSlice,
+			HeaderClassicSliceDefaultPrimary,
+			HeaderClassicSliceVariation,
+			HeaderClassicSliceDefault
 		}
 	}
 }

@@ -8,35 +8,36 @@ import {
 } from "@/src/components/ui/EviDisclosure";
 
 /**
- * Mobil hamburger-trigger + nav-panel.
+ * Mobile hamburger trigger + nav panel.
  *
- * Tynd orchestration oven på EviDisclosure-primitiven: tilføjer bare det
- * navigation-specifikke (icon-swap, sr-only label, panel-styling). Selve
- * open/closed-state, aria-wiring og context-eksponering håndteres af
- * EviDisclosure.
+ * Thin orchestration on top of the EviDisclosure primitive: adds only the
+ * navigation-specific bits (icon swap, sr-only label, panel styling). Open/
+ * closed state, aria wiring, and context exposure are handled by EviDisclosure.
  *
- * Container queries i Tailwind (@3xl/nav) bestemmer om navigationen vises
- * som hamburger (mobil, smal container) eller inline (desktop, bred
- * container). På desktop ignoreres [data-state] helt — CSS tvinger
- * listen synlig via container-query reglerne i globals.css.
+ * Container queries (@3xl/nav) decide whether nav shows as a hamburger
+ * (mobile / narrow container) or inline (desktop / wide container). On
+ * desktop [data-state] is ignored — CSS in globals.css forces the list
+ * visible via container-query rules.
+ *
+ * Used by every header variant (Classic, Centered, etc.) as the shared
+ * mobile-collapse primitive.
  */
 
-/** Læser åben/lukket fra context og rendrer det rigtige hamburger-ikon. */
 function HamburgerIcon(): React.ReactElement {
   const ctx = use(EviDisclosureContext);
   const open = ctx?.state.open ?? false;
   return open ? <X size={24} aria-hidden /> : <Menu size={24} aria-hidden />;
 }
 
-export type EviNavigationDisclosureProps = {
+export type MobileDisclosureProps = {
   children: ReactNode;
   toggleLabel?: string;
 };
 
-export function EviNavigationDisclosure({
+export function MobileDisclosure({
   children,
   toggleLabel = "Menu",
-}: EviNavigationDisclosureProps): React.ReactElement {
+}: MobileDisclosureProps): React.ReactElement {
   return (
     <EviDisclosure.Provider>
       <EviDisclosure.Trigger className="@3xl/nav:hidden inline-flex cursor-pointer items-center justify-center rounded-evi p-2 text-current focus-visible:outline-2 focus-visible:outline-offset-2">

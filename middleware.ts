@@ -110,6 +110,12 @@ export async function middleware(request: NextRequest) {
 
     const new_path = `/${target_locale}${pathname === "/" ? "" : pathname}`;
     request_headers.set("x-evi-locale", target_locale);
+    // x-evi-pathname: kanonisk sti med locale-prefix. Bruges af server-
+    // komponenter (fx sprog-selector i header) til at bygge language-variant
+    // URLs uden at kende siden. Uden middleware kan Next ikke bare exponere
+    // pathname i server components — vi må explicit videresende det.
+    // encodeURI så non-ASCII (æøå) er header-safe; layout decoder ved read.
+    request_headers.set("x-evi-pathname", encodeURI(new_path));
 
     // Rewrite (ikke redirect) i BEGGE modes: bots får 200 OK direkte i
     // stedet for 301 som visse form-URL-validatorer afviser (fx Google
@@ -144,6 +150,7 @@ export async function middleware(request: NextRequest) {
 
   // Ellers: Alt er som det skal være (f.eks. det er en /en-eu/ side eller force er true)
   request_headers.set("x-evi-locale", locale_from_path);
+  request_headers.set("x-evi-pathname", encodeURI(pathname));
 
   // Send requestet videre med den nye header i bagagen
   return create_response_with_hsts(

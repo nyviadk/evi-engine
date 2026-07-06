@@ -2,7 +2,10 @@ import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
 
 import { components } from "@/slices";
-import { resolve_page_url } from "@/src/lib/prismic/paths";
+import {
+  build_translation_url_map,
+  resolve_page_url,
+} from "@/src/lib/prismic/paths";
 import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
@@ -140,18 +143,22 @@ export async function generateMetadata(props: { params: Params }) {
   // Kun relevant når siden reelt findes på flere sprog. En enkeltsproget
   // tenant, eller en side der kun er publiceret på ét sprog, skal ikke
   // have hreflang — det er støj der forvirrer Google.
-  const alt_entries: Record<string, string> = {};
-  for (const alt of page.alternate_languages) {
-    if (alt.uid && alt.lang) {
-      const alt_path = resolve_page_url(alt.id, alt.lang, tree, tenant);
-      alt_entries[alt.lang] = `${base_url}${alt_path}`;
-    }
-  }
+  // Vi inkluderer den aktuelle side som en syntetisk "translation" så map'en
+  // indeholder alle sprog-versioner i én operation.
+  const all_translations = [
+    { id: page.id, uid: page.uid, lang },
+    ...page.alternate_languages,
+  ];
+  const translation_urls = build_translation_url_map(
+    all_translations,
+    tree,
+    tenant,
+    base_url,
+  );
 
   let alternate_langs: Record<string, string> | undefined;
-  if (Object.keys(alt_entries).length > 0) {
-    // Inkluder den aktuelle side + alle faktiske oversættelser.
-    alternate_langs = { [lang]: full_canonical_url, ...alt_entries };
+  if (Object.keys(translation_urls).length > 1) {
+    alternate_langs = translation_urls;
     // x-default: peger på default-locale versionen hvis den findes.
     // Findes den ikke (side ikke oversat til default), udelader vi x-default.
     const x_default_url = alternate_langs[tenant.default_locale];
