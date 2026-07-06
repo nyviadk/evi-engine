@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/src/lib/utils/cn";
 import type { TenantConfig } from "@/src/lib/kv/tenants";
 
@@ -14,17 +16,28 @@ export type LanguageSelectorProps = {
 };
 
 /**
- * Renders a horizontal list of available locales for the current tenant.
- * The current locale is marked with aria-current and styled as non-linked;
- * others link to the corresponding translated page URL.
+ * Native <select> dropdown for switching tenant locale. Server sends the URL
+ * for each locale via `languageUrls`; onChange navigates to the chosen
+ * language's version of the current page (or that language's home if the
+ * current page has no translation).
  *
- * Silently renders nothing when the tenant only has one locale — there is
- * nothing to switch to.
+ * Native <select> gives us keyboard navigation, mobile-native pickers, and
+ * ARIA out of the box. Client component because onChange navigates.
+ *
+ * Full page reload via window.location (not router.push) because:
+ *  1) A language switch replaces the entire tree — soft-nav's partial
+ *     re-render is misleading UX for such a semantic change.
+ *  2) router.push had a scroll-to-bottom bug in the RSC transition when the
+ *     new page has different height. Full reload sidesteps browser scroll-
+ *     restoration entirely: fresh URL, browser defaults scroll to top.
  *
  * Language labels come from Intl.DisplayNames, translated to the current
  * locale (Danish visitor sees "Dansk"/"Engelsk", English sees "Danish"/
- * "English"). Falls back to uppercase locale code if Intl.DisplayNames is
- * unavailable at runtime.
+ * "English"). Danish returns lowercase from Intl ("dansk"); we capitalize
+ * the first letter to match UI convention.
+ *
+ * Silently renders nothing when the tenant only has one locale — nothing to
+ * switch to.
  */
 export function LanguageSelector({
   locales,
@@ -41,47 +54,33 @@ export function LanguageSelector({
     display = null;
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const target_locale = event.target.value;
+    if (target_locale === currentLang) return;
+    const href = languageUrls[target_locale];
+    if (href) window.location.href = href;
+  };
+
   return (
-    <ul
+    <select
+      value={currentLang}
+      onChange={handleChange}
+      aria-label="Vælg sprog"
       className={cn(
-        "evi-nav-lang flex items-center gap-2 text-sm",
+        "evi-nav-lang cursor-pointer rounded-evi border border-current/20 bg-transparent px-3 py-1.5 text-sm text-current focus-visible:outline-2 focus-visible:outline-offset-2",
         className,
       )}
-      aria-label="Sprogvælger"
     >
       {locales.map((locale) => {
-        const is_current = locale === currentLang;
-        const target_href = languageUrls[locale];
-
-        // Intl.DisplayNames wants the primary language subtag ("da" from "da-dk").
         const language_code = locale.split("-")[0];
-        const label = display?.of(language_code) || locale.toUpperCase();
-
-        if (is_current) {
-          return (
-            <li
-              key={locale}
-              aria-current="true"
-              className="font-medium text-current"
-            >
-              <span>{label}</span>
-            </li>
-          );
-        }
-        // Defensive: if layout somehow produced no URL for this locale, skip.
-        if (!target_href) return null;
+        const raw_label = display?.of(language_code) || locale.toUpperCase();
+        const label = raw_label.charAt(0).toUpperCase() + raw_label.slice(1);
         return (
-          <li key={locale}>
-            <a
-              href={target_href}
-              hrefLang={locale}
-              className="rounded-evi px-2 py-1 text-current/70 no-underline hover:text-current focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {label}
-            </a>
-          </li>
+          <option key={locale} value={locale}>
+            {label}
+          </option>
         );
       })}
-    </ul>
+    </select>
   );
 }

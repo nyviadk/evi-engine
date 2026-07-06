@@ -73,7 +73,7 @@ export default function HeaderClassic({
               locales={tenant.locales}
               currentLang={lang}
               languageUrls={languageUrls}
-              className="@3xl/nav:flex hidden"
+              className="@3xl/nav:inline-block hidden"
             />
           )}
 
