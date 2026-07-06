@@ -4,6 +4,13 @@
   "name": "evi-engine",
   "compatibility_date": "2026-04-17",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "observability": {
+    // Cloudflare Workers native observability — strukturerede logs + fejl-tracking
+    // i CF dashboardet. Gratis på Workers Paid, inkl. Free plan med 200k log-events/dag.
+    // https://developers.cloudflare.com/workers/observability/logs/workers-logs/
+    "enabled": true,
+    "head_sampling_rate": 1,
+  },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",

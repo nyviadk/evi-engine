@@ -9,7 +9,13 @@
       "Bash(echo \"TSC exit: $?\")",
       "Bash(echo \"ESLINT exit: $?\")",
       "Bash(node -e \"import\\('eslint-config-next'\\).then\\(m => console.log\\(Object.keys\\(m.default || m\\)\\)\\)\")",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:developers.cloudflare.com)",
+      "Bash(curl -s https://raw.githubusercontent.com/vercel-labs/next-skills/main/README.md)",
+      "Bash(curl -s https://api.github.com/repos/vercel/next.js/contents/skills)",
+      "Bash(curl -s https://raw.githubusercontent.com/vercel/next.js/canary/skills/next-dev-loop/SKILL.md)",
+      "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents)",
+      "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents/skills)"
     ]
   }
 }
