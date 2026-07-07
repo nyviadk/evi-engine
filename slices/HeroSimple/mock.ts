@@ -5,8 +5,11 @@ import type { Content } from "@prismicio/client";
 import { PERSONA } from "@/src/lib/preview/persona";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
+// Mock ejer sin egen preview-context. Hero-template → isHero: true så
+// EviSection får hero-padding og EviRichText holder heading1 som h1.
 export const context: EviPageSliceContext = {
   linkResolver: () => "/",
+  sliceContexts: [{ theme: "light", isHero: true, collapsePadding: false }],
 };
 
 export const mock: Record<string, Content.HeroSimpleSlice> = {

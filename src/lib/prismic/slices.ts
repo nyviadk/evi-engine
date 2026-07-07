@@ -41,6 +41,18 @@ function theme_type(theme: string): "solid" | "soft" | "tint" {
   return "solid";
 }
 
+/**
+ * Cross-slice info lookup for page-slices. Production: kommer fra
+ * compute_slice_contexts (parent). Preview: kommer fra mock.ts's context.
+ * Undefined felter bruger EviSection/EviHeadingGroup's egne defaults.
+ */
+export function resolve_slice_context(
+  page_context: EviPageSliceContext,
+  index: number,
+): Partial<SliceContext> {
+  return page_context.sliceContexts?.[index] ?? {};
+}
+
 export function compute_slice_contexts(
   slices: SliceWithPrimary[],
   colors?: EviColors,
