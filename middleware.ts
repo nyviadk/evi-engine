@@ -6,6 +6,7 @@ import { get_tenant_config } from "@/src/lib/kv/tenants";
 import {
   create_response_with_hsts,
   create_secure_url,
+  validate_hostname,
 } from "./src/lib/utils/security";
 
 export const runtime = "experimental-edge";
@@ -39,7 +40,12 @@ export async function middleware(request: NextRequest) {
   } catch {
     pathname = raw_pathname;
   }
-  const hostname = request.headers.get("host") || "localhost:3000";
+  // request.nextUrl.host er derived fra CF's routing (mere pålidelig end raw
+  // Host-header). Fald tilbage til header hvis nextUrl mangler. validate_hostname
+  // reject'er malformede/spoofede værdier — request kører videre uden tenant-lookup.
+  const raw_hostname =
+    request.nextUrl.host || request.headers.get("host") || "";
+  const hostname = validate_hostname(raw_hostname) || "localhost:3000";
 
   // www → apex 301. Begge værter serverer samme indhold; uden denne
   // redirect splittes SEO-signaler mellem www.kunde.dk og kunde.dk.

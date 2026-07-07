@@ -31,7 +31,17 @@ async function timing_safe_equal(a: string, b: string): Promise<boolean> {
 export async function POST(request: Request) {
   try {
     const body = await request.text();
-    const json_data = JSON.parse(body);
+    // Prismic webhook payloads er typisk 1-5KB. 100KB er rigelig headroom.
+    // Beskytter mod OOM-DoS hvis nogen med lækket secret sender kæmpe body.
+    if (body.length > 100_000) {
+      return new NextResponse("Payload too large", { status: 413 });
+    }
+    let json_data: { domain?: unknown; secret?: unknown };
+    try {
+      json_data = JSON.parse(body);
+    } catch {
+      return new NextResponse("Invalid JSON", { status: 400 });
+    }
 
     // Prismic sender altid deres repo-navn i 'domain' feltet!
     const prismic_repo = json_data.domain;
@@ -50,7 +60,7 @@ export async function POST(request: Request) {
     }
 
     // 2. Sikkerhed: Fik vi et repo-navn fra Prismic?
-    if (!prismic_repo) {
+    if (typeof prismic_repo !== "string" || prismic_repo.length === 0) {
       return new NextResponse("Mangler repo-navn", { status: 400 });
     }
 
