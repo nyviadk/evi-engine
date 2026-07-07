@@ -1,0 +1,35 @@
+#!/bin/sh
+# Pre-commit hook: forhindrer at scripts/push-tenant.mjs committes med
+# rigtige Prismic-tokens. Filens config skal indeholde placeholder-strings
+# før commit kan gennemføres.
+
+STAGED_FILE="scripts/push-tenant.mjs"
+
+if git diff --cached --name-only --diff-filter=ACMRT | grep -q "^${STAGED_FILE}\$"; then
+  STAGED_CONTENT=$(git show ":${STAGED_FILE}")
+
+  REQUIRED_READ='prismic_token: "prismic_token",'
+  REQUIRED_WRITE='prismic_write_api_token: "prismic_write_api_token",'
+
+  if ! echo "${STAGED_CONTENT}" | grep -qF "${REQUIRED_READ}"; then
+    echo ""
+    echo "❌ Pre-commit blokerer: scripts/push-tenant.mjs har ikke placeholder for prismic_token"
+    echo "   Kræver præcis: ${REQUIRED_READ}"
+    echo "   Erstat dit rigtige token med placeholder før commit."
+    echo ""
+    echo "   (For at bypasse: git commit --no-verify — kun hvis du VED hvad du gør)"
+    exit 1
+  fi
+
+  if ! echo "${STAGED_CONTENT}" | grep -qF "${REQUIRED_WRITE}"; then
+    echo ""
+    echo "❌ Pre-commit blokerer: scripts/push-tenant.mjs har ikke placeholder for prismic_write_api_token"
+    echo "   Kræver præcis: ${REQUIRED_WRITE}"
+    echo "   Erstat dit rigtige token med placeholder før commit."
+    echo ""
+    echo "   (For at bypasse: git commit --no-verify — kun hvis du VED hvad du gør)"
+    exit 1
+  fi
+fi
+
+exit 0
