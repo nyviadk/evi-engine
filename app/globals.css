@@ -551,6 +551,20 @@
     margin-bottom: calc(1.5rem - 2px); /* border compensation per spec */
   }
 
+  /* ── Brand mark — .evi-brand ──
+     Rendered by EviBrandText for site-name / brand-string cases where
+     RichText would be overkill (single-word/phrase). Uses the heading
+     font token so it inherits tenant theme, size is fluid clamp() like
+     the h-scales so it can't drift out of proportion with the rest. */
+
+  .evi-brand {
+    font-family: var(--evi-heading-font);
+    font-size: clamp(1.125rem, 0.5vw + 1rem, 1.375rem); /* ~18px → 22px */
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+
   /* ═══════════════════════════════════════════════════════
      F. Button system — .btn + variant + appearance + size
      CSS-first: all styling here, component is a class mapper

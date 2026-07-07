@@ -1,5 +1,6 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
+import { EviBrandText } from "@/src/components/typography/EviBrandText";
 import { cn } from "@/src/lib/utils/cn";
 
 export type BrandLinkProps = {
@@ -38,7 +39,6 @@ export function BrandLink({
   return (
     <a
       href={homeHref}
-      translate={translate_attr}
       className={cn(
         "evi-nav-brand inline-flex items-center rounded-evi text-current no-underline hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2",
         className,
@@ -53,7 +53,7 @@ export function BrandLink({
           priority
         />
       ) : (
-        <span className="font-heading text-lg font-semibold">{brand_text}</span>
+        <EviBrandText text={brand_text} translate={translate_attr} />
       )}
     </a>
   );

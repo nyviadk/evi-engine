@@ -4,7 +4,7 @@ import {
   type LinkField,
   type LinkResolverFunction,
 } from "@prismicio/client";
-import { cn } from "@/src/lib/utils/cn";
+import { EviButton } from "@/src/components/ui/EviButton";
 
 export type HeaderCTAButtonProps = {
   link: LinkField;
@@ -13,9 +13,13 @@ export type HeaderCTAButtonProps = {
 };
 
 /**
- * Optional CTA button in the header. Renders nothing when link is unfilled or
- * lacks label text — parent can drop it in unconditionally; the component
- * short-circuits internally.
+ * Optional CTA button in the header. Renders nothing when link is unfilled
+ * or lacks label text — parent can drop it in unconditionally; the
+ * component short-circuits internally.
+ *
+ * Styling comes from EviButton (variant + appearance + size) so the header
+ * CTA scales with the rest of the button system — no hardcoded button
+ * classes.
  */
 export function HeaderCTAButton({
   link,
@@ -27,15 +31,16 @@ export function HeaderCTAButton({
   if (!label) return null;
 
   return (
-    <PrismicNextLink
-      field={link}
-      linkResolver={linkResolver}
-      className={cn(
-        "btn theme-primary inline-flex items-center rounded-evi px-4 py-2 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2",
-        className,
-      )}
+    <EviButton
+      asChild
+      variant="primary"
+      appearance="solid"
+      size="sm"
+      className={className}
     >
-      {label}
-    </PrismicNextLink>
+      <PrismicNextLink field={link} linkResolver={linkResolver}>
+        {label}
+      </PrismicNextLink>
+    </EviButton>
   );
 }
