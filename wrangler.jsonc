@@ -42,6 +42,16 @@
       "id": "a7cc9863417a4eec89f384ff923e0d20",
     },
   ],
+  // AES-GCM master-key til at encrypt/decrypt Prismic-tokens i KV.
+  // Sættes automatisk op af scripts/push-tenant.mjs — kør det for at
+  // generere key + oprette Cloudflare Secrets Store + udfylde store_id.
+  "secrets_store_secrets": [
+    {
+      "binding": "TOKEN_MASTER_KEY",
+      "store_id": "bef56d098c0842dab8572986570be956",
+      "secret_name": "token-master-key",
+    },
+  ],
   "durable_objects": {
     "bindings": [
       {

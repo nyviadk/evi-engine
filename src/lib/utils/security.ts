@@ -29,11 +29,18 @@ export function create_response_with_hsts(response: NextResponse) {
   );
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+
+  // `unsafe-eval` kræves KUN i development (Next.js RSC-devtools bruger eval()
+  // til stack-trace reconstruction). Production build har ikke behov for det —
+  // strictere CSP der.
+  const script_src_dev =
+    process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
+
   response.headers.set(
     "Content-Security-Policy",
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://static.cdn.prismic.io https://*.prismic.io",
+      `script-src 'self' 'unsafe-inline'${script_src_dev} https://static.cdn.prismic.io https://*.prismic.io`,
       "style-src 'self' 'unsafe-inline' https://fonts.bunny.net",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https://fonts.bunny.net",

@@ -9,6 +9,7 @@ declare namespace Cloudflare {
 		ASSETS: Fetcher;
 		NEXTJS_ENV: string;
 		WORKER_SELF_REFERENCE: Fetcher /* evi-engine */;
+		TOKEN_MASTER_KEY: SecretsStoreSecret;
 	}
 }
 interface CloudflareEnv extends Cloudflare.Env {}

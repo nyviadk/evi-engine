@@ -12,6 +12,7 @@ declare namespace Cloudflare {
 		NEXT_CACHE_DO_SHARDED_TAG_CACHE: DurableObjectNamespace /* DOShardedTagCache */;
 		NEXT_CACHE_DO_PURGE: DurableObjectNamespace /* BucketCachePurge */;
 		WORKER_SELF_REFERENCE: Fetcher /* evi-engine */;
+		TOKEN_MASTER_KEY: SecretsStoreSecret;
 	}
 }
 interface CloudflareEnv extends Cloudflare.Env {}

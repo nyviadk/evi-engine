@@ -1,5 +1,10 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { normalize_hostname } from "./normalize";
+import {
+  decrypt_token,
+  encrypt_token,
+  import_master_key,
+} from "@/src/lib/crypto/tokens";
 
 export interface TenantConfig {
   repo: string;
@@ -47,15 +52,63 @@ async function get_kv_binding(): Promise<KVNamespace | null> {
   }
 }
 
+// Master-key hentes fra Secrets Store og import'es én gang per Worker-instance
+// (import_master_key caches internt). Kastes hvis binding mangler.
+async function get_master_key(): Promise<CryptoKey> {
+  const ctx = await getCloudflareContext({ async: true });
+  const binding = ctx?.env?.TOKEN_MASTER_KEY;
+  if (!binding) {
+    throw new Error(
+      "TOKEN_MASTER_KEY Secrets Store binding mangler — tjek wrangler.jsonc",
+    );
+  }
+  const raw_b64 = await binding.get();
+  return import_master_key(raw_b64);
+}
+
+async function decrypt_tenant_tokens(
+  stored: TenantConfig,
+): Promise<TenantConfig> {
+  const key = await get_master_key();
+  return {
+    ...stored,
+    prismic_token: stored.prismic_token
+      ? await decrypt_token(stored.prismic_token, key)
+      : "",
+    prismic_write_api_token: stored.prismic_write_api_token
+      ? await decrypt_token(stored.prismic_write_api_token, key)
+      : "",
+  };
+}
+
+async function encrypt_tenant_tokens(
+  plain: TenantConfig,
+): Promise<TenantConfig> {
+  const key = await get_master_key();
+  return {
+    ...plain,
+    prismic_token: plain.prismic_token
+      ? await encrypt_token(plain.prismic_token, key)
+      : "",
+    prismic_write_api_token: plain.prismic_write_api_token
+      ? await encrypt_token(plain.prismic_write_api_token, key)
+      : "",
+  };
+}
+
 export async function get_tenant_config(
   hostname: string,
 ): Promise<TenantConfig | null> {
   const key = normalize_hostname(hostname);
   const kv = await get_kv_binding();
   if (kv) {
-    return kv.get<TenantConfig>(key, "json");
+    const stored = await kv.get<TenantConfig>(key, "json");
+    if (!stored) return null;
+    // Tokens i KV er encrypted med AES-GCM (v1:iv:ct format). Dekryptér før
+    // resten af app'en får dem — resten af koden ser altid plaintext.
+    return decrypt_tenant_tokens(stored);
   }
-  // Dev fallback
+  // Dev fallback — mock-data er plaintext (dev-only, ingen KV involveret).
   return mock_kv_data[key] ?? null;
 }
 
@@ -71,7 +124,9 @@ export async function put_tenant_config(
   }
   const key = normalize_hostname(hostname);
   const metadata: TenantMetadata = { repo: config.repo };
-  await kv.put(key, JSON.stringify(config), { metadata });
+  // Encrypt tokens før write — data-at-rest i KV er altid ciphertext.
+  const encrypted = await encrypt_tenant_tokens(config);
+  await kv.put(key, JSON.stringify(encrypted), { metadata });
 }
 
 /**
