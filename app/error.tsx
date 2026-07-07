@@ -1,5 +1,14 @@
 "use client";
 
+import { EviButton } from "@/src/components/ui/EviButton";
+
+/**
+ * Error boundary UI. Documented exception to R2 (Prismic Rich Text everywhere):
+ * error pages must render without external dependencies — Prismic could BE
+ * what's broken. Text lives in raw JSX with .evi-prose wrapper so it still
+ * uses typography tokens. Button uses EviButton so it inherits .btn styling
+ * (including cursor-pointer, transitions, focus states).
+ */
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
     <div
@@ -9,21 +18,19 @@ export default function Error({ reset }: { error: Error; reset: () => void }) {
         color: "var(--text-on-light)",
       }}
     >
-      <h1 className="text-4xl font-bold">Noget gik galt</h1>
-      <p className="mt-4 max-w-md text-lg opacity-80">
-        Der opstod en uventet fejl. Prøv igen om lidt.
-      </p>
-      <button
-        type="button"
+      <div className="evi-prose max-w-md">
+        <h1>Noget gik galt</h1>
+        <p>Der opstod en uventet fejl. Prøv igen om lidt.</p>
+      </div>
+      <EviButton
         onClick={reset}
-        className="mt-8 rounded-evi px-6 py-3 font-medium transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2"
-        style={{
-          backgroundColor: "var(--color-primary)",
-          color: "var(--text-on-primary)",
-        }}
+        variant="primary"
+        appearance="solid"
+        size="lg"
+        className="mt-8"
       >
         Prøv igen
-      </button>
+      </EviButton>
     </div>
   );
 }
