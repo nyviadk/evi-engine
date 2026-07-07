@@ -169,6 +169,6 @@ export const config = {
      * 3. Særlige skjulte mapper/filer der starter med punktum (som .well-known)
      * 4. Slice-simulator
      */
-    "/((?!api|_next/static|_next/image|assets|slice-simulator|favicon.ico|sitemap.xml|robots.txt|\\..*|.*\\..*).*)",
+    "/((?!api|_next/static|_next/image|assets|slice-simulator|slice-preview|favicon.ico|sitemap.xml|robots.txt|\\..*|.*\\..*).*)",
   ],
 };
