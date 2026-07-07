@@ -24,7 +24,7 @@ const customDomain = "evi.nyvia.dk"; // Kundens domæne - ALTID UDEN WWW HER!
 
 const config = {
   repo: "evi-engine",
-  locales: ["da-dk", "en-eu"],
+  locales: ["da-dk"],
   default_locale: "da-dk",
   force_lang_prefix: false,
   redirects: {},
