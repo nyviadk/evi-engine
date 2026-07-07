@@ -277,6 +277,18 @@ interface FooterDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	language_selector: prismic.SelectField<"Slået fra" | "Slået til", "filled">;
+	
+	/**
+	 * Baggrundstema field in *Footer*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for hele footeren
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: footer.background_theme
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Lys blød" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
 }
 
 /**

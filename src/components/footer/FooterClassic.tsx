@@ -12,6 +12,7 @@ import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import type { EviContext } from "@/src/lib/prismic/context";
+import { resolve_section_theme } from "@/src/lib/prismic/section-theme";
 import type { EviFooterSliceContext } from "@/src/components/footer/types";
 import FooterColumnLinks from "@/slices/FooterColumnLinks";
 import FooterColumnText from "@/slices/FooterColumnText";
@@ -45,7 +46,7 @@ export type FooterClassicProps = {
  *  └─────────────────────────────────────────────────────────────┘
  *
  * All layout via Evi primitives:
- *  - EviSection      → dark-themed section frame
+ *  - EviSection      → section frame med tenant-valgt tema (default "dark")
  *  - EviSplit 33-67  → brand pane (left) + columns pane (right)
  *  - EviAutoGrid fluid → columns auto-fit + wrap
  *  - EviRow          → bottom band with top-divider
@@ -79,10 +80,16 @@ export function FooterClassic({
   const has_bottom_row =
     has_copyright || has_legal_links || has_language_selector;
 
+  const section_theme = resolve_section_theme(footer.data.background_theme);
+
   const slice_context: EviFooterSliceContext = { linkResolver };
 
   return (
-    <EviSection theme="dark" data-slot="evi-footer" data-variant="classic">
+    <EviSection
+      theme={section_theme}
+      data-slot="evi-footer"
+      data-variant="classic"
+    >
       <EviSplit preset="33-67" align="start">
         <EviStack gap="md">
           <BrandLink

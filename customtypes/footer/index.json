@@ -64,6 +64,24 @@
             "Slået til"
           ]
         }
+      },
+      "background_theme": {
+        "type": "Select",
+        "config": {
+          "label": "Baggrundstema",
+          "placeholder": "Baggrundstema for hele footeren",
+          "default_value": "Lys",
+          "options": [
+            "Lys",
+            "Mørk",
+            "Primær",
+            "Sekundær",
+            "Lys blød",
+            "Mørk blød",
+            "Primær blød",
+            "Sekundær blød"
+          ]
+        }
       }
     }
   }

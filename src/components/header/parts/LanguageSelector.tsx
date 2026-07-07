@@ -31,10 +31,13 @@ export type LanguageSelectorProps = {
  *     new page has different height. Full reload sidesteps browser scroll-
  *     restoration entirely: fresh URL, browser defaults scroll to top.
  *
- * Language labels come from Intl.DisplayNames, translated to the current
- * locale (Danish visitor sees "Dansk"/"Engelsk", English sees "Danish"/
- * "English"). Danish returns lowercase from Intl ("dansk"); we capitalize
- * the first letter to match UI convention.
+ * Language labels vises i det NATIVE sprog for hver locale — dvs. dansk står
+ * som "Dansk" og engelsk som "English" uanset hvilken locale brugeren i
+ * øjeblikket er på. Dette matcher konventionen på multilinguale sites (bruger
+ * skal kunne genkende sit eget sprog uden at kunne sitets nuværende sprog).
+ * Intl.DisplayNames instantieres per option med den locale som display-sprog,
+ * så .of(language_code) returnerer endonymet. Dansk returnerer lowercase fra
+ * Intl ("dansk"); vi kapitaliserer første bogstav.
  *
  * Silently renders nothing when the tenant only has one locale — nothing to
  * switch to.
@@ -47,13 +50,6 @@ export function LanguageSelector({
 }: LanguageSelectorProps): React.ReactElement | null {
   if (locales.length < 2) return null;
 
-  let display: Intl.DisplayNames | null = null;
-  try {
-    display = new Intl.DisplayNames(currentLang, { type: "language" });
-  } catch {
-    display = null;
-  }
-
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const target_locale = event.target.value;
     if (target_locale === currentLang) return;
@@ -62,28 +58,44 @@ export function LanguageSelector({
   };
 
   return (
-    <select
-      value={currentLang}
-      onChange={handleChange}
-      aria-label="Vælg sprog"
-      className={cn(
-        // Base styling — samme uanset hvor komponenten bruges.
-        // Responsive visibility (fx `hidden @3xl/nav:inline-block` i header)
-        // sættes af caller via `className`-prop.
-        "evi-nav-lang cursor-pointer rounded-evi border border-current/20 bg-transparent px-3 py-1.5 text-sm text-current focus-visible:outline-2 focus-visible:outline-offset-2",
-        className,
-      )}
-    >
-      {locales.map((locale) => {
-        const language_code = locale.split("-")[0];
-        const raw_label = display?.of(language_code) || locale.toUpperCase();
-        const label = raw_label.charAt(0).toUpperCase() + raw_label.slice(1);
-        return (
-          <option key={locale} value={locale}>
-            {label}
-          </option>
-        );
-      })}
-    </select>
+    // Wrapper for custom chevron. `className` fra caller lander her (visibility
+    // som `hidden @3xl/nav:inline-block` skal gemme HELE kontrollen, ikke kun
+    // select-elementet).
+    <div className={cn("relative inline-block", className)}>
+      <select
+        value={currentLang}
+        onChange={handleChange}
+        aria-label="Vælg sprog"
+        className={cn(
+          "evi-nav-lang cursor-pointer appearance-none rounded-evi border border-current/40 bg-current/5 py-1.5 pr-9 pl-3 text-sm text-current transition-colors hover:bg-current/10 focus-visible:outline-2 focus-visible:outline-offset-2",
+          "[&>option]:bg-white [&>option]:text-neutral-900",
+        )}
+      >
+        {locales.map((locale) => {
+          const language_code = locale.split("-")[0];
+          let raw_label = locale.toUpperCase();
+          try {
+            const native_display = new Intl.DisplayNames(locale, {
+              type: "language",
+            });
+            raw_label = native_display.of(language_code) || raw_label;
+          } catch {}
+          const label = raw_label.charAt(0).toUpperCase() + raw_label.slice(1);
+          return (
+            <option key={locale} value={locale}>
+              {label}
+            </option>
+          );
+        })}
+      </select>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 12 8"
+        fill="currentColor"
+        className="pointer-events-none absolute top-1/2 right-3 h-2 w-3 -translate-y-1/2 opacity-70"
+      >
+        <path d="M6 8 0 0h12z" />
+      </svg>
+    </div>
   );
 }
