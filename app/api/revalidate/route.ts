@@ -60,7 +60,10 @@ export async function POST(request: Request) {
 
     // 4. Ryd indholds-cachen for denne ene kunde (delt tag på tværs af alle
     //    hostnames der bruger samme repo — staging + prod invalideres samlet).
-    revalidateTag(`prismic-${prismic_repo}`, "max");
+    //
+    // `{ expire: 0 }` = immediate expiration → næste request bliver blocking
+    // cache-miss og henter fresh content.
+    revalidateTag(`prismic-${prismic_repo}`, { expire: 0 });
 
     return NextResponse.json({
       revalidated: true,

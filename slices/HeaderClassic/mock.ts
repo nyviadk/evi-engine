@@ -49,6 +49,7 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
       // Tom logo → BrandLink falder tilbage til site_name (via settings.data.site_name).
       // settings er null i preview → BrandLink falder yderligere tilbage til hostname.
       // hostname er PERSONA.domain → "kaffemolle.example" vises som brand-tekst.
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       logo: {} as Content.HeaderClassicSliceDefaultPrimary["logo"],
       nav_items: PERSONA.nav.top.map((label, i) => ({
         link_type: "Web" as const,
@@ -56,6 +57,7 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
         key: String(i + 1),
         text: label,
       })) as Content.HeaderClassicSliceDefaultPrimary["nav_items"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       cta_link: {
         link_type: "Web" as const,
         url: "#",
