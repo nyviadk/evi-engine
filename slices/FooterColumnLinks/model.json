@@ -1,0 +1,34 @@
+{
+  "id": "footer_column_links",
+  "name": "FooterColumnLinks",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "",
+      "version": "",
+      "primary": {
+        "links": {
+          "type": "Link",
+          "config": {
+            "label": "Links",
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": true
+          }
+        },
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "fx Produkter, Om os, Support",
+            "single": "heading3"
+          }
+        }
+      }
+    }
+  ]
+}

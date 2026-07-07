@@ -1,0 +1,33 @@
+{
+  "id": "footer_column_text",
+  "name": "FooterColumnText",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "",
+      "version": "",
+      "primary": {
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Indhold",
+            "placeholder": "Adresse, CVR, åbningstider osv.",
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "fx Kontakt, Åbningstider, Virksomhedsinfo",
+            "single": "heading3"
+          }
+        }
+      }
+    }
+  ]
+}

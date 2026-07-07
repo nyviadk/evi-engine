@@ -1,0 +1,58 @@
+{
+  "id": "footer",
+  "label": "Footer",
+  "repeatable": false,
+  "status": true,
+  "format": "custom",
+  "json": {
+    "Main": {
+      "logo": {
+        "type": "Image",
+        "config": {
+          "label": "Logo",
+          "placeholder": "Valgfri — hvis tom vises sitenavn som tekst"
+        }
+      },
+      "info_text": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Virksomhedstekst",
+          "placeholder": "Kort tekst under logo (fx tagline eller mission)",
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "columns": {
+        "type": "Slices",
+        "fieldset": "Kolonner",
+        "config": {
+          "choices": {
+            "footer_column_links": {
+              "type": "SharedSlice"
+            },
+            "footer_column_text": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      },
+      "copyright": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Copyright-tekst",
+          "placeholder": "Vises kun hvis udfyldt (fx © 2026 Firmanavn)",
+          "single": "paragraph,strong,em,hyperlink",
+          "allowTargetBlank": true
+        }
+      },
+      "legal_links": {
+        "type": "Link",
+        "config": {
+          "label": "Juridiske links",
+          "allowTargetBlank": true,
+          "allowText": true,
+          "repeat": true
+        }
+      }
+    }
+  }
+}

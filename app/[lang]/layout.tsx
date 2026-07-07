@@ -5,6 +5,7 @@ import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
 import { build_translation_url_map } from "@/src/lib/prismic/paths";
 import HeaderClassic from "@/slices/HeaderClassic";
 import type { EviHeaderSliceContext } from "@/src/components/header/types";
+import { FooterClassic } from "@/src/components/footer/FooterClassic";
 
 const HEADER_COMPONENTS = {
   header_classic: HeaderClassic,
@@ -105,8 +106,16 @@ export default async function Layout({
       <EviTestBench />
       {children}
 
-      {/* Temp footer — replace with real <EviFooter /> later */}
-      <footer></footer>
+      {ctx?.footer && (
+        <FooterClassic
+          footer={ctx.footer}
+          settings={ctx.settings}
+          linkResolver={ctx.link_resolver}
+          hostname={ctx.hostname}
+          homeHref={home_href}
+          allowBrandTranslation={ctx.settings?.data?.translate_brand === true}
+        />
+      )}
     </>
   );
 }

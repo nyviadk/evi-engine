@@ -205,6 +205,79 @@ interface BusinessDocumentData {
  */
 export type BusinessDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<BusinessDocumentData>, "business", Lang>;
 
+type FooterDocumentDataColumnsSlice = FooterColumnLinksSlice | FooterColumnTextSlice
+
+/**
+ * Content for Footer documents
+ */
+interface FooterDocumentData {
+	/**
+	 * Logo field in *Footer*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Valgfri — hvis tom vises sitenavn som tekst
+	 * - **API ID Path**: footer.logo
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	logo: prismic.ImageField<never>;
+	
+	/**
+	 * Virksomhedstekst field in *Footer*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under logo (fx tagline eller mission)
+	 * - **API ID Path**: footer.info_text
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	info_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonner field in *Footer*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: footer.columns[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/slices
+	 */
+	columns: prismic.SliceZone<FooterDocumentDataColumnsSlice>;
+	
+	/**
+	 * Copyright-tekst field in *Footer*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Vises kun hvis udfyldt (fx © 2026 Firmanavn)
+	 * - **API ID Path**: footer.copyright
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	copyright: prismic.RichTextField;
+	
+	/**
+	 * Juridiske links field in *Footer*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: footer.legal_links
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	legal_links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+}
+
+/**
+ * Footer document from Prismic
+ *
+ * - **API ID**: `footer`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FooterDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<FooterDocumentData>, "footer", Lang>;
+
 type NavigationDocumentDataSlicesSlice = HeaderClassicSlice
 
 /**
@@ -579,7 +652,103 @@ interface SettingsDocumentData {
  */
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
-export type AllDocumentTypes = BusinessDocument | NavigationDocument | PageDocument | SettingsDocument;
+export type AllDocumentTypes = BusinessDocument | FooterDocument | NavigationDocument | PageDocument | SettingsDocument;
+
+/**
+ * Primary content in *FooterColumnLinks → Default → Primary*
+ */
+export interface FooterColumnLinksSliceDefaultPrimary {
+	/**
+	 * Links field in *FooterColumnLinks → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: footer_column_links.default.primary.links
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+	
+	/**
+	 * Overskrift field in *FooterColumnLinks → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: fx Produkter, Om os, Support
+	 * - **API ID Path**: footer_column_links.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+}
+
+/**
+ * Default variation for FooterColumnLinks Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FooterColumnLinksSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FooterColumnLinksSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *FooterColumnLinks*
+ */
+type FooterColumnLinksSliceVariation = FooterColumnLinksSliceDefault
+
+/**
+ * FooterColumnLinks Shared Slice
+ *
+ * - **API ID**: `footer_column_links`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FooterColumnLinksSlice = prismic.SharedSlice<"footer_column_links", FooterColumnLinksSliceVariation>;
+
+/**
+ * Primary content in *FooterColumnText → Default → Primary*
+ */
+export interface FooterColumnTextSliceDefaultPrimary {
+	/**
+	 * Indhold field in *FooterColumnText → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Adresse, CVR, åbningstider osv.
+	 * - **API ID Path**: footer_column_text.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift field in *FooterColumnText → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: fx Kontakt, Åbningstider, Virksomhedsinfo
+	 * - **API ID Path**: footer_column_text.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+}
+
+/**
+ * Default variation for FooterColumnText Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FooterColumnTextSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FooterColumnTextSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *FooterColumnText*
+ */
+type FooterColumnTextSliceVariation = FooterColumnTextSliceDefault
+
+/**
+ * FooterColumnText Shared Slice
+ *
+ * - **API ID**: `footer_column_text`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FooterColumnTextSlice = prismic.SharedSlice<"footer_column_text", FooterColumnTextSliceVariation>;
 
 /**
  * Primary content in *HeaderClassic → Default → Primary*
@@ -657,6 +826,9 @@ declare module "@prismicio/client" {
 			BusinessDocument,
 			BusinessDocumentData,
 			BusinessDocumentDataSocialProfilesItem,
+			FooterDocument,
+			FooterDocumentData,
+			FooterDocumentDataColumnsSlice,
 			NavigationDocument,
 			NavigationDocumentData,
 			NavigationDocumentDataSlicesSlice,
@@ -667,6 +839,14 @@ declare module "@prismicio/client" {
 			SettingsDocumentData,
 			SettingsDocumentDataRedirectsItem,
 			AllDocumentTypes,
+			FooterColumnLinksSlice,
+			FooterColumnLinksSliceDefaultPrimary,
+			FooterColumnLinksSliceVariation,
+			FooterColumnLinksSliceDefault,
+			FooterColumnTextSlice,
+			FooterColumnTextSliceDefaultPrimary,
+			FooterColumnTextSliceVariation,
+			FooterColumnTextSliceDefault,
 			HeaderClassicSlice,
 			HeaderClassicSliceDefaultPrimary,
 			HeaderClassicSliceVariation,

@@ -113,26 +113,38 @@ export const get_evi_context = cache(async () => {
 
   // get_evi_tree bruges her så cache-entry'en kan deles med direkte tree-
   // konsumenter (sitemap). Inden i Promise.all bliver det stadig parallelt.
-  const [tree, settings, business, nav_in_lang] = await Promise.all([
-    get_evi_tree(),
-    client
-      .getSingle("settings", { lang: tenant.default_locale })
-      .catch(() => null),
-    client
-      .getSingle("business", { lang: tenant.default_locale })
-      .catch(() => null),
-    client.getSingle("navigation", { lang }).catch(() => null),
-  ]);
+  const [tree, settings, business, nav_in_lang, footer_in_lang] =
+    await Promise.all([
+      get_evi_tree(),
+      client
+        .getSingle("settings", { lang: tenant.default_locale })
+        .catch(() => null),
+      client
+        .getSingle("business", { lang: tenant.default_locale })
+        .catch(() => null),
+      client.getSingle("navigation", { lang }).catch(() => null),
+      client.getSingle("footer", { lang }).catch(() => null),
+    ]);
 
   // tree kan kun være null hvis tenant manglede — men base er allerede
   // tjekket. Vi narrower derfor strengt før vi bygger link_resolver.
   if (!tree) return null;
 
+  // Navigation og footer fetches i den ønskede locale først; falder tilbage
+  // til default_locale hvis oversættelsen ikke findes — så editoren ikke
+  // skal duplikere identisk chrome-indhold på tværs af sprog.
   const navigation =
     nav_in_lang ||
     (lang !== tenant.default_locale
       ? await client
           .getSingle("navigation", { lang: tenant.default_locale })
+          .catch(() => null)
+      : null);
+  const footer =
+    footer_in_lang ||
+    (lang !== tenant.default_locale
+      ? await client
+          .getSingle("footer", { lang: tenant.default_locale })
           .catch(() => null)
       : null);
 
@@ -145,6 +157,7 @@ export const get_evi_context = cache(async () => {
     settings,
     business,
     navigation,
+    footer,
   };
 });
 

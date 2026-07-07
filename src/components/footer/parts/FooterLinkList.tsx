@@ -1,0 +1,59 @@
+import { PrismicNextLink } from "@prismicio/next";
+import {
+  isFilled,
+  type LinkField,
+  type LinkResolverFunction,
+  type Repeatable,
+} from "@prismicio/client";
+import { EviStack } from "@/src/components/layout/EviStack";
+import { cn } from "@/src/lib/utils/cn";
+
+export type FooterLinkListProps = {
+  items: Repeatable<LinkField>;
+  linkResolver: LinkResolverFunction;
+  /** Layout axis. Vertical for column links; horizontal for legal links row. */
+  direction?: "col" | "row";
+  /** Only relevant when direction="row" — wrap onto new lines if too narrow. */
+  wrap?: boolean;
+  className?: string;
+};
+
+/**
+ * Semantic `<ul>` of Prismic links, laid out via EviStack for consistent
+ * gap/direction across the design system. Items missing a filled link OR
+ * label are silently skipped.
+ */
+export function FooterLinkList({
+  items,
+  linkResolver,
+  direction = "col",
+  wrap = false,
+  className,
+}: FooterLinkListProps): React.ReactElement {
+  return (
+    <EviStack
+      as="ul"
+      gap={direction === "row" ? "md" : "sm"}
+      direction={direction}
+      wrap={wrap}
+      className={cn("evi-footer-link-list list-none", className)}
+    >
+      {items.map((link, i) => {
+        if (!isFilled.link(link)) return null;
+        const label = isFilled.keyText(link.text) ? link.text : null;
+        if (!label) return null;
+        return (
+          <li key={i}>
+            <PrismicNextLink
+              field={link}
+              linkResolver={linkResolver}
+              className="text-sm text-current/70 no-underline hover:text-current focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {label}
+            </PrismicNextLink>
+          </li>
+        );
+      })}
+    </EviStack>
+  );
+}
