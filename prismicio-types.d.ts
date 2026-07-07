@@ -288,7 +288,7 @@ interface FooterDocumentData {
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Lys blød" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
 }
 
 /**
@@ -343,7 +343,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = never
+type PageDocumentDataSlicesSlice = HeroSimpleSlice
 
 /**
  * Content for Side documents
@@ -832,6 +832,75 @@ type HeaderClassicSliceVariation = HeaderClassicSliceDefault
  */
 export type HeaderClassicSlice = prismic.SharedSlice<"header_classic", HeaderClassicSliceVariation>;
 
+/**
+ * Primary content in *HeroSimple → Default → Primary*
+ */
+export interface HeroSimpleSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *HeroSimple → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sidens primære overskrift (h1)
+	 * - **API ID Path**: hero_simple.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *HeroSimple → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivende tekst under overskriften
+	 * - **API ID Path**: hero_simple.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Call-to-action field in *HeroSimple → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_simple.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Baggrundstema field in *HeroSimple → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: hero_simple.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for HeroSimple Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroSimpleSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HeroSimpleSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *HeroSimple*
+ */
+type HeroSimpleSliceVariation = HeroSimpleSliceDefault
+
+/**
+ * HeroSimple Shared Slice
+ *
+ * - **API ID**: `hero_simple`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroSimpleSlice = prismic.SharedSlice<"hero_simple", HeroSimpleSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -874,7 +943,11 @@ declare module "@prismicio/client" {
 			HeaderClassicSlice,
 			HeaderClassicSliceDefaultPrimary,
 			HeaderClassicSliceVariation,
-			HeaderClassicSliceDefault
+			HeaderClassicSliceDefault,
+			HeroSimpleSlice,
+			HeroSimpleSliceDefaultPrimary,
+			HeroSimpleSliceVariation,
+			HeroSimpleSliceDefault
 		}
 	}
 }

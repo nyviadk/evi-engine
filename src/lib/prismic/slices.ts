@@ -1,6 +1,9 @@
+import type { LinkResolverFunction } from "@prismicio/client";
+import { resolve_section_theme } from "@/src/lib/prismic/section-theme";
+
 export type SliceWithPrimary = {
   primary?: {
-    theme?: string;
+    background_theme?: string;
     backgroundSectionImage?: { url?: string | null };
     [key: string]: unknown;
   };
@@ -10,6 +13,14 @@ export interface SliceContext {
   theme: string;
   collapsePadding: boolean;
   isHero: boolean;
+}
+
+/** Delt context-shape som SliceZone på page-niveau sender til alle page-slices.
+ *  `sliceContexts` er optional — kun slices der bruger cross-slice info
+ *  (collapsePadding fx) læser den. Selvstændige slices ignorerer den. */
+export interface EviPageSliceContext {
+  linkResolver: LinkResolverFunction;
+  sliceContexts?: SliceContext[];
 }
 
 export interface EviColors {
@@ -35,19 +46,16 @@ export function compute_slice_contexts(
   colors?: EviColors,
 ): SliceContext[] {
   return slices.map((slice, index) => {
-    const theme = slice.primary?.theme || "light";
+    const theme = resolve_section_theme(slice.primary?.background_theme);
     const hasImage = Boolean(slice.primary?.backgroundSectionImage?.url);
 
     if (index === 0) return { theme, collapsePadding: false, isHero: true };
 
     const prev = slices[index - 1];
-    const prevTheme = prev.primary?.theme || "light";
+    const prevTheme = resolve_section_theme(prev.primary?.background_theme);
     const prevHasImage = Boolean(prev.primary?.backgroundSectionImage?.url);
 
-    // Only collapse within the same type (solid/soft/tint)
     const sameType = theme_type(theme) === theme_type(prevTheme);
-
-    // Compare by theme name first, then fall back to resolved color
     const sameVisual =
       sameType &&
       (theme === prevTheme ||

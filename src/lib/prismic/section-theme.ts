@@ -17,7 +17,6 @@ export const SECTION_THEME_MAP = {
   Mørk: "dark",
   Primær: "primary",
   Sekundær: "secondary",
-  "Lys blød": "light-soft",
   "Mørk blød": "dark-soft",
   "Primær blød": "primary-soft",
   "Sekundær blød": "secondary-soft",

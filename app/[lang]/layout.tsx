@@ -28,7 +28,10 @@ function build_language_urls(
   ctx: NonNullable<Awaited<ReturnType<typeof get_evi_context>>>,
 ): Record<string, string> {
   const translations = page
-    ? [{ id: page.id, uid: page.uid, lang: ctx.lang }, ...page.alternate_languages]
+    ? [
+        { id: page.id, uid: page.uid, lang: ctx.lang },
+        ...page.alternate_languages,
+      ]
     : [];
   const urls = build_translation_url_map(translations, ctx.tree, ctx.tenant);
 
@@ -64,9 +67,7 @@ export default async function Layout({
   // Fetch page (React.cache dedups with page.tsx's identical call — no extra
   // Prismic round-trip). Returns null when there's no tenant, no page, or the
   // uid doesn't exist in the current locale.
-  const page = ctx
-    ? await get_evi_page(prismic_uid, ctx.lang)
-    : null;
+  const page = ctx ? await get_evi_page(prismic_uid, ctx.lang) : null;
 
   const header_slices = ctx?.navigation?.data?.slices ?? [];
   const header_language_selector_enabled =
@@ -75,7 +76,9 @@ export default async function Layout({
     ctx?.footer?.data?.language_selector === "Slået til";
 
   const home_href =
-    ctx && ctx.lang === ctx.tenant.default_locale && !ctx.tenant.force_lang_prefix
+    ctx &&
+    ctx.lang === ctx.tenant.default_locale &&
+    !ctx.tenant.force_lang_prefix
       ? "/"
       : ctx
         ? `/${ctx.lang}`
@@ -108,8 +111,8 @@ export default async function Layout({
         />
       )}
 
-      <EviTestBench />
       {children}
+      <EviTestBench />
 
       {ctx?.footer && (
         <FooterClassic

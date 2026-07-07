@@ -25,7 +25,11 @@
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
-          "choices": {}
+          "choices": {
+            "hero_simple": {
+              "type": "SharedSlice"
+            }
+          }
         }
       }
     },

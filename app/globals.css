@@ -235,21 +235,6 @@
 
   /* B. Bløde (soft) temaer — altid 10% af farven mikset ind i light-basen
      Alle soft/tint bruger -on-light btn vars (baggrunden er tæt på light) */
-  .theme-light-soft {
-    --theme-bg: color-mix(in oklch, var(--color-light) 10%, var(--color-light));
-    --theme-text: var(--text-on-light-soft);
-    --theme-link: var(--theme-link-on-light);
-    --btn-primary-bg: var(--btn-primary-bg-on-light);
-    --btn-primary-text: var(--btn-primary-text-on-light);
-    --btn-primary-ink: var(--btn-primary-ink-on-light);
-    --btn-secondary-bg: var(--btn-secondary-bg-on-light);
-    --btn-secondary-text: var(--btn-secondary-text-on-light);
-    --btn-secondary-ink: var(--btn-secondary-ink-on-light);
-
-    background-color: var(--theme-bg);
-    color: var(--theme-text);
-    accent-color: var(--btn-primary-ink);
-  }
   .theme-dark-soft {
     --theme-bg: color-mix(in oklch, var(--color-dark) 10%, var(--color-light));
     --theme-text: var(--text-on-dark-soft);

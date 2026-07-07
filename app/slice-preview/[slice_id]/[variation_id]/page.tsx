@@ -35,7 +35,12 @@ export default async function SlicePreviewPage({
   const { slice_id, variation_id } = await params;
   const folder = snake_to_pascal(slice_id);
 
-  let Component: React.ComponentType<{ slice: unknown; context?: unknown }>;
+  let Component: React.ComponentType<{
+    slice: unknown;
+    context?: unknown;
+    index: number;
+    slices: unknown[];
+  }>;
   let slice: unknown;
   let context: unknown;
   let wrapperClassName = "inline-block p-8"; // default: tight crop, padded
@@ -64,7 +69,10 @@ export default async function SlicePreviewPage({
       data-testid="preview-target"
       className={`theme-light bg-evi-light text-evi-text-on-light ${wrapperClassName}`}
     >
-      <Component slice={slice} context={context} />
+      {/* index=0 + slices=[slice] matcher hvordan @prismicio/react's SliceZone
+          kalder komponenten (nødvendigt for page-slices der bruger
+          sliceContexts[index]). */}
+      <Component slice={slice} context={context} index={0} slices={[slice]} />
     </div>
   );
 }

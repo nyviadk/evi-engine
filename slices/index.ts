@@ -3,9 +3,11 @@
 import FooterColumnLinks from "./FooterColumnLinks";
 import FooterColumnText from "./FooterColumnText";
 import HeaderClassic from "./HeaderClassic";
+import HeroSimple from "./HeroSimple";
 
 export const components = {
 	footer_column_links: FooterColumnLinks,
 	footer_column_text: FooterColumnText,
-	header_classic: HeaderClassic
+	header_classic: HeaderClassic,
+	hero_simple: HeroSimple
 };
