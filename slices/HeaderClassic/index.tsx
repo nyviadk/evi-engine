@@ -7,25 +7,27 @@ import { NavList } from "@/src/components/header/parts/NavList";
 import { HeaderCTAButton } from "@/src/components/header/parts/HeaderCTAButton";
 import { LanguageSelector } from "@/src/components/header/parts/LanguageSelector";
 import { MobileDisclosure } from "@/src/components/header/parts/MobileDisclosure";
+import { EviHeaderInner } from "@/src/components/chrome/EviHeaderInner";
+import { EviHeaderShell } from "@/src/components/chrome/EviHeaderShell";
+import { EviStack } from "@/src/components/layout/EviStack";
 import type { EviHeaderSliceContext } from "@/src/components/header/types";
 
 /**
- * Classic header layout: brand on the left, nav + optional CTA on the right.
- * Mobile collapses to hamburger below the @3xl/nav container-query breakpoint.
- * Always solid background, never sticky — deliberate design constraint of this
- * variant. If a tenant wants sticky or transparent behavior, that will be a
- * separate variant (e.g. `HeaderSticky`, `HeaderTransparentHero`).
+ * Classic header layout — pure Evi component composition.
  *
- * Field-driven behavior (from Prismic slice):
- *  - `logo` — if filled, renders as image; otherwise falls back to site_name text
- *  - `nav_items` — repeatable link list
- *  - `cta_link` — if filled, renders a CTA button after the nav (desktop only)
+ * Composition:
+ *  - EviHeaderShell   → semantic <header> + theme + container-query context
+ *  - EviHeaderInner   → max-w + row + align+justify + padding
+ *  - BrandLink        → logo image or brand-text fallback
+ *  - EviStack row     → actions container (nav + language + CTA)
+ *  - MobileDisclosure → hamburger + panel on narrow container
+ *  - NavList          → menu links (via Prismic)
+ *  - LanguageSelector → optional <select> dropdown
+ *  - HeaderCTAButton  → optional EviButton (asChild PrismicNextLink)
  *
- * Static, slice-agnostic behavior (from navigation doc, via context):
- *  - `languageSelectorEnabled` — renders <LanguageSelector> if tenant has 2+ locales
- *
- * Context (from SliceZone) provides: linkResolver, settings, tenant, lang,
- * hostname, homeHref, currentPathname, languageSelectorEnabled, languageUrls.
+ * No raw Tailwind classes, no free JSX. Always solid, never sticky —
+ * variant-specific choices are hardcoded in the composition, not exposed
+ * as slice fields.
  */
 export default function HeaderClassic({
   slice,
@@ -49,12 +51,8 @@ export default function HeaderClassic({
   const allow_brand_translation = settings?.data?.translate_brand === true;
 
   return (
-    <header
-      data-slot="evi-header"
-      data-variant="classic"
-      className="evi-nav theme-light @container/nav relative border-b border-current/10"
-    >
-      <div className="mx-auto flex max-w-evi items-center justify-between gap-4 px-4 py-3">
+    <EviHeaderShell data-variant="classic">
+      <EviHeaderInner>
         <BrandLink
           logo={primary.logo}
           siteName={settings?.data?.site_name}
@@ -63,7 +61,7 @@ export default function HeaderClassic({
           allowTranslation={allow_brand_translation}
         />
 
-        <nav aria-label="Hovedmenu" className="flex items-center gap-3">
+        <EviStack as="nav" direction="row" align="center" gap="sm" aria-label="Hovedmenu">
           <MobileDisclosure>
             <NavList items={primary.nav_items} linkResolver={linkResolver} />
           </MobileDisclosure>
@@ -73,19 +71,14 @@ export default function HeaderClassic({
               locales={tenant.locales}
               currentLang={lang}
               languageUrls={languageUrls}
-              className="@3xl/nav:inline-block hidden"
             />
           )}
 
           {isFilled.link(primary.cta_link) && (
-            <HeaderCTAButton
-              link={primary.cta_link}
-              linkResolver={linkResolver}
-              className="@3xl/nav:inline-flex hidden"
-            />
+            <HeaderCTAButton link={primary.cta_link} linkResolver={linkResolver} />
           )}
-        </nav>
-      </div>
-    </header>
+        </EviStack>
+      </EviHeaderInner>
+    </EviHeaderShell>
   );
 }

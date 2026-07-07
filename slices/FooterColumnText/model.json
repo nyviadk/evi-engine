@@ -16,7 +16,7 @@
           "config": {
             "label": "Indhold",
             "placeholder": "Adresse, CVR, åbningstider osv.",
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
           }
         },
         "heading": {
@@ -24,7 +24,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "fx Kontakt, Åbningstider, Virksomhedsinfo",
-            "single": "heading3"
+            "single": "heading3,strong,em,hyperlink"
           }
         }
       }

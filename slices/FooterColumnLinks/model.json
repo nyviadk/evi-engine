@@ -25,7 +25,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "fx Produkter, Om os, Support",
-            "single": "heading3"
+            "single": "heading3,strong,em,hyperlink"
           }
         }
       }

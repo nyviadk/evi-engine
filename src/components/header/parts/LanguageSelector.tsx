@@ -67,7 +67,7 @@ export function LanguageSelector({
       onChange={handleChange}
       aria-label="Vælg sprog"
       className={cn(
-        "evi-nav-lang cursor-pointer rounded-evi border border-current/20 bg-transparent px-3 py-1.5 text-sm text-current focus-visible:outline-2 focus-visible:outline-offset-2",
+        "evi-nav-lang @3xl/nav:inline-block hidden cursor-pointer rounded-evi border border-current/20 bg-transparent px-3 py-1.5 text-sm text-current focus-visible:outline-2 focus-visible:outline-offset-2",
         className,
       )}
     >

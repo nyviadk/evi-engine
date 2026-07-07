@@ -5,6 +5,7 @@ import {
   type LinkResolverFunction,
 } from "@prismicio/client";
 import { EviButton } from "@/src/components/ui/EviButton";
+import { cn } from "@/src/lib/utils/cn";
 
 export type HeaderCTAButtonProps = {
   link: LinkField;
@@ -36,7 +37,7 @@ export function HeaderCTAButton({
       variant="primary"
       appearance="solid"
       size="sm"
-      className={className}
+      className={cn("@3xl/nav:inline-flex hidden", className)}
     >
       <PrismicNextLink field={link} linkResolver={linkResolver}>
         {label}

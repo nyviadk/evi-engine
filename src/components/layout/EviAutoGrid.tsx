@@ -1,9 +1,18 @@
 import { cn } from "@/src/lib/utils/cn";
 
-type AutoGridSize = "sm" | "md" | "lg";
+type AutoGridSize = "sm" | "md" | "lg" | "fluid";
 
 export type EviAutoGridProps = React.ComponentProps<"div"> & {
-  /** Minimum child-bredde — driver hvor mange kolonner der passer pr. container-bredde. */
+  /**
+   * Minimum child-bredde — driver hvor mange kolonner der passer pr.
+   * container-bredde.
+   *
+   * - "sm" / "md" / "lg" — fixed container-query breakpoints (250/320/400px min)
+   * - "fluid" — CSS-native `auto-fit + minmax(180px, 1fr)`; columns fit as
+   *   many as possible and wrap onto new rows without hardcoded breakpoints.
+   *   Best for content lists where the exact column count doesn't matter
+   *   (footer link columns, sponsor logos, etc.).
+   */
   size: AutoGridSize;
 };
 
@@ -15,6 +24,7 @@ const sizeClasses: Record<AutoGridSize, string> = {
   sm: "grid-cols-1 @[532px]/grid:grid-cols-2 @[814px]/grid:grid-cols-3 @[1096px]/grid:grid-cols-4 @[1660px]/grid:grid-cols-6",
   md: "grid-cols-1 @[672px]/grid:grid-cols-2 @[1024px]/grid:grid-cols-3 @[1376px]/grid:grid-cols-4",
   lg: "grid-cols-1 @[832px]/grid:grid-cols-2 @[1264px]/grid:grid-cols-3",
+  fluid: "grid-cols-[repeat(auto-fit,minmax(180px,1fr))]",
 };
 
 export function EviAutoGrid({

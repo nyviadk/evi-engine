@@ -3,7 +3,10 @@ import { isFilled } from "@prismicio/client";
 
 import { BrandLink } from "@/src/components/header/parts/BrandLink";
 import { FooterLinkList } from "@/src/components/footer/parts/FooterLinkList";
+import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
+import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSection } from "@/src/components/layout/EviSection";
+import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import type { EviContext } from "@/src/lib/prismic/context";
@@ -26,25 +29,27 @@ export type FooterClassicProps = {
 };
 
 /**
- * Classic footer layout.
+ * Classic footer layout — pure Evi component composition.
  *
  *  ┌─────────────────────────────────────────────────────────────┐
- *  │ brand+info  │  col1     col2     col3    (auto-wrap on narrow)
+ *  │ brand+info  │  col1     col2     col3    (auto-wrap)        │
  *  │             │  col4     col5                                │
  *  ├─────────────────────────────────────────────────────────────┤
  *  │ copyright text                    legal · privacy · terms   │
  *  └─────────────────────────────────────────────────────────────┘
  *
- * Left cell: brand mark + short company blurb from Prismic.
- * Right cell: SliceZone renders tenant's column slices (Links / Text)
- * inside a CSS grid using `auto-fit + minmax` — genuinely dynamic wrap
- * without hardcoded breakpoints or a "column count" field.
- * Bottom row: editable copyright (Rich Text) + legal-links row.
+ * All layout via Evi primitives:
+ *  - EviSection      → dark-themed section frame
+ *  - EviSplit 33-67  → brand pane (left) + columns pane (right)
+ *  - EviAutoGrid fluid → columns auto-fit + wrap
+ *  - EviRow          → bottom band with top-divider
+ *  - EviStack        → flex row/col with align/justify
+ *  - EviRichText     → copyright text
+ *  - BrandLink       → brand mark (image or text)
+ *  - FooterLinkList  → semantic list of links
  *
- * ALL text on this page flows through EviRichText or PrismicNextLink — no
- * hardcoded `<h1>`-`<h6>`/`<p>` tags in JSX. Rich Text fields are locked in
- * the Prismic model to the correct block type so editors can't emit the
- * wrong heading level (which would drift from evi-prose typography tokens).
+ * No raw Tailwind classes, no free JSX. Rule of thumb: if a line has
+ * a `className` that isn't just a data-slot passthrough, something is wrong.
  */
 export function FooterClassic({
   footer,
@@ -64,50 +69,44 @@ export function FooterClassic({
   const slice_context: EviFooterSliceContext = { linkResolver };
 
   return (
-    <footer data-slot="evi-footer" data-variant="classic">
-      <EviSection theme="dark">
-        {/* Brand block — left on desktop (4/12), full row on mobile */}
-        <div className="@3xl/section:col-span-4 col-span-12">
-          <EviStack gap="md">
-            <BrandLink
-              logo={footer.data.logo}
-              siteName={settings?.data?.site_name}
-              hostname={hostname}
-              homeHref={homeHref}
-              allowTranslation={allowBrandTranslation}
-              imageHeightClass="h-10"
-            />
-            <EviRichText
-              field={footer.data.info_text}
-              linkResolver={linkResolver}
-            />
-          </EviStack>
-        </div>
+    <EviSection theme="dark" data-slot="evi-footer" data-variant="classic">
+      <EviSplit preset="33-67" align="start">
+        <EviStack gap="md">
+          <BrandLink
+            logo={footer.data.logo}
+            siteName={settings?.data?.site_name}
+            hostname={hostname}
+            homeHref={homeHref}
+            allowTranslation={allowBrandTranslation}
+            imageHeightClass="h-10"
+          />
+          <EviRichText
+            field={footer.data.info_text}
+            linkResolver={linkResolver}
+          />
+        </EviStack>
 
-        {/* Columns grid — right on desktop (8/12), full row on mobile.
-            grid-cols-[repeat(auto-fit,minmax(180px,1fr))] wraps naturally:
-            at container widths that can't fit N × 180px, columns drop to
-            new rows without any media queries. */}
-        {has_columns && (
-          <div className="@3xl/section:col-span-8 col-span-12">
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-10">
-              <SliceZone
-                slices={footer.data.columns}
-                components={FOOTER_COLUMN_COMPONENTS}
-                context={slice_context}
-              />
-            </div>
-          </div>
+        {has_columns ? (
+          <EviAutoGrid size="fluid">
+            <SliceZone
+              slices={footer.data.columns}
+              components={FOOTER_COLUMN_COMPONENTS}
+              context={slice_context}
+            />
+          </EviAutoGrid>
+        ) : (
+          <EviStack />
         )}
+      </EviSplit>
 
-        {/* Bottom row: copyright + legal links. Skips render entirely if
-            neither is filled — no orphan border, no empty spacing. */}
-        {has_bottom_row && (
+      {has_bottom_row && (
+        <EviRow divider="top" padding="md">
           <EviStack
             direction="row"
             wrap
             gap="md"
-            className="col-span-12 items-center justify-between border-t border-current/10 pt-6"
+            align="center"
+            justify="between"
           >
             {has_copyright && (
               <EviRichText
@@ -124,8 +123,8 @@ export function FooterClassic({
               />
             )}
           </EviStack>
-        )}
-      </EviSection>
-    </footer>
+        </EviRow>
+      )}
+    </EviSection>
   );
 }
