@@ -2,6 +2,7 @@ import { SliceZone } from "@prismicio/react";
 import { isFilled } from "@prismicio/client";
 
 import { BrandLink } from "@/src/components/header/parts/BrandLink";
+import { FooterCopyright } from "@/src/components/footer/parts/FooterCopyright";
 import { FooterLinkList } from "@/src/components/footer/parts/FooterLinkList";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviRow } from "@/src/components/layout/EviRow";
@@ -109,7 +110,7 @@ export function FooterClassic({
             justify="between"
           >
             {has_copyright && (
-              <EviRichText
+              <FooterCopyright
                 field={footer.data.copyright}
                 linkResolver={linkResolver}
               />

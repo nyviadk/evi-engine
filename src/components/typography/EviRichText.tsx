@@ -43,6 +43,15 @@ type SharedProps = {
    * Sættes automatisk af `compute_slice_contexts` ud fra index.
    */
   isHero?: boolean;
+  /**
+   * Yderligere block-overrides der merges oveni EviRichText's built-ins.
+   * Caller wins ved overlap — så en override her overskriver den default
+   * heading- eller hyperlink-serializer.
+   *
+   * Bruges når en specifik render-usage har brug for ekstra transformation
+   * (fx FooterCopyright der prepender "© {year} " til paragraph-blocks).
+   */
+  extraComponents?: RichTextComponents;
 };
 
 export type EviRichTextRawProps = SharedProps;
@@ -68,6 +77,7 @@ function Raw({
   field,
   linkResolver,
   isHero,
+  extraComponents,
 }: EviRichTextRawProps): React.ReactElement | null {
   if (!isFilled.richText(field)) return null;
 
@@ -91,6 +101,7 @@ function Raw({
             {children}
           </PrismicNextLink>
         ),
+        ...extraComponents,
       }}
     />
   );
@@ -100,6 +111,7 @@ function Root({
   field,
   linkResolver,
   isHero,
+  extraComponents,
   className,
   ...props
 }: EviRichTextProps): React.ReactElement | null {
@@ -111,7 +123,12 @@ function Root({
       className={cn("evi-prose", className)}
       {...props}
     >
-      <Raw field={field} linkResolver={linkResolver} isHero={isHero} />
+      <Raw
+        field={field}
+        linkResolver={linkResolver}
+        isHero={isHero}
+        extraComponents={extraComponents}
+      />
     </div>
   );
 }

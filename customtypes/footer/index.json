@@ -38,8 +38,8 @@
       "copyright": {
         "type": "StructuredText",
         "config": {
-          "label": "Copyright-tekst",
-          "placeholder": "Vises kun hvis udfyldt (fx © 2026 Firmanavn)",
+          "label": "Copyright-navn",
+          "placeholder": "fx Firmanavn — © og år tilføjes automatisk",
           "single": "paragraph,strong,em,hyperlink",
           "allowTargetBlank": true
         }

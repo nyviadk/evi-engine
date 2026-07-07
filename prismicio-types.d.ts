@@ -245,10 +245,10 @@ interface FooterDocumentData {
 	columns: prismic.SliceZone<FooterDocumentDataColumnsSlice>;
 	
 	/**
-	 * Copyright-tekst field in *Footer*
+	 * Copyright-navn field in *Footer*
 	 *
 	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Vises kun hvis udfyldt (fx © 2026 Firmanavn)
+	 * - **Placeholder**: fx Firmanavn — © og år tilføjes automatisk
 	 * - **API ID Path**: footer.copyright
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
