@@ -52,6 +52,18 @@
           "allowText": true,
           "repeat": true
         }
+      },
+      "language_selector": {
+        "type": "Select",
+        "config": {
+          "label": "Sprogvælger",
+          "placeholder": "Vises kun hvis tenant har flere sprog",
+          "default_value": "Slået fra",
+          "options": [
+            "Slået fra",
+            "Slået til"
+          ]
+        }
       }
     }
   }

@@ -69,8 +69,10 @@ export default async function Layout({
     : null;
 
   const header_slices = ctx?.navigation?.data?.slices ?? [];
-  const language_selector_enabled =
+  const header_language_selector_enabled =
     ctx?.navigation?.data?.language_selector === "Slået til";
+  const footer_language_selector_enabled =
+    ctx?.footer?.data?.language_selector === "Slået til";
 
   const home_href =
     ctx && ctx.lang === ctx.tenant.default_locale && !ctx.tenant.force_lang_prefix
@@ -78,6 +80,9 @@ export default async function Layout({
       : ctx
         ? `/${ctx.lang}`
         : "/";
+
+  // Én gang for både header og footer — samme URL-map bruges begge steder.
+  const language_urls = ctx ? build_language_urls(page, ctx) : {};
 
   const header_context: EviHeaderSliceContext | null = ctx
     ? {
@@ -88,8 +93,8 @@ export default async function Layout({
         hostname: ctx.hostname,
         homeHref: home_href,
         currentPathname: current_pathname,
-        languageSelectorEnabled: language_selector_enabled,
-        languageUrls: build_language_urls(page, ctx),
+        languageSelectorEnabled: header_language_selector_enabled,
+        languageUrls: language_urls,
       }
     : null;
 
@@ -111,9 +116,13 @@ export default async function Layout({
           footer={ctx.footer}
           settings={ctx.settings}
           linkResolver={ctx.link_resolver}
+          tenant={ctx.tenant}
+          lang={ctx.lang}
           hostname={ctx.hostname}
           homeHref={home_href}
           allowBrandTranslation={ctx.settings?.data?.translate_brand === true}
+          languageSelectorEnabled={footer_language_selector_enabled}
+          languageUrls={language_urls}
         />
       )}
     </>

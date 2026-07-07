@@ -2,6 +2,7 @@ import { SliceZone } from "@prismicio/react";
 import { isFilled } from "@prismicio/client";
 
 import { BrandLink } from "@/src/components/header/parts/BrandLink";
+import { LanguageSelector } from "@/src/components/header/parts/LanguageSelector";
 import { FooterCopyright } from "@/src/components/footer/parts/FooterCopyright";
 import { FooterLinkList } from "@/src/components/footer/parts/FooterLinkList";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
@@ -24,9 +25,13 @@ export type FooterClassicProps = {
   footer: NonNullable<EviContext["footer"]>;
   settings: EviContext["settings"];
   linkResolver: EviContext["link_resolver"];
+  tenant: EviContext["tenant"];
+  lang: string;
   hostname: string;
   homeHref: string;
   allowBrandTranslation: boolean;
+  languageSelectorEnabled: boolean;
+  languageUrls: Record<string, string>;
 };
 
 /**
@@ -56,16 +61,23 @@ export function FooterClassic({
   footer,
   settings,
   linkResolver,
+  tenant,
+  lang,
   hostname,
   homeHref,
   allowBrandTranslation,
+  languageSelectorEnabled,
+  languageUrls,
 }: FooterClassicProps): React.ReactElement {
   const has_columns = footer.data.columns.length > 0;
   const has_copyright = isFilled.richText(footer.data.copyright);
   const has_legal_links = footer.data.legal_links.some((l) =>
     isFilled.link(l),
   );
-  const has_bottom_row = has_copyright || has_legal_links;
+  const has_language_selector =
+    languageSelectorEnabled && tenant.locales.length > 1;
+  const has_bottom_row =
+    has_copyright || has_legal_links || has_language_selector;
 
   const slice_context: EviFooterSliceContext = { linkResolver };
 
@@ -113,6 +125,13 @@ export function FooterClassic({
               <FooterCopyright
                 field={footer.data.copyright}
                 linkResolver={linkResolver}
+              />
+            )}
+            {has_language_selector && (
+              <LanguageSelector
+                locales={tenant.locales}
+                currentLang={lang}
+                languageUrls={languageUrls}
               />
             )}
             {has_legal_links && (

@@ -265,6 +265,18 @@ interface FooterDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	legal_links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+	
+	/**
+	 * Sprogvælger field in *Footer*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Vises kun hvis tenant har flere sprog
+	 * - **Default Value**: Slået fra
+	 * - **API ID Path**: footer.language_selector
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	language_selector: prismic.SelectField<"Slået fra" | "Slået til", "filled">;
 }
 
 /**
