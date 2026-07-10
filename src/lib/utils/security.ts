@@ -68,3 +68,23 @@ export function validate_hostname(raw: string): string | null {
   if (!HOSTNAME_PATTERN.test(raw)) return null;
   return raw.toLowerCase();
 }
+
+// 4. Strip'er XSS-vektorer fra SVG body-strings før dangerouslySetInnerHTML.
+export function sanitize_svg_body(body: string): string {
+  return body
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, "")
+    .replace(/<link\b[^>]*\/?>/gi, "")
+    .replace(/<foreignObject\b[^>]*>[\s\S]*?<\/foreignObject\s*>/gi, "")
+    .replace(/<(iframe|embed|object)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, "")
+    .replace(/<(?:iframe|embed|object)\b[^>]*\/?>/gi, "")
+    .replace(/\son\w+\s*=\s*(["'])(?:(?!\1).)*\1/gi, "")
+    .replace(/\son\w+\s*=\s*[^\s>]+/gi, "")
+    .replace(/(?:javascript|vbscript)\s*:/gi, "")
+    .replace(/data\s*:\s*(?:text\/html|image\/svg\+xml)/gi, "data:blocked")
+    .replace(/\s(?:xlink:)?href\s*=\s*(["'])(?:https?:|\/\/)[^"']*\1/gi, "")
+    .replace(/<animate\b[^>]*>[\s\S]*?<\/animate\s*>/gi, "")
+    .replace(/<animate\b[^>]*\/?>/gi, "")
+    .replace(/<set\b[^>]*>[\s\S]*?<\/set\s*>/gi, "")
+    .replace(/<set\b[^>]*\/?>/gi, "");
+}

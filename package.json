@@ -20,6 +20,13 @@
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.8.2",
+    "@iconify-json/bi": "^1.2.7",
+    "@iconify-json/heroicons": "^1.2.3",
+    "@iconify-json/iconoir": "^1.2.11",
+    "@iconify-json/lucide": "^1.2.116",
+    "@iconify-json/ph": "^1.2.2",
+    "@iconify-json/radix-icons": "^1.2.6",
+    "@iconify/utils": "^3.1.4",
     "@opennextjs/cloudflare": "^1.20.1",
     "@prismicio/client": "^7.21.8",
     "@prismicio/next": "^2.2.4",
