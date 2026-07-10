@@ -350,7 +350,7 @@
 
   .evi-prose {
     font-size: 1rem; /* 16px base */
-    line-height: 1.5; /* 24px rhythm unit */
+    line-height: 1.6; /* Modern body-min for læsbarhed på tværs af fonte */
     font-weight: 400; /* Regular — body weight */
     letter-spacing: 0.01em;
     overflow-wrap: break-word; /* Prevent long words/URLs from blowing out grid columns */
