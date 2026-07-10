@@ -630,7 +630,7 @@ interface SettingsDocumentData {
 	 * - **Tab**: Udseende og layout
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	font_select: prismic.SelectField<"System standard" | "Montserrat" | "Rethink Sans" | "Comfortaa" | "Poppins" | "Abel" | "Roboto" | "Open Sans" | "Inter" | "Lato", "filled">;
+	font_select: prismic.SelectField<"System standard" | "Montserrat" | "Rethink Sans" | "Comfortaa" | "Poppins" | "Abel" | "Roboto" | "Open Sans" | "Inter" | "Lato" | "Plus Jakarta Sans", "filled">;
 	
 	/**
 	 * Avanceret skrifttype (Bunny Fonts) field in *Indstillinger*

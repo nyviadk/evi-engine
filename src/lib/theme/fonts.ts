@@ -8,6 +8,7 @@ import {
   Roboto,
   Open_Sans,
   Lato,
+  Plus_Jakarta_Sans,
 } from "next/font/google";
 
 // preload: false bruges da vi ellers risikerer at Next js sender alle fonte med alligevel
@@ -39,6 +40,12 @@ export const fontRethink = Rethink_Sans({
 export const fontComfortaa = Comfortaa({
   subsets: ["latin"],
   variable: "--font-comfortaa",
+  display: "swap",
+  preload: false,
+});
+export const fontPlusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta-sans",
   display: "swap",
   preload: false,
 });
@@ -94,4 +101,8 @@ export const localFontMap: Record<string, { class: string; name: string }> = {
   Roboto: { class: fontRoboto.variable, name: "var(--font-roboto)" },
   "Open Sans": { class: fontOpenSans.variable, name: "var(--font-opensans)" },
   Lato: { class: fontLato.variable, name: "var(--font-lato)" },
+  "Plus Jakarta Sans": {
+    class: fontPlusJakartaSans.variable,
+    name: "var(--font-plus-jakarta-sans)",
+  },
 };
