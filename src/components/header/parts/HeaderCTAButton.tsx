@@ -13,23 +13,12 @@ export type HeaderCTAButtonProps = {
   className?: string;
 };
 
-/**
- * Optional CTA button in the header. Renders nothing when link is unfilled
- * or lacks label text — parent can drop it in unconditionally; the
- * component short-circuits internally.
- *
- * Styling comes from EviButton (variant + appearance + size) so the header
- * CTA scales with the rest of the button system — no hardcoded button
- * classes.
- */
 export function HeaderCTAButton({
   link,
   linkResolver,
   className,
 }: HeaderCTAButtonProps): React.ReactElement | null {
-  if (!isFilled.link(link)) return null;
-  const label = isFilled.keyText(link.text) ? link.text : null;
-  if (!label) return null;
+  if (!isFilled.link(link) || !isFilled.keyText(link.text)) return null;
 
   return (
     <EviButton
@@ -39,9 +28,7 @@ export function HeaderCTAButton({
       size="sm"
       className={cn("@3xl/nav:inline-flex hidden", className)}
     >
-      <PrismicNextLink field={link} linkResolver={linkResolver}>
-        {label}
-      </PrismicNextLink>
+      <PrismicNextLink field={link} linkResolver={linkResolver} />
     </EviButton>
   );
 }

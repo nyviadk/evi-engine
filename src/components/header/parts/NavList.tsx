@@ -28,9 +28,7 @@ export function NavList({
   return (
     <ul className={cn("evi-nav-list", className)}>
       {items.map((link, i) => {
-        if (!isFilled.link(link)) return null;
-        const label = isFilled.keyText(link.text) ? link.text : null;
-        if (!label) return null;
+        if (!isFilled.link(link) || !isFilled.keyText(link.text)) return null;
         return (
           <li key={i}>
             <PrismicNextLink
@@ -40,9 +38,7 @@ export function NavList({
                 "block rounded-evi px-3 py-2 text-current no-underline hover:bg-current/5 focus-visible:outline-2 focus-visible:outline-offset-2",
                 itemClassName,
               )}
-            >
-              {label}
-            </PrismicNextLink>
+            />
           </li>
         );
       })}

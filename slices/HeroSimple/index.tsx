@@ -1,5 +1,4 @@
-import type { Content } from "@prismicio/client";
-import { isFilled } from "@prismicio/client";
+import { isFilled, type Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
 
@@ -35,10 +34,8 @@ export default function HeroSimple({
     index,
   );
 
-  const cta_label =
-    isFilled.link(cta_link) && isFilled.keyText(cta_link.text)
-      ? cta_link.text
-      : null;
+  const has_cta =
+    isFilled.link(cta_link) && isFilled.keyText(cta_link.text);
 
   return (
     <EviSection
@@ -56,11 +53,9 @@ export default function HeroSimple({
             isHero={isHero}
             className="text-center"
           />
-          {isFilled.link(cta_link) && cta_label && (
+          {has_cta && (
             <EviButton asChild variant="primary" appearance="solid" size="lg">
-              <PrismicNextLink field={cta_link} linkResolver={linkResolver}>
-                {cta_label}
-              </PrismicNextLink>
+              <PrismicNextLink field={cta_link} linkResolver={linkResolver} />
             </EviButton>
           )}
         </EviStack>

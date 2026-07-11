@@ -39,18 +39,14 @@ export function FooterLinkList({
       className={cn("evi-footer-link-list list-none", className)}
     >
       {items.map((link, i) => {
-        if (!isFilled.link(link)) return null;
-        const label = isFilled.keyText(link.text) ? link.text : null;
-        if (!label) return null;
+        if (!isFilled.link(link) || !isFilled.keyText(link.text)) return null;
         return (
           <li key={i}>
             <PrismicNextLink
               field={link}
               linkResolver={linkResolver}
               className="text-sm text-current/70 no-underline hover:text-current focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {label}
-            </PrismicNextLink>
+            />
           </li>
         );
       })}
