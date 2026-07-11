@@ -20,7 +20,10 @@ import { webcrypto, randomBytes } from "crypto";
 // ==========================================
 const testDomain = "evitest.nyvia.dk"; // Interne test domæne
 // KV always stores Punycode (ift. æøå) - use punycoder.com
-const customDomain = "evi.nyvia.dk"; // Kundens domæne - ALTID UDEN WWW HER!
+// Kundens domæne - ALTID UDEN WWW HER! Lad være tom hvis endnu ukendt (fx
+// under dev-fase) — scriptet skipper KV-entryen. Re-kør scriptet med værdi
+// når live-domænet er kendt.
+const customDomain = "evi.nyvia.dk";
 
 const config = {
   repo: "evi-engine",
@@ -293,16 +296,22 @@ function push_to_kv(encrypted_config) {
       value: JSON.stringify(encrypted_config),
       metadata: { repo: encrypted_config.repo },
     },
-    {
+  ];
+  if (customDomain && customDomain.trim() !== "") {
+    bulk.push({
       key: customDomain,
       value: JSON.stringify(encrypted_config),
       metadata: { repo: encrypted_config.repo },
-    },
-  ];
+    });
+  }
   const tmp = "temp-tenant.json";
   writeFileSync(tmp, JSON.stringify(bulk));
 
-  console.log(`\n📤 Uploader ${testDomain} + ${customDomain} til KV...`);
+  const domains_msg =
+    bulk.length === 2
+      ? `${testDomain} + ${customDomain}`
+      : `${testDomain} (customDomain skippet — tom)`;
+  console.log(`\n📤 Uploader ${domains_msg} til KV...`);
   try {
     execSync(`npx wrangler kv bulk put ${tmp} --binding="TENANTS" --remote`, {
       stdio: "inherit",
