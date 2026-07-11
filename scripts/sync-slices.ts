@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
+import { webcrypto } from "crypto";
 import { Command } from "commander";
 import pLimit from "p-limit";
 import chalk from "chalk";
@@ -12,6 +13,61 @@ import type { TenantConfig, TenantMetadata } from "@/src/lib/kv/tenants";
 
 const API_BASE = "https://customtypes.prismic.io";
 const MAX_CONCURRENCY = 1;
+const DEV_VARS_KEY = "TOKEN_MASTER_KEY";
+
+// Master-key til at decrypt tenant-tokens fra KV. Cached så vi kun importerer én gang.
+let master_key_promise: Promise<CryptoKey> | null = null;
+
+function get_master_key(): Promise<CryptoKey> {
+  if (master_key_promise) return master_key_promise;
+  master_key_promise = (async () => {
+    const contents = fs.readFileSync(".dev.vars", "utf8");
+    const match = contents.match(
+      new RegExp(`^\\s*${DEV_VARS_KEY}\\s*=\\s*"?([^"\\r\\n]+)"?\\s*$`, "m"),
+    );
+    if (!match) {
+      throw new Error(
+        `${DEV_VARS_KEY} mangler i .dev.vars — kør scripts/push-tenant.mjs først`,
+      );
+    }
+    const raw = Buffer.from(match[1], "base64");
+    return webcrypto.subtle.importKey(
+      "raw",
+      raw,
+      { name: "AES-GCM" },
+      false,
+      ["decrypt"],
+    );
+  })();
+  return master_key_promise;
+}
+
+// Wrangler CLI-output kan indeholde banner-tekst før JSON.
+function extract_json(raw: string): string {
+  const first_brace = raw.indexOf("{");
+  const first_bracket = raw.indexOf("[");
+  const candidates = [first_brace, first_bracket].filter((i) => i >= 0);
+  if (candidates.length === 0) {
+    throw new Error(`Ingen JSON i wrangler-output:\n${raw.slice(0, 200)}`);
+  }
+  return raw.slice(Math.min(...candidates)).trim();
+}
+
+async function decrypt_token(encoded: string): Promise<string> {
+  const parts = encoded.split(":");
+  if (parts.length !== 3 || parts[0] !== "v1") {
+    throw new Error(`Uventet token-format (forventede v1:iv:ct)`);
+  }
+  const key = await get_master_key();
+  const iv = Buffer.from(parts[1], "base64");
+  const ct = Buffer.from(parts[2], "base64");
+  const pt = await webcrypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    key,
+    ct,
+  );
+  return new TextDecoder().decode(pt);
+}
 
 interface LocalResource {
   id: string;
@@ -44,7 +100,7 @@ function fetch_tenants_from_kv(target_repos: string[] | null): TenantRow[] {
   try {
     raw_list = execSync(
       "npx wrangler kv key list --binding TENANTS --remote",
-      { encoding: "utf-8", cwd: process.cwd() },
+      { encoding: "utf-8", cwd: process.cwd(), stdio: ["pipe", "pipe", "pipe"] },
     );
   } catch (error: any) {
     list_spinner.fail("Kunne ikke hente KV-liste.");
@@ -54,7 +110,7 @@ function fetch_tenants_from_kv(target_repos: string[] | null): TenantRow[] {
     );
   }
 
-  const entries: KVKeyEntry[] = JSON.parse(raw_list.trim());
+  const entries: KVKeyEntry[] = JSON.parse(extract_json(raw_list));
 
   const relevant_entries = target_repos
     ? entries.filter(
@@ -72,9 +128,13 @@ function fetch_tenants_from_kv(target_repos: string[] | null): TenantRow[] {
     try {
       const raw_value = execSync(
         `npx wrangler kv key get "${entry.name}" --binding TENANTS --remote`,
-        { encoding: "utf-8", cwd: process.cwd() },
+        {
+          encoding: "utf-8",
+          cwd: process.cwd(),
+          stdio: ["pipe", "pipe", "pipe"],
+        },
       );
-      const config = JSON.parse(raw_value.trim()) as TenantConfig;
+      const config = JSON.parse(extract_json(raw_value)) as TenantConfig;
 
       if (!config.repo || !config.prismic_write_api_token) {
         fetch_spinner.warn(
@@ -169,8 +229,12 @@ class PrismicSyncClient {
       throw new Error(`Prismic API Error (${res.status}): ${errorText}`);
     }
 
-    if (res.status === 204) return null; // No Content
-    return res.json();
+    if (res.status === 204) return null;
+
+    // 200 med tom body (fx empty collection) → returner null.
+    const text = await res.text();
+    if (!text.trim()) return null;
+    return JSON.parse(text) as T;
   }
 
   async sync(
@@ -272,11 +336,12 @@ async function main() {
 
   const tasks = tenants.map((tenant) => {
     return limit(async () => {
-      const client = new PrismicSyncClient(
-        tenant.repo,
-        tenant.prismic_write_api_token,
-      );
       try {
+        // Tokens i KV er encrypted (v1:iv:ct). Decrypt før brug som Bearer.
+        const plaintext_token = await decrypt_token(
+          tenant.prismic_write_api_token,
+        );
+        const client = new PrismicSyncClient(tenant.repo, plaintext_token);
         await client.sync(localSlices, localTypes, !!options.dryRun);
         return { hostname: tenant.hostname, repo: tenant.repo, success: true };
       } catch (error: any) {
