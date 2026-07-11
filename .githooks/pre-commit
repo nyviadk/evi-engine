@@ -1,6 +1,6 @@
 #!/bin/sh
 # Pre-commit hook: forhindrer at scripts/push-tenant.mjs committes med
-# rigtige Prismic-tokens. Filens config skal indeholde placeholder-strings
+# tenant-specifikke værdier. Filens config skal indeholde default-værdier
 # før commit kan gennemføres.
 
 STAGED_FILE="scripts/push-tenant.mjs"
@@ -8,28 +8,31 @@ STAGED_FILE="scripts/push-tenant.mjs"
 if git diff --cached --name-only --diff-filter=ACMRT | grep -q "^${STAGED_FILE}\$"; then
   STAGED_CONTENT=$(git show ":${STAGED_FILE}")
 
+  REQUIRED_TEST_DOMAIN='const testDomain = "evitest.nyvia.dk";'
+  REQUIRED_CUSTOM_DOMAIN='const customDomain = "evi.nyvia.dk";'
+  REQUIRED_REPO='repo: "evi-engine",'
   REQUIRED_READ='prismic_token: "prismic_token",'
   REQUIRED_WRITE='prismic_write_api_token: "prismic_write_api_token",'
 
-  if ! echo "${STAGED_CONTENT}" | grep -qF "${REQUIRED_READ}"; then
-    echo ""
-    echo "❌ Pre-commit blokerer: scripts/push-tenant.mjs har ikke placeholder for prismic_token"
-    echo "   Kræver præcis: ${REQUIRED_READ}"
-    echo "   Erstat dit rigtige token med placeholder før commit."
-    echo ""
-    echo "   (For at bypasse: git commit --no-verify — kun hvis du VED hvad du gør)"
-    exit 1
-  fi
+  check_field() {
+    LABEL="$1"
+    VALUE="$2"
+    if ! echo "${STAGED_CONTENT}" | grep -qF "${VALUE}"; then
+      echo ""
+      echo "❌ Pre-commit blokerer: scripts/push-tenant.mjs mangler default for ${LABEL}"
+      echo "   Kræver præcis: ${VALUE}"
+      echo "   Genindsæt default-værdien før commit."
+      echo ""
+      echo "   (For at bypasse: git commit --no-verify — kun hvis du VED hvad du gør)"
+      exit 1
+    fi
+  }
 
-  if ! echo "${STAGED_CONTENT}" | grep -qF "${REQUIRED_WRITE}"; then
-    echo ""
-    echo "❌ Pre-commit blokerer: scripts/push-tenant.mjs har ikke placeholder for prismic_write_api_token"
-    echo "   Kræver præcis: ${REQUIRED_WRITE}"
-    echo "   Erstat dit rigtige token med placeholder før commit."
-    echo ""
-    echo "   (For at bypasse: git commit --no-verify — kun hvis du VED hvad du gør)"
-    exit 1
-  fi
+  check_field "testDomain" "${REQUIRED_TEST_DOMAIN}"
+  check_field "customDomain" "${REQUIRED_CUSTOM_DOMAIN}"
+  check_field "repo" "${REQUIRED_REPO}"
+  check_field "prismic_token" "${REQUIRED_READ}"
+  check_field "prismic_write_api_token" "${REQUIRED_WRITE}"
 fi
 
 exit 0
