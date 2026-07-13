@@ -883,6 +883,17 @@
   }
 }
 
+/* ── EviPhoneMockup: opt out af squircle-reset ──
+   Global reset sætter corner-shape: squircle på alle elementer, hvilket
+   rendrer border-radius som superellipse. For iPhone-mockup skal hjørner
+   være ægte cirkulær bue (round), ellers ser 48px frame-radius klumpet
+   ud og kamera med border-radius: 50% bliver squircle-firkant i stedet
+   for cirkel. */
+[data-slot="evi-phone-mockup"],
+[data-slot="evi-phone-mockup"] * {
+  corner-shape: round;
+}
+
 /* ── Respekt for brugere med bevægelses-sensitivitet ──
    WCAG 2.3.3. Slukker animationer og transitions globalt for brugere
    der har "reducer bevægelse" slået til i OS-indstillingerne. */

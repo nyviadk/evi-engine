@@ -1,13 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { ImageField } from "@prismicio/client";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviCard } from "@/src/components/ui/EviCard";
+import { EviPhoneMockup } from "@/src/components/ui/EviPhoneMockup";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
+
+// Placeholder screenshot i iPhone-portrait ratio.
+const MOCK_PHONE_IMAGE = {
+  id: "testbench-phone",
+  url: "https://picsum.photos/seed/evi-phone/720/1560",
+  alt: "Test screenshot",
+  copyright: null,
+  dimensions: { width: 720, height: 1560 },
+} as unknown as ImageField;
 
 // ── Client-side WCAG contrast (mirrors src/lib/colors.ts) ──
 
@@ -60,7 +71,7 @@ function mix_rgb(
 }
 
 function rgb_to_hex(r: number, g: number, b: number) {
-  return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
+  return `#${[r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
 }
 
 function compute_btn_on_section(
@@ -229,7 +240,7 @@ export function EviTestBench() {
     <>
       {/* Floating color picker bar */}
       <div
-        className="sm:sticky sm:top-0 sm:left-0 sm:right-0 sm:z-50 flex flex-wrap sm:items-center sm:justify-center gap-6 px-4 py-3"
+        className="flex flex-wrap gap-6 px-4 py-3 sm:sticky sm:inset-x-0 sm:top-0 sm:z-50 sm:items-center sm:justify-center"
         style={{ background: "rgba(0,0,0,0.85)", color: "#fff", fontSize: 13 }}
       >
         <label className="flex items-center gap-2">
@@ -282,18 +293,18 @@ export function EviTestBench() {
             theme={ctx.theme}
             collapsePadding={ctx.collapsePadding}
           >
-            <p className="col-span-12 text-sm opacity-50 mb-2">
+            <p className="col-span-12 mb-2 text-sm opacity-50">
               #{index + 1} — theme-{ctx.theme}
               {ctx.collapsePadding && " — pt collapsed (same as above)"}
             </p>
             {/* ── Typography demo (evi-prose) ── */}
-            <div className="col-span-12 evi-prose max-w-prose mb-8">
+            <div className="evi-prose col-span-12 mb-8 max-w-prose">
               <h1>Heading 1 — theme-{ctx.theme}</h1>
               <p>
                 Denne tekst demonstrerer det fulde typografi-system. Brødteksten
                 bruger 16px / 1rem med en linjehøjde på 1.5 (24px rytme-enhed).
-                Her er et <a href="#link-demo">inline link med underline</a>{" "}
-                der reagerer på hover.
+                Her er et <a href="#link-demo">inline link med underline</a> der
+                reagerer på hover.
               </p>
               <h2>Heading 2 — sektion</h2>
               <p>
@@ -343,13 +354,13 @@ export function EviTestBench() {
             <EviStack gap="lg" className="col-span-12 mb-4">
               {(["primary", "secondary", "neutral"] as const).map((variant) => (
                 <EviStack key={variant} gap="sm">
-                  <p className="text-xs opacity-40 uppercase">{variant}</p>
+                  <p className="text-xs uppercase opacity-40">{variant}</p>
                   {(["sm", "md", "lg"] as const).map((size) => (
                     <div
                       key={size}
-                      className="flex items-center gap-4 flex-wrap"
+                      className="flex flex-wrap items-center gap-4"
                     >
-                      <span className="text-xs opacity-40 w-8">{size}</span>
+                      <span className="w-8 text-xs opacity-40">{size}</span>
                       <EviButton
                         variant={variant}
                         appearance="solid"
@@ -418,8 +429,8 @@ export function EviTestBench() {
                   {g[i].collapsePadding && " — pt collapsed"}
                 </p>
                 <EviSplit preset={preset}>
-                  <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm opacity-60 mb-2">
+                  <div className="theme-surface-neutral rounded-evi p-6">
+                    <p className="mb-2 text-sm opacity-60">
                       Venstre ({preset.split("-")[0]}%)
                     </p>
                     <p>
@@ -429,8 +440,8 @@ export function EviTestBench() {
                       exercitation.
                     </p>
                   </div>
-                  <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm opacity-60 mb-2">
+                  <div className="theme-surface-neutral rounded-evi p-6">
+                    <p className="mb-2 text-sm opacity-60">
                       Højre ({preset.split("-")[1]}%)
                     </p>
                     <p>Kort tekst til sammenligning.</p>
@@ -451,8 +462,8 @@ export function EviTestBench() {
                   {g[5 + i].collapsePadding && " — pt collapsed"}
                 </p>
                 <EviSplit preset="60-40" align={align}>
-                  <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm opacity-60 mb-2">
+                  <div className="theme-surface-neutral rounded-evi p-6">
+                    <p className="mb-2 text-sm opacity-60">
                       Venstre — lang tekst
                     </p>
                     <p>
@@ -466,8 +477,8 @@ export function EviTestBench() {
                       esse cillum dolore eu fugiat nulla pariatur.
                     </p>
                   </div>
-                  <div className="rounded-evi theme-surface-neutral p-6">
-                    <p className="text-sm opacity-60 mb-2">Højre — kort</p>
+                  <div className="theme-surface-neutral rounded-evi p-6">
+                    <p className="mb-2 text-sm opacity-60">Højre — kort</p>
                     <p>Kort indhold.</p>
                   </div>
                 </EviSplit>
@@ -514,10 +525,10 @@ export function EviTestBench() {
                 {Array.from({ length: 8 }, (_, i) => (
                   <div
                     key={i}
-                    className="rounded-evi theme-surface-neutral p-4 text-center"
+                    className="theme-surface-neutral rounded-evi p-4 text-center"
                   >
-                    <div className="h-12 w-12 mx-auto rounded-evi theme-surface-neutral opacity-60" />
-                    <p className="text-xs opacity-60 mt-2">Logo {i + 1}</p>
+                    <div className="theme-surface-neutral mx-auto size-12 rounded-evi opacity-60" />
+                    <p className="mt-2 text-xs opacity-60">Logo {i + 1}</p>
                   </div>
                 ))}
               </EviAutoGrid>
@@ -535,11 +546,11 @@ export function EviTestBench() {
                 {Array.from({ length: 7 }, (_, i) => (
                   <div
                     key={i}
-                    className="rounded-evi theme-surface-neutral p-6"
+                    className="theme-surface-neutral rounded-evi p-6"
                   >
-                    <div className="h-32 rounded-evi theme-surface-neutral opacity-60 mb-3" />
+                    <div className="theme-surface-neutral mb-3 h-32 rounded-evi opacity-60" />
                     <p className="font-semibold">Feature {i + 1}</p>
-                    <p className="text-sm opacity-70 mt-1">
+                    <p className="mt-1 text-sm opacity-70">
                       Kort beskrivelse af denne feature.
                     </p>
                   </div>
@@ -559,13 +570,13 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={4}
-                    className="rounded-evi theme-surface-neutral p-8 text-center"
+                    className="theme-surface-neutral rounded-evi p-8 text-center"
                   >
-                    <p className="text-xs opacity-50 uppercase tracking-wider">
+                    <p className="text-xs tracking-wider uppercase opacity-50">
                       {name}
                     </p>
-                    <p className="text-4xl font-bold mt-2">{(i + 1) * 99} kr</p>
-                    <p className="text-sm opacity-70 mt-1">per måned</p>
+                    <p className="mt-2 text-4xl font-bold">{(i + 1) * 99} kr</p>
+                    <p className="mt-1 text-sm opacity-70">per måned</p>
                     <div className="mt-6">
                       <EviButton
                         variant="primary"
@@ -612,11 +623,11 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={4}
-                    className="rounded-evi theme-surface-neutral p-4"
+                    className="theme-surface-neutral rounded-evi p-4"
                   >
-                    <div className="h-24 rounded-evi theme-surface-neutral opacity-60" />
-                    <h3 className="text-lg font-semibold mt-3">{item.title}</h3>
-                    <p className="text-sm opacity-70 mt-1">{item.desc}</p>
+                    <div className="theme-surface-neutral h-24 rounded-evi opacity-60" />
+                    <h3 className="mt-3 text-lg font-semibold">{item.title}</h3>
+                    <p className="mt-1 text-sm opacity-70">{item.desc}</p>
                     <div className="mt-3">
                       <EviButton variant="primary" appearance="solid" size="sm">
                         Læs mere
@@ -653,10 +664,10 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={3}
-                    className="rounded-evi theme-surface-neutral p-6"
+                    className="theme-surface-neutral rounded-evi p-6"
                   >
                     <h3 className="text-lg font-semibold">{item.title}</h3>
-                    <p className="text-sm opacity-70 mt-1">{item.desc}</p>
+                    <p className="mt-1 text-sm opacity-70">{item.desc}</p>
                     <div className="mt-4">
                       <EviButton
                         variant="primary"
@@ -700,10 +711,10 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={2}
-                    className="rounded-evi theme-surface-neutral p-4"
+                    className="theme-surface-neutral rounded-evi p-4"
                   >
                     <h4 className="font-semibold">{item.title}</h4>
-                    <p className="text-sm opacity-70 mt-1">{item.desc}</p>
+                    <p className="mt-1 text-sm opacity-70">{item.desc}</p>
                   </EviCard>
                 ))}
               </EviAutoGrid>
@@ -732,13 +743,13 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={4}
-                    className="rounded-evi theme-surface-neutral p-6"
+                    className="theme-surface-neutral rounded-evi p-6"
                   >
-                    <div className="h-20 rounded-evi theme-surface-neutral opacity-60" />
-                    <h3 className="text-lg font-semibold mt-3">{item.title}</h3>
+                    <div className="theme-surface-neutral h-20 rounded-evi opacity-60" />
+                    <h3 className="mt-3 text-lg font-semibold">{item.title}</h3>
                     <div>
                       {item.desc && (
-                        <p className="text-sm opacity-70 mt-1">{item.desc}</p>
+                        <p className="mt-1 text-sm opacity-70">{item.desc}</p>
                       )}
                     </div>
                     <div className="mt-3">
@@ -766,22 +777,22 @@ export function EviTestBench() {
               </p>
               <EviSplit preset="67-33">
                 <div>
-                  <p className="text-sm opacity-60 mb-4">
+                  <p className="mb-4 text-sm opacity-60">
                     67% pane — AutoGrid reagerer på sin egen bredde
                   </p>
                   <EviAutoGrid size="sm">
                     {Array.from({ length: 6 }, (_, i) => (
                       <div
                         key={i}
-                        className="rounded-evi theme-surface-neutral p-4 text-center"
+                        className="theme-surface-neutral rounded-evi p-4 text-center"
                       >
                         <p className="text-sm opacity-60">Item {i + 1}</p>
                       </div>
                     ))}
                   </EviAutoGrid>
                 </div>
-                <div className="rounded-evi theme-surface-neutral p-6">
-                  <p className="text-sm opacity-60 mb-2">33% sidebar</p>
+                <div className="theme-surface-neutral rounded-evi p-6">
+                  <p className="mb-2 text-sm opacity-60">33% sidebar</p>
                   <p>
                     AutoGrid i venstre pane reagerer på sin egen bredde, ikke
                     sektionens.
@@ -799,8 +810,8 @@ export function EviTestBench() {
                 EviCard i 67%-pane
               </p>
               <EviSplit preset="33-67">
-                <div className="rounded-evi theme-surface-neutral p-6">
-                  <p className="text-sm opacity-60 mb-2">33% sidebar</p>
+                <div className="theme-surface-neutral rounded-evi p-6">
+                  <p className="mb-2 text-sm opacity-60">33% sidebar</p>
                   <p>Navigation, filtre, eller andet smalt indhold.</p>
                 </div>
                 <div>
@@ -817,10 +828,10 @@ export function EviTestBench() {
                       <EviCard
                         key={i}
                         rows={3}
-                        className="rounded-evi theme-surface-neutral p-4"
+                        className="theme-surface-neutral rounded-evi p-4"
                       >
                         <h4 className="font-semibold">{item.title}</h4>
-                        <p className="text-sm opacity-70 mt-1">{item.desc}</p>
+                        <p className="mt-1 text-sm opacity-70">{item.desc}</p>
                         <div className="mt-2">
                           <EviButton
                             variant="primary"
@@ -861,10 +872,10 @@ export function EviTestBench() {
                       <EviCard
                         key={i}
                         rows={2}
-                        className="rounded-evi theme-surface-neutral p-4"
+                        className="theme-surface-neutral rounded-evi p-4"
                       >
                         <p className="font-semibold">Card {i + 1}</p>
-                        <p className="text-sm opacity-70 mt-1">
+                        <p className="mt-1 text-sm opacity-70">
                           Skal stå i 1 kolonne.
                         </p>
                       </EviCard>
@@ -896,7 +907,7 @@ export function EviTestBench() {
                       Primær solid
                     </EviButton>
                   </div>
-                  <div className="rounded-evi theme-surface-neutral p-6">
+                  <div className="theme-surface-neutral rounded-evi p-6">
                     <p className="text-sm opacity-70">
                       Højre kolonne med surface-neutral baggrund.
                     </p>
@@ -919,7 +930,7 @@ export function EviTestBench() {
               theme={g[24].theme}
               collapsePadding={g[24].collapsePadding}
             >
-              <div className="col-span-12 evi-prose max-w-prose">
+              <div className="evi-prose col-span-12 max-w-prose">
                 <h2>H. Full composition — flere blokke i én sektion</h2>
                 <p>
                   Denne sektion demonstrerer gap-y mellem stakkede children:
@@ -928,14 +939,14 @@ export function EviTestBench() {
                 </p>
               </div>
               <EviSplit preset="50-50" align="center">
-                <div className="rounded-evi theme-surface-neutral p-6">
-                  <p className="font-semibold mb-2">Venstre blok</p>
+                <div className="theme-surface-neutral rounded-evi p-6">
+                  <p className="mb-2 font-semibold">Venstre blok</p>
                   <p className="text-sm opacity-70">
                     Denne blok er en del af et 50-50 split midt i sektionen.
                   </p>
                 </div>
-                <div className="rounded-evi theme-surface-neutral p-6">
-                  <p className="font-semibold mb-2">Højre blok</p>
+                <div className="theme-surface-neutral rounded-evi p-6">
+                  <p className="mb-2 font-semibold">Højre blok</p>
                   <p className="text-sm opacity-70">Og her er højre side.</p>
                 </div>
               </EviSplit>
@@ -944,10 +955,10 @@ export function EviTestBench() {
                   <EviCard
                     key={i}
                     rows={3}
-                    className="rounded-evi theme-surface-neutral p-4"
+                    className="theme-surface-neutral rounded-evi p-4"
                   >
                     <h4 className="font-semibold">Kort {i + 1}</h4>
-                    <p className="text-sm opacity-70 mt-1">
+                    <p className="mt-1 text-sm opacity-70">
                       Under splittet — samme sektion, automatisk gap-y.
                     </p>
                     <div className="mt-2">
@@ -992,11 +1003,11 @@ export function EviTestBench() {
                   key={i}
                   className={
                     block.width === 2
-                      ? "col-span-12 md:col-span-8 rounded-evi theme-surface-neutral p-6"
-                      : "col-span-12 md:col-span-4 rounded-evi theme-surface-neutral p-6"
+                      ? "theme-surface-neutral col-span-12 rounded-evi p-6 md:col-span-8"
+                      : "theme-surface-neutral col-span-12 rounded-evi p-6 md:col-span-4"
                   }
                 >
-                  <p className="text-sm opacity-60 mb-2">{block.label}</p>
+                  <p className="mb-2 text-sm opacity-60">{block.label}</p>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -1008,6 +1019,162 @@ export function EviTestBench() {
           </>
         );
       })()}
+
+      {/* EviPhoneMockup — variationer for real-world scenarier */}
+      <EviSection theme="light" collapsePadding>
+        <EviStack gap="md" className="col-span-12">
+          <h2 className="text-2xl font-bold">EviPhoneMockup — variationer</h2>
+          <p className="text-sm opacity-70">
+            Rotationer, 3D-perspektiv, farvet glow og stacked layouts. Alt
+            styret via className på mockup&apos;en — komponenten selv er ren.
+          </p>
+        </EviStack>
+
+        {/* 1. Solo hero — standard */}
+        <div className="col-span-12">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">Solo hero</p>
+            <EviPhoneMockup field={MOCK_PHONE_IMAGE} />
+          </EviStack>
+        </div>
+
+        {/* 2. Tilted par — konvergerende vinkler, klassisk app-store look */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,40cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              Tilted par — konvergerende (rotate ±6°)
+            </p>
+            <div className="flex justify-center gap-[calc(var(--evi-phone-w)*0.09)]">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="rotate-6"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="-rotate-6"
+              />
+            </div>
+          </EviStack>
+        </div>
+
+        {/* 3. 3D perspektiv — som fra siden, giver dybde */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,70cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              3D perspektiv (rotateY 18°)
+            </p>
+            <div className="flex justify-center perspective-[1400px]">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="transform-[rotateY(18deg)]"
+              />
+            </div>
+          </EviStack>
+        </div>
+
+        {/* 4. Ryg til ryg — 3D rotateY så fronts vender udad, backs vender ind */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,44cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              Ryg til ryg — 3D rotateY ±25° (fronts udad, backs indad)
+            </p>
+            <div className="flex justify-center gap-[calc(var(--evi-phone-w)*0.067)] perspective-[1400px]">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="transform-[rotateY(-25deg)]"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="transform-[rotateY(25deg)]"
+              />
+            </div>
+          </EviStack>
+        </div>
+
+        {/* 5a. Fanned stack — konvergerende (tops overlap, bunden splitter) */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,32cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              Fanned stack — konvergerende (default origin ±12°)
+            </p>
+            <div className="flex justify-center">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="mr-[calc(var(--evi-phone-w)*-0.31)] rotate-12"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="relative z-10"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="ml-[calc(var(--evi-phone-w)*-0.31)] -rotate-12"
+              />
+            </div>
+          </EviStack>
+        </div>
+
+        {/* 5b. Fanned stack — origin-top, bunden svinger ud (håndviftefan) */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,26cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              Fanned stack — origin-top (tops aligned, bunden svinger ud ±12°)
+            </p>
+            <div className="flex justify-center">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="mr-[calc(var(--evi-phone-w)*-0.089)] origin-top -rotate-12"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="relative z-10"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="ml-[calc(var(--evi-phone-w)*-0.089)] origin-top rotate-12"
+              />
+            </div>
+          </EviStack>
+        </div>
+
+        {/* 6. Masked showcase — tops synlige, bunden clippet */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,26cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              Masked showcase — tops synlige, bunden clippet (origin-top ±15°)
+            </p>
+            <div className="relative flex h-[calc(var(--evi-phone-w)*1.39)] w-full max-w-300 items-start justify-center overflow-hidden rounded-evi bg-linear-to-b from-evi-primary/25 to-evi-primary/5 pt-[calc(var(--evi-phone-w)*0.178)]">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="mr-[calc(var(--evi-phone-w)*-0.178)] origin-top -rotate-15"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="relative z-10 origin-top"
+              />
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="ml-[calc(var(--evi-phone-w)*-0.178)] origin-top rotate-15"
+              />
+            </div>
+          </EviStack>
+        </div>
+
+        {/* 6. Floating — subtle skew + extra dybde-skygge */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,70cqw)]">
+          <EviStack gap="sm" align="center">
+            <p className="text-sm font-medium opacity-70">
+              Floating — skewY + extra dybde
+            </p>
+            <div className="filter-[drop-shadow(0_50px_60px_rgb(0_0_0/0.35))]">
+              <EviPhoneMockup
+                field={MOCK_PHONE_IMAGE}
+                className="transform-[rotate(-3deg)_skewY(-2deg)]"
+              />
+            </div>
+          </EviStack>
+        </div>
+      </EviSection>
     </>
   );
 }
