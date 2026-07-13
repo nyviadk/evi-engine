@@ -111,6 +111,25 @@ function phoneStyle(
 }
 
 /**
+ * Lodret plads (komposition-mode) så roterende frames / skygger ikke dækker
+ * teksten over/under. Rotation udvider bounding-boxen lodret; origin-top
+ * svinger bunden langt ned; floating har en dyb drop-shadow. Udtrykt som
+ * brøkdel af phone-bredden (skalerer med kompositionen), floating i fast px
+ * fordi skyggen er fast. masked er clippet (egen h + overflow-hidden).
+ */
+const PAD_Y: Record<PhoneLayout, string> = {
+  row: "",
+  tilted: "@[430px]/phones:py-[calc(var(--evi-phone-w)*0.06)]",
+  "back-to-back": "@[430px]/phones:py-[calc(var(--evi-phone-w)*0.02)]",
+  fan: "@[430px]/phones:py-[calc(var(--evi-phone-w)*0.1)]",
+  "fan-top":
+    "@[430px]/phones:pt-[calc(var(--evi-phone-w)*0.04)] @[430px]/phones:pb-[calc(var(--evi-phone-w)*0.45)]",
+  perspective: "",
+  floating: "@[430px]/phones:pt-4 @[430px]/phones:pb-28",
+  masked: "",
+};
+
+/**
  * Reusable phone-showcase til slices. Bygger på EviPhoneMockup og deler
  * dens fluid-skalering (bredde via --evi-phone-w).
  *
@@ -179,6 +198,7 @@ export function EviPhoneCarousel({
           perspective && "@[430px]/phones:perspective-[1400px]",
           layout === "masked" &&
             "rounded-evi bg-linear-to-b from-evi-primary/25 to-evi-primary/5 @[430px]/phones:h-[calc(var(--evi-phone-w)*1.39)] @[430px]/phones:items-start @[430px]/phones:overflow-hidden @[430px]/phones:pt-[calc(var(--evi-phone-w)*0.178)]",
+          PAD_Y[layout],
         )}
       >
         {images.map((field, i) => (
