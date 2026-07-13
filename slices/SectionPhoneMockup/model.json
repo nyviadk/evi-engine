@@ -53,6 +53,8 @@
             "default_value": "Neutral",
             "options": [
               "Neutral",
+              "Lys",
+              "Mørk",
               "Primær tint",
               "Sekundær tint",
               "Ingen"

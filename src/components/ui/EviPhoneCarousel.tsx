@@ -24,7 +24,13 @@ type PhoneLayout =
  * surface-klasse (globals section D) så den er adaptiv/contrast-sikker pr.
  * sektions-tema — ikke en hardcodet farve.
  */
-type PhoneSurface = "neutral" | "primary" | "secondary" | "none";
+type PhoneSurface =
+  | "neutral"
+  | "primary"
+  | "secondary"
+  | "light"
+  | "dark"
+  | "none";
 type PhoneFill = "gradient" | "solid";
 
 const SURFACE_CLASS: Record<PhoneFill, Record<PhoneSurface, string>> = {
@@ -32,12 +38,16 @@ const SURFACE_CLASS: Record<PhoneFill, Record<PhoneSurface, string>> = {
     neutral: "theme-surface-neutral",
     primary: "theme-surface-primary",
     secondary: "theme-surface-secondary",
+    light: "theme-surface-light",
+    dark: "theme-surface-dark",
     none: "",
   },
   gradient: {
     neutral: "theme-surface-neutral-gradient",
     primary: "theme-surface-primary-gradient",
     secondary: "theme-surface-secondary-gradient",
+    light: "theme-surface-light-gradient",
+    dark: "theme-surface-dark-gradient",
     none: "",
   },
 };

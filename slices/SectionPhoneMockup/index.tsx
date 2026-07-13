@@ -14,6 +14,8 @@ import {
 // Prismic-label (Boks-baggrund) → EviPhoneCarousel surface-token.
 const BOX_SURFACE: Record<string, EviPhoneCarouselProps["surface"]> = {
   Neutral: "neutral",
+  Lys: "light",
+  Mørk: "dark",
   "Primær tint": "primary",
   "Sekundær tint": "secondary",
   Ingen: "none",

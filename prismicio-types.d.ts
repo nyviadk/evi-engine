@@ -950,7 +950,7 @@ export interface SectionPhoneMockupSliceMaskedPrimary {
 	 * - **API ID Path**: section_phone_mockup.masked.primary.box_background
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	box_background: prismic.SelectField<"Neutral" | "Primær tint" | "Sekundær tint" | "Ingen", "filled">;
+	box_background: prismic.SelectField<"Neutral" | "Lys" | "Mørk" | "Primær tint" | "Sekundær tint" | "Ingen", "filled">;
 	
 	/**
 	 * Boks-fill field in *SectionPhoneMockup → Masked → Primary*
