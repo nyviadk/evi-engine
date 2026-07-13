@@ -49,9 +49,13 @@ export default function SectionPhoneMockup({
     index,
   );
 
-  const screenshots = slice.primary.screenshots
-    .map((item) => item.image)
-    .filter((image) => isFilled.image(image));
+  // Fast antal: 3 navngivne felter (venstre/midt/højre), ikke repeatable.
+  // Rækkefølgen = kompositionens slots; tomme skippes.
+  const screenshots = [
+    slice.primary.screenshot_left,
+    slice.primary.screenshot_center,
+    slice.primary.screenshot_right,
+  ].filter((image) => isFilled.image(image));
 
   if (screenshots.length === 0) return null;
 

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(npm run deploy*)",
+      "Bash(npm run upload*)",
+      "Bash(npm run preview*)",
+      "Bash(npm run evi:sync-slices*)",
+      "Bash(opennextjs-cloudflare *)",
+      "Bash(npx opennextjs-cloudflare *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "if grep -Eq 'npm run (deploy|upload|preview)|evi:sync-slices|opennextjs-cloudflare (deploy|build|preview|upload)'; then printf '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Blocked by project policy: production deploy (deploy/upload/preview, opennextjs-cloudflare) and tenant sync-slices are user-only. Claude must never run these.\"}}'; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

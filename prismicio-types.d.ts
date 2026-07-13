@@ -902,33 +902,38 @@ type HeroSimpleSliceVariation = HeroSimpleSliceDefault
 export type HeroSimpleSlice = prismic.SharedSlice<"hero_simple", HeroSimpleSliceVariation>;
 
 /**
- * Item in *SectionPhoneMockup → Masked → Primary → Screenshots*
- */
-export interface SectionPhoneMockupSliceMaskedPrimaryScreenshotsItem {
-	/**
-	 * Screenshot field in *SectionPhoneMockup → Masked → Primary → Screenshots*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshots[].image
-	 * - **Documentation**: https://prismic.io/docs/fields/image
-	 */
-	image: prismic.ImageField<never>;
-}
-
-/**
  * Primary content in *SectionPhoneMockup → Masked → Primary*
  */
 export interface SectionPhoneMockupSliceMaskedPrimary {
 	/**
-	 * Screenshots field in *SectionPhoneMockup → Masked → Primary*
+	 * Venstre telefon field in *SectionPhoneMockup → Masked → Primary*
 	 *
-	 * - **Field Type**: Group
+	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshots[]
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshot_left
+	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
-	screenshots: prismic.GroupField<Simplify<SectionPhoneMockupSliceMaskedPrimaryScreenshotsItem>>;
+	screenshot_left: prismic.ImageField<never>;
+	
+	/**
+	 * Midterste telefon field in *SectionPhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshot_center
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	screenshot_center: prismic.ImageField<never>;
+	
+	/**
+	 * Højre telefon field in *SectionPhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshot_right
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	screenshot_right: prismic.ImageField<never>;
 	
 	/**
 	 * Baggrundstema field in *SectionPhoneMockup → Masked → Primary*
@@ -1035,7 +1040,6 @@ declare module "@prismicio/client" {
 			HeroSimpleSliceVariation,
 			HeroSimpleSliceDefault,
 			SectionPhoneMockupSlice,
-			SectionPhoneMockupSliceMaskedPrimaryScreenshotsItem,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,
 			SectionPhoneMockupSliceMasked

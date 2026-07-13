@@ -11,23 +11,37 @@
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_phone_mockup/masked/3d2301b6887c339903f25acde34d707b0ca16f5b.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
-        "screenshots": {
-          "type": "Group",
+        "screenshot_left": {
+          "type": "Image",
           "config": {
-            "label": "Screenshots",
-            "fields": {
-              "image": {
-                "type": "Image",
-                "config": {
-                  "label": "Screenshot",
-                  "constraint": {
-                    "width": 1080,
-                    "height": 2220
-                  },
-                  "thumbnails": []
-                }
-              }
-            }
+            "label": "Venstre telefon",
+            "constraint": {
+              "width": 1080,
+              "height": 2220
+            },
+            "thumbnails": []
+          }
+        },
+        "screenshot_center": {
+          "type": "Image",
+          "config": {
+            "label": "Midterste telefon",
+            "constraint": {
+              "width": 1080,
+              "height": 2220
+            },
+            "thumbnails": []
+          }
+        },
+        "screenshot_right": {
+          "type": "Image",
+          "config": {
+            "label": "Højre telefon",
+            "constraint": {
+              "width": 1080,
+              "height": 2220
+            },
+            "thumbnails": []
           }
         },
         "background_theme": {

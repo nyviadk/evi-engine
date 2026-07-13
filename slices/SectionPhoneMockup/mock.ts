@@ -37,11 +37,9 @@ export const mock: Record<string, Content.SectionPhoneMockupSlice> = {
       background_theme: "Lys",
       box_background: "Primær tint",
       box_fill: "Gradient",
-      screenshots: [
-        { image: screenshot("evi-phone-1") },
-        { image: screenshot("evi-phone-2") },
-        { image: screenshot("evi-phone-3") },
-      ],
+      screenshot_left: screenshot("evi-phone-1"),
+      screenshot_center: screenshot("evi-phone-2"),
+      screenshot_right: screenshot("evi-phone-3"),
     } as Content.SectionPhoneMockupSliceMaskedPrimary,
   },
 };
