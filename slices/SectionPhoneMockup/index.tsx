@@ -44,7 +44,7 @@ export default function SectionPhoneMockup({
   Content.SectionPhoneMockupSlice,
   EviPageSliceContext
 >): React.ReactElement | null {
-  const { theme, isHero, collapsePadding } = resolve_slice_context(
+  const { theme, isHero, collapsePadding, eagerImages } = resolve_slice_context(
     context,
     index,
   );
@@ -73,6 +73,7 @@ export default function SectionPhoneMockup({
         layout={slice.variation}
         surface={surface}
         fill={fill}
+        eager={eagerImages}
         fields={screenshots}
       />
     </EviSection>

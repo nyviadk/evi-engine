@@ -61,6 +61,8 @@ export type EviPhoneCarouselProps = {
   surface?: PhoneSurface;
   /** Solid eller gradient fill af boks-baggrunden. @default "gradient" */
   fill?: PhoneFill;
+  /** Eager-load billederne (above-the-fold) så de ikke flasher tomme. */
+  eager?: boolean;
   className?: string;
 };
 
@@ -184,6 +186,7 @@ export function EviPhoneCarousel({
   layout = "row",
   surface = "neutral",
   fill = "gradient",
+  eager = false,
   className,
 }: EviPhoneCarouselProps): React.ReactElement | null {
   const images = fields.filter((f) => isFilled.image(f));
@@ -247,6 +250,7 @@ export function EviPhoneCarousel({
           <EviPhoneMockup
             key={i}
             field={field}
+            eager={eager}
             // mx-0 slår EviPhoneMockups base-mx-auto fra: på et flex-item
             // opsluger auto-margins al fri plads og skubber telefonerne fra
             // hinanden (overskriver justify-center/gap/overlap).

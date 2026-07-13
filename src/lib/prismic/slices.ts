@@ -9,10 +9,19 @@ export type SliceWithPrimary = {
   };
 };
 
+/**
+ * Antal top-slices hvis billeder loades eagerly (above-the-fold, undgår
+ * flash). Resten lazy-loades. Position-baseret → automatisk korrekt uanset
+ * hvor editor placerer en billed-slice.
+ */
+export const EAGER_ABOVE_FOLD_SLICES = 3;
+
 export interface SliceContext {
   theme: string;
   collapsePadding: boolean;
   isHero: boolean;
+  /** True for de øverste slices → billeder loades eagerly (ikke lazy). */
+  eagerImages?: boolean;
 }
 
 /** Delt context-shape som SliceZone på page-niveau sender til alle page-slices.
@@ -61,7 +70,13 @@ export function compute_slice_contexts(
     const theme = resolve_section_theme(slice.primary?.background_theme);
     const hasImage = Boolean(slice.primary?.backgroundSectionImage?.url);
 
-    if (index === 0) return { theme, collapsePadding: false, isHero: true };
+    if (index === 0)
+      return {
+        theme,
+        collapsePadding: false,
+        isHero: true,
+        eagerImages: true,
+      };
 
     const prev = slices[index - 1];
     const prevTheme = resolve_section_theme(prev.primary?.background_theme);
@@ -78,6 +93,7 @@ export function compute_slice_contexts(
       theme,
       collapsePadding: sameVisual && !hasImage && !prevHasImage,
       isHero: false,
+      eagerImages: index < EAGER_ABOVE_FOLD_SLICES,
     };
   });
 }

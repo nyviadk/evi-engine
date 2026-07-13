@@ -70,9 +70,9 @@ export function FooterClassic({
   languageSelectorEnabled,
   languageUrls,
 }: FooterClassicProps): React.ReactElement {
-  const has_columns = footer.data.columns.length > 0;
+  const has_columns = (footer.data.columns ?? []).length > 0;
   const has_copyright = isFilled.richText(footer.data.copyright);
-  const has_legal_links = footer.data.legal_links.some((l) =>
+  const has_legal_links = (footer.data.legal_links ?? []).some((l) =>
     isFilled.link(l),
   );
   const has_language_selector =

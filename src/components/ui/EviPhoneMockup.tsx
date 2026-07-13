@@ -7,6 +7,13 @@ export type EviPhoneMockupProps = Omit<
   "children"
 > & {
   field: ImageField;
+  /**
+   * Eager-load billedet (above-the-fold) via loading="eager", så rammen ikke
+   * flasher tom før billedet loader. Next 16: `priority` er deprecated, og
+   * doc'en anbefaler loading="eager" frem for `preload` i de fleste tilfælde.
+   * @default false (lazy).
+   */
+  eager?: boolean;
 };
 
 /**
@@ -28,6 +35,7 @@ export type EviPhoneMockupProps = Omit<
 export function EviPhoneMockup({
   field,
   className,
+  eager = false,
   ...rest
 }: EviPhoneMockupProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
@@ -80,6 +88,10 @@ export function EviPhoneMockup({
         <PrismicNextImage
           field={field}
           fill
+          // Uden sizes antager Next 100vw og henter et kæmpe billede. Mockup
+          // er max ~360px (capped) og ~75vw på mobil → hent en lille variant.
+          sizes="(min-width: 430px) 360px, 75vw"
+          loading={eager ? "eager" : "lazy"}
           className="object-cover"
           fallbackAlt=""
         />
