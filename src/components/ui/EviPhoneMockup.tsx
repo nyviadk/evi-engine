@@ -20,6 +20,13 @@ export type EviPhoneMockupProps = Omit<
    * placeholder="empty" hvis undefined.
    */
   blurDataURL?: string;
+  /**
+   * Preload via <link> i <head> (Next `preload`) — KUN til det ene LCP-billede
+   * (hero med ét billede). Doc fraråder det ved flere mulige LCP-billeder og
+   * sammen med `loading`. Vinder over `eager` (loading droppes da de ikke må
+   * kombineres). @default false.
+   */
+  preload?: boolean;
 };
 
 /**
@@ -43,6 +50,7 @@ export function EviPhoneMockup({
   className,
   eager = false,
   blurDataURL,
+  preload = false,
   ...rest
 }: EviPhoneMockupProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
@@ -98,7 +106,10 @@ export function EviPhoneMockup({
           // Uden sizes antager Next 100vw og henter et kæmpe billede. Mockup
           // er max ~360px (capped) og ~75vw på mobil → hent en lille variant.
           sizes="(min-width: 430px) 360px, 75vw"
-          loading={eager ? "eager" : "lazy"}
+          // preload (LCP) og loading må ikke kombineres → vælg én.
+          {...(preload
+            ? { preload: true }
+            : { loading: (eager ? "eager" : "lazy") as "eager" | "lazy" })}
           placeholder={blurDataURL ? "blur" : "empty"}
           blurDataURL={blurDataURL}
           className="object-cover"

@@ -68,6 +68,11 @@ export type EviPhoneCarouselProps = {
    * dem server-side via get_blur_data_url → blur-placeholder pr. billede.
    */
   blurDataURLs?: (string | undefined)[];
+  /**
+   * Preload det ene LCP-billede (hero med ét billede). Anvendes kun når der
+   * reelt er ét billede — flere billeder skal ikke preloades (doc). @default false.
+   */
+  preload?: boolean;
   className?: string;
 };
 
@@ -193,6 +198,7 @@ export function EviPhoneCarousel({
   fill = "gradient",
   eager = false,
   blurDataURLs,
+  preload = false,
   className,
 }: EviPhoneCarouselProps): React.ReactElement | null {
   // Par field + blur BEFORE filter, så blur forbliver aligned selv hvis et
@@ -203,6 +209,9 @@ export function EviPhoneCarousel({
   if (images.length === 0) return null;
 
   const count = images.length;
+  // preload kun når der reelt er ÉT billede (utvetydigt LCP) — ellers ville
+  // flere billeder konkurrere om at være LCP (doc fraråder).
+  const preloadLcp = preload && count === 1;
   const center = (count - 1) / 2;
   const single = count === 1;
   const perspective = layout === "back-to-back" || layout === "perspective";
@@ -261,6 +270,7 @@ export function EviPhoneCarousel({
             key={i}
             field={field}
             eager={eager}
+            preload={preloadLcp}
             blurDataURL={blurDataURL}
             // mx-0 slår EviPhoneMockups base-mx-auto fra: på et flex-item
             // opsluger auto-margins al fri plads og skubber telefonerne fra

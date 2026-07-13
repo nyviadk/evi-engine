@@ -81,6 +81,7 @@ export default async function SectionPhoneMockup({
         surface={surface}
         fill={fill}
         eager={eagerImages}
+        preload={isHero && screenshots.length === 1}
         blurDataURLs={blurDataURLs}
         fields={screenshots}
       />
