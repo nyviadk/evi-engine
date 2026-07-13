@@ -13,7 +13,8 @@ export type EviPhoneMockupProps = Omit<
  * iPhone-inspireret ramme til app-screenshots. Aspect-baseret så alt
  * skalerer med container. Farver via evi-tokens. Positioner + størrelser
  * i % så interne proportioner holder ved scaling; radius + bezel er
- * brøkdel af bredden (48/38/12 px @ 360px) så de også skalerer fluid.
+ * brøkdel af bredden (48/36/12 px @ 360px, alle ÷4) så de skalerer fluid.
+ * Indre radius = ydre − bezel (48−12=36) → koncentriske hjørner.
  *
  * Bredde via --evi-phone-w så grupper kan sætte én fluid værdi (fx
  * min(22.5rem,32cqw)) og udtrykke deres margins som brøkdel af den —
@@ -36,10 +37,12 @@ export function EviPhoneMockup({
       {...rest}
       data-slot="evi-phone-mockup"
       className={cn(
-        // --pw: telefonens faktiske bredde. Radius + bezel udtrykkes som
-        // brøkdel af den, så alt skalerer fluid (48/38/12 px @ 360px design).
-        "relative mx-auto aspect-18/37 [--pw:var(--evi-phone-w,min(22.5rem,100%))] w-(--pw)",
-        "rounded-[calc(var(--pw)*0.133)] bg-evi-dark p-[calc(var(--pw)*0.033)]",
+        // --pw: telefonens faktiske bredde. --frame-r/--frame-p = ydre radius
+        // (48px @ 360) og bezel (12px @ 360) som brøkdel af bredden, så alt
+        // skalerer fluid. Indre skærm-radius = ydre − bezel (koncentrisk
+        // nested-radius-regel), så hjørnerne følger samme bue ved enhver skala.
+        "relative mx-auto aspect-18/37 [--pw:var(--evi-phone-w,min(22.5rem,100%))] [--frame-r:calc(var(--pw)/7.5)] [--frame-p:calc(var(--pw)/30)] w-(--pw)",
+        "rounded-(--frame-r) bg-evi-dark p-(--frame-p)",
         "shadow-2xl ring-1 ring-evi-light/20 ring-inset",
         className,
       )}
@@ -73,7 +76,7 @@ export function EviPhoneMockup({
 
       {/* Skærm — isolate opretter stacking context så Next Image respekterer
           parent's overflow-hidden clip på rounded corners */}
-      <div className="relative isolate size-full overflow-hidden rounded-[calc(var(--pw)*0.105)] border border-evi-light/10">
+      <div className="relative isolate size-full overflow-hidden rounded-[calc(var(--frame-r)-var(--frame-p))] border border-evi-light/10">
         <PrismicNextImage
           field={field}
           fill
