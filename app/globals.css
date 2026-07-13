@@ -894,6 +894,81 @@
   corner-shape: round;
 }
 
+/* ── EviPhoneCarousel: container-drevet fluid bredde + scroll-affordance ──
+   Alt skiftes på CONTAINER-bredden (@container phones), ikke viewport — så
+   en smal split-kolonne bliver carousel selv på desktop. --evi-phone-w sættes
+   på track'en (descendant) så container-queryen kan ramme den; EviPhoneMockup
+   læser --evi-phone-w. --pw-mobile/--pw-desktop sættes inline af komponenten. */
+[data-slot="evi-phone-track"] {
+  --evi-phone-w: var(--pw-mobile);
+  /* Tynd Evi-tematiseret scrollbar (Baseline 2024, a11y-sikker) + edge-fade
+     så peekende naboer toner ud som scroll-hint. */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-primary, currentColor) 45%, transparent)
+    transparent;
+  --evi-track-fade: linear-gradient(
+    to right,
+    transparent,
+    black 1.5rem,
+    black calc(100% - 1.5rem),
+    transparent
+  );
+  -webkit-mask-image: var(--evi-track-fade);
+  mask-image: var(--evi-track-fade);
+}
+
+/* Smal container (< 430px), hvor CSS-carousel understøttes (Chrome): erstat
+   scrollbaren med Evi-farvede pagineringsdots — de får tablist/tab ARIA +
+   keyboard gratis, så det er a11y-forbedring, ikke -forringelse. */
+@container phones (max-width: 429.98px) {
+  @supports (scroll-marker-group: after) {
+    [data-slot="evi-phone-track"] {
+      scrollbar-width: none;
+      scroll-marker-group: after;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    [data-slot="evi-phone-track"]::scroll-marker-group {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding-top: 1rem;
+    }
+    [data-slot="evi-phone-track"] > *::scroll-marker {
+      content: "";
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: color-mix(
+        in oklab,
+        var(--color-primary, currentColor) 30%,
+        transparent
+      );
+      transition: background 0.2s;
+    }
+    [data-slot="evi-phone-track"] > *::scroll-marker:target-current {
+      background: var(--color-primary, currentColor);
+    }
+  }
+}
+
+/* ≥430px container: komposition, ingen scroll → drop mask/scrollbar +
+   skift til desktop-bredde + fold per-telefon transform/overlap ud (så en
+   smal kolonne forbliver upright carousel). Værdier sættes inline pr. layout. */
+@container phones (min-width: 430px) {
+  [data-slot="evi-phone-track"] {
+    --evi-phone-w: var(--pw-desktop);
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: auto;
+  }
+  [data-slot="evi-phone-track"] > * {
+    margin-left: var(--phone-shift, 0px);
+    transform-origin: var(--phone-origin, center);
+    transform: var(--phone-transform, none);
+  }
+}
+
 /* ── Respekt for brugere med bevægelses-sensitivitet ──
    WCAG 2.3.3. Slukker animationer og transitions globalt for brugere
    der har "reducer bevægelse" slået til i OS-indstillingerne. */

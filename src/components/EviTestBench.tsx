@@ -8,6 +8,7 @@ import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { EviPhoneMockup } from "@/src/components/ui/EviPhoneMockup";
+import { EviPhoneCarousel } from "@/src/components/ui/EviPhoneCarousel";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 import { cn } from "@/src/lib/utils/cn";
@@ -1202,6 +1203,103 @@ export function EviTestBench() {
             </div>
           </EviStack>
         </div>
+      </EviSection>
+
+      {/* ═══════════════════════════════════════════════════════
+           EviPhoneCarousel — den reusable slice-komponent
+           (mobil: snap-carousel + dots · desktop: komposition)
+           ═══════════════════════════════════════════════════════ */}
+      <EviSection theme="light" collapsePadding>
+        <EviStack gap="md" className="col-span-12">
+          <h2 className="text-2xl font-bold">EviPhoneCarousel — slice-klar</h2>
+          <p className="text-sm opacity-70">
+            Alle otte looks fra &quot;EviPhoneMockup — variationer&quot; ovenfor,
+            nu gennem den slice-klare komponent (kun `layout` + `fields`). Mobil
+            (&lt; 430px) bliver en swipe-carousel; ≥430px folder kompositionen ud
+            — sammenlign 1-1 med råsektionen ved at skifte viewport.
+          </p>
+        </EviStack>
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;row&quot; · 1 field → solo hero (intet scroll)
+        </p>
+        <EviPhoneCarousel fields={[MOCK_PHONE_IMAGE]} />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;row&quot; · 3 fields
+        </p>
+        <EviPhoneCarousel
+          fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+        />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;tilted&quot; · par (±6°)
+        </p>
+        <EviPhoneCarousel
+          layout="tilted"
+          fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+        />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;perspective&quot; · 3D rotateY 18°
+        </p>
+        <EviPhoneCarousel layout="perspective" fields={[MOCK_PHONE_IMAGE]} />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;back-to-back&quot; · 3D rotateY ±25°
+        </p>
+        <EviPhoneCarousel
+          layout="back-to-back"
+          fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+        />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;fan&quot; · konvergerende (±12°, origin center)
+        </p>
+        <EviPhoneCarousel
+          layout="fan"
+          fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+        />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;fan-top&quot; · håndvifte (±12°, origin top)
+        </p>
+        <EviPhoneCarousel
+          layout="fan-top"
+          fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+        />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;masked&quot; · vifte i gradient, bund clippet (±15°)
+        </p>
+        <EviPhoneCarousel
+          layout="masked"
+          fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+        />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          layout=&quot;floating&quot; · skewY + dybde-skygge
+        </p>
+        <EviPhoneCarousel layout="floating" fields={[MOCK_PHONE_IMAGE]} />
+
+        <p className="col-span-12 text-sm font-medium opacity-70">
+          I EviSplit 60-40 — telefon-kolonnen er container-drevet (bliver
+          carousel når kolonnen er smal, komposition når den er bred nok)
+        </p>
+        <EviSplit preset="60-40" align="center">
+          <div className="evi-prose">
+            <h3>Tekst ved siden af telefoner</h3>
+            <p>
+              Telefon-kolonnen reagerer på sin EGEN bredde, ikke viewportens —
+              så den samme slice virker i en smal kolonne (carousel) og en bred
+              (komposition).
+            </p>
+          </div>
+          <EviPhoneCarousel
+            layout="fan"
+            fields={[MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE, MOCK_PHONE_IMAGE]}
+          />
+        </EviSplit>
       </EviSection>
     </>
   );

@@ -2,9 +2,11 @@ import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
 import { cn } from "@/src/lib/utils/cn";
 
-export type EviPhoneMockupProps = {
+export type EviPhoneMockupProps = Omit<
+  React.ComponentProps<"div">,
+  "children"
+> & {
   field: ImageField;
-  className?: string;
 };
 
 /**
@@ -25,11 +27,13 @@ export type EviPhoneMockupProps = {
 export function EviPhoneMockup({
   field,
   className,
+  ...rest
 }: EviPhoneMockupProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
 
   return (
     <div
+      {...rest}
       data-slot="evi-phone-mockup"
       className={cn(
         // --pw: telefonens faktiske bredde. Radius + bezel udtrykkes som
