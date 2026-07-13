@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import type { ImageField } from "@prismicio/client";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviButton } from "@/src/components/ui/EviButton";
@@ -10,6 +10,32 @@ import { EviCard } from "@/src/components/ui/EviCard";
 import { EviPhoneMockup } from "@/src/components/ui/EviPhoneMockup";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
+import { cn } from "@/src/lib/utils/cn";
+
+/**
+ * Mobil: vandret snap-carousel så hver telefon vises i læsbar størrelse
+ * (swipe igennem). md+: gendan den overlappende komposition — telefonernes
+ * margins/rotationer bærer md:-prefix, så de kun folder ud på desktop.
+ */
+function PhoneRow({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex w-full snap-x snap-mandatory gap-4 overflow-x-auto scroll-p-6 px-6 py-4",
+        "md:w-auto md:snap-none md:justify-center md:gap-0 md:overflow-visible md:scroll-p-0 md:p-0",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 // Placeholder screenshot i iPhone-portrait ratio.
 const MOCK_PHONE_IMAGE = {
@@ -1039,21 +1065,21 @@ export function EviTestBench() {
         </div>
 
         {/* 2. Tilted par — konvergerende vinkler, klassisk app-store look */}
-        <div className="col-span-12 [--evi-phone-w:min(22.5rem,40cqw)]">
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,72vw)] md:[--evi-phone-w:min(22.5rem,40cqw)]">
           <EviStack gap="sm" align="center">
             <p className="text-sm font-medium opacity-70">
               Tilted par — konvergerende (rotate ±6°)
             </p>
-            <div className="flex justify-center gap-[calc(var(--evi-phone-w)*0.09)]">
+            <PhoneRow className="md:gap-[calc(var(--evi-phone-w)*0.09)]">
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="rotate-6"
+                className="snap-center shrink-0 md:rotate-6"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="-rotate-6"
+                className="snap-center shrink-0 md:-rotate-6"
               />
-            </div>
+            </PhoneRow>
           </EviStack>
         </div>
 
@@ -1073,88 +1099,90 @@ export function EviTestBench() {
         </div>
 
         {/* 4. Ryg til ryg — 3D rotateY så fronts vender udad, backs vender ind */}
-        <div className="col-span-12 [--evi-phone-w:min(22.5rem,44cqw)]">
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,72vw)] md:[--evi-phone-w:min(22.5rem,44cqw)]">
           <EviStack gap="sm" align="center">
             <p className="text-sm font-medium opacity-70">
               Ryg til ryg — 3D rotateY ±25° (fronts udad, backs indad)
             </p>
-            <div className="flex justify-center gap-[calc(var(--evi-phone-w)*0.067)] perspective-[1400px]">
+            <PhoneRow className="perspective-[1400px] md:gap-[calc(var(--evi-phone-w)*0.067)]">
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="transform-[rotateY(-25deg)]"
+                className="snap-center shrink-0 md:transform-[rotateY(-25deg)]"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="transform-[rotateY(25deg)]"
+                className="snap-center shrink-0 md:transform-[rotateY(25deg)]"
               />
-            </div>
+            </PhoneRow>
           </EviStack>
         </div>
 
         {/* 5a. Fanned stack — konvergerende (tops overlap, bunden splitter) */}
-        <div className="col-span-12 [--evi-phone-w:min(22.5rem,32cqw)]">
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,72vw)] md:[--evi-phone-w:min(22.5rem,32cqw)]">
           <EviStack gap="sm" align="center">
             <p className="text-sm font-medium opacity-70">
               Fanned stack — konvergerende (default origin ±12°)
             </p>
-            <div className="flex justify-center">
+            <PhoneRow>
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="mr-[calc(var(--evi-phone-w)*-0.31)] rotate-12"
+                className="snap-center shrink-0 md:mr-[calc(var(--evi-phone-w)*-0.31)] md:rotate-12"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="relative z-10"
+                className="snap-center shrink-0 md:relative md:z-10"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="ml-[calc(var(--evi-phone-w)*-0.31)] -rotate-12"
+                className="snap-center shrink-0 md:ml-[calc(var(--evi-phone-w)*-0.31)] md:-rotate-12"
               />
-            </div>
+            </PhoneRow>
           </EviStack>
         </div>
 
         {/* 5b. Fanned stack — origin-top, bunden svinger ud (håndviftefan) */}
-        <div className="col-span-12 [--evi-phone-w:min(22.5rem,26cqw)]">
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,72vw)] md:[--evi-phone-w:min(22.5rem,26cqw)]">
           <EviStack gap="sm" align="center">
             <p className="text-sm font-medium opacity-70">
               Fanned stack — origin-top (tops aligned, bunden svinger ud ±12°)
             </p>
-            <div className="flex justify-center">
+            <PhoneRow>
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="mr-[calc(var(--evi-phone-w)*-0.089)] origin-top -rotate-12"
+                className="snap-center shrink-0 md:mr-[calc(var(--evi-phone-w)*-0.089)] md:origin-top md:-rotate-12"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="relative z-10"
+                className="snap-center shrink-0 md:relative md:z-10"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="ml-[calc(var(--evi-phone-w)*-0.089)] origin-top rotate-12"
+                className="snap-center shrink-0 md:ml-[calc(var(--evi-phone-w)*-0.089)] md:origin-top md:rotate-12"
               />
-            </div>
+            </PhoneRow>
           </EviStack>
         </div>
 
-        {/* 6. Masked showcase — tops synlige, bunden clippet */}
-        <div className="col-span-12 [--evi-phone-w:min(22.5rem,26cqw)]">
+        {/* 6. Masked showcase — tops synlige, bunden clippet.
+            Gradient-boksen er selv scroll-container på mobil (carousel),
+            og skifter til fixed-height clip-mask på md+. */}
+        <div className="col-span-12 [--evi-phone-w:min(22.5rem,72vw)] md:[--evi-phone-w:min(22.5rem,26cqw)]">
           <EviStack gap="sm" align="center">
             <p className="text-sm font-medium opacity-70">
               Masked showcase — tops synlige, bunden clippet (origin-top ±15°)
             </p>
-            <div className="relative flex h-[calc(var(--evi-phone-w)*1.39)] w-full max-w-300 items-start justify-center overflow-hidden rounded-evi bg-linear-to-b from-evi-primary/25 to-evi-primary/5 pt-[calc(var(--evi-phone-w)*0.178)]">
+            <div className="relative flex w-full max-w-300 snap-x snap-mandatory items-center gap-4 overflow-x-auto scroll-p-6 rounded-evi bg-linear-to-b from-evi-primary/25 to-evi-primary/5 px-6 py-4 md:h-[calc(var(--evi-phone-w)*1.39)] md:snap-none md:items-start md:justify-center md:gap-0 md:overflow-hidden md:scroll-p-0 md:px-0 md:py-0 md:pt-[calc(var(--evi-phone-w)*0.178)]">
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="mr-[calc(var(--evi-phone-w)*-0.178)] origin-top -rotate-15"
+                className="snap-center shrink-0 md:mr-[calc(var(--evi-phone-w)*-0.178)] md:origin-top md:-rotate-15"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="relative z-10 origin-top"
+                className="snap-center shrink-0 md:relative md:z-10 md:origin-top"
               />
               <EviPhoneMockup
                 field={MOCK_PHONE_IMAGE}
-                className="ml-[calc(var(--evi-phone-w)*-0.178)] origin-top rotate-15"
+                className="snap-center shrink-0 md:ml-[calc(var(--evi-phone-w)*-0.178)] md:origin-top md:rotate-15"
               />
             </div>
           </EviStack>
