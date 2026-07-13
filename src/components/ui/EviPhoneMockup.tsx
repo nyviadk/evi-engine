@@ -1,6 +1,7 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
 import { cn } from "@/src/lib/utils/cn";
+import { lqip_url } from "@/src/lib/utils/imgix";
 
 export type EviPhoneMockupProps = Omit<
   React.ComponentProps<"div">,
@@ -14,12 +15,6 @@ export type EviPhoneMockupProps = Omit<
    * @default false (lazy).
    */
   eager?: boolean;
-  /**
-   * Base64 blurDataURL (fra get_blur_data_url) → viser et blurret preview af
-   * billedet med det samme, så rammen aldrig står tom. Falder tilbage til
-   * placeholder="empty" hvis undefined.
-   */
-  blurDataURL?: string;
   /**
    * Preload via <link> i <head> (Next `preload`) — KUN til det ene LCP-billede
    * (hero med ét billede). Doc fraråder det ved flere mulige LCP-billeder og
@@ -49,11 +44,12 @@ export function EviPhoneMockup({
   field,
   className,
   eager = false,
-  blurDataURL,
   preload = false,
   ...rest
 }: EviPhoneMockupProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
+
+  const blurUrl = lqip_url(field.url);
 
   return (
     <div
@@ -98,8 +94,13 @@ export function EviPhoneMockup({
       />
 
       {/* Skærm — isolate opretter stacking context så Next Image respekterer
-          parent's overflow-hidden clip på rounded corners */}
-      <div className="relative isolate size-full overflow-hidden rounded-[calc(var(--frame-r)-var(--frame-p))] border border-evi-light/10">
+          parent's overflow-hidden clip på rounded corners. bg-evi-dark er
+          fallback bag LQIP-bluren (vises til billedet er malet); billedet
+          ligger ovenpå og dækker bluren når det er loadet. */}
+      <div
+        className="relative isolate size-full overflow-hidden rounded-[calc(var(--frame-r)-var(--frame-p))] border border-evi-light/10 bg-evi-dark bg-cover bg-center"
+        style={blurUrl ? { backgroundImage: `url("${blurUrl}")` } : undefined}
+      >
         <PrismicNextImage
           field={field}
           fill
@@ -110,8 +111,6 @@ export function EviPhoneMockup({
           {...(preload
             ? { preload: true }
             : { loading: (eager ? "eager" : "lazy") as "eager" | "lazy" })}
-          placeholder={blurDataURL ? "blur" : "empty"}
-          blurDataURL={blurDataURL}
           className="object-cover"
           fallbackAlt=""
         />

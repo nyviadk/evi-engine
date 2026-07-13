@@ -13,8 +13,8 @@
     "evi:sync-slices": "tsx scripts/sync-slices.ts",
     "evi:preview-slices": "node scripts/preview-slices.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "deploy:clean": "npx rimraf .next .open-next && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy": "opennextjs-cloudflare build && cross-env OPEN_NEXT_DEPLOY=true wrangler deploy",
+    "deploy:clean": "npx rimraf .next .open-next && opennextjs-cloudflare build && cross-env OPEN_NEXT_DEPLOY=true wrangler deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || exit 0"
@@ -52,6 +52,7 @@
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "^16.2.10",
     "eslint-plugin-tailwindcss": "^4.0.3",

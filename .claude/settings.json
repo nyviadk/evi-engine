@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(node scripts/check-prismic-guards.mjs)",
+      "Bash(echo \"---exit:$?---\")"
+    ],
     "deny": [
       "Bash(npm run deploy*)",
       "Bash(npm run upload*)",
@@ -7,9 +11,6 @@
       "Bash(npm run evi:sync-slices*)",
       "Bash(opennextjs-cloudflare *)",
       "Bash(npx opennextjs-cloudflare *)"
-    ],
-    "allow": [
-      "Bash(node scripts/check-prismic-guards.mjs)"
     ]
   },
   "hooks": {

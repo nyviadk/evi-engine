@@ -64,11 +64,6 @@ export type EviPhoneCarouselProps = {
   /** Eager-load billederne (above-the-fold) så de ikke flasher tomme. */
   eager?: boolean;
   /**
-   * Base64 blurDataURLs, aligned med `fields` (samme index). Slicen genererer
-   * dem server-side via get_blur_data_url → blur-placeholder pr. billede.
-   */
-  blurDataURLs?: (string | undefined)[];
-  /**
    * Preload det ene LCP-billede (hero med ét billede). Anvendes kun når der
    * reelt er ét billede — flere billeder skal ikke preloades (doc). @default false.
    */
@@ -197,15 +192,10 @@ export function EviPhoneCarousel({
   surface = "neutral",
   fill = "gradient",
   eager = false,
-  blurDataURLs,
   preload = false,
   className,
 }: EviPhoneCarouselProps): React.ReactElement | null {
-  // Par field + blur BEFORE filter, så blur forbliver aligned selv hvis et
-  // felt er tomt.
-  const images = fields
-    .map((field, i) => ({ field, blurDataURL: blurDataURLs?.[i] }))
-    .filter((item) => isFilled.image(item.field));
+  const images = fields.filter((f) => isFilled.image(f));
   if (images.length === 0) return null;
 
   const count = images.length;
@@ -265,13 +255,12 @@ export function EviPhoneCarousel({
           PAD_Y[layout],
         )}
       >
-        {images.map(({ field, blurDataURL }, i) => (
+        {images.map((field, i) => (
           <EviPhoneMockup
             key={i}
             field={field}
             eager={eager}
             preload={preloadLcp}
-            blurDataURL={blurDataURL}
             // mx-0 slår EviPhoneMockups base-mx-auto fra: på et flex-item
             // opsluger auto-margins al fri plads og skubber telefonerne fra
             // hinanden (overskriver justify-center/gap/overlap).

@@ -11,6 +11,12 @@ import {
 
 export const runtime = "experimental-edge";
 
+// Bot-scannere prober for WordPress/PHP-huller. Vi kører intet af det → altid
+// junk. Match → billigt 404 i middleware FØR tenant-lookup/render
+
+const BOT_SCANNER_PATH =
+  /\.php\b|\.aspx?\b|\/wp-|\/cgi-bin|\/xmlrpc|\/vendor\/|\/\.(?:env|git)\b/i;
+
 function get_browser_locale(
   request: NextRequest,
   locales: string[],
@@ -39,6 +45,11 @@ export async function middleware(request: NextRequest) {
     pathname = decodeURIComponent(raw_pathname);
   } catch {
     pathname = raw_pathname;
+  }
+
+  // Junk-stier fra scannere: billigt 404 før alt andet (ingen KV-lookup/render).
+  if (BOT_SCANNER_PATH.test(pathname)) {
+    return new NextResponse(null, { status: 404 });
   }
   // request.nextUrl.host er derived fra CF's routing (mere pålidelig end raw
   // Host-header). Fald tilbage til header hvis nextUrl mangler. validate_hostname
@@ -169,12 +180,11 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match alt undtagen:
-     * 1. System-mapper (api, _next, assets)
-     * 2. Alle filer med punktum (favicon.ico, sitemap.xml)
-     * 3. Særlige skjulte mapper/filer der starter med punktum (som .well-known)
-     * 4. Slice-simulator
+     * Match alt undtagen: system-mapper (api, _next, assets), slice-simulator,
+     * .well-known, og filer med kendt statisk-endelse (css/js/billeder/fonts…).
+     * Junk-endelser som .php/.env/.git ekskluderes IKKE med vilje — de falder
+     * igennem til middleware, så BOT_SCANNER_PATH kan 404'e scannere billigt.
      */
-    "/((?!api|_next/static|_next/image|assets|slice-simulator|slice-preview|favicon.ico|sitemap.xml|robots.txt|\\..*|.*\\..*).*)",
+    "/((?!api|_next/static|_next/image|assets|slice-simulator|slice-preview|favicon.ico|sitemap.xml|robots.txt|\\.well-known|.*\\.(?:css|js|mjs|map|json|xml|txt|ico|png|jpe?g|gif|svg|webp|avif|woff2?|ttf|otf|eot|pdf|mp4|webm|mp3|zip)$).*)",
   ],
 };
