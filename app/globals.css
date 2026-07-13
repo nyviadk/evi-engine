@@ -968,41 +968,6 @@
   mask-image: var(--evi-track-fade);
 }
 
-/* Smal container (< 430px), hvor CSS-carousel understøttes (Chrome): erstat
-   scrollbaren med Evi-farvede pagineringsdots — de får tablist/tab ARIA +
-   keyboard gratis, så det er a11y-forbedring, ikke -forringelse. */
-@container phones (max-width: 429.98px) {
-  @supports (scroll-marker-group: after) {
-    [data-slot="evi-phone-track"] {
-      scrollbar-width: none;
-      scroll-marker-group: after;
-      -webkit-mask-image: none;
-      mask-image: none;
-    }
-    [data-slot="evi-phone-track"]::scroll-marker-group {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      padding-top: 1rem;
-    }
-    [data-slot="evi-phone-track"] > *::scroll-marker {
-      content: "";
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 50%;
-      background: color-mix(
-        in oklab,
-        var(--color-primary, currentColor) 30%,
-        transparent
-      );
-      transition: background 0.2s;
-    }
-    [data-slot="evi-phone-track"] > *::scroll-marker:target-current {
-      background: var(--color-primary, currentColor);
-    }
-  }
-}
-
 /* ≥430px container: komposition, ingen scroll → drop mask/scrollbar +
    skift til desktop-bredde + fold per-telefon transform/overlap ud (så en
    smal kolonne forbliver upright carousel). Værdier sættes inline pr. layout. */
