@@ -28,6 +28,9 @@
           "choices": {
             "hero_simple": {
               "type": "SharedSlice"
+            },
+            "section_phone_mockup": {
+              "type": "SharedSlice"
             }
           }
         }

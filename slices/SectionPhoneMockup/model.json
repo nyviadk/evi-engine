@@ -1,0 +1,76 @@
+{
+  "id": "section_phone_mockup",
+  "name": "SectionPhoneMockup",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "masked",
+      "name": "Masked",
+      "description": "Masked",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_phone_mockup/masked/ed88b6352fabf7b45e3e72122a06b23842ac0707.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "screenshots": {
+          "type": "Group",
+          "config": {
+            "label": "Screenshots",
+            "fields": {
+              "image": {
+                "type": "Image",
+                "config": {
+                  "label": "Screenshot",
+                  "constraint": {
+                    "width": 1080,
+                    "height": 2220
+                  },
+                  "thumbnails": []
+                }
+              }
+            }
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        },
+        "box_background": {
+          "type": "Select",
+          "config": {
+            "label": "Boks-baggrund",
+            "default_value": "Neutral",
+            "options": [
+              "Neutral",
+              "Primær tint",
+              "Sekundær tint",
+              "Ingen"
+            ]
+          }
+        },
+        "box_fill": {
+          "type": "Select",
+          "config": {
+            "label": "Boks-fill",
+            "default_value": "Gradient",
+            "options": [
+              "Gradient",
+              "Solid"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

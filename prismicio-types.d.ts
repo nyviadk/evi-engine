@@ -343,7 +343,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSimpleSlice
+type PageDocumentDataSlicesSlice = HeroSimpleSlice | SectionPhoneMockupSlice
 
 /**
  * Content for Side documents
@@ -901,6 +901,92 @@ type HeroSimpleSliceVariation = HeroSimpleSliceDefault
  */
 export type HeroSimpleSlice = prismic.SharedSlice<"hero_simple", HeroSimpleSliceVariation>;
 
+/**
+ * Item in *SectionPhoneMockup → Masked → Primary → Screenshots*
+ */
+export interface SectionPhoneMockupSliceMaskedPrimaryScreenshotsItem {
+	/**
+	 * Screenshot field in *SectionPhoneMockup → Masked → Primary → Screenshots*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshots[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+}
+
+/**
+ * Primary content in *SectionPhoneMockup → Masked → Primary*
+ */
+export interface SectionPhoneMockupSliceMaskedPrimary {
+	/**
+	 * Screenshots field in *SectionPhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshots[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	screenshots: prismic.GroupField<Simplify<SectionPhoneMockupSliceMaskedPrimaryScreenshotsItem>>;
+	
+	/**
+	 * Baggrundstema field in *SectionPhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_phone_mockup.masked.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	
+	/**
+	 * Boks-baggrund field in *SectionPhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: section_phone_mockup.masked.primary.box_background
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	box_background: prismic.SelectField<"Neutral" | "Primær tint" | "Sekundær tint" | "Ingen", "filled">;
+	
+	/**
+	 * Boks-fill field in *SectionPhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Gradient
+	 * - **API ID Path**: section_phone_mockup.masked.primary.box_fill
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	box_fill: prismic.SelectField<"Gradient" | "Solid", "filled">;
+}
+
+/**
+ * Masked variation for SectionPhoneMockup Slice
+ *
+ * - **API ID**: `masked`
+ * - **Description**: Masked
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionPhoneMockupSliceMasked = prismic.SharedSliceVariation<"masked", Simplify<SectionPhoneMockupSliceMaskedPrimary>, never>;
+
+/**
+ * Slice variation for *SectionPhoneMockup*
+ */
+type SectionPhoneMockupSliceVariation = SectionPhoneMockupSliceMasked
+
+/**
+ * SectionPhoneMockup Shared Slice
+ *
+ * - **API ID**: `section_phone_mockup`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionPhoneMockupSlice = prismic.SharedSlice<"section_phone_mockup", SectionPhoneMockupSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -947,7 +1033,12 @@ declare module "@prismicio/client" {
 			HeroSimpleSlice,
 			HeroSimpleSliceDefaultPrimary,
 			HeroSimpleSliceVariation,
-			HeroSimpleSliceDefault
+			HeroSimpleSliceDefault,
+			SectionPhoneMockupSlice,
+			SectionPhoneMockupSliceMaskedPrimaryScreenshotsItem,
+			SectionPhoneMockupSliceMaskedPrimary,
+			SectionPhoneMockupSliceVariation,
+			SectionPhoneMockupSliceMasked
 		}
 	}
 }

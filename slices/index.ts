@@ -4,10 +4,12 @@ import FooterColumnLinks from "./FooterColumnLinks";
 import FooterColumnText from "./FooterColumnText";
 import HeaderClassic from "./HeaderClassic";
 import HeroSimple from "./HeroSimple";
+import SectionPhoneMockup from "./SectionPhoneMockup";
 
 export const components = {
 	footer_column_links: FooterColumnLinks,
 	footer_column_text: FooterColumnText,
 	header_classic: HeaderClassic,
-	hero_simple: HeroSimple
+	hero_simple: HeroSimple,
+	section_phone_mockup: SectionPhoneMockup
 };

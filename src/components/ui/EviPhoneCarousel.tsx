@@ -19,11 +19,38 @@ type PhoneLayout =
   | "floating" // skewY + drop-shadow
   | "masked"; // vifte i gradient-boks, bund clippet
 
+/**
+ * Baggrund for layouts med en container-boks (pt. "masked"). Token-baseret
+ * surface-klasse (globals section D) så den er adaptiv/contrast-sikker pr.
+ * sektions-tema — ikke en hardcodet farve.
+ */
+type PhoneSurface = "neutral" | "primary" | "secondary" | "none";
+type PhoneFill = "gradient" | "solid";
+
+const SURFACE_CLASS: Record<PhoneFill, Record<PhoneSurface, string>> = {
+  solid: {
+    neutral: "theme-surface-neutral",
+    primary: "theme-surface-primary",
+    secondary: "theme-surface-secondary",
+    none: "",
+  },
+  gradient: {
+    neutral: "theme-surface-neutral-gradient",
+    primary: "theme-surface-primary-gradient",
+    secondary: "theme-surface-secondary-gradient",
+    none: "",
+  },
+};
+
 export type EviPhoneCarouselProps = {
   /** Screenshots — ét mockup pr. billede. Tomme felter skippes. */
   fields: ImageField[];
   /** Desktop-komposition. @default "row" */
   layout?: PhoneLayout;
+  /** Boks-baggrund for layouts med container (masked). @default "neutral" */
+  surface?: PhoneSurface;
+  /** Solid eller gradient fill af boks-baggrunden. @default "gradient" */
+  fill?: PhoneFill;
   className?: string;
 };
 
@@ -145,6 +172,8 @@ const PAD_Y: Record<PhoneLayout, string> = {
 export function EviPhoneCarousel({
   fields,
   layout = "row",
+  surface = "neutral",
+  fill = "gradient",
   className,
 }: EviPhoneCarouselProps): React.ReactElement | null {
   const images = fields.filter((f) => isFilled.image(f));
@@ -197,7 +226,10 @@ export function EviPhoneCarousel({
           gapClass,
           perspective && "@[430px]/phones:perspective-[1400px]",
           layout === "masked" &&
-            "rounded-evi bg-linear-to-b from-evi-primary/25 to-evi-primary/5 @[430px]/phones:h-[calc(var(--evi-phone-w)*1.39)] @[430px]/phones:items-start @[430px]/phones:overflow-hidden @[430px]/phones:pt-[calc(var(--evi-phone-w)*0.178)]",
+            cn(
+              "rounded-evi @[430px]/phones:h-[calc(var(--evi-phone-w)*1.39)] @[430px]/phones:items-start @[430px]/phones:overflow-hidden @[430px]/phones:pt-[calc(var(--evi-phone-w)*0.178)]",
+              SURFACE_CLASS[fill][surface],
+            ),
           PAD_Y[layout],
         )}
       >

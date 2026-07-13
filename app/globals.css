@@ -337,9 +337,43 @@
     accent-color: var(--btn-primary-ink);
   }
 
-  /* D. Surface bokse (kasser indeni sektioner) */
+  /* D. Surface bokse (kasser indeni sektioner) — token-baseret + transparent,
+     så de lægger sig adaptivt oven på ethvert sektions-tema. neutral =
+     currentColor (altid kontrast til baggrunden); primary/secondary =
+     brand-tint via tenant-tokens. */
   .theme-surface-neutral {
     background-color: color-mix(in oklch, currentColor 8%, transparent);
+  }
+  .theme-surface-primary {
+    background-color: color-mix(in oklch, var(--color-primary) 20%, transparent);
+  }
+  .theme-surface-secondary {
+    background-color: color-mix(
+      in oklch,
+      var(--color-secondary) 20%,
+      transparent
+    );
+  }
+
+  /* Gradient-varianter — starter fra FULD token-farve i toppen og fader til
+     transparent i bunden (hvor mockups clippes). Samme tokens, så de er lige
+     så adaptive som de solide. Bruges fx som "stage" bag telefon-mockups. */
+  .theme-surface-neutral-gradient {
+    background-image: linear-gradient(to bottom, currentColor, transparent);
+  }
+  .theme-surface-primary-gradient {
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-primary),
+      transparent
+    );
+  }
+  .theme-surface-secondary-gradient {
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-secondary),
+      transparent
+    );
   }
 
   /* ═══════════════════════════════════════════════════════
