@@ -9,7 +9,12 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { cn } from "@/src/lib/utils/cn";
 
 export type FooterLinkListProps = {
-  items: Repeatable<LinkField>;
+  /**
+   * Prismic repeatable link-felt. Optional + default [] fordi genererede
+   * Prismic-typer påstår feltet altid findes, men runtime kan give undefined
+   * (tomt repeatable, eller model-drift) → ellers `undefined.map` crash.
+   */
+  items?: Repeatable<LinkField>;
   linkResolver: LinkResolverFunction;
   /** Layout axis. Vertical for column links; horizontal for legal links row. */
   direction?: "col" | "row";
@@ -24,7 +29,7 @@ export type FooterLinkListProps = {
  * label are silently skipped.
  */
 export function FooterLinkList({
-  items,
+  items = [],
   linkResolver,
   direction = "col",
   wrap = false,

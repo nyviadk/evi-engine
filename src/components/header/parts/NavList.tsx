@@ -8,7 +8,13 @@ import {
 import { cn } from "@/src/lib/utils/cn";
 
 export type NavListProps = {
-  items: Repeatable<LinkField>;
+  /**
+   * Prismic repeatable link-felt. Optional + default [] fordi genererede
+   * Prismic-typer påstår feltet altid findes, men runtime kan give undefined
+   * (tomt repeatable, eller model-drift efter et felt fjernes/omdøbes) →
+   * ellers `undefined.map` crash. Guard ved kilden, én gang.
+   */
+  items?: Repeatable<LinkField>;
   linkResolver: LinkResolverFunction;
   className?: string;
   itemClassName?: string;
@@ -20,7 +26,7 @@ export type NavListProps = {
  * Items with no filled link OR no label are silently skipped.
  */
 export function NavList({
-  items,
+  items = [],
   linkResolver,
   className,
   itemClassName,
