@@ -14,6 +14,12 @@ export type EviPhoneMockupProps = Omit<
    * @default false (lazy).
    */
   eager?: boolean;
+  /**
+   * Base64 blurDataURL (fra get_blur_data_url) → viser et blurret preview af
+   * billedet med det samme, så rammen aldrig står tom. Falder tilbage til
+   * placeholder="empty" hvis undefined.
+   */
+  blurDataURL?: string;
 };
 
 /**
@@ -36,6 +42,7 @@ export function EviPhoneMockup({
   field,
   className,
   eager = false,
+  blurDataURL,
   ...rest
 }: EviPhoneMockupProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
@@ -92,6 +99,8 @@ export function EviPhoneMockup({
           // er max ~360px (capped) og ~75vw på mobil → hent en lille variant.
           sizes="(min-width: 430px) 360px, 75vw"
           loading={eager ? "eager" : "lazy"}
+          placeholder={blurDataURL ? "blur" : "empty"}
+          blurDataURL={blurDataURL}
           className="object-cover"
           fallbackAlt=""
         />

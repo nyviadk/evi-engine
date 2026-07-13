@@ -10,6 +10,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { get_blur_data_url } from "@/src/lib/prismic/blur";
 
 // Prismic-label (Boks-baggrund) → EviPhoneCarousel surface-token.
 const BOX_SURFACE: Record<string, EviPhoneCarouselProps["surface"]> = {
@@ -36,14 +37,14 @@ const BOX_FILL: Record<string, EviPhoneCarouselProps["fill"]> = {
  * Tema/collapsePadding via cross-slice context (som HeroSimple); falder
  * tilbage til EviSections egne defaults i preview/standalone.
  */
-export default function SectionPhoneMockup({
+export default async function SectionPhoneMockup({
   slice,
   index,
   context,
 }: SliceComponentProps<
   Content.SectionPhoneMockupSlice,
   EviPageSliceContext
->): React.ReactElement | null {
+>): Promise<React.ReactElement | null> {
   const { theme, isHero, collapsePadding, eagerImages } = resolve_slice_context(
     context,
     index,
@@ -62,6 +63,12 @@ export default function SectionPhoneMockup({
   const surface = BOX_SURFACE[slice.primary.box_background ?? ""] ?? "neutral";
   const fill = BOX_FILL[slice.primary.box_fill ?? ""] ?? "gradient";
 
+  // Blur-placeholder pr. billede (server-side, aligned med screenshots) → intet
+  // tom-ramme-flash. Genereres parallelt; cachet i get_blur_data_url.
+  const blurDataURLs = await Promise.all(
+    screenshots.map((image) => get_blur_data_url(image.url)),
+  );
+
   return (
     <EviSection
       theme={theme}
@@ -74,6 +81,7 @@ export default function SectionPhoneMockup({
         surface={surface}
         fill={fill}
         eager={eagerImages}
+        blurDataURLs={blurDataURLs}
         fields={screenshots}
       />
     </EviSection>

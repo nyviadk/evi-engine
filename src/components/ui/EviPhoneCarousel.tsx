@@ -63,6 +63,11 @@ export type EviPhoneCarouselProps = {
   fill?: PhoneFill;
   /** Eager-load billederne (above-the-fold) så de ikke flasher tomme. */
   eager?: boolean;
+  /**
+   * Base64 blurDataURLs, aligned med `fields` (samme index). Slicen genererer
+   * dem server-side via get_blur_data_url → blur-placeholder pr. billede.
+   */
+  blurDataURLs?: (string | undefined)[];
   className?: string;
 };
 
@@ -187,9 +192,14 @@ export function EviPhoneCarousel({
   surface = "neutral",
   fill = "gradient",
   eager = false,
+  blurDataURLs,
   className,
 }: EviPhoneCarouselProps): React.ReactElement | null {
-  const images = fields.filter((f) => isFilled.image(f));
+  // Par field + blur BEFORE filter, så blur forbliver aligned selv hvis et
+  // felt er tomt.
+  const images = fields
+    .map((field, i) => ({ field, blurDataURL: blurDataURLs?.[i] }))
+    .filter((item) => isFilled.image(item.field));
   if (images.length === 0) return null;
 
   const count = images.length;
@@ -246,11 +256,12 @@ export function EviPhoneCarousel({
           PAD_Y[layout],
         )}
       >
-        {images.map((field, i) => (
+        {images.map(({ field, blurDataURL }, i) => (
           <EviPhoneMockup
             key={i}
             field={field}
             eager={eager}
+            blurDataURL={blurDataURL}
             // mx-0 slår EviPhoneMockups base-mx-auto fra: på et flex-item
             // opsluger auto-margins al fri plads og skubber telefonerne fra
             // hinanden (overskriver justify-center/gap/overlap).
