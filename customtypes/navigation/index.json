@@ -26,6 +26,21 @@
             "Slået til"
           ]
         }
+      },
+      "mobile_nav_breakpoint": {
+        "type": "Select",
+        "config": {
+          "label": "Mobil-menu breakpoint",
+          "placeholder": "Hvornaar nav'en vises som fuld raekke i stedet for hamburger (vaelg efter antal/laengde af links)",
+          "default_value": "Standard",
+          "options": [
+            "Kompakt",
+            "Standard",
+            "Bred",
+            "Meget bred",
+            "Ekstra bred"
+          ]
+        }
       }
     }
   },

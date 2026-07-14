@@ -330,6 +330,18 @@ interface NavigationDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	language_selector: prismic.SelectField<"Slået fra" | "Slået til", "filled">;
+	
+	/**
+	 * Mobil-menu breakpoint field in *Navigation*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Hvornaar nav'en vises som fuld raekke i stedet for hamburger (vaelg efter antal/laengde af links)
+	 * - **Default Value**: Standard
+	 * - **API ID Path**: navigation.mobile_nav_breakpoint
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_nav_breakpoint: prismic.SelectField<"Kompakt" | "Standard" | "Bred" | "Meget bred" | "Ekstra bred", "filled">;
 }
 
 /**

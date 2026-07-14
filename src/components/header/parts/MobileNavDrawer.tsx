@@ -11,8 +11,8 @@ import { EviDrawer } from "@/src/components/ui/EviDrawer";
  * kun nav-specifikke ting (hamburger/X-ikoner, luk-knap, aria). Open/close,
  * focus-trap, Escape, inert baggrund + scroll-lock kommer fra EviDrawer.
  *
- * Trigger er skjult på desktop (@3xl/nav) — der vises nav'en inline i stedet.
- * Bruges af header-varianter som den delte mobil-collapse.
+ * Trigger's synlighed styres af parent-clusteren (.evi-nav-mobile) — skjult på
+ * desktop hvor nav'en vises inline. Delt mobil-collapse for header-varianter.
  */
 export type MobileNavDrawerProps = {
   /** Drawer-indhold: nav-liste (+ evt. CTA i bunden via mt-auto). */
@@ -29,7 +29,7 @@ export function MobileNavDrawer({
     <EviDrawer.Provider>
       <EviDrawer.Trigger
         aria-label={`Åbn ${label.toLowerCase()}`}
-        className="inline-flex cursor-pointer items-center justify-center rounded-evi p-2 text-current hover:bg-current/5 focus-visible:outline-2 focus-visible:outline-offset-2 @3xl/nav:hidden"
+        className="inline-flex cursor-pointer items-center justify-center rounded-evi p-2 text-current hover:bg-current/5 focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         <Menu size={24} aria-hidden />
       </EviDrawer.Trigger>

@@ -870,11 +870,14 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     H. Navigation — inline desktop-nav + mobil slide-in drawer
+     H. Navigation — inline desktop-cluster + mobil slide-in drawer
 
-     Nav-listen renderes to steder (jf. EviDrawer-arkitektur): inline i
-     headeren på desktop (≥48rem) og inde i mobil-draweren. Kun én er
-     synlig ad gangen — den anden er display:none (ude af a11y-træet).
+     Nav renderes to steder: .evi-nav-desktop (inline) og .evi-nav-mobile
+     (kompakt sprog + hamburger-drawer). Kun én synlig ad gangen — den anden
+     er display:none (ude af a11y-træet). Skiftet er KONFIGURERBART: kunden
+     vælger breakpoint via navigation.mobile_nav_breakpoint, som EviHeaderShell
+     baker ind i én container-query server-side (CSS tillader ikke variabler i
+     query-betingelser). Reglerne her er kun base-tilstanden (mobil).
      ═══════════════════════════════════════════════════════ */
   .evi-nav-list {
     list-style: none;
@@ -884,11 +887,27 @@
     flex-direction: column;
     gap: 0.125rem;
   }
-  @container nav (min-width: 48rem) {
-    .evi-nav-list {
-      flex-direction: row;
-      gap: 0.25rem;
-    }
+  /* Inline desktop-nav er altid vandret (vises kun når .evi-nav-desktop er
+     synlig); drawer-nav'en beholder flex-column (default). */
+  .evi-nav-desktop .evi-nav-list {
+    flex-direction: row;
+    gap: 0.25rem;
+  }
+
+  /* Base (mobil-first): desktop-cluster skjult, mobil-cluster vist. Den
+     injicerede container-query (unlayered, fra EviHeaderShell) vinder over
+     disse når headeren er bred nok. Wrapperne bærer display/align/gap i CSS
+     (ikke Tailwind), så der ikke opstår layer-konflikt med utility-klasser. */
+  .evi-nav-desktop,
+  .evi-nav-mobile {
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .evi-nav-desktop {
+    display: none;
+  }
+  .evi-nav-mobile {
+    display: flex;
   }
 
   /* Mobil slide-in drawer — EviDrawer bygget på native <dialog>.

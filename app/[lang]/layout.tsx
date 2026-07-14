@@ -97,6 +97,7 @@ export default async function Layout({
         homeHref: home_href,
         currentPathname: current_pathname,
         languageSelectorEnabled: header_language_selector_enabled,
+        mobileNavBreakpoint: ctx.navigation?.data?.mobile_nav_breakpoint,
         languageUrls: language_urls,
       }
     : null;

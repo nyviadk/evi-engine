@@ -23,6 +23,12 @@ export type EviHeaderSliceContext = {
   /** Static setting from navigation.data — applies to all header variants. */
   languageSelectorEnabled: boolean;
   /**
+   * navigation.data.mobile_nav_breakpoint — hvornår nav'en folder fra hamburger
+   * til inline række. Rå Prismic-label ("Kompakt"|"Standard"|"Bred"|"Meget
+   * bred"); header-slicen mapper til et data-nav-bp-nøgle. undefined → Standard.
+   */
+  mobileNavBreakpoint?: string;
+  /**
    * Precomputed URL for each tenant locale, correctly using each language's
    * own UID from Prismic alternate_languages. E.g. { "da-dk": "/da-dk/kontakt",
    * "en-eu": "/en-eu/contact" }. Locales without a translation fall back to
