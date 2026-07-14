@@ -127,7 +127,9 @@ export default async function RootLayout({
         >
           Spring til indhold
         </a>
-        <main id="main">{children}</main>
+        <main id="main" className="flex flex-1 flex-col">
+          {children}
+        </main>
       </body>
     </html>
   );

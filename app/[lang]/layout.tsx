@@ -118,7 +118,7 @@ export default async function Layout({
         />
       )}
 
-      {children}
+      <div className="flex-1">{children}</div>
       {show_test_bench && <EviTestBench />}
 
       {ctx?.footer && (
