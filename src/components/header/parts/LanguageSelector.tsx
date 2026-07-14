@@ -12,6 +12,12 @@ export type LanguageSelectorProps = {
    * (kontakt ↔ contact) land correctly. Layout constructs the map.
    */
   languageUrls: Record<string, string>;
+  /**
+   * "full" = native sprognavn + pil (desktop). "compact" = kun sprogkode (fx
+   * "DA"), ingen pil — mindst mulig på mobil ved siden af hamburgeren.
+   * @default "full"
+   */
+  variant?: "full" | "compact";
   className?: string;
 };
 
@@ -46,9 +52,12 @@ export function LanguageSelector({
   locales,
   currentLang,
   languageUrls,
+  variant = "full",
   className,
 }: LanguageSelectorProps): React.ReactElement | null {
   if (locales.length < 2) return null;
+
+  const compact = variant === "compact";
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const target_locale = event.target.value;
@@ -67,20 +76,25 @@ export function LanguageSelector({
         onChange={handleChange}
         aria-label="Vælg sprog"
         className={cn(
-          "evi-nav-lang cursor-pointer appearance-none rounded-evi border border-current/40 bg-current/5 py-1.5 pr-9 pl-3 text-sm text-current transition-colors hover:bg-current/10 focus-visible:outline-2 focus-visible:outline-offset-2",
+          "evi-nav-lang cursor-pointer appearance-none rounded-evi border border-current/40 bg-current/5 text-sm text-current transition-colors hover:bg-current/10 focus-visible:outline-2 focus-visible:outline-offset-2",
+          // compact: kun sprogkode (fx DA), ingen pil → mindst mulig plads.
+          compact ? "px-2 py-1.5" : "py-1.5 pr-9 pl-3",
           "[&>option]:bg-white [&>option]:text-neutral-900",
         )}
       >
         {locales.map((locale) => {
           const language_code = locale.split("-")[0];
-          let raw_label = locale.toUpperCase();
-          try {
-            const native_display = new Intl.DisplayNames(locale, {
-              type: "language",
-            });
-            raw_label = native_display.of(language_code) || raw_label;
-          } catch {}
-          const label = raw_label.charAt(0).toUpperCase() + raw_label.slice(1);
+          let label = language_code.toUpperCase(); // compact: fx "DA"
+          if (!compact) {
+            let raw_label = locale.toUpperCase();
+            try {
+              const native_display = new Intl.DisplayNames(locale, {
+                type: "language",
+              });
+              raw_label = native_display.of(language_code) || raw_label;
+            } catch {}
+            label = raw_label.charAt(0).toUpperCase() + raw_label.slice(1);
+          }
           return (
             <option key={locale} value={locale}>
               {label}
@@ -88,14 +102,16 @@ export function LanguageSelector({
           );
         })}
       </select>
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 12 8"
-        fill="currentColor"
-        className="pointer-events-none absolute top-1/2 right-3 h-2 w-3 -translate-y-1/2 opacity-70"
-      >
-        <path d="M6 8 0 0h12z" />
-      </svg>
+      {!compact && (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 12 8"
+          fill="currentColor"
+          className="pointer-events-none absolute top-1/2 right-3 h-2 w-3 -translate-y-1/2 opacity-70"
+        >
+          <path d="M6 8 0 0h12z" />
+        </svg>
+      )}
     </div>
   );
 }

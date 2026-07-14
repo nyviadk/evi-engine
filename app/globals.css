@@ -870,54 +870,82 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     H. Navigation — container-query baseret mobil/desktop-skifte
+     H. Navigation — inline desktop-nav + mobil slide-in drawer
 
-     På smal container (mobil) er .evi-nav-panel skjult som default
-     og rulles ud som overlay når hamburger-knappen sætter
-     [data-state=open].
-
-     På bred container (@nav >= 48rem) er panelet altid synligt og
-     vandret — [data-state] ignoreres helt. Samme DOM, ingen duplikat
-     liste der skal skjules med display:none.
+     Nav-listen renderes to steder (jf. EviDrawer-arkitektur): inline i
+     headeren på desktop (≥48rem) og inde i mobil-draweren. Kun én er
+     synlig ad gangen — den anden er display:none (ude af a11y-træet).
      ═══════════════════════════════════════════════════════ */
-  .evi-nav-panel {
-    display: none;
-    position: absolute;
-    inset-inline: 0;
-    top: 100%;
-    background-color: var(--theme-bg, var(--color-light));
-    border-block-start: 1px solid
-      color-mix(in oklch, currentColor 12%, transparent);
-    z-index: 40;
-    /* Forhindrer at scroll bobler til document når listen rammer sin grænse.
-       Især vigtigt på iOS/Android hvor body ellers ruller med. */
-    overscroll-behavior: contain;
-  }
-  .evi-nav-panel[data-state="open"] {
-    display: block;
-  }
-
   .evi-nav-list {
     list-style: none;
     margin: 0;
-    padding: 0.5rem 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 0.125rem;
   }
-
   @container nav (min-width: 48rem) {
-    .evi-nav-panel {
-      display: block;
-      position: static;
-      background-color: transparent;
-      border-block-start: 0;
-      z-index: auto;
-    }
     .evi-nav-list {
       flex-direction: row;
       gap: 0.25rem;
-      padding: 0;
+    }
+  }
+
+  /* Mobil slide-in drawer — EviDrawer bygget på native <dialog>.
+     showModal() giver focus-trap + inert baggrund + top-layer gratis;
+     her styrer vi kun slide-animationen. */
+  .evi-drawer {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    max-width: none;
+    max-height: none;
+    /* Fysiske properties + eksplicit top/right/bottom/left (ikke inset-shorthand
+       eller logiske props) for maks. kompatibilitet med CSS-optimizeren. */
+    width: min(20rem, 82vw);
+    height: 100dvh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    background-color: var(--theme-bg, var(--color-light));
+    color: currentColor;
+    box-shadow: -12px 0 40px -12px rgb(0 0 0 / 0.3);
+    /* Slide styres af [data-state] (sat af EviDrawer.Panel efter showModal), så
+       vi IKKE afhænger af @starting-style / allow-discrete / overlay — dem kan
+       Lightning CSS (Turbopack/webpack) droppe, hvorefter dialogen falder
+       tilbage til browser-default (top-left, content-size). */
+    transform: translateX(100%);
+    transition: transform 280ms ease;
+  }
+  .evi-drawer[data-state="open"] {
+    transform: translateX(0);
+  }
+  .evi-drawer::backdrop {
+    background-color: rgb(0 0 0 / 0.45);
+    opacity: 0;
+    transition: opacity 280ms ease;
+  }
+  .evi-drawer[data-state="open"]::backdrop {
+    opacity: 1;
+  }
+  .evi-drawer-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  /* Ren-CSS scroll-lock på body mens draweren er åben (ingen JS) */
+  html:has(.evi-drawer[open]) {
+    overflow: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evi-drawer,
+    .evi-drawer::backdrop {
+      transition: none;
     }
   }
 

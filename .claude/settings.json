@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(node scripts/check-prismic-guards.mjs)",
-      "Bash(echo \"---exit:$?---\")"
+      "Bash(echo \"---exit:$?---\")",
+      "Bash(echo \"---eslint-exit:$?---\")",
+      "Bash(echo \"---tsc-exit:$?---\")",
+      "Bash(echo \"---tsc:$?---\")",
+      "Bash(echo \"---eslint:$?---\")"
     ],
     "deny": [
       "Bash(npm run deploy*)",
