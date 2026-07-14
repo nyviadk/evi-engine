@@ -101,6 +101,13 @@ export default async function Layout({
       }
     : null;
 
+  // EviTestBench er kun til intern pre-launch-test — vis den kun på vores egen
+  // test-host + lokal dev, aldrig på kunde-domæner. ctx.hostname er valideret;
+  // host-header er fallback på localhost hvor der ingen tenant er.
+  const host = ctx?.hostname ?? h.get("host") ?? "";
+  const show_test_bench =
+    host === "evi.nyvia.dk" || host.startsWith("localhost");
+
   return (
     <>
       {header_context && (
@@ -112,7 +119,7 @@ export default async function Layout({
       )}
 
       {children}
-      <EviTestBench />
+      {show_test_bench && <EviTestBench />}
 
       {ctx?.footer && (
         <FooterClassic
