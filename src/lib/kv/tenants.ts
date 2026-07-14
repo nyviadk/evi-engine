@@ -109,7 +109,12 @@ export async function get_tenant_config(
     return decrypt_tenant_tokens(stored);
   }
   // Dev fallback — mock-data er plaintext (dev-only, ingen KV involveret).
-  return mock_kv_data[key] ?? null;
+  // Enhver localhost-port matcher dev-tenant'en, så `next dev` virker uanset
+  // om Next hopper til 3001/3002 når 3000 er optaget (ellers 404 på `/` fordi
+  // ruten aldrig får sit locale-prefix).
+  if (mock_kv_data[key]) return mock_kv_data[key];
+  if (key.startsWith("localhost")) return mock_kv_data["localhost:3000"] ?? null;
+  return null;
 }
 
 export async function put_tenant_config(
