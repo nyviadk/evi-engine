@@ -50,7 +50,8 @@ export function BrandLink({
           field={logo}
           className={cn("w-auto object-contain", imageHeightClass)}
           fallbackAlt=""
-          priority
+          loading="eager"
+          fetchPriority="high"
         />
       ) : (
         <EviBrandText text={brand_text} translate={translate_attr} />

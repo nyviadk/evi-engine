@@ -106,7 +106,7 @@ export function EviImage({
         field={field}
         className={imgClasses}
         fallbackAlt=""
-        priority={priority}
+        loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
       />
     </div>
