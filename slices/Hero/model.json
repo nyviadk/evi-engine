@@ -112,6 +112,18 @@
             "thumbnails": []
           }
         },
+        "image_mobile": {
+          "type": "Image",
+          "config": {
+            "label": "Billede (mobil)",
+            "placeholder": "Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet",
+            "constraint": {
+              "width": 1200,
+              "height": 900
+            },
+            "thumbnails": []
+          }
+        },
         "backdrop": {
           "type": "Select",
           "config": {
@@ -139,18 +151,6 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
-        },
-        "image_mobile": {
-          "type": "Image",
-          "config": {
-            "label": "Billede (mobil)",
-            "placeholder": "Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet",
-            "constraint": {
-              "width": 1200,
-              "height": 900
-            },
-            "thumbnails": []
           }
         }
       }

@@ -4,12 +4,13 @@ import { cn } from "@/src/lib/utils/cn";
 
 type Backdrop = "primary" | "secondary";
 
-// Blød, nedtonet token-tint bag billedet — samme "blød"-baggrund som section-
-// temaerne "Primær/Sekundær blød" (solid color-mix, IKKE gradient). Følger
-// tenantens brand-farver, så den er blød på lyse brands og dæmpet på mørke.
+// Blød brand-tint bag billedet. Bruger theme-surface-* (transparent brand-mix)
+// IKKE theme-*-soft: soft er en SOLID lys farve (brand + --color-light), som
+// bliver et grelt lyst "papir" på mørke sektioner. surface lægger sig adaptivt
+// oven på sektionens egen baggrund → blød på lys, dæmpet på mørk. Ikke gradient.
 const backdropClass: Record<Backdrop, string> = {
-  primary: "theme-primary-soft",
-  secondary: "theme-secondary-soft",
+  primary: "theme-surface-primary",
+  secondary: "theme-surface-secondary",
 };
 
 export type EviBackdropImageProps = {

@@ -9,7 +9,7 @@ import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 // hero-padding). Fuld-bredde wrapper: split's grid kollapser ellers.
 export const context: EviPageSliceContext = {
   linkResolver: () => "/",
-  sliceContexts: [{ theme: "light", isHero: true, collapsePadding: false }],
+  sliceContexts: [{ theme: "dark", isHero: true, collapsePadding: false }],
 };
 export const previewWrapperClassName = "block w-full";
 
