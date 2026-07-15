@@ -9,6 +9,9 @@ export type EviSectionProps = React.ComponentProps<"section"> & {
   collapsePadding?: boolean;
   /** Matcher vertikal gap til horisontal gap — bruges af "gitter"-layouts. */
   collapseGapY?: boolean;
+  /** Tving normal (fuld) top-padding selvom hero — fx centered hero der ser
+   *  for tæt på nav'en ud med den reducerede hero-hug. @default false */
+  fullTopPadding?: boolean;
 };
 
 export function EviSection({
@@ -16,16 +19,18 @@ export function EviSection({
   hero = false,
   collapsePadding = false,
   collapseGapY = false,
+  fullTopPadding = false,
   className,
   children,
   ...props
 }: EviSectionProps): React.ReactElement {
   // Hero hugger nav'en → HALV top-padding af en normal sektion (nav'en giver
   // allerede visuel adskillelse). Bunden er stor på hero for at løfte den.
+  // fullTopPadding opter ud af hug'et (fx centered hero uden billede at balancere).
   const pb = hero ? "pb-20 md:pb-32" : "pb-16 md:pb-24";
   const pt = collapsePadding
     ? "pt-0"
-    : hero
+    : hero && !fullTopPadding
       ? "pt-8 md:pt-12"
       : "pt-16 md:pt-24";
 

@@ -40,6 +40,7 @@ export function HeroCenteredLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
+      fullTopPadding
       data-slot="hero-centered"
     >
       <EviRow>
