@@ -42,7 +42,10 @@ export function EviSection({
     >
       <div
         className={cn(
-          "@container/section isolate mx-auto grid max-w-evi grid-cols-12 gap-x-4 px-4 md:gap-x-8",
+          // overflow-x-clip: roterede/forskudte dekorationer (fx EviBackdropImage)
+          // kan aldrig lave vandret side-scroll. Kun x — y forbliver visible, og
+          // børn med egen overflow-x-auto (EviPhoneCarousel) scroller uændret.
+          "@container/section isolate mx-auto grid max-w-evi grid-cols-12 gap-x-4 overflow-x-clip px-4 md:gap-x-8",
           gapY,
         )}
       >

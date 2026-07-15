@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSimpleSlice | SectionPhoneMockupSlice
+type PageDocumentDataSlicesSlice = HeroSimpleSlice | SectionPhoneMockupSlice | HeroSplitSlice
 
 /**
  * Content for Side documents
@@ -914,6 +914,116 @@ type HeroSimpleSliceVariation = HeroSimpleSliceDefault
 export type HeroSimpleSlice = prismic.SharedSlice<"hero_simple", HeroSimpleSliceVariation>;
 
 /**
+ * Primary content in *HeroSplit → Default → Primary*
+ */
+export interface HeroSplitSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sidens primære overskrift (h1)
+	 * - **API ID Path**: hero_split.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: hero_split.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Call-to-action field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_split.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Tag: ikon field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx ph:plant eller lucide:leaf
+	 * - **API ID Path**: hero_split.default.primary.tag_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tag_icon: prismic.KeyTextField;
+	
+	/**
+	 * Tag: tekst field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort label, fx Klinik i Solbjerg & online
+	 * - **API ID Path**: hero_split.default.primary.tag_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	tag_text: prismic.RichTextField;
+	
+	/**
+	 * Billede field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_split.default.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Farve bag billede field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Blød baggrundsfarve bag billedet
+	 * - **Default Value**: Sekundær
+	 * - **API ID Path**: hero_split.default.primary.backdrop
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop: prismic.SelectField<"Sekundær" | "Primær", "filled">;
+	
+	/**
+	 * Baggrundstema field in *HeroSplit → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: hero_split.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for HeroSplit Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroSplitSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HeroSplitSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *HeroSplit*
+ */
+type HeroSplitSliceVariation = HeroSplitSliceDefault
+
+/**
+ * HeroSplit Shared Slice
+ *
+ * - **API ID**: `hero_split`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroSplitSlice = prismic.SharedSlice<"hero_split", HeroSplitSliceVariation>;
+
+/**
  * Primary content in *SectionPhoneMockup → Masked → Primary*
  */
 export interface SectionPhoneMockupSliceMaskedPrimary {
@@ -1051,6 +1161,10 @@ declare module "@prismicio/client" {
 			HeroSimpleSliceDefaultPrimary,
 			HeroSimpleSliceVariation,
 			HeroSimpleSliceDefault,
+			HeroSplitSlice,
+			HeroSplitSliceDefaultPrimary,
+			HeroSplitSliceVariation,
+			HeroSplitSliceDefault,
 			SectionPhoneMockupSlice,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,

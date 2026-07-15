@@ -1,13 +1,17 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
+import { lqip_url } from "@/src/lib/utils/imgix";
 import { cn } from "@/src/lib/utils/cn";
 
 type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
 
 /**
  * Visuel ramme:
- * - `framed`: soft baggrund + padding rundt om billedet.
- * - `plain`: ingen baggrund, ingen padding — billedet fylder containeren.
+ * - `framed`: soft baggrund + padding rundt om billedet. Neutral-surface er
+ *   selv placeholder mens billedet loader.
+ * - `plain`: ingen baggrund/padding — billedet fylder containeren. Får en blød
+ *   LQIP-blur (imgix, ~1-2kb) som CSS-baggrund, så store billeder ikke popper
+ *   ind på tom baggrund. Nul Worker-arbejde — browseren henter tinten selv.
  *
  * Eksplicit variant fremfor booleans (jf. vercel-composition-patterns):
  * fremtidige visuelle stilarter ("bordered", "shadow", "card") tilføjes
@@ -51,16 +55,25 @@ export function EviImage({
   priority = false,
   className,
   imageClassName,
+  style,
   ...props
 }: EviImageProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
+
+  // LQIP-blur kun for `plain` (kant-til-kant cover). `framed` bruger sin
+  // neutral-surface som placeholder. lqip_url bygger KUN en URL-streng.
+  const blurUrl = variant === "plain" ? lqip_url(field.url) : undefined;
 
   const containerClasses = cn(
     "relative w-full overflow-hidden rounded-evi",
     aspectClasses[aspectRatio],
     variantClasses[variant],
+    blurUrl && "bg-cover bg-center",
     className,
   );
+  const containerStyle = blurUrl
+    ? { ...style, backgroundImage: `url("${blurUrl}")` }
+    : style;
 
   const imgClasses = cn("size-full object-contain", imageClassName);
 
@@ -76,6 +89,7 @@ export function EviImage({
         data-slot="evi-image"
         data-variant={variant}
         className={containerClasses}
+        style={containerStyle}
         {...props}
       >
         <picture>
@@ -100,6 +114,7 @@ export function EviImage({
       data-slot="evi-image"
       data-variant={variant}
       className={containerClasses}
+      style={containerStyle}
       {...props}
     >
       <PrismicNextImage

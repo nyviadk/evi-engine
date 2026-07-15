@@ -31,6 +31,9 @@
             },
             "section_phone_mockup": {
               "type": "SharedSlice"
+            },
+            "hero_split": {
+              "type": "SharedSlice"
             }
           }
         }

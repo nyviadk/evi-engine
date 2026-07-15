@@ -34,7 +34,9 @@ import path from "node:path";
 // ─── Config ───────────────────────────────────────────────────────────
 
 const EXPECTED_REPO = "evi-engine";
-const DEV_URL = "http://localhost:3000";
+// Sættes af ensure_dev_server() (port-agnostisk detektion) — ikke hardcodet,
+// fordi brugeren kører mange projekter og Next ofte vælger en anden port.
+let DEV_URL = "";
 const VIEWPORT = { width: 1920, height: 1080 };
 const SLICES_DIR = "slices";
 
@@ -105,41 +107,87 @@ function discover_slices() {
   return discovered;
 }
 
-// ─── Ensure `next dev` is running ─────────────────────────────────────
+// ─── Find / start evi-engine dev-server (port-agnostisk) ──────────────
+//
+// Brugeren kører ofte mange projekter → Next vælger en tilfældig port. Vi
+// finder evi-engines dev-server ved at probe slice-preview-ruten (findes KUN
+// i denne app) på 3000-3011. Override med PREVIEW_DEV_URL hvis nødvendigt.
 
-async function wait_for_dev_server(url, timeout_ms = 30_000) {
-  const start = Date.now();
-  while (Date.now() - start < timeout_ms) {
-    try {
-      const res = await fetch(url);
-      if (res.status < 500) return;
-    } catch {
-      // still starting
-    }
-    await sleep(500);
+const PROBE_PATH = "/slice-preview/hero_simple/default";
+
+async function probe_status(base, timeout_ms) {
+  try {
+    const res = await fetch(`${base}${PROBE_PATH}`, {
+      signal: AbortSignal.timeout(timeout_ms),
+    });
+    return res.status; // 200 = evi-engine+virker, 500 = stale, 404 = anden app
+  } catch {
+    return null; // ingen server / timeout / connection refused
   }
-  throw new Error(`Dev server never came up on ${url}`);
+}
+
+async function detect_running_dev_url() {
+  console.log("→ Finder kørende evi-engine dev-server (port-agnostisk)…");
+  let stale = null;
+  for (let port = 3000; port <= 3011; port++) {
+    const base = `http://localhost:${port}`;
+    const status = await probe_status(base, 45_000);
+    if (status === 200) {
+      console.log(`  ✓ Fundet på ${base}`);
+      return base;
+    }
+    if (status && status >= 500) stale = base; // evi-engine, men stale
+  }
+  if (stale) {
+    console.log(
+      `  ⚠ ${stale} er evi-engine men gav 500 (stale dev-server) — starter en frisk i stedet.`,
+    );
+  }
+  return null;
 }
 
 async function ensure_dev_server() {
-  console.log("→ Checking dev server…");
-  try {
-    const res = await fetch(DEV_URL);
-    if (res.status < 500) {
-      console.log("  ✓ Dev server already running");
-      return null;
-    }
-  } catch {
-    // not running
+  console.log("→ Tjekker dev-server…");
+
+  if (process.env.PREVIEW_DEV_URL) {
+    DEV_URL = process.env.PREVIEW_DEV_URL.replace(/\/+$/, "");
+    console.log(`  ✓ PREVIEW_DEV_URL: ${DEV_URL}`);
+    return null;
   }
-  console.log("  → Starting `next dev`…");
+
+  const found = await detect_running_dev_url();
+  if (found) {
+    DEV_URL = found;
+    return null;
+  }
+
+  console.log("  → Starter `next dev` (frisk)…");
   const proc = spawn("npm", ["run", "dev"], {
-    stdio: "ignore",
+    stdio: ["ignore", "pipe", "pipe"],
     shell: true,
-    detached: false,
   });
-  await wait_for_dev_server(DEV_URL);
-  console.log("  ✓ Dev server up");
+  DEV_URL = await new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error("Dev-server kom ikke op inden for 90s")),
+      90_000,
+    );
+    const on_data = (buf) => {
+      const m = String(buf).match(/https?:\/\/localhost:(\d+)/);
+      if (m) {
+        clearTimeout(timer);
+        resolve(`http://localhost:${m[1]}`);
+      }
+    };
+    proc.stdout.on("data", on_data);
+    proc.stderr.on("data", on_data);
+  });
+  console.log(`  ✓ Dev-server op på ${DEV_URL}`);
+  await sleep(1500); // lad Next stabilisere før første render
+  if ((await probe_status(DEV_URL, 90_000)) !== 200) {
+    console.log(
+      "  ⚠ slice-preview svarede ikke 200 endnu — fortsætter alligevel.",
+    );
+  }
   return proc;
 }
 
@@ -165,7 +213,9 @@ async function screenshot_and_upload(browser, slice) {
     console.log(`→ ${slice_id}/${variation.id}`);
 
     const preview_url = `${DEV_URL}/slice-preview/${slice_id}/${variation.id}`;
-    await page.goto(preview_url, { waitUntil: "networkidle" });
+    // 90s timeout: første render af et nyt slice trigger en kold kompilering
+    // (fx iconify-pack til EviIcon) der kan overstige Playwrights 30s-default.
+    await page.goto(preview_url, { waitUntil: "networkidle", timeout: 90_000 });
 
     const screenshot_dir = path.join(SLICES_DIR, folder);
     const screenshot_path = path.join(
@@ -174,7 +224,7 @@ async function screenshot_and_upload(browser, slice) {
     );
 
     const target = page.locator('[data-testid="preview-target"]');
-    await target.waitFor({ state: "visible" });
+    await target.waitFor({ state: "visible", timeout: 90_000 });
     await target.screenshot({ path: screenshot_path });
     console.log(`  ✓ Screenshot → ${screenshot_path}`);
 
