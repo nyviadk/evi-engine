@@ -6,7 +6,9 @@
       "Bash(echo \"---eslint-exit:$?---\")",
       "Bash(echo \"---tsc-exit:$?---\")",
       "Bash(echo \"---tsc:$?---\")",
-      "Bash(echo \"---eslint:$?---\")"
+      "Bash(echo \"---eslint:$?---\")",
+      "Bash(echo \"tsc:$?\")",
+      "Bash(echo \"eslint:$?\")"
     ],
     "deny": [
       "Bash(npm run deploy*)",
