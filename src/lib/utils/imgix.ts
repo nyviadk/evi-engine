@@ -29,6 +29,10 @@ export function lqip_url(url: string): string | undefined {
  * hero'en — WebP/AVIF beholdes ellers (mindre download, ikke-LCP = ingen synlig
  * flash). Drop `format` fra `auto` FØR `fm` sættes: `auto=format` overstyrer ellers
  * `fm` (imgix-regel). `auto=compress` bevares. Returnerer input uændret ved fejl.
+ *
+ * GOTCHA: JPEG har ingen alpha → imgix fladgør transparens til en solid farve.
+ * Kun sikkert på opake billeder (heroes er ~altid opake fotos, uanset om kunden
+ * uploader JPG/PNG/WebP — imgix leverer alligevel alt som AVIF/WebP uden fixet).
  */
 export function force_jpg(url: string): string {
   try {
