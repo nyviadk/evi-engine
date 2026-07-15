@@ -1,6 +1,6 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
-import { lqip_url } from "@/src/lib/utils/imgix";
+import { force_jpg, lqip_url } from "@/src/lib/utils/imgix";
 import { cn } from "@/src/lib/utils/cn";
 
 type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
@@ -34,8 +34,20 @@ export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
   mobileAspectRatio?: AspectRatio;
   /** Visuel ramme — se `ImageVariant`. @default "framed" */
   variant?: ImageVariant;
-  /** LCP-hero: loading="eager" + fetchPriority="high". @default false */
+  /**
+   * LCP-hero. Rendrer et rå `<img>` tvunget til JPEG (+ `decoding="sync"`) i
+   * stedet for next/image. imgix serverer uploads som AVIF/WebP der dekoder
+   * langsomt → det store hero flasher; JPEG dekoder hurtigt (derfor flasher
+   * Unsplash/fm=jpg aldrig). @default false
+   */
   priority?: boolean;
+  /**
+   * Display-størrelse til next/image-stien (ikke-hero), fx
+   * "(min-width: 768px) 45vw, 92vw". Uden den antager next/image 100vw og
+   * over-henter. Ignoreres på den rå art-direction-`<img>` (ét fast billede pr.
+   * crop, intet srcset — srcSet gav sporadisk flash).
+   */
+  sizes?: string;
   /** Klasse på selve `<img>` / `<PrismicNextImage>`. */
   imageClassName?: string;
 };
@@ -70,6 +82,7 @@ export function EviImage({
   mobileAspectRatio,
   variant = "framed",
   priority = false,
+  sizes,
   className,
   imageClassName,
   style,
@@ -99,13 +112,16 @@ export function EviImage({
 
   const imgClasses = cn("size-full object-contain", imageClassName);
 
-  // Hero art direction: separate desktop/mobile images via <picture>
-  if (isFilled.image(mobileField)) {
-    // width/height fra Prismic forhindrer Cumulative Layout Shift mens
-    // billedet loader. PrismicNextImage gør det automatisk; vores manuelle
-    // <img> skal hente det fra field.dimensions.
+  // Rå <img> til (a) hero (priority) ELLER (b) art direction (mobileField —
+  // next/image kan ikke <picture>). Hero tvinges til JPEG (force_jpg): imgix'
+  // AVIF/WebP-uploads dekoder for langsomt → det store LCP-billede popper ind
+  // efter paint = flash. JPEG dekoder hurtigt (derfor flasher Unsplash/fm=jpg
+  // aldrig — bekræftet i praksis). decoding="sync" = ekstra atomisk sikkerhed.
+  // width/height → CLS. next/image kan ikke tvinges til fm=jpg uden custom loader.
+  if (priority || isFilled.image(mobileField)) {
     const width = field.dimensions?.width ?? undefined;
     const height = field.dimensions?.height ?? undefined;
+    const src = priority ? force_jpg(field.url) : field.url;
     return (
       <div
         data-slot="evi-image"
@@ -115,22 +131,29 @@ export function EviImage({
         {...props}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet={mobileField.url ?? ""} />
+          {isFilled.image(mobileField) && (
+            <source
+              media="(max-width: 768px)"
+              srcSet={priority ? force_jpg(mobileField.url) : mobileField.url}
+            />
+          )}
           <img
-            src={field.url ?? ""}
+            src={src}
             alt={field.alt ?? ""}
             width={width}
             height={height}
             className={imgClasses}
             loading={priority ? "eager" : "lazy"}
             fetchPriority={priority ? "high" : "auto"}
+            decoding={priority ? "sync" : "async"}
           />
         </picture>
       </div>
     );
   }
 
-  // Standard: PrismicNextImage for Next.js optimering
+  // Ellers (ikke-hero, intet mobil-billede) → PrismicNextImage: srcset + sizes,
+  // lazy. WebP/AVIF er fint her (ikke LCP → langsommere dekode ses ikke).
   return (
     <div
       data-slot="evi-image"
@@ -143,8 +166,8 @@ export function EviImage({
         field={field}
         className={imgClasses}
         fallbackAlt=""
-        loading={priority ? "eager" : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
+        sizes={sizes}
+        loading="lazy"
       />
     </div>
   );

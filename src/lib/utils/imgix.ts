@@ -20,3 +20,23 @@ export function lqip_url(url: string): string | undefined {
     return undefined;
   }
 }
+
+/**
+ * Tvinger et Prismic/imgix-billede til JPEG. imgix serverer uploads som
+ * `auto=format` → AVIF/WebP, som DEKODER langsomt; på et stort LCP-hero popper
+ * billedet ind efter paint = flash. JPEG dekoder hurtigt → intet flash (derfor
+ * flasher Unsplash-billeder, der allerede er `fm=jpg`, aldrig). Kun værd på
+ * hero'en — WebP/AVIF beholdes ellers (mindre download, ikke-LCP = ingen synlig
+ * flash). Drop `format` fra `auto` FØR `fm` sættes: `auto=format` overstyrer ellers
+ * `fm` (imgix-regel). `auto=compress` bevares. Returnerer input uændret ved fejl.
+ */
+export function force_jpg(url: string): string {
+  try {
+    const u = new URL(url);
+    u.searchParams.set("auto", "compress");
+    u.searchParams.set("fm", "jpg");
+    return u.toString();
+  } catch {
+    return url;
+  }
+}

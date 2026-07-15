@@ -66,6 +66,7 @@ export function EviBackdropImage({
         variant="plain"
         imageClassName="object-cover"
         priority={priority}
+        sizes="(min-width: 768px) 45vw, 92vw"
         className="rounded-evi shadow-evi"
       />
     </div>
