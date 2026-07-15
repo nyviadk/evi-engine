@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSimpleSlice | SectionPhoneMockupSlice | HeroSplitSlice
+type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice
 
 /**
  * Content for Side documents
@@ -845,183 +845,179 @@ type HeaderClassicSliceVariation = HeaderClassicSliceDefault
 export type HeaderClassicSlice = prismic.SharedSlice<"header_classic", HeaderClassicSliceVariation>;
 
 /**
- * Primary content in *HeroSimple → Default → Primary*
+ * Primary content in *Hero → Centered → Primary*
  */
-export interface HeroSimpleSliceDefaultPrimary {
+export interface HeroSliceCenteredPrimary {
 	/**
-	 * Overskrift field in *HeroSimple → Default → Primary*
+	 * Overskrift field in *Hero → Centered → Primary*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Sidens primære overskrift (h1)
-	 * - **API ID Path**: hero_simple.default.primary.heading
+	 * - **API ID Path**: hero.centered.primary.heading
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	heading: prismic.RichTextField;
 	
 	/**
-	 * Beskrivelse field in *HeroSimple → Default → Primary*
+	 * Beskrivelse field in *Hero → Centered → Primary*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Kort beskrivende tekst under overskriften
-	 * - **API ID Path**: hero_simple.default.primary.body
+	 * - **API ID Path**: hero.centered.primary.body
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
 	
 	/**
-	 * Call-to-action field in *HeroSimple → Default → Primary*
+	 * Call-to-action field in *Hero → Centered → Primary*
 	 *
 	 * - **Field Type**: Link
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: hero_simple.default.primary.cta_link
+	 * - **API ID Path**: hero.centered.primary.cta_link
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
-	 * Baggrundstema field in *HeroSimple → Default → Primary*
+	 * Baggrundstema field in *Hero → Centered → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Baggrundstema for sektionen
 	 * - **Default Value**: Lys
-	 * - **API ID Path**: hero_simple.default.primary.background_theme
+	 * - **API ID Path**: hero.centered.primary.background_theme
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
 }
 
 /**
- * Default variation for HeroSimple Slice
+ * Centered variation for Hero Slice
  *
- * - **API ID**: `default`
- * - **Description**: Default
+ * - **API ID**: `centered`
+ * - **Description**: Centered
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type HeroSimpleSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HeroSimpleSliceDefaultPrimary>, never>;
+export type HeroSliceCentered = prismic.SharedSliceVariation<"centered", Simplify<HeroSliceCenteredPrimary>, never>;
 
 /**
- * Slice variation for *HeroSimple*
+ * Primary content in *Hero → Split → Primary*
  */
-type HeroSimpleSliceVariation = HeroSimpleSliceDefault
-
-/**
- * HeroSimple Shared Slice
- *
- * - **API ID**: `hero_simple`
- * - **Description**: *None*
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type HeroSimpleSlice = prismic.SharedSlice<"hero_simple", HeroSimpleSliceVariation>;
-
-/**
- * Primary content in *HeroSplit → Default → Primary*
- */
-export interface HeroSplitSliceDefaultPrimary {
+export interface HeroSliceSplitPrimary {
 	/**
-	 * Overskrift field in *HeroSplit → Default → Primary*
+	 * Overskrift field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Sidens primære overskrift (h1)
-	 * - **API ID Path**: hero_split.default.primary.heading
+	 * - **API ID Path**: hero.split.primary.heading
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	heading: prismic.RichTextField;
 	
 	/**
-	 * Beskrivelse field in *HeroSplit → Default → Primary*
+	 * Beskrivelse field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Kort tekst under overskriften
-	 * - **API ID Path**: hero_split.default.primary.body
+	 * - **API ID Path**: hero.split.primary.body
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
 	
 	/**
-	 * Call-to-action field in *HeroSplit → Default → Primary*
+	 * Call-to-action field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Link
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: hero_split.default.primary.cta_link
+	 * - **API ID Path**: hero.split.primary.cta_link
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
-	 * Tag: ikon field in *HeroSplit → Default → Primary*
+	 * Tag: ikon field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx ph:plant eller lucide:leaf
-	 * - **API ID Path**: hero_split.default.primary.tag_icon
+	 * - **Placeholder**: Iconify-navn, fx ph:coffee
+	 * - **API ID Path**: hero.split.primary.tag_icon
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	tag_icon: prismic.KeyTextField;
 	
 	/**
-	 * Tag: tekst field in *HeroSplit → Default → Primary*
+	 * Tag: tekst field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort label, fx Klinik i Solbjerg & online
-	 * - **API ID Path**: hero_split.default.primary.tag_text
+	 * - **Placeholder**: Kort label, fx Ristet i Aarhus siden 2018
+	 * - **API ID Path**: hero.split.primary.tag_text
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	tag_text: prismic.RichTextField;
 	
 	/**
-	 * Billede field in *HeroSplit → Default → Primary*
+	 * Billede field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: hero_split.default.primary.image
+	 * - **API ID Path**: hero.split.primary.image
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	image: prismic.ImageField<never>;
 	
 	/**
-	 * Farve bag billede field in *HeroSplit → Default → Primary*
+	 * Farve bag billede field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Blød baggrundsfarve bag billedet
 	 * - **Default Value**: Sekundær
-	 * - **API ID Path**: hero_split.default.primary.backdrop
+	 * - **API ID Path**: hero.split.primary.backdrop
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	backdrop: prismic.SelectField<"Sekundær" | "Primær", "filled">;
 	
 	/**
-	 * Baggrundstema field in *HeroSplit → Default → Primary*
+	 * Baggrundstema field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Baggrundstema for sektionen
 	 * - **Default Value**: Lys
-	 * - **API ID Path**: hero_split.default.primary.background_theme
+	 * - **API ID Path**: hero.split.primary.background_theme
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	
+	/**
+	 * Billede (mobil) field in *Hero → Split → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet
+	 * - **API ID Path**: hero.split.primary.image_mobile
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_mobile: prismic.ImageField<never>;
 }
 
 /**
- * Default variation for HeroSplit Slice
+ * Split variation for Hero Slice
  *
- * - **API ID**: `default`
- * - **Description**: Default
+ * - **API ID**: `split`
+ * - **Description**: Split
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type HeroSplitSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HeroSplitSliceDefaultPrimary>, never>;
+export type HeroSliceSplit = prismic.SharedSliceVariation<"split", Simplify<HeroSliceSplitPrimary>, never>;
 
 /**
- * Slice variation for *HeroSplit*
+ * Slice variation for *Hero*
  */
-type HeroSplitSliceVariation = HeroSplitSliceDefault
+type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit
 
 /**
- * HeroSplit Shared Slice
+ * Hero Shared Slice
  *
- * - **API ID**: `hero_split`
+ * - **API ID**: `hero`
  * - **Description**: *None*
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type HeroSplitSlice = prismic.SharedSlice<"hero_split", HeroSplitSliceVariation>;
+export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
  * Primary content in *SectionPhoneMockup → Masked → Primary*
@@ -1157,14 +1153,12 @@ declare module "@prismicio/client" {
 			HeaderClassicSliceDefaultPrimary,
 			HeaderClassicSliceVariation,
 			HeaderClassicSliceDefault,
-			HeroSimpleSlice,
-			HeroSimpleSliceDefaultPrimary,
-			HeroSimpleSliceVariation,
-			HeroSimpleSliceDefault,
-			HeroSplitSlice,
-			HeroSplitSliceDefaultPrimary,
-			HeroSplitSliceVariation,
-			HeroSplitSliceDefault,
+			HeroSlice,
+			HeroSliceCenteredPrimary,
+			HeroSliceSplitPrimary,
+			HeroSliceVariation,
+			HeroSliceCentered,
+			HeroSliceSplit,
 			SectionPhoneMockupSlice,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,

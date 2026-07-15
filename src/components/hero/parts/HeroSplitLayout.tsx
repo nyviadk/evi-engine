@@ -1,5 +1,4 @@
 import { isFilled, type Content } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
 
 import { EviSection } from "@/src/components/layout/EviSection";
@@ -20,19 +19,22 @@ const BACKDROP: Record<string, "primary" | "secondary"> = {
   Sekundær: "secondary",
 };
 
+export type HeroSplitLayoutProps = {
+  slice: Content.HeroSliceSplit;
+  index: number;
+  context: EviPageSliceContext;
+};
+
 /**
- * HeroSplit — 2-kolonne hero. Venstre: tag + overskrift + brødtekst + CTA.
- * Højre: kvadratisk billede med blød, roteret farve-backdrop (dybde). Ren
- * Evi-composition; tag/backdrop er egne primitiver (EviTag, EviBackdropImage).
+ * Hero-variation "split" — 2-kolonne hero: venstre tag + overskrift + brødtekst
+ * + CTA, højre kvadratisk billede med blød roteret backdrop. Domain-part
+ * (Tailwind tilladt jf. R3.3); rendres af Hero-dispatcheren via dynamic import.
  */
-export default function HeroSplit({
+export function HeroSplitLayout({
   slice,
   index,
   context,
-}: SliceComponentProps<
-  Content.HeroSplitSlice,
-  EviPageSliceContext
->): React.ReactElement {
+}: HeroSplitLayoutProps): React.ReactElement {
   const { linkResolver } = context;
   const { theme, isHero, collapsePadding } = resolve_slice_context(
     context,
@@ -72,6 +74,7 @@ export default function HeroSplit({
 
         <EviBackdropImage
           field={p.image}
+          mobileField={p.image_mobile}
           backdrop={backdrop}
           priority={isHero}
         />

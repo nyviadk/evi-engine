@@ -22,10 +22,16 @@ type ImageVariant = "framed" | "plain";
 export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
   /** Prismic image field. Komponenten rendrer ingenting hvis feltet er tomt. */
   field: ImageField;
-  /** Separat image til mobil (art direction via `<picture>`). */
+  /** Separat image til mobil (art direction via `<picture>`, < 768px). */
   mobileField?: ImageField;
-  /** Aspect ratio på containeren. @default "auto" */
+  /** Aspect ratio på containeren (desktop). @default "auto" */
   aspectRatio?: AspectRatio;
+  /**
+   * Aspect ratio på mobil (< 768px) — til art direction hvor mobil-croppet har
+   * et andet forhold end desktop. Kun sat → containeren skifter forhold ved md.
+   * Brug sammen med `mobileField` (R9.8). @default samme som `aspectRatio`.
+   */
+  mobileAspectRatio?: AspectRatio;
   /** Visuel ramme — se `ImageVariant`. @default "framed" */
   variant?: ImageVariant;
   /** LCP-hero: loading="eager" + fetchPriority="high". @default false */
@@ -42,6 +48,16 @@ const aspectClasses: Record<AspectRatio, string> = {
   auto: "aspect-auto",
 };
 
+// Literale md:-varianter (Tailwind scanner kun statiske strenge) → mobil-first
+// aspect med desktop-override ved md, når mobileAspectRatio er sat.
+const mdAspectClasses: Record<AspectRatio, string> = {
+  landscape: "md:aspect-4/3",
+  square: "md:aspect-square",
+  video: "md:aspect-video",
+  portrait: "md:aspect-9/16",
+  auto: "md:aspect-auto",
+};
+
 const variantClasses: Record<ImageVariant, string> = {
   framed: "theme-surface-neutral p-6 md:p-8",
   plain: "",
@@ -51,6 +67,7 @@ export function EviImage({
   field,
   mobileField,
   aspectRatio = "auto",
+  mobileAspectRatio,
   variant = "framed",
   priority = false,
   className,
@@ -64,9 +81,14 @@ export function EviImage({
   // neutral-surface som placeholder. lqip_url bygger KUN en URL-streng.
   const blurUrl = variant === "plain" ? lqip_url(field.url) : undefined;
 
+  // Mobil-first aspect (mobileAspectRatio) med desktop-override ved md.
+  const aspectClass = mobileAspectRatio
+    ? cn(aspectClasses[mobileAspectRatio], mdAspectClasses[aspectRatio])
+    : aspectClasses[aspectRatio];
+
   const containerClasses = cn(
     "relative w-full overflow-hidden rounded-evi",
-    aspectClasses[aspectRatio],
+    aspectClass,
     variantClasses[variant],
     blurUrl && "bg-cover bg-center",
     className,

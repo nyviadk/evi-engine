@@ -1,5 +1,4 @@
 import { isFilled, type Content } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
 
 import { EviButton } from "@/src/components/ui/EviButton";
@@ -12,21 +11,21 @@ import {
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
 
+export type HeroCenteredLayoutProps = {
+  slice: Content.HeroSliceCentered;
+  index: number;
+  context: EviPageSliceContext;
+};
+
 /**
- * HeroSimple — centreret tekst-hero. Ren Evi-composition.
- *
- * Cross-slice context (isHero + collapsePadding) læses hvis parent har
- * kaldt compute_slice_contexts (production-page). Fallback til self-derived
- * defaults hvis context mangler (preview / slice-simulator standalone).
+ * Hero-variation "centered" — centreret tekst-hero. Domain-part (Tailwind
+ * tilladt jf. R3.3); rendres af Hero-dispatcheren via dynamic import.
  */
-export default function HeroSimple({
+export function HeroCenteredLayout({
   slice,
   index,
   context,
-}: SliceComponentProps<
-  Content.HeroSimpleSlice,
-  EviPageSliceContext
->): React.ReactElement {
+}: HeroCenteredLayoutProps): React.ReactElement {
   const { linkResolver } = context;
   const { heading, body, cta_link } = slice.primary;
   const { theme, isHero, collapsePadding } = resolve_slice_context(
@@ -34,15 +33,14 @@ export default function HeroSimple({
     index,
   );
 
-  const has_cta =
-    isFilled.link(cta_link) && isFilled.keyText(cta_link.text);
+  const has_cta = isFilled.link(cta_link) && isFilled.keyText(cta_link.text);
 
   return (
     <EviSection
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="hero-simple"
+      data-slot="hero-centered"
     >
       <EviRow>
         <EviStack gap="lg" align="center">

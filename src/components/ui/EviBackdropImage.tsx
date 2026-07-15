@@ -15,6 +15,12 @@ const backdropClass: Record<Backdrop, string> = {
 export type EviBackdropImageProps = {
   /** Billede (kvadratisk constraint anbefales). Tomt → intet render. */
   field: ImageField;
+  /**
+   * Separat mobil-billede (art direction, R9.8). Når udfyldt vises det < 768px
+   * i 4:3 i stedet for et fuld-bredt kvadrat der ellers dominerer på mobil.
+   * Tomt → desktop-billedet (square) bruges på alle viewports.
+   */
+  mobileField?: ImageField;
   /** Blød farve på den roterede baggrund bag billedet. @default "secondary" */
   backdrop?: Backdrop;
   /** Eager-load (LCP/hero-billede). @default false */
@@ -26,15 +32,18 @@ export type EviBackdropImageProps = {
  * Kvadratisk billede med en blød, let roteret farve-flade bagved → giver dybde.
  * Baggrunden er dekorativ (aria-hidden). Rotationen kan stikke lidt ud; hold
  * den i en container der clipper vandret (EviSection gør det) for at undgå
- * vandret scroll på mobil.
+ * vandret scroll på mobil. Valgfrit `mobileField` → 4:3-crop < 768px.
  */
 export function EviBackdropImage({
   field,
+  mobileField,
   backdrop = "secondary",
   priority = false,
   className,
 }: EviBackdropImageProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
+
+  const has_mobile = isFilled.image(mobileField);
 
   return (
     <div
@@ -52,7 +61,9 @@ export function EviBackdropImage({
       />
       <EviImage
         field={field}
+        mobileField={mobileField}
         aspectRatio="square"
+        mobileAspectRatio={has_mobile ? "landscape" : undefined}
         variant="plain"
         imageClassName="object-cover"
         priority={priority}

@@ -26,13 +26,10 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "hero_simple": {
-              "type": "SharedSlice"
-            },
             "section_phone_mockup": {
               "type": "SharedSlice"
             },
-            "hero_split": {
+            "hero": {
               "type": "SharedSlice"
             }
           }

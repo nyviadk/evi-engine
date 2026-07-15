@@ -1,0 +1,159 @@
+{
+  "id": "hero",
+  "name": "Hero",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "centered",
+      "name": "Centered",
+      "description": "Centered",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/545e57587f6246062f29d19e1807b682ae2f7e6b.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sidens primære overskrift (h1)",
+            "single": "heading1"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort beskrivende tekst under overskriften",
+            "single": "paragraph"
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Call-to-action",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "placeholder": "Baggrundstema for sektionen",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "split",
+      "name": "Split",
+      "description": "Split",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/cada2c5ffe2393ae4f51d373f041fa1d84c5457b.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sidens primære overskrift (h1)",
+            "single": "heading1"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph"
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Call-to-action",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "tag_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Tag: ikon",
+            "placeholder": "Iconify-navn, fx ph:coffee"
+          }
+        },
+        "tag_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Tag: tekst",
+            "placeholder": "Kort label, fx Ristet i Aarhus siden 2018",
+            "single": "paragraph"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Billede",
+            "constraint": {
+              "width": 1200,
+              "height": 1200
+            },
+            "thumbnails": []
+          }
+        },
+        "backdrop": {
+          "type": "Select",
+          "config": {
+            "label": "Farve bag billede",
+            "placeholder": "Blød baggrundsfarve bag billedet",
+            "default_value": "Sekundær",
+            "options": [
+              "Sekundær",
+              "Primær"
+            ]
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "placeholder": "Baggrundstema for sektionen",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        },
+        "image_mobile": {
+          "type": "Image",
+          "config": {
+            "label": "Billede (mobil)",
+            "placeholder": "Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet",
+            "constraint": {
+              "width": 1200,
+              "height": 900
+            },
+            "thumbnails": []
+          }
+        }
+      }
+    }
+  ]
+}

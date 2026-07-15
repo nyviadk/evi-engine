@@ -33,7 +33,7 @@ const BOX_FILL: Record<string, EviPhoneCarouselProps["fill"]> = {
  * samles under denne ene slice; hvert look er en variation = ét `layout` på
  * EviPhoneCarousel. Start: "masked" (vifte med clippet bund).
  *
- * Tema/collapsePadding via cross-slice context (som HeroSimple); falder
+ * Tema/collapsePadding via cross-slice context (som Hero-slicen); falder
  * tilbage til EviSections egne defaults i preview/standalone.
  */
 export default function SectionPhoneMockup({
