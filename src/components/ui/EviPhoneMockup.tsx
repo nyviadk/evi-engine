@@ -62,7 +62,7 @@ export function EviPhoneMockup({
         // nested-radius-regel), så hjørnerne følger samme bue ved enhver skala.
         "relative mx-auto aspect-18/37 [--pw:var(--evi-phone-w,min(22.5rem,100%))] [--frame-r:calc(var(--pw)/7.5)] [--frame-p:calc(var(--pw)/30)] w-(--pw)",
         "rounded-(--frame-r) bg-evi-dark p-(--frame-p)",
-        "shadow-2xl ring-1 ring-evi-light/20 ring-inset",
+        "shadow-evi-lg border border-evi-light/20",
         className,
       )}
     >

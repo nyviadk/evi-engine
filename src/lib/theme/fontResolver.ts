@@ -1,25 +1,16 @@
-import { localFontMap } from "@/src/lib/theme/fonts";
-
 const SYSTEM_FALLBACK =
   'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
-
-// Case-insensitive lookup i localFontMap
-function findLocalFont(name: string) {
-  const normalized = name.trim().toLowerCase();
-  for (const [key, value] of Object.entries(localFontMap)) {
-    if (key.toLowerCase() === normalized) return value;
-  }
-  return null;
-}
 
 // Byg Bunny Fonts URL med specifikke vægte (IKKE range-syntaks)
 function buildBunnyUrl(fontName: string): string {
   const slug = fontName.trim().replace(/\s+/g, "+");
+  // swap: render-blocking stylesheet → font klar ved paint, vist på første load
+  // uden hop. optional gav fallback + 2-reload på uncachet load.
   return `https://fonts.bunny.net/css?family=${slug}:300,400,500,600,700,800&display=swap`;
 }
 
 export interface FontConfig {
-  /** CSS-variabel-klasse til <html> (tom string hvis Bunny) */
+  /** CSS-variabel-klasse til <html> (altid "" — Bunny bruger ikke variabler) */
   htmlClass: string;
   /** Bunny preconnect + stylesheet links nødvendige */
   bunny: { preconnect: true; stylesheet: string } | null;
@@ -30,10 +21,12 @@ export interface FontConfig {
 
 /**
  * Resolver kundens font-valg fra Prismic settings.
- * Prioritet: custom_font_input → font_select → "System standard"
+ * Prioritet: custom_font_input → font_select → "System standard".
  *
- * Hvis kunden skriver en lokal font (fx "Inter") i custom-feltet,
- * bruges den lokale next/font version i stedet for Bunny.
+ * Alle ikke-system-fonts hentes fra Bunny (render-blocking stylesheet → font
+ * klar ved første paint, ingen FOUT/hop). Erstatter next/font-self-hosting, der
+ * i vores runtime-valgte setup (én af mange fonts pr. tenant) enten gav hop
+ * (swap) eller 2-reload (optional) — preload ville ramme alle fonts.
  */
 export function resolveFonts(settings: {
   custom_font_input?: string | null;
@@ -52,28 +45,10 @@ export function resolveFonts(settings: {
     };
   }
 
-  const localMatch = findLocalFont(chosenName);
-
-  if (localMatch) {
-    const fontValue = `${localMatch.name}, ${SYSTEM_FALLBACK}`;
-    return {
-      htmlClass: localMatch.class,
-      bunny: null,
-      headingFont: fontValue,
-      bodyFont: fontValue,
-    };
-  }
-
-  // Custom font fra Bunny Fonts med solid system-fallback
-  const safeName = `"${chosenName}"`;
-  const fontValue = `${safeName}, ${SYSTEM_FALLBACK}`;
-  const bunnyUrl = buildBunnyUrl(chosenName);
+  const fontValue = `"${chosenName}", ${SYSTEM_FALLBACK}`;
   return {
     htmlClass: "",
-    bunny: {
-      preconnect: true,
-      stylesheet: bunnyUrl,
-    },
+    bunny: { preconnect: true, stylesheet: buildBunnyUrl(chosenName) },
     headingFont: fontValue,
     bodyFont: fontValue,
   };

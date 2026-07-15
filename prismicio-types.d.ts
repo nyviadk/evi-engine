@@ -964,6 +964,16 @@ export interface HeroSliceSplitPrimary {
 	image: prismic.ImageField<never>;
 	
 	/**
+	 * Billede (mobil) field in *Hero → Split → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet
+	 * - **API ID Path**: hero.split.primary.image_mobile
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_mobile: prismic.ImageField<never>;
+	
+	/**
 	 * Farve bag billede field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -984,16 +994,6 @@ export interface HeroSliceSplitPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-	
-	/**
-	 * Billede (mobil) field in *Hero → Split → Primary*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet
-	 * - **API ID Path**: hero.split.primary.image_mobile
-	 * - **Documentation**: https://prismic.io/docs/fields/image
-	 */
-	image_mobile: prismic.ImageField<never>;
 }
 
 /**

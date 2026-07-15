@@ -31,9 +31,9 @@ export type EviBackdropImageProps = {
 
 /**
  * Kvadratisk billede med en blød, let roteret farve-flade bagved → giver dybde.
- * Baggrunden er dekorativ (aria-hidden). Rotationen kan stikke lidt ud; hold
- * den i en container der clipper vandret (EviSection gør det) for at undgå
- * vandret scroll på mobil. Valgfrit `mobileField` → 4:3-crop < 768px.
+ * Baggrunden er dekorativ (aria-hidden). Fylder hele kolonnen; flappen + dens
+ * rotation holdes INDE i boksen via proportional padding (% af bredden), så
+ * intet overflower — ingen afhængighed af vandret clip. `mobileField` → 4:3.
  */
 export function EviBackdropImage({
   field,
@@ -49,14 +49,12 @@ export function EviBackdropImage({
   return (
     <div
       data-slot="evi-backdrop-image"
-      className={cn("relative isolate mx-auto w-full max-w-lg", className)}
+      className={cn("relative isolate w-full p-[5%]", className)}
     >
       <div
         aria-hidden
         className={cn(
-          // -inset-3: lidt større end billedet så tinten peeker jævnt rundt.
-          // -rotate-3: lille vinkel → blid dybde (ikke en skæv "kort"-effekt).
-          "absolute -inset-3 -z-10 -rotate-3 rounded-evi",
+          "absolute inset-[3%] -z-10 -rotate-3 rounded-evi",
           backdropClass[backdrop],
         )}
       />
@@ -68,7 +66,7 @@ export function EviBackdropImage({
         variant="plain"
         imageClassName="object-cover"
         priority={priority}
-        className="rounded-evi shadow-xl"
+        className="rounded-evi shadow-evi"
       />
     </div>
   );

@@ -65,7 +65,16 @@ const TARGET_MODE = SLICE_TARGETS.size > 0;
 
 function verify_prismic_repo() {
   console.log("→ Verifying Prismic CLI repo…");
-  const status = execSync("npx prismic status", { encoding: "utf-8" });
+  let status;
+  try {
+    status = execSync("npx prismic status", { encoding: "utf-8" });
+  } catch {
+    // Login udløber → status fejler. Log ind (åbner browser) og prøv igen,
+    // samme fallback som evi:model. Auth persisterer bagefter.
+    console.log("  ⚠ Ikke logget ind — kører prismic login og prøver igen…");
+    execSync("npx prismic login", { stdio: "inherit" });
+    status = execSync("npx prismic status", { encoding: "utf-8" });
+  }
   const match = status.match(/Repository:\s*(\S+)/);
   if (!match) {
     throw new Error(

@@ -9,6 +9,9 @@ export const context: EviFooterSliceContext = {
   linkResolver: () => "/",
 };
 
+// w-max: hug indhold (ellers stretcher body-flex previewet til fuld bredde) → ingen wrap.
+export const previewWrapperClassName = "w-max p-8";
+
 export const mock: Record<string, Content.FooterColumnTextSlice> = {
   default: {
     id: "mock-footer-column-text-default",
