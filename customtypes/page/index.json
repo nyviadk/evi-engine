@@ -31,6 +31,9 @@
             },
             "hero": {
               "type": "SharedSlice"
+            },
+            "section_features": {
+              "type": "SharedSlice"
             }
           }
         }

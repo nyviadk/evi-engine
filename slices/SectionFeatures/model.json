@@ -1,0 +1,89 @@
+{
+  "id": "section_features",
+  "name": "SectionFeatures",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/default/5283f650627b3e39080643ef848bed1de72b1453.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "feature_1_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kolonne 1: ikon",
+            "placeholder": "Iconify-navn, fx lucide:badge-check"
+          }
+        },
+        "feature_1_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kolonne 1: tekst",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "feature_2_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kolonne 2: ikon",
+            "placeholder": "Iconify-navn, fx lucide:badge-check"
+          }
+        },
+        "feature_2_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kolonne 2: tekst",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "feature_3_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kolonne 3: ikon",
+            "placeholder": "Iconify-navn, fx lucide:badge-check"
+          }
+        },
+        "feature_3_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kolonne 3: tekst",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "feature_4_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kolonne 4: ikon",
+            "placeholder": "Iconify-navn, fx lucide:badge-check"
+          }
+        },
+        "feature_4_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kolonne 4: tekst",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice
+type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice | SectionFeaturesSlice
 
 /**
  * Content for Side documents
@@ -1020,6 +1020,125 @@ type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
+ * Primary content in *SectionFeatures → Default → Primary*
+ */
+export interface SectionFeaturesSliceDefaultPrimary {
+	/**
+	 * Kolonne 1: ikon field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: section_features.default.primary.feature_1_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_1_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 1: tekst field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.default.primary.feature_1_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_1_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonne 2: ikon field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: section_features.default.primary.feature_2_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_2_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 2: tekst field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.default.primary.feature_2_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_2_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonne 3: ikon field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: section_features.default.primary.feature_3_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_3_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 3: tekst field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.default.primary.feature_3_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_3_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonne 4: ikon field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: section_features.default.primary.feature_4_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_4_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 4: tekst field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.default.primary.feature_4_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_4_text: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *SectionFeatures → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_features.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for SectionFeatures Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFeaturesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionFeaturesSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *SectionFeatures*
+ */
+type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault
+
+/**
+ * SectionFeatures Shared Slice
+ *
+ * - **API ID**: `section_features`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFeaturesSlice = prismic.SharedSlice<"section_features", SectionFeaturesSliceVariation>;
+
+/**
  * Primary content in *SectionPhoneMockup → Masked → Primary*
  */
 export interface SectionPhoneMockupSliceMaskedPrimary {
@@ -1159,6 +1278,10 @@ declare module "@prismicio/client" {
 			HeroSliceVariation,
 			HeroSliceCentered,
 			HeroSliceSplit,
+			SectionFeaturesSlice,
+			SectionFeaturesSliceDefaultPrimary,
+			SectionFeaturesSliceVariation,
+			SectionFeaturesSliceDefault,
 			SectionPhoneMockupSlice,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,

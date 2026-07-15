@@ -20,11 +20,13 @@ export function EviSection({
   children,
   ...props
 }: EviSectionProps): React.ReactElement {
+  // Hero hugger nav'en → HALV top-padding af en normal sektion (nav'en giver
+  // allerede visuel adskillelse). Bunden er stor på hero for at løfte den.
   const pb = hero ? "pb-20 md:pb-32" : "pb-16 md:pb-24";
   const pt = collapsePadding
     ? "pt-0"
     : hero
-      ? "pt-20 md:pt-32"
+      ? "pt-8 md:pt-12"
       : "pt-16 md:pt-24";
 
   // Standard gap-y er stor (12/16) så blokke visuelt adskilles som

@@ -4,6 +4,7 @@ import FooterColumnLinks from "./FooterColumnLinks";
 import FooterColumnText from "./FooterColumnText";
 import HeaderClassic from "./HeaderClassic";
 import Hero from "./Hero";
+import SectionFeatures from "./SectionFeatures";
 import SectionPhoneMockup from "./SectionPhoneMockup";
 
 export const components = {
@@ -11,5 +12,6 @@ export const components = {
 	footer_column_text: FooterColumnText,
 	header_classic: HeaderClassic,
 	hero: Hero,
+	section_features: SectionFeatures,
 	section_phone_mockup: SectionPhoneMockup
 };
