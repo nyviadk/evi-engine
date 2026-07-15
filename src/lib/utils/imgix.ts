@@ -44,3 +44,35 @@ export function force_jpg(url: string): string {
     return url;
   }
 }
+
+// Op til ~1200 dækker en kolonne-hero (max ~45vw) på retina; over kildens egen
+// bredde upscaler imgix bare → derfor cappes der på billedets faktiske bredde.
+const SRCSET_WIDTHS = [480, 640, 828, 1080, 1200, 1600, 1920];
+
+/**
+ * JPEG-`srcSet` (width-deskriptorer) til den rå hero-`<img>`. = `force_jpg` pr.
+ * bredde: hver variant er JPEG (hurtig dekode → intet dekode-flash, i modsætning
+ * til et WebP/AVIF-srcSet) og henter en mindre dimension på mobil → vinder en del
+ * af de KB tilbage som JPEG koster vs WebP. `maxWidth` (billedets egen bredde)
+ * capper listen så vi ikke upscaler. Sletter `h` så højden skalerer med `w` →
+ * aspect bevaret af crop'et. Returnerer undefined ved malformet input.
+ */
+export function jpg_srcset(url: string, maxWidth?: number): string | undefined {
+  try {
+    const cap = maxWidth ?? Infinity;
+    const widths = SRCSET_WIDTHS.filter((w) => w <= cap);
+    if (maxWidth && !widths.includes(maxWidth)) widths.push(maxWidth);
+    return widths
+      .map((w) => {
+        const u = new URL(url);
+        u.searchParams.set("auto", "compress");
+        u.searchParams.set("fm", "jpg");
+        u.searchParams.set("w", String(w));
+        u.searchParams.delete("h");
+        return `${u.toString()} ${w}w`;
+      })
+      .join(", ");
+  } catch {
+    return undefined;
+  }
+}

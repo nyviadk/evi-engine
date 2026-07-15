@@ -1,6 +1,6 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
-import { force_jpg, lqip_url } from "@/src/lib/utils/imgix";
+import { force_jpg, jpg_srcset, lqip_url } from "@/src/lib/utils/imgix";
 import { cn } from "@/src/lib/utils/cn";
 
 type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
@@ -42,10 +42,10 @@ export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
    */
   priority?: boolean;
   /**
-   * Display-størrelse til next/image-stien (ikke-hero), fx
-   * "(min-width: 768px) 45vw, 92vw". Uden den antager next/image 100vw og
-   * over-henter. Ignoreres på den rå art-direction-`<img>` (ét fast billede pr.
-   * crop, intet srcset — srcSet gav sporadisk flash).
+   * Display-størrelse, fx "(min-width: 768px) 45vw, 92vw". Uden den antages 100vw
+   * → over-hentning. Bruges på next/image-stien OG hero-`<img>`'ets JPEG-srcSet
+   * (browseren vælger opløsning ud fra `sizes`). Ignoreres på ikke-hero art
+   * direction (ét fast billede pr. crop, intet srcSet).
    */
   sizes?: string;
   /** Klasse på selve `<img>` / `<PrismicNextImage>`. */
@@ -116,12 +116,15 @@ export function EviImage({
   // next/image kan ikke <picture>). Hero tvinges til JPEG (force_jpg): imgix'
   // AVIF/WebP-uploads dekoder for langsomt → det store LCP-billede popper ind
   // efter paint = flash. JPEG dekoder hurtigt (derfor flasher Unsplash/fm=jpg
-  // aldrig — bekræftet i praksis). decoding="sync" = ekstra atomisk sikkerhed.
-  // width/height → CLS. next/image kan ikke tvinges til fm=jpg uden custom loader.
+  // aldrig — bekræftet i praksis). Hero får også et JPEG-srcSet (responsiv
+  // opløsning; hver variant er JPEG = ingen dekode-flash). decoding="sync" =
+  // ekstra atomisk sikkerhed. width/height → CLS. next/image kan ikke tvinges
+  // til fm=jpg uden custom loader.
   if (priority || isFilled.image(mobileField)) {
     const width = field.dimensions?.width ?? undefined;
     const height = field.dimensions?.height ?? undefined;
     const src = priority ? force_jpg(field.url) : field.url;
+    const srcSet = priority ? jpg_srcset(field.url, width) : undefined;
     return (
       <div
         data-slot="evi-image"
@@ -134,11 +137,19 @@ export function EviImage({
           {isFilled.image(mobileField) && (
             <source
               media="(max-width: 768px)"
-              srcSet={priority ? force_jpg(mobileField.url) : mobileField.url}
+              srcSet={
+                priority
+                  ? jpg_srcset(mobileField.url, mobileField.dimensions?.width) ??
+                    force_jpg(mobileField.url)
+                  : mobileField.url
+              }
+              sizes={priority ? sizes : undefined}
             />
           )}
           <img
             src={src}
+            srcSet={srcSet}
+            sizes={priority ? sizes : undefined}
             alt={field.alt ?? ""}
             width={width}
             height={height}
