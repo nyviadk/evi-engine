@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.prismic.io" },
-      // Placeholder-billeder til EviTestBench (dev-only preview af mockups mv.)
       { protocol: "https", hostname: "picsum.photos" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
   // cacheComponents (PPR) er BEVIDST og PERMANENT slået fra — ikke en TODO.

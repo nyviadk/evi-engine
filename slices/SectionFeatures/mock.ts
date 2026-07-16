@@ -39,7 +39,7 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       image: {
         id: "mock-features-split-image",
-        url: "https://picsum.photos/seed/featuresplit/1200/1200",
+        url: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?fit=crop&w=1200&h=1200",
         alt: null,
         copyright: null,
         dimensions: { width: 1200, height: 1200 },

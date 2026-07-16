@@ -14,11 +14,12 @@ export const context: EviPageSliceContext = {
 };
 
 // 1080×2220 = 18:37, matcher EviPhoneMockup-frame og feltets constraint.
-function screenshot(seed: string): ImageField {
+// Kaffe-billeder fra Unsplash (gratis + commercial), croppet til telefon-format.
+function screenshot(unsplashId: string): ImageField {
   return {
-    id: `mock-${seed}`,
-    url: `https://picsum.photos/seed/${seed}/1080/2220`,
-    alt: "App-screenshot",
+    id: `mock-${unsplashId}`,
+    url: `https://images.unsplash.com/photo-${unsplashId}?fit=crop&w=1080&h=2220`,
+    alt: "Kaffe-app screenshot",
     copyright: null,
     dimensions: { width: 1080, height: 2220 },
     edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
@@ -33,13 +34,14 @@ export const mock: Record<string, Content.SectionPhoneMockupSlice> = {
     variation: "masked",
     version: "sktwi1xtmkfgx8626",
     items: [],
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     primary: {
       background_theme: "Lys",
       box_background: "Primær tint",
       box_fill: "Gradient",
-      screenshot_left: screenshot("evi-phone-1"),
-      screenshot_center: screenshot("evi-phone-2"),
-      screenshot_right: screenshot("evi-phone-3"),
+      screenshot_left: screenshot("1529892485617-25f63cd7b1e9"),
+      screenshot_center: screenshot("1495474472287-4d71bcdd2085"),
+      screenshot_right: screenshot("1559056199-641a0ac8b55e"),
     } as Content.SectionPhoneMockupSliceMaskedPrimary,
   },
 };

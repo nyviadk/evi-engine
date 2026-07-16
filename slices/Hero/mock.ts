@@ -91,7 +91,7 @@ export const mock: Record<string, Content.HeroSlice> = {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       image: {
         id: "mock-hero-split-image",
-        url: "https://picsum.photos/seed/herosplit/1200/1200",
+        url: "https://images.unsplash.com/photo-1529892485617-25f63cd7b1e9?fit=crop&w=1200&h=1200",
         alt: null,
         copyright: null,
         dimensions: { width: 1200, height: 1200 },
@@ -100,7 +100,7 @@ export const mock: Record<string, Content.HeroSlice> = {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       image_mobile: {
         id: "mock-hero-split-image-mobile",
-        url: "https://picsum.photos/seed/herosplitm/1200/900",
+        url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?fit=crop&w=1200&h=900",
         alt: null,
         copyright: null,
         dimensions: { width: 1200, height: 900 },
