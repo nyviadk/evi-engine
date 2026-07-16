@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice | SectionFeaturesSlice
+type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice | SectionFeaturesSlice | SectionFaqSlice
 
 /**
  * Content for Side documents
@@ -1038,6 +1038,110 @@ type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Item in *SectionFaq → Default → Primary → Spørgsmål*
+ */
+export interface SectionFaqSliceDefaultPrimaryItemsItem {
+	/**
+	 * Spørgsmål field in *SectionFaq → Default → Primary → Spørgsmål*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_faq.default.primary.items[].question
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	question: prismic.RichTextField;
+	
+	/**
+	 * Svar field in *SectionFaq → Default → Primary → Spørgsmål*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_faq.default.primary.items[].answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	answer: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *SectionFaq → Default → Primary*
+ */
+export interface SectionFaqSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *SectionFaq → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_faq.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *SectionFaq → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_faq.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift: knap (valgfri) field in *SectionFaq → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_faq.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Spørgsmål field in *SectionFaq → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_faq.default.primary.items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	items: prismic.GroupField<Simplify<SectionFaqSliceDefaultPrimaryItemsItem>>;
+	
+	/**
+	 * Baggrundstema field in *SectionFaq → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_faq.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for SectionFaq Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFaqSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionFaqSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *SectionFaq*
+ */
+type SectionFaqSliceVariation = SectionFaqSliceDefault
+
+/**
+ * SectionFaq Shared Slice
+ *
+ * - **API ID**: `section_faq`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFaqSlice = prismic.SharedSlice<"section_faq", SectionFaqSliceVariation>;
 
 /**
  * Item in *SectionFeatures → Cards → Primary → Kort*
@@ -1738,6 +1842,11 @@ declare module "@prismicio/client" {
 			HeroSliceVariation,
 			HeroSliceCentered,
 			HeroSliceSplit,
+			SectionFaqSlice,
+			SectionFaqSliceDefaultPrimaryItemsItem,
+			SectionFaqSliceDefaultPrimary,
+			SectionFaqSliceVariation,
+			SectionFaqSliceDefault,
 			SectionFeaturesSlice,
 			SectionFeaturesSliceDefaultPrimary,
 			SectionFeaturesSliceCardsPrimaryCardsItem,

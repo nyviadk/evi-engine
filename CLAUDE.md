@@ -46,6 +46,7 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 - Ingen hardcodede `<h1>`–`<h6>`/`<p>` — tekst via Rich Text + EviRichText (`feedback_no_hardcoded_text_tags`).
 - Ingen barrel/index re-exports (`feedback_no_barrel_exports`).
 - Ingen default Tailwind-shadows — brug `.shadow-evi`/`.shadow-evi-lg` (`feedback_no_default_shadows`).
+- Knap-pil (`arrow`) KUN på `appearance="text"`-links — aldrig på solid/outline (`feedback_button_arrow_convention`).
 - Fast antal = N navngivne felter, aldrig repeatable (`feedback_no_repeatable_for_fixed_count`).
 - Next 16-billeder: `loading="eager"` (ikke `priority`), altid `sizes` på fill (`project_next16_image_eager_loading`).
 

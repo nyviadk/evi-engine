@@ -15,7 +15,7 @@ import { EviButton } from "@/src/components/ui/EviButton";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { EviRichText } from "@/src/components/typography/EviRichText";
-import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
+import { EviSectionHeader } from "@/src/components/typography/EviSectionHeader";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -288,46 +288,6 @@ export function FeaturesBentoLayout({
     </EviStack>
   );
 
-  // Header: uden CTA = centreret overskrift. Med CTA = overskrift venstre +
-  // "Se alle"-knap yderst til højre (bund-flugtet), der wrapper under på mobil.
-  const header = hasCta ? (
-    <EviStack
-      direction="row"
-      justify="between"
-      align="start"
-      wrap
-      gap="md"
-      className="col-span-12"
-    >
-      <EviHeadingGroup
-        title={p.heading}
-        description={p.body}
-        linkResolver={linkResolver}
-        isHero={isHero}
-        align="start"
-      />
-      <EviButton
-        asChild
-        variant="primary"
-        appearance="outline"
-        arrow
-        className="shrink-0"
-      >
-        <PrismicNextLink field={p.cta_link} linkResolver={linkResolver}>
-          {p.cta_link.text}
-        </PrismicNextLink>
-      </EviButton>
-    </EviStack>
-  ) : (
-    <EviHeadingGroup
-      title={p.heading}
-      description={p.body}
-      linkResolver={linkResolver}
-      isHero={isHero}
-      align="center"
-    />
-  );
-
   return (
     <EviSection
       theme={theme}
@@ -335,7 +295,13 @@ export function FeaturesBentoLayout({
       collapsePadding={collapsePadding}
       data-slot="section-features-bento"
     >
-      {header}
+      <EviSectionHeader
+        title={p.heading}
+        description={p.body}
+        ctaLink={p.cta_link}
+        linkResolver={linkResolver}
+        isHero={isHero}
+      />
       <EviSplit preset="40-60" align="stretch" className={BENTO_GAP}>
         {card1}
         {rightColumn}

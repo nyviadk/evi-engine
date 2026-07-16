@@ -17,7 +17,21 @@
       "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents)",
       "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents/skills)",
       "PowerShell(npx prismic field add link cta_link --to-slice section_features --variation bento --label \"Overskrift: knap \\(fx Se alle ydelser\\)\" --allow-text --allow-target-blank 2>&1)",
-      "PowerShell(npx prismic field reorder cta_link --after body --from-slice section_features --variation bento 2>&1)"
+      "PowerShell(npx prismic field reorder cta_link --after body --from-slice section_features --variation bento 2>&1)",
+      "PowerShell(npx prismic field add rich-text --help 2>&1)",
+      "PowerShell(npx prismic field add group --help 2>&1)",
+      "PowerShell(npx prismic field add select --help 2>&1)",
+      "PowerShell(npx prismic slice create SectionFaq --id section_faq 2>&1)",
+      "PowerShell(npx prismic field add rich-text heading --to-slice section_faq --allow \"heading2,strong,em,hyperlink\" --single --label \"Overskrift\")",
+      "PowerShell(npx prismic field add rich-text body --to-slice section_faq --allow \"paragraph,strong,em,hyperlink\" --single --label \"Br�dtekst\")",
+      "PowerShell(npx prismic field add link cta_link --to-slice section_faq --allow-text --allow-target-blank --label \"Overskrift: knap \\(valgfri\\)\")",
+      "PowerShell(npx prismic field add group items --to-slice section_faq --label \"Sp�rgsm�l\")",
+      "PowerShell(npx prismic field add rich-text items.question --to-slice section_faq --allow \"heading3,strong,em\" --single --label \"Sp�rgsm�l\")",
+      "PowerShell(npx prismic field add rich-text items.answer --to-slice section_faq --allow \"paragraph,strong,em,hyperlink,list-item,o-list-item\" --label \"Svar\")",
+      "PowerShell(npx prismic field add select background_theme --to-slice section_faq --option \"Lys\" --option \"M�rk\" --option \"Prim�r\" --option \"Sekund�r\" --option \"M�rk bl�d\" --option \"Prim�r bl�d\" --option \"Sekund�r bl�d\" --default-value \"Lys\" --label \"Baggrundstema\")",
+      "PowerShell(npx prismic slice connect section_faq --to page 2>&1)",
+      "PowerShell(npm run evi:model 2>&1)",
+      "PowerShell(npm run evi:new-slice SectionFaq 2>&1)"
     ]
   }
 }

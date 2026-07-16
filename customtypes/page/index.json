@@ -34,6 +34,9 @@
             },
             "section_features": {
               "type": "SharedSlice"
+            },
+            "section_faq": {
+              "type": "SharedSlice"
             }
           }
         }

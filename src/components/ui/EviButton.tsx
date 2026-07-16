@@ -25,6 +25,10 @@ export type EviButtonProps = React.ComponentProps<"button"> & {
    * child'en og pilen tilføjes som ekstra child. Bemærk: med `asChild` skal
    * child'en selv rendre sin synlige label som children (fx `{field.text}` på et
    * allowText-`PrismicNextLink`), ellers har pilen intet at stå ved siden af.
+   *
+   * KONVENTION: pil bruges KUN med `appearance="text"`. Tekst-links mangler
+   * knap-chrome, så pilen giver dem "videre"-affordance; solid/outline-knapper er
+   * selv-tydelige → pil = overflødig pynt (`feedback_button_arrow_convention`).
    * @default false
    */
   arrow?: boolean;

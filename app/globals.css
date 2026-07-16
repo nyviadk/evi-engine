@@ -996,6 +996,33 @@
     outline: 2px solid var(--theme-link, var(--theme-text, currentColor));
     outline-offset: 2px;
   }
+
+  /* ═══════════════════════════════════════════════════════
+     H. Accordion (EviAccordion) — native <details> disclosure
+     Kun det Tailwind ikke kan: chevron-rotation + højde-animation på
+     det native content-lag. `interpolate-size` tillader animation til/fra
+     auto; browsere uden ::details-content-support åbner øjeblikkeligt
+     (stadig funktionelt). Global reduced-motion-reset slår animationen fra.
+     ═══════════════════════════════════════════════════════ */
+  [data-slot="evi-accordion-item"] {
+    interpolate-size: allow-keywords;
+  }
+  .evi-accordion-chevron {
+    transition: rotate 200ms ease;
+  }
+  [data-slot="evi-accordion-item"][open] .evi-accordion-chevron {
+    rotate: 180deg;
+  }
+  [data-slot="evi-accordion-item"]::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size 200ms ease,
+      content-visibility 200ms ease allow-discrete;
+  }
+  [data-slot="evi-accordion-item"][open]::details-content {
+    block-size: auto;
+  }
 }
 
 /* ── EviPhoneMockup: opt out af squircle-reset ──
