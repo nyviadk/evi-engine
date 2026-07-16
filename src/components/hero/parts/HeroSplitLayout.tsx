@@ -43,6 +43,9 @@ export function HeroSplitLayout({
   const p = slice.primary;
 
   const has_cta = isFilled.link(p.cta_link) && isFilled.keyText(p.cta_link.text);
+  const has_cta_2 =
+    isFilled.link(p.cta_link_secondary) &&
+    isFilled.keyText(p.cta_link_secondary.text);
   const backdrop = BACKDROP[p.backdrop ?? ""] ?? "secondary";
 
   return (
@@ -65,10 +68,35 @@ export function HeroSplitLayout({
             linkResolver={linkResolver}
             isHero={isHero}
           />
-          {has_cta && (
-            <EviButton asChild variant="primary" appearance="solid" size="lg">
-              <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
-            </EviButton>
+          {(has_cta || has_cta_2) && (
+            <EviStack direction="row" wrap gap="sm">
+              {has_cta && (
+                <EviButton
+                  asChild
+                  variant="primary"
+                  appearance="solid"
+                  size="lg"
+                >
+                  <PrismicNextLink
+                    field={p.cta_link}
+                    linkResolver={linkResolver}
+                  />
+                </EviButton>
+              )}
+              {has_cta_2 && (
+                <EviButton
+                  asChild
+                  variant="primary"
+                  appearance="outline"
+                  size="lg"
+                >
+                  <PrismicNextLink
+                    field={p.cta_link_secondary}
+                    linkResolver={linkResolver}
+                  />
+                </EviButton>
+              )}
+            </EviStack>
           )}
         </EviStack>
 

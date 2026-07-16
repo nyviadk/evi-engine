@@ -27,13 +27,16 @@ export function HeroCenteredLayout({
   context,
 }: HeroCenteredLayoutProps): React.ReactElement {
   const { linkResolver } = context;
-  const { heading, body, cta_link } = slice.primary;
+  const { heading, body, cta_link, cta_link_secondary } = slice.primary;
   const { theme, isHero, collapsePadding } = resolve_slice_context(
     context,
     index,
   );
 
   const has_cta = isFilled.link(cta_link) && isFilled.keyText(cta_link.text);
+  const has_cta_2 =
+    isFilled.link(cta_link_secondary) &&
+    isFilled.keyText(cta_link_secondary.text);
 
   return (
     <EviSection
@@ -50,12 +53,34 @@ export function HeroCenteredLayout({
             description={body}
             linkResolver={linkResolver}
             isHero={isHero}
-            className="text-center"
+            align="center"
           />
-          {has_cta && (
-            <EviButton asChild variant="primary" appearance="solid" size="lg">
-              <PrismicNextLink field={cta_link} linkResolver={linkResolver} />
-            </EviButton>
+          {(has_cta || has_cta_2) && (
+            <EviStack direction="row" wrap gap="sm" justify="center">
+              {has_cta && (
+                <EviButton
+                  asChild
+                  variant="primary"
+                  appearance="solid"
+                  size="lg"
+                >
+                  <PrismicNextLink field={cta_link} linkResolver={linkResolver} />
+                </EviButton>
+              )}
+              {has_cta_2 && (
+                <EviButton
+                  asChild
+                  variant="primary"
+                  appearance="outline"
+                  size="lg"
+                >
+                  <PrismicNextLink
+                    field={cta_link_secondary}
+                    linkResolver={linkResolver}
+                  />
+                </EviButton>
+              )}
+            </EviStack>
           )}
         </EviStack>
       </EviRow>

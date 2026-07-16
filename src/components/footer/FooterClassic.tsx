@@ -87,6 +87,7 @@ export function FooterClassic({
   return (
     <EviSection
       theme={section_theme}
+      compactBottom
       data-slot="evi-footer"
       data-variant="classic"
     >

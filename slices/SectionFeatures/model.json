@@ -8,7 +8,7 @@
       "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/default/5283f650627b3e39080643ef848bed1de72b1453.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/default/2bd6736c1c1262914d94c8ad35b11e44fe8aa1b4.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "feature_1_icon": {
@@ -65,6 +65,91 @@
           "config": {
             "label": "Kolonne 4: tekst",
             "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cards",
+      "name": "Cards",
+      "description": "Cards",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/cards/57d492dc18a5356f46bc8917c32f736abb6fb2b7.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sektionens overskrift",
+            "single": "heading2,strong,em,hyperlink"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Kort intro under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "cards": {
+          "type": "Group",
+          "config": {
+            "label": "Kort",
+            "fields": {
+              "icon": {
+                "type": "Text",
+                "config": {
+                  "label": "Ikon",
+                  "placeholder": "Iconify-navn, fx lucide:brain"
+                }
+              },
+              "heading": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Overskrift",
+                  "placeholder": "Kort titel",
+                  "single": "heading3,strong,em,hyperlink"
+                }
+              },
+              "body": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Tekst",
+                  "placeholder": "Kort beskrivelse",
+                  "single": "paragraph,strong,em,hyperlink"
+                }
+              }
+            }
+          }
+        },
+        "card_color": {
+          "type": "Select",
+          "config": {
+            "label": "Kort-farve",
+            "default_value": "Neutral",
+            "options": [
+              "Neutral",
+              "Primær",
+              "Sekundær"
+            ]
           }
         },
         "background_theme": {

@@ -2,11 +2,13 @@ import { type Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 
 import { FeaturesColumnsLayout } from "@/src/components/features/parts/FeaturesColumnsLayout";
+import { FeaturesCardsLayout } from "@/src/components/features/parts/FeaturesCardsLayout";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 /**
- * SectionFeatures — trust-bar med ikon+tekst-kolonner. Tynd dispatcher på
- * variation (R4.2); hver variation = én layout-part i features/parts/.
+ * SectionFeatures — Features-kategori. Tynd dispatcher på variation (R4.2);
+ * hver variation = én layout-part i features/parts/. "default" = trust-bar
+ * (ikon+tekst-kolonner), "cards" = overskrift + repeatable kort-grid.
  */
 export default function SectionFeatures({
   slice,
@@ -20,6 +22,10 @@ export default function SectionFeatures({
     case "default":
       return (
         <FeaturesColumnsLayout slice={slice} index={index} context={context} />
+      );
+    case "cards":
+      return (
+        <FeaturesCardsLayout slice={slice} index={index} context={context} />
       );
     default:
       return null;

@@ -879,6 +879,16 @@ export interface HeroSliceCenteredPrimary {
 	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
+	 * Sekundær knap field in *Hero → Centered → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.centered.primary.cta_link_secondary
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
 	 * Baggrundstema field in *Hero → Centered → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -932,6 +942,16 @@ export interface HeroSliceSplitPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Sekundær knap field in *Hero → Split → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.split.primary.cta_link_secondary
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
 	 * Tag: ikon field in *Hero → Split → Primary*
@@ -1018,6 +1038,41 @@ type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Item in *SectionFeatures → Cards → Primary → Kort*
+ */
+export interface SectionFeaturesSliceCardsPrimaryCardsItem {
+	/**
+	 * Ikon field in *SectionFeatures → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:brain
+	 * - **API ID Path**: section_features.cards.primary.cards[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Overskrift field in *SectionFeatures → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: section_features.cards.primary.cards[].heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *SectionFeatures → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: section_features.cards.primary.cards[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+}
 
 /**
  * Primary content in *SectionFeatures → Default → Primary*
@@ -1125,9 +1180,75 @@ export interface SectionFeaturesSliceDefaultPrimary {
 export type SectionFeaturesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionFeaturesSliceDefaultPrimary>, never>;
 
 /**
+ * Primary content in *SectionFeatures → Cards → Primary*
+ */
+export interface SectionFeaturesSliceCardsPrimary {
+	/**
+	 * Overskrift field in *SectionFeatures → Cards → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: section_features.cards.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *SectionFeatures → Cards → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: section_features.cards.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Kort field in *SectionFeatures → Cards → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.cards.primary.cards[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	cards: prismic.GroupField<Simplify<SectionFeaturesSliceCardsPrimaryCardsItem>>;
+	
+	/**
+	 * Kort-farve field in *SectionFeatures → Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: section_features.cards.primary.card_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Baggrundstema field in *SectionFeatures → Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_features.cards.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Cards variation for SectionFeatures Slice
+ *
+ * - **API ID**: `cards`
+ * - **Description**: Cards
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFeaturesSliceCards = prismic.SharedSliceVariation<"cards", Simplify<SectionFeaturesSliceCardsPrimary>, never>;
+
+/**
  * Slice variation for *SectionFeatures*
  */
-type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault
+type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeaturesSliceCards
 
 /**
  * SectionFeatures Shared Slice
@@ -1280,8 +1401,11 @@ declare module "@prismicio/client" {
 			HeroSliceSplit,
 			SectionFeaturesSlice,
 			SectionFeaturesSliceDefaultPrimary,
+			SectionFeaturesSliceCardsPrimaryCardsItem,
+			SectionFeaturesSliceCardsPrimary,
 			SectionFeaturesSliceVariation,
 			SectionFeaturesSliceDefault,
+			SectionFeaturesSliceCards,
 			SectionPhoneMockupSlice,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,

@@ -12,6 +12,9 @@ export type EviSectionProps = React.ComponentProps<"section"> & {
   /** Tving normal (fuld) top-padding selvom hero — fx centered hero der ser
    *  for tæt på nav'en ud med den reducerede hero-hug. @default false */
   fullTopPadding?: boolean;
+  /** Mindre bund-padding — til page-end-bånd (footer), hvor bunden er sidekant-
+   *  margin, ikke adskillelse til en næste sektion. @default false */
+  compactBottom?: boolean;
 };
 
 export function EviSection({
@@ -20,14 +23,19 @@ export function EviSection({
   collapsePadding = false,
   collapseGapY = false,
   fullTopPadding = false,
+  compactBottom = false,
   className,
   children,
   ...props
 }: EviSectionProps): React.ReactElement {
-  // Hero hugger nav'en → HALV top-padding af en normal sektion (nav'en giver
-  // allerede visuel adskillelse). Bunden er stor på hero for at løfte den.
-  // fullTopPadding opter ud af hug'et (fx centered hero uden billede at balancere).
-  const pb = hero ? "pb-20 md:pb-32" : "pb-16 md:pb-24";
+  // Bund er ENS for ALLE sektioner (inkl. hero) → konsistent rytme mellem bånd.
+  // Hero adskiller sig KUN ved toppen: den hugger nav'en (halv top-padding), da
+  // nav'en allerede giver visuel adskillelse. fullTopPadding opter ud af hug'et
+  // (fx centered hero uden billede at balancere). Bunden er en tak større end
+  // normal-toppen, så indhold grounder med lidt ekstra luft nedad.
+  // compactBottom: mindre bund til page-end-bånd (footer) hvor der ikke følger
+  // en næste sektion — bunden er blot margin til sidekanten.
+  const pb = compactBottom ? "pb-16 md:pb-24" : "pb-24 md:pb-32";
   const pt = collapsePadding
     ? "pt-0"
     : hero && !fullTopPadding

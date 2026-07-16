@@ -39,6 +39,12 @@ export const mock: Record<string, Content.HeroSlice> = {
         url: "#",
         text: "Kom forbi",
       } as Content.HeroSliceCenteredPrimary["cta_link"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      cta_link_secondary: {
+        link_type: "Web" as const,
+        url: "#",
+        text: "Læs mere",
+      } as Content.HeroSliceCenteredPrimary["cta_link_secondary"],
       background_theme: "Lys",
     },
   },
@@ -67,6 +73,12 @@ export const mock: Record<string, Content.HeroSlice> = {
         url: "#",
         text: "Se menukort",
       } as Content.HeroSliceSplitPrimary["cta_link"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      cta_link_secondary: {
+        link_type: "Web" as const,
+        url: "#",
+        text: "Bestil bord",
+      } as Content.HeroSliceSplitPrimary["cta_link_secondary"],
       tag_icon: "ph:coffee",
       tag_text: [
         {

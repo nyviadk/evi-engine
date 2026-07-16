@@ -8,7 +8,7 @@
       "name": "Centered",
       "description": "Centered",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/dbd33399b3e6d35674d4c763ad06992f7296dc85.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/5c44c9f7e052cd45fff105dba7b7b27b358d41e6.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -31,6 +31,14 @@
           "type": "Link",
           "config": {
             "label": "Call-to-action",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "cta_link_secondary": {
+          "type": "Link",
+          "config": {
+            "label": "Sekundær knap",
             "allowTargetBlank": true,
             "allowText": true
           }
@@ -59,7 +67,7 @@
       "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/d896d5d1caa3ba762a69c0757d826bc14a16246f.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/28c3f1637f668a59babdf7a1d34933bb0cda792b.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -82,6 +90,14 @@
           "type": "Link",
           "config": {
             "label": "Call-to-action",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "cta_link_secondary": {
+          "type": "Link",
+          "config": {
+            "label": "Sekundær knap",
             "allowTargetBlank": true,
             "allowText": true
           }

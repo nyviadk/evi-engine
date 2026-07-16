@@ -18,6 +18,8 @@ export type EviHeadingGroupProps = Omit<
   linkResolver: LinkResolverFunction;
   /** Heading-niveau-shift på title — se EviRichText. */
   isHero?: boolean;
+  /** Tekst-justering. "center" centrerer overskrift + beskrivelse. @default "start" */
+  align?: "start" | "center";
 };
 
 export function EviHeadingGroup({
@@ -25,6 +27,7 @@ export function EviHeadingGroup({
   description,
   linkResolver,
   isHero,
+  align = "start",
   className,
   ...props
 }: EviHeadingGroupProps): React.ReactElement | null {
@@ -33,7 +36,17 @@ export function EviHeadingGroup({
   return (
     <hgroup
       data-slot="evi-heading-group"
-      className={cn("evi-prose col-span-12 max-w-prose", className)}
+      data-align={align}
+      className={cn(
+        "evi-prose col-span-12",
+        // Measure PER element, ikke på hele gruppen: overskrifter måles bredere
+        // (~30ch ved DERES egen størrelse → ~35-40 tegn/linje, wrapper ikke for
+        // tidligt), brødtekst holdes på det læsbare ~65ch. `ch` regnes på selve
+        // elementet, så clamp-fluid størrelser giver konsistent tegn-measure.
+        "[&>h1]:max-w-[30ch] [&>h2]:max-w-[30ch] [&>h3]:max-w-[30ch] [&>p]:max-w-prose",
+        align === "center" && "mx-auto text-center *:mx-auto",
+        className,
+      )}
       {...props}
     >
       <EviRichText.Raw

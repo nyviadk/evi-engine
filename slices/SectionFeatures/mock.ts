@@ -16,8 +16,53 @@ export const previewWrapperClassName = "block w-full";
 const line = (text: string): RichTextField => [
   { type: "paragraph", text, spans: [], direction: "ltr" },
 ];
+const h2 = (text: string): RichTextField => [
+  { type: "heading2", text, spans: [], direction: "ltr" },
+];
+const h3 = (text: string): RichTextField => [
+  { type: "heading3", text, spans: [], direction: "ltr" },
+];
 
 export const mock: Record<string, Content.SectionFeaturesSlice> = {
+  cards: {
+    id: "mock-section-features-cards",
+    slice_type: "section_features",
+    slice_label: null,
+    variation: "cards",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: h2("Fra grøn bønne til perfekt kop"),
+      body: line(
+        "Vi følger kaffen hele vejen — fra farmeren til risteriet til din kande. Her er nogle af de ting vi går allermest op i.",
+      ),
+      cards: [
+        {
+          icon: "flame",
+          heading: h3("Friskristet hver uge"),
+          body: line(
+            "Vi rister i små portioner, så bønnerne altid er friske når de når din kop.",
+          ),
+        },
+        {
+          icon: "sprout",
+          heading: h3("Direkte fra farmeren"),
+          body: line(
+            "100% arabica, indkøbt direkte fra farmere vi kender ved navn.",
+          ),
+        },
+        {
+          icon: "graduation-cap",
+          heading: h3("Kurser & smagninger"),
+          body: line(
+            "Lær at brygge den perfekte kop til vores hyggelige kaffekurser i butikken.",
+          ),
+        },
+      ],
+      card_color: "Sekundær",
+      background_theme: "Lys",
+    },
+  },
   default: {
     id: "mock-section-features-default",
     slice_type: "section_features",
