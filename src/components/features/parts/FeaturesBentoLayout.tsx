@@ -12,6 +12,7 @@ import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviButton } from "@/src/components/ui/EviButton";
+import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
@@ -19,6 +20,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesBentoLayoutProps = {
   slice: Content.SectionFeaturesSliceBento;
@@ -29,7 +31,7 @@ export type FeaturesBentoLayoutProps = {
 // Delt titel-/tekst-skala for tekst-kortene (2–4). Kasse 1 er større (feature).
 const CARD_TITLE =
   "[&_h3]:m-0 [&_h3]:text-lg [&_h3]:leading-snug [&_h3]:font-semibold";
-const CARD_BODY = "[&_p]:m-0 [&_p]:text-sm [&_p]:opacity-80";
+const CARD_BODY = "[&_p]:m-0 [&_p]:text-sm";
 
 // Uniform bento-gap på ALLE celle-mellemrum (primære kolonner, højre-kolonnens
 // to rækker, kasse 3|4) → ét sammenhængende gitter frem for et split med
@@ -42,13 +44,20 @@ const BENTO_GAP = "gap-4 md:gap-6";
 function CardLink({
   field,
   linkResolver,
+  className,
 }: {
   field: LinkField;
   linkResolver: LinkResolverFunction;
+  className?: string;
 }): React.ReactElement | null {
   if (!is_link_filled(field)) return null;
   return (
-    <EviButton asChild appearance="text" arrow className="w-fit">
+    <EviButton
+      asChild
+      appearance="text"
+      arrow
+      className={cn("w-fit", className)}
+    >
       <PrismicNextLink field={field} linkResolver={linkResolver}>
         {field.text}
       </PrismicNextLink>
@@ -56,7 +65,8 @@ function CardLink({
   );
 }
 
-// Tekst-kort-indhold (titel + tekst + link) — genbruges af kasse 2, 3 og 4.
+// Tekst-kort-indhold (titel + tekst + link) til kasse 2 — sidder ved siden af
+// et billede, så det er en simpel EviStack (ingen søskende at række-aligne med).
 function CardContent({
   title,
   body,
@@ -74,6 +84,51 @@ function CardContent({
       <EviRichText field={body} linkResolver={linkResolver} className={CARD_BODY} />
       <CardLink field={link} linkResolver={linkResolver} />
     </EviStack>
+  );
+}
+
+// Kasse 3 + 4: EviCard (grid-rows-subgrid) så titel/tekst/link-rækkerne aligner
+// på tværs af de to søster-kort. Faste 3 slots — tomme wrappes i <div /> så
+// subgrid-optællingen holder (jf. FeaturesCardsLayout).
+function BentoTextCard({
+  title,
+  body,
+  link,
+  linkResolver,
+  className,
+}: {
+  title: Content.SectionFeaturesSliceBentoPrimary["card_3_title"];
+  body: Content.SectionFeaturesSliceBentoPrimary["card_3_body"];
+  link: LinkField;
+  linkResolver: LinkResolverFunction;
+  className?: string;
+}): React.ReactElement {
+  return (
+    <EviCard rows={3} className={cn("rounded-evi p-6 shadow-evi md:p-8", className)}>
+      {isFilled.richText(title) ? (
+        <EviRichText
+          field={title}
+          linkResolver={linkResolver}
+          className={CARD_TITLE}
+        />
+      ) : (
+        <div />
+      )}
+      {isFilled.richText(body) ? (
+        <EviRichText
+          field={body}
+          linkResolver={linkResolver}
+          className={cn("mt-2", CARD_BODY)}
+        />
+      ) : (
+        <div />
+      )}
+      {is_link_filled(link) ? (
+        <CardLink field={link} linkResolver={linkResolver} className="mt-4" />
+      ) : (
+        <div />
+      )}
+    </EviCard>
   );
 }
 
@@ -165,7 +220,7 @@ export function FeaturesBentoLayout({
         <EviRichText
           field={p.card_1_body}
           linkResolver={linkResolver}
-          className="[&_p]:m-0 [&_p]:opacity-90"
+          className="[&_p]:m-0"
         />
         {is_link_filled(p.card_1_link) && (
           <EviButton asChild appearance="solid" className="mt-2 w-fit self-start">
@@ -183,7 +238,7 @@ export function FeaturesBentoLayout({
     <EviStack className={BENTO_GAP}>
       {card2Has && (
         <div className="theme-surface-neutral shadow-evi rounded-evi p-6 md:p-8">
-          <EviAutoGrid size="sm" className="items-center">
+          <EviAutoGrid size="duo" className="items-end">
             <CardContent
               title={p.card_2_title}
               body={p.card_2_body}
@@ -204,26 +259,24 @@ export function FeaturesBentoLayout({
       )}
 
       {(card3Has || card4Has) && (
-        <EviAutoGrid size="sm" className={BENTO_GAP}>
+        <EviAutoGrid size="duo" className={BENTO_GAP}>
           {card3Has && (
-            <div className="theme-primary shadow-evi rounded-evi p-6">
-              <CardContent
-                title={p.card_3_title}
-                body={p.card_3_body}
-                link={p.card_3_link}
-                linkResolver={linkResolver}
-              />
-            </div>
+            <BentoTextCard
+              title={p.card_3_title}
+              body={p.card_3_body}
+              link={p.card_3_link}
+              linkResolver={linkResolver}
+              className="theme-primary"
+            />
           )}
           {card4Has && (
-            <div className="theme-secondary-soft shadow-evi rounded-evi p-6">
-              <CardContent
-                title={p.card_4_title}
-                body={p.card_4_body}
-                link={p.card_4_link}
-                linkResolver={linkResolver}
-              />
-            </div>
+            <BentoTextCard
+              title={p.card_4_title}
+              body={p.card_4_body}
+              link={p.card_4_link}
+              linkResolver={linkResolver}
+              className="theme-secondary-soft"
+            />
           )}
         </EviAutoGrid>
       )}

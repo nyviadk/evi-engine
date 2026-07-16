@@ -6,7 +6,8 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 
 ## Før ENHVER opgave
 - **Load `project_rulebook` memory** ved al kode/model/slice-arbejde.
-- **Check first**: grep/read/fetch FØR du skriver. Genbrug eksisterende Evi-komponenter (`feedback_check_first_reuse_always`).
+- **Check first**: grep/read/fetch FØR du skriver. **Før du bygger NOGET nyt (komponent/layout/helper): glob `src/components/{layout,ui,typography}` + `src/lib/` og gennemgå ALLE Evi-komponenter/helpers** — genbrug eller udvid frem for at lave nyt. (`feedback_check_first_reuse_always`)
+  - **Kort / række-alignede layouts = `EviCard`** (grid-rows-subgrid, aligner titel/tekst/knap på tværs af søster-kort). Jeg GLEMMER den gentagne gange (3×) — brug den til ALLE kort med flere ens søskende, ikke rå `<div>`-flader.
 - **Verificér live state** før du påstår noget (`feedback_verify_state_before_asserting`). **Konkludér aldrig en root cause før den er testet** (`feedback_dont_conclude_prematurely`).
 - **Next.js er IKKE training-data Next** — læs `node_modules/next/dist/docs/` før du skriver Next-kode.
 

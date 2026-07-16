@@ -1,6 +1,6 @@
 import { cn } from "@/src/lib/utils/cn";
 
-type AutoGridSize = "sm" | "md" | "lg" | "trio" | "quad" | "fluid";
+type AutoGridSize = "sm" | "md" | "lg" | "duo" | "trio" | "quad" | "fluid";
 
 export type EviAutoGridProps = React.ComponentProps<"div"> & {
   /**
@@ -8,6 +8,8 @@ export type EviAutoGridProps = React.ComponentProps<"div"> & {
    * container-bredde.
    *
    * - "sm" / "md" / "lg" — fixed container-query breakpoints (250/320/400px min)
+   * - "duo" — 1 → 2 kolonner cappet ved 2 (aldrig 3+). To lige 50/50-kolonner der
+   *   altid fylder fuld bredde — til faste par (fx to bento-kort side om side).
    * - "trio" — 1 → 2 → 3 kolonner cappet ved 3 (aldrig 4). Rammer 3 allerede ved
    *   1024px, så kort-sektioner står i 3 på laptop-bredde OG på brede skærme.
    * - "quad" — 1 → 2 → 4 kolonner (springer 3 over), til fast 4-antal-layouts
@@ -28,6 +30,7 @@ const sizeClasses: Record<AutoGridSize, string> = {
   sm: "grid-cols-1 @[532px]/grid:grid-cols-2 @[814px]/grid:grid-cols-3 @[1096px]/grid:grid-cols-4 @[1660px]/grid:grid-cols-6",
   md: "grid-cols-1 @[672px]/grid:grid-cols-2 @[1024px]/grid:grid-cols-3 @[1376px]/grid:grid-cols-4",
   lg: "grid-cols-1 @[832px]/grid:grid-cols-2 @[1264px]/grid:grid-cols-3",
+  duo: "grid-cols-1 @[532px]/grid:grid-cols-2",
   trio: "grid-cols-1 @[672px]/grid:grid-cols-2 @[1024px]/grid:grid-cols-3",
   quad: "grid-cols-1 @[532px]/grid:grid-cols-2 @[1096px]/grid:grid-cols-4",
   fluid: "grid-cols-[repeat(auto-fit,minmax(180px,1fr))]",
