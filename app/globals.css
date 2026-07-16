@@ -633,7 +633,6 @@
     font-weight: 500;
     border-radius: var(--radius-evi);
     cursor: pointer;
-    user-select: none;
     border: none;
     /* touch-action: manipulation fjerner 300ms double-tap zoom-delay på touch. */
     touch-action: manipulation;
