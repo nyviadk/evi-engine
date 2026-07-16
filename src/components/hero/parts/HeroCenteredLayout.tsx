@@ -1,4 +1,4 @@
-import { isFilled, type Content } from "@prismicio/client";
+import { type Content } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
 
 import { EviButton } from "@/src/components/ui/EviButton";
@@ -6,6 +6,7 @@ import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
+import { is_link_filled } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -33,10 +34,8 @@ export function HeroCenteredLayout({
     index,
   );
 
-  const has_cta = isFilled.link(cta_link) && isFilled.keyText(cta_link.text);
-  const has_cta_2 =
-    isFilled.link(cta_link_secondary) &&
-    isFilled.keyText(cta_link_secondary.text);
+  const has_cta = is_link_filled(cta_link);
+  const has_cta_2 = is_link_filled(cta_link_secondary);
 
   return (
     <EviSection

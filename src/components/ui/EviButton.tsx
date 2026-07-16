@@ -1,3 +1,4 @@
+import { Children, cloneElement, type ReactElement, type ReactNode } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/src/lib/utils/cn";
@@ -19,7 +20,13 @@ export type EviButtonProps = React.ComponentProps<"button"> & {
   appearance?: Appearance;
   /** Knappens størrelse. @default "md" */
   size?: Size;
-  /** Vis pil-ikon der animerer ved hover (kun når asChild=false). @default false */
+  /**
+   * Vis pil-ikon der animerer ved hover. Virker også med `asChild` — da klones
+   * child'en og pilen tilføjes som ekstra child. Bemærk: med `asChild` skal
+   * child'en selv rendre sin synlige label som children (fx `{field.text}` på et
+   * allowText-`PrismicNextLink`), ellers har pilen intet at stå ved siden af.
+   * @default false
+   */
   arrow?: boolean;
   /**
    * Render det første child som rod-elementet i stedet for `<button>`, og
@@ -30,9 +37,6 @@ export type EviButtonProps = React.ComponentProps<"button"> & {
    * <EviButton asChild variant="primary">
    *   <PrismicNextLink field={cta_link}>Læs mere</PrismicNextLink>
    * </EviButton>
-   *
-   * Når asChild=true er `arrow`-prop'en uden effekt; consumer komponerer
-   * selv evt. ikon ind i sit child-element.
    *
    * @default false
    */
@@ -51,21 +55,37 @@ export function EviButton({
 }: EviButtonProps): React.ReactElement {
   const Comp = asChild ? Slot : "button";
 
-  // Slot kræver præcis ét direkte child og merger props på det.
-  // Når vi selv render <button>, wrapper vi i vores standard text+icon layout.
-  const content = asChild ? (
-    children
-  ) : (
-    <>
-      <span className="trim-text">{children}</span>
-      {arrow && (
-        <ArrowRight
-          size={iconSizes[size]}
-          className="btn-arrow-icon shrink-0"
-        />
-      )}
-    </>
-  );
+  const arrowIcon = arrow ? (
+    <ArrowRight
+      key="evi-btn-arrow"
+      size={iconSizes[size]}
+      className="btn-arrow-icon shrink-0"
+      aria-hidden
+    />
+  ) : null;
+
+  // Slot kræver præcis ét direkte child og merger props på det. For at pilen
+  // også virker med asChild kloner vi child'en og tilføjer pilen efter dens egne
+  // children (child'en beholder sin label + href/handlers). Uden arrow lades
+  // child'en urørt. Ikke-asChild: vores standard text+icon-layout.
+  let content: ReactNode;
+  if (asChild) {
+    if (arrowIcon) {
+      const child = Children.only(children) as ReactElement<{
+        children?: ReactNode;
+      }>;
+      content = cloneElement(child, undefined, child.props.children, arrowIcon);
+    } else {
+      content = children;
+    }
+  } else {
+    content = (
+      <>
+        <span className="trim-text">{children}</span>
+        {arrowIcon}
+      </>
+    );
+  }
 
   return (
     <Comp

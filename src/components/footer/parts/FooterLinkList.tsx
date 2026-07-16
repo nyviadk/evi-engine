@@ -1,10 +1,10 @@
 import { PrismicNextLink } from "@prismicio/next";
 import {
-  isFilled,
   type LinkField,
   type LinkResolverFunction,
   type Repeatable,
 } from "@prismicio/client";
+import { is_link_filled } from "@/src/lib/prismic/links";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { cn } from "@/src/lib/utils/cn";
 
@@ -44,9 +44,10 @@ export function FooterLinkList({
       className={cn("evi-footer-link-list list-none", className)}
     >
       {items.map((link, i) => {
-        if (!isFilled.link(link) || !isFilled.keyText(link.text)) return null;
+        if (!is_link_filled(link)) return null;
+        const itemKey = `${i}-${link.text}`;
         return (
-          <li key={i}>
+          <li key={itemKey}>
             <PrismicNextLink
               field={link}
               linkResolver={linkResolver}

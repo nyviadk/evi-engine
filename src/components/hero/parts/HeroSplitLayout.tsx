@@ -1,4 +1,4 @@
-import { isFilled, type Content } from "@prismicio/client";
+import { type Content } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
 
 import { EviSection } from "@/src/components/layout/EviSection";
@@ -11,6 +11,7 @@ import {
   EviBackdropImage,
   BACKDROP_FROM_LABEL,
 } from "@/src/components/ui/EviBackdropImage";
+import { is_link_filled } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -39,10 +40,8 @@ export function HeroSplitLayout({
   );
   const p = slice.primary;
 
-  const has_cta = isFilled.link(p.cta_link) && isFilled.keyText(p.cta_link.text);
-  const has_cta_2 =
-    isFilled.link(p.cta_link_secondary) &&
-    isFilled.keyText(p.cta_link_secondary.text);
+  const has_cta = is_link_filled(p.cta_link);
+  const has_cta_2 = is_link_filled(p.cta_link_secondary);
   const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Roteret"] ?? "rotated";
 
   return (

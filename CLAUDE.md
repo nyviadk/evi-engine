@@ -40,7 +40,7 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 ## Always-on konventioner
 - **Mock-data (slice `mock.ts`) SKAL bruge vores fælles PERSONA** — kaffe-virksomheden "Kaffemølle Aarhus" i `src/lib/preview/persona.ts`. Opfind ALDRIG en ny branche/brand i et mock (`feedback_mock_persona`).
 - **Stock-billeder: verificér HVERT billedes licens på kilde-siden** før brug (mocks eller prod) — free + commercial + no-attribution; tjek free vs premium (fx Unsplash+). Antag aldrig. Ingen model-release-garanti (`feedback_image_license_verify`).
-- Korte kommentarer — kun ikke-åbenlyst WHY/gotcha (`feedback_short_comments`).
+- **Før ENHVER kommentar: STOP og verificér at den er nødvendig** — forklarer den et ikke-åbenlyst WHY/gotcha? Hvis nej (den oversætter bare koden / er åbenlys) → skriv den IKKE. Default er INGEN kommentar. Kun korte, kontante WHY-kommentarer (`feedback_short_comments`).
 - `isFilled` på ALLE Prismic-værdier (`feedback_prismic_isfilled`).
 - Ingen hardcodede `<h1>`–`<h6>`/`<p>` — tekst via Rich Text + EviRichText (`feedback_no_hardcoded_text_tags`).
 - Ingen barrel/index re-exports (`feedback_no_barrel_exports`).

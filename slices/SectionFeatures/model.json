@@ -299,6 +299,168 @@
           }
         }
       }
+    },
+    {
+      "id": "bento",
+      "name": "Bento",
+      "description": "Bento",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/bento/e174b372f9438fdd6d3be593a1cc001aaaa16582.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sektionens overskrift",
+            "single": "heading2,strong,em,hyperlink"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Kort intro under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "card_1_image": {
+          "type": "Image",
+          "config": {
+            "label": "Stor kasse: billede",
+            "placeholder": "Højformat-billede (4:5)",
+            "constraint": {
+              "width": 1200,
+              "height": 1500
+            },
+            "thumbnails": []
+          }
+        },
+        "card_1_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Stor kasse: titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em,hyperlink"
+          }
+        },
+        "card_1_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Stor kasse: tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "card_1_link": {
+          "type": "Link",
+          "config": {
+            "label": "Stor kasse: knap",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "card_2_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Bred kasse: titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em,hyperlink"
+          }
+        },
+        "card_2_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Bred kasse: tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "card_2_link": {
+          "type": "Link",
+          "config": {
+            "label": "Bred kasse: knap",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "card_2_image": {
+          "type": "Image",
+          "config": {
+            "label": "Bred kasse: billede",
+            "placeholder": "Firkantet billede (1:1)",
+            "constraint": {
+              "width": 1000,
+              "height": 1000
+            },
+            "thumbnails": []
+          }
+        },
+        "card_3_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 3: titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em,hyperlink"
+          }
+        },
+        "card_3_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 3: tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "card_3_link": {
+          "type": "Link",
+          "config": {
+            "label": "Kasse 3: knap",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "card_4_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 4: titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em,hyperlink"
+          }
+        },
+        "card_4_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 4: tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "card_4_link": {
+          "type": "Link",
+          "config": {
+            "label": "Kasse 4: knap",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
     }
   ]
 }

@@ -1,9 +1,6 @@
 import { PrismicNextLink } from "@prismicio/next";
-import {
-  isFilled,
-  type LinkField,
-  type LinkResolverFunction,
-} from "@prismicio/client";
+import { type LinkField, type LinkResolverFunction } from "@prismicio/client";
+import { is_link_filled } from "@/src/lib/prismic/links";
 import { EviButton } from "@/src/components/ui/EviButton";
 
 export type HeaderCTAButtonProps = {
@@ -17,7 +14,7 @@ export function HeaderCTAButton({
   linkResolver,
   className,
 }: HeaderCTAButtonProps): React.ReactElement | null {
-  if (!isFilled.link(link) || !isFilled.keyText(link.text)) return null;
+  if (!is_link_filled(link)) return null;
 
   return (
     <EviButton

@@ -1,7 +1,12 @@
 // SYNTETISK MOCK-DATA — bruges kun til slice-preview-generering.
 // Se R4.7 i regelbogen (memory: project_rulebook.md).
 
-import type { Content, RichTextField } from "@prismicio/client";
+import type {
+  Content,
+  ImageField,
+  LinkField,
+  RichTextField,
+} from "@prismicio/client";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 // Mock ejer sin egen preview-context.
@@ -22,6 +27,22 @@ const h2 = (text: string): RichTextField => [
 const h3 = (text: string): RichTextField => [
   { type: "heading3", text, spans: [], direction: "ltr" },
 ];
+
+// Kaffe-billeder fra Unsplash (side-verificeret free + commercial, 2026-07-16),
+// croppet til bento-feltets constraint.
+const bentoImg = (id: string, w: number, h: number): ImageField =>
+  ({
+    id: `mock-${id}`,
+    url: `https://images.unsplash.com/photo-${id}?fit=crop&w=${w}&h=${h}`,
+    alt: null,
+    copyright: null,
+    dimensions: { width: w, height: h },
+    edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
+  }) as unknown as ImageField;
+
+// allowText Web-link til preview-knapperne.
+const webLink = (text: string): LinkField =>
+  ({ link_type: "Web", url: "#", text }) as unknown as LinkField;
 
 export const mock: Record<string, Content.SectionFeaturesSlice> = {
   split: {
@@ -128,5 +149,43 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
       feature_4_text: line("Butik & webshop"),
       background_theme: "Lys",
     },
+  },
+  bento: {
+    id: "mock-section-features-bento",
+    slice_type: "section_features",
+    slice_label: null,
+    variation: "bento",
+    version: "scaffold",
+    items: [],
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    primary: {
+      heading: h2("Mere end bare en kop kaffe"),
+      body: line(
+        "Fra risteri til webshop — her er nogle af de steder du kan møde Kaffemølle Aarhus.",
+      ),
+      card_1_image: bentoImg("1529892485617-25f63cd7b1e9", 1200, 1500),
+      card_1_title: h3("Kom forbi vores risteri"),
+      card_1_body: line(
+        "Midt i Aarhus rister vi i små portioner hver uge. Kig ind, mærk duften og smag dig frem til din næste favorit.",
+      ),
+      card_1_link: webLink("Besøg risteriet"),
+      card_2_title: h3("Friske bønner på abonnement"),
+      card_2_body: line(
+        "Vælg rytme og styrke — så leverer vi friskristede bønner direkte til døren, lige når du løber tør.",
+      ),
+      card_2_link: webLink("Se abonnementer"),
+      card_2_image: bentoImg("1559056199-641a0ac8b55e", 1000, 1000),
+      card_3_title: h3("Kaffekurser & smagninger"),
+      card_3_body: line(
+        "Lær at brygge den perfekte kop til vores hyggelige kurser i butikken.",
+      ),
+      card_3_link: webLink("Find en dato"),
+      card_4_title: h3("Handl i webshoppen"),
+      card_4_body: line(
+        "Bønner, udstyr og gavekort — altid friskristet og sendt hurtigt afsted.",
+      ),
+      card_4_link: webLink("Gå til webshop"),
+      background_theme: "Lys",
+    } as Content.SectionFeaturesSliceBentoPrimary,
   },
 };
