@@ -44,7 +44,9 @@ export function EviHeadingGroup({
         // tidligt), brødtekst holdes på det læsbare ~65ch. `ch` regnes på selve
         // elementet, så clamp-fluid størrelser giver konsistent tegn-measure.
         "[&>h1]:max-w-[30ch] [&>h2]:max-w-[30ch] [&>h3]:max-w-[30ch] [&>p]:max-w-prose",
-        align === "center" && "mx-auto text-center *:mx-auto",
+        // "center" er venstre på mobil (centreret fler-linjet tekst er svær at
+        // læse på smalle skærme) og centreres først fra md og op.
+        align === "center" && "text-left md:text-center md:*:mx-auto",
         className,
       )}
       {...props}
