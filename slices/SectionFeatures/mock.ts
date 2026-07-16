@@ -163,6 +163,7 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
       body: line(
         "Fra risteri til webshop — her er nogle af de steder du kan møde Kaffemølle Aarhus.",
       ),
+      cta_link: webLink("Se alle ydelser"),
       card_1_image: bentoImg("1529892485617-25f63cd7b1e9", 1200, 1500),
       card_1_title: h3("Kom forbi vores risteri"),
       card_1_body: line(

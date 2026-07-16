@@ -1414,6 +1414,16 @@ export interface SectionFeaturesSliceBentoPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Overskrift: knap (fx Se alle ydelser) field in *SectionFeatures → Bento → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.bento.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
 	 * Stor kasse: billede field in *SectionFeatures → Bento → Primary*
 	 *
 	 * - **Field Type**: Image

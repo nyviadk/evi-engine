@@ -305,7 +305,7 @@
       "name": "Bento",
       "description": "Bento",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/bento/d6a7f77d40a632f4837814574a561d96df477061.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/bento/ce441be55ba27e7d752f80e035558cfb5e658130.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -322,6 +322,14 @@
             "label": "Brødtekst",
             "placeholder": "Kort intro under overskriften",
             "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Overskrift: knap (fx Se alle ydelser)",
+            "allowTargetBlank": true,
+            "allowText": true
           }
         },
         "card_1_image": {

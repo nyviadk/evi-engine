@@ -15,7 +15,9 @@
       "Bash(curl -s https://api.github.com/repos/vercel/next.js/contents/skills)",
       "Bash(curl -s https://raw.githubusercontent.com/vercel/next.js/canary/skills/next-dev-loop/SKILL.md)",
       "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents)",
-      "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents/skills)"
+      "Bash(curl -s https://api.github.com/repos/cloudflare/skills/contents/skills)",
+      "PowerShell(npx prismic field add link cta_link --to-slice section_features --variation bento --label \"Overskrift: knap \\(fx Se alle ydelser\\)\" --allow-text --allow-target-blank 2>&1)",
+      "PowerShell(npx prismic field reorder cta_link --after body --from-slice section_features --variation bento 2>&1)"
     ]
   }
 }

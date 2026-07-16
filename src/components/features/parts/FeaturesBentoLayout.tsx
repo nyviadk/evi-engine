@@ -178,10 +178,15 @@ export function FeaturesBentoLayout({
     isFilled.richText(p.card_4_body) ||
     is_link_filled(p.card_4_link);
 
+  // Udfyldt CTA → header bliver venstre-stillet med knappen yderst til højre;
+  // ellers centreret som normalt.
+  const hasCta = is_link_filled(p.cta_link);
+
   // Hele sektionen droppes hvis intet felt er udfyldt.
   const hasAnyContent =
     isFilled.richText(p.heading) ||
     isFilled.richText(p.body) ||
+    hasCta ||
     card1Has ||
     card2Has ||
     card3Has ||
@@ -283,6 +288,46 @@ export function FeaturesBentoLayout({
     </EviStack>
   );
 
+  // Header: uden CTA = centreret overskrift. Med CTA = overskrift venstre +
+  // "Se alle"-knap yderst til højre (bund-flugtet), der wrapper under på mobil.
+  const header = hasCta ? (
+    <EviStack
+      direction="row"
+      justify="between"
+      align="start"
+      wrap
+      gap="md"
+      className="col-span-12"
+    >
+      <EviHeadingGroup
+        title={p.heading}
+        description={p.body}
+        linkResolver={linkResolver}
+        isHero={isHero}
+        align="start"
+      />
+      <EviButton
+        asChild
+        variant="primary"
+        appearance="outline"
+        arrow
+        className="shrink-0"
+      >
+        <PrismicNextLink field={p.cta_link} linkResolver={linkResolver}>
+          {p.cta_link.text}
+        </PrismicNextLink>
+      </EviButton>
+    </EviStack>
+  ) : (
+    <EviHeadingGroup
+      title={p.heading}
+      description={p.body}
+      linkResolver={linkResolver}
+      isHero={isHero}
+      align="center"
+    />
+  );
+
   return (
     <EviSection
       theme={theme}
@@ -290,13 +335,7 @@ export function FeaturesBentoLayout({
       collapsePadding={collapsePadding}
       data-slot="section-features-bento"
     >
-      <EviHeadingGroup
-        title={p.heading}
-        description={p.body}
-        linkResolver={linkResolver}
-        isHero={isHero}
-        align="center"
-      />
+      {header}
       <EviSplit preset="40-60" align="stretch" className={BENTO_GAP}>
         {card1}
         {rightColumn}
