@@ -8,7 +8,7 @@
       "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/default/2bd6736c1c1262914d94c8ad35b11e44fe8aa1b4.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/default/b4bd4a06b8b105114f6c52895cea06b51feb3988.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "feature_1_icon": {
@@ -90,7 +90,7 @@
       "name": "Cards",
       "description": "Cards",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/cards/4c5c7fc505c1529589f0b0f4759ed35747b610c4.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/cards/b084623da9e3b6fa080597cf424e04745d5a355b.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -149,6 +149,136 @@
               "Neutral",
               "Primær",
               "Sekundær"
+            ]
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "split",
+      "name": "Split",
+      "description": "Split",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/split/d2e4ba0778bd0301523475df6ec489d4f1168dc3.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sektionens overskrift",
+            "single": "heading2,strong,em,hyperlink"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Kort intro under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Billede",
+            "placeholder": "Firkantet billede (1:1)",
+            "constraint": {
+              "width": 1200,
+              "height": 1200
+            },
+            "thumbnails": []
+          }
+        },
+        "features": {
+          "type": "Group",
+          "config": {
+            "label": "Bokse",
+            "fields": {
+              "icon": {
+                "type": "Text",
+                "config": {
+                  "label": "Ikon",
+                  "placeholder": "Iconify-navn, fx lucide:check"
+                }
+              },
+              "heading": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Overskrift",
+                  "placeholder": "Boks-titel",
+                  "single": "heading3,strong,em,hyperlink"
+                }
+              },
+              "body": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Tekst",
+                  "placeholder": "Kort beskrivelse",
+                  "single": "paragraph,strong,em,hyperlink"
+                }
+              }
+            }
+          }
+        },
+        "feature_color": {
+          "type": "Select",
+          "config": {
+            "label": "Boks-farve",
+            "default_value": "Neutral",
+            "options": [
+              "Neutral",
+              "Primær",
+              "Sekundær"
+            ]
+          }
+        },
+        "backdrop": {
+          "type": "Select",
+          "config": {
+            "label": "Backdrop bag billede",
+            "default_value": "Ingen",
+            "options": [
+              "Ingen",
+              "Roteret"
+            ]
+          }
+        },
+        "image_side": {
+          "type": "Select",
+          "config": {
+            "label": "Billedets side (desktop)",
+            "default_value": "Venstre",
+            "options": [
+              "Venstre",
+              "Højre"
+            ]
+          }
+        },
+        "mobile_order": {
+          "type": "Select",
+          "config": {
+            "label": "Rækkefølge på mobil",
+            "default_value": "Billede øverst",
+            "options": [
+              "Billede øverst",
+              "Tekst øverst"
             ]
           }
         },

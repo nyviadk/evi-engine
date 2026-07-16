@@ -7,17 +7,14 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviTag } from "@/src/components/ui/EviTag";
-import { EviBackdropImage } from "@/src/components/ui/EviBackdropImage";
+import {
+  EviBackdropImage,
+  BACKDROP_FROM_LABEL,
+} from "@/src/components/ui/EviBackdropImage";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
-
-// Prismic-label (backdrop) → EviBackdropImage-farve.
-const BACKDROP: Record<string, "primary" | "secondary"> = {
-  Primær: "primary",
-  Sekundær: "secondary",
-};
 
 export type HeroSplitLayoutProps = {
   slice: Content.HeroSliceSplit;
@@ -46,7 +43,7 @@ export function HeroSplitLayout({
   const has_cta_2 =
     isFilled.link(p.cta_link_secondary) &&
     isFilled.keyText(p.cta_link_secondary.text);
-  const backdrop = BACKDROP[p.backdrop ?? ""] ?? "secondary";
+  const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Roteret"] ?? "rotated";
 
   return (
     <EviSection

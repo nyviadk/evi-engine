@@ -38,6 +38,7 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 | Core Web Vitals (LCP/INP/CLS) | **web-perf** |
 
 ## Always-on konventioner
+- **Mock-data (slice `mock.ts`) SKAL bruge vores fælles PERSONA** — kaffe-virksomheden "Kaffemølle Aarhus" i `src/lib/preview/persona.ts`. Opfind ALDRIG en ny branche/brand i et mock (`feedback_mock_persona`).
 - Korte kommentarer — kun ikke-åbenlyst WHY/gotcha (`feedback_short_comments`).
 - `isFilled` på ALLE Prismic-værdier (`feedback_prismic_isfilled`).
 - Ingen hardcodede `<h1>`–`<h6>`/`<p>` — tekst via Rich Text + EviRichText (`feedback_no_hardcoded_text_tags`).

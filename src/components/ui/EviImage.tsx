@@ -110,7 +110,13 @@ export function EviImage({
     ? { ...style, backgroundImage: `url("${blurUrl}")` }
     : style;
 
-  const imgClasses = cn("size-full object-contain", imageClassName);
+  // select-none: vores billeder er præsentationelle — undgå at de highlightes
+  // blåt/ghost-dragges når man markerer tekst i nærheden. Ingen a11y-omkostning
+  // (billeder har ingen tekst; skærmlæsere bruger alt).
+  const imgClasses = cn(
+    "size-full object-contain select-none",
+    imageClassName,
+  );
 
   // Rå <img> til (a) hero (priority) ELLER (b) art direction (mobileField —
   // next/image kan ikke <picture>). Hero tvinges til JPEG (force_jpg): imgix'

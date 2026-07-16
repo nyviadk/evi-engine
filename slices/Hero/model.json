@@ -8,7 +8,7 @@
       "name": "Centered",
       "description": "Centered",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/5c44c9f7e052cd45fff105dba7b7b27b358d41e6.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/ca963d16120f6243f9821f165ea426c99a0f1e93.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -67,7 +67,7 @@
       "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/28c3f1637f668a59babdf7a1d34933bb0cda792b.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/ef9b16d9174930fff8c77115a35330c28df8b41c.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -143,12 +143,12 @@
         "backdrop": {
           "type": "Select",
           "config": {
-            "label": "Farve bag billede",
+            "label": "Backdrop bag billede",
             "placeholder": "Blød baggrundsfarve bag billedet",
-            "default_value": "Sekundær",
+            "default_value": "Roteret",
             "options": [
-              "Sekundær",
-              "Primær"
+              "Ingen",
+              "Roteret"
             ]
           }
         },

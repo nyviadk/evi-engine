@@ -106,7 +106,7 @@ export const mock: Record<string, Content.HeroSlice> = {
         dimensions: { width: 1200, height: 900 },
         edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
       } as Content.HeroSliceSplitPrimary["image_mobile"],
-      backdrop: "Sekundær",
+      backdrop: "Roteret",
       background_theme: "Lys",
     },
   },

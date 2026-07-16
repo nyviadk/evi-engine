@@ -994,15 +994,15 @@ export interface HeroSliceSplitPrimary {
 	image_mobile: prismic.ImageField<never>;
 	
 	/**
-	 * Farve bag billede field in *Hero → Split → Primary*
+	 * Backdrop bag billede field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Blød baggrundsfarve bag billedet
-	 * - **Default Value**: Sekundær
+	 * - **Default Value**: Roteret
 	 * - **API ID Path**: hero.split.primary.backdrop
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	backdrop: prismic.SelectField<"Sekundær" | "Primær", "filled">;
+	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
 	
 	/**
 	 * Baggrundstema field in *Hero → Split → Primary*
@@ -1069,6 +1069,41 @@ export interface SectionFeaturesSliceCardsPrimaryCardsItem {
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: Kort beskrivelse
 	 * - **API ID Path**: section_features.cards.primary.cards[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+}
+
+/**
+ * Item in *SectionFeatures → Split → Primary → Bokse*
+ */
+export interface SectionFeaturesSliceSplitPrimaryFeaturesItem {
+	/**
+	 * Ikon field in *SectionFeatures → Split → Primary → Bokse*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: section_features.split.primary.features[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Overskrift field in *SectionFeatures → Split → Primary → Bokse*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Boks-titel
+	 * - **API ID Path**: section_features.split.primary.features[].heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *SectionFeatures → Split → Primary → Bokse*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: section_features.split.primary.features[].body
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
@@ -1246,9 +1281,118 @@ export interface SectionFeaturesSliceCardsPrimary {
 export type SectionFeaturesSliceCards = prismic.SharedSliceVariation<"cards", Simplify<SectionFeaturesSliceCardsPrimary>, never>;
 
 /**
+ * Primary content in *SectionFeatures → Split → Primary*
+ */
+export interface SectionFeaturesSliceSplitPrimary {
+	/**
+	 * Overskrift field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: section_features.split.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: section_features.split.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Billede field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Firkantet billede (1:1)
+	 * - **API ID Path**: section_features.split.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Bokse field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_features.split.primary.features[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	features: prismic.GroupField<Simplify<SectionFeaturesSliceSplitPrimaryFeaturesItem>>;
+	
+	/**
+	 * Boks-farve field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: section_features.split.primary.feature_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	feature_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Backdrop bag billede field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Ingen
+	 * - **API ID Path**: section_features.split.primary.backdrop
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
+	
+	/**
+	 * Billedets side (desktop) field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: section_features.split.primary.image_side
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
+	
+	/**
+	 * Rækkefølge på mobil field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Billede øverst
+	 * - **API ID Path**: section_features.split.primary.mobile_order
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
+	
+	/**
+	 * Baggrundstema field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_features.split.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Split variation for SectionFeatures Slice
+ *
+ * - **API ID**: `split`
+ * - **Description**: Split
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFeaturesSliceSplit = prismic.SharedSliceVariation<"split", Simplify<SectionFeaturesSliceSplitPrimary>, never>;
+
+/**
  * Slice variation for *SectionFeatures*
  */
-type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeaturesSliceCards
+type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeaturesSliceCards | SectionFeaturesSliceSplit
 
 /**
  * SectionFeatures Shared Slice
@@ -1403,9 +1547,12 @@ declare module "@prismicio/client" {
 			SectionFeaturesSliceDefaultPrimary,
 			SectionFeaturesSliceCardsPrimaryCardsItem,
 			SectionFeaturesSliceCardsPrimary,
+			SectionFeaturesSliceSplitPrimaryFeaturesItem,
+			SectionFeaturesSliceSplitPrimary,
 			SectionFeaturesSliceVariation,
 			SectionFeaturesSliceDefault,
 			SectionFeaturesSliceCards,
+			SectionFeaturesSliceSplit,
 			SectionPhoneMockupSlice,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,

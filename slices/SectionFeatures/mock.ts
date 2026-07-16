@@ -24,6 +24,53 @@ const h3 = (text: string): RichTextField => [
 ];
 
 export const mock: Record<string, Content.SectionFeaturesSlice> = {
+  split: {
+    id: "mock-section-features-split",
+    slice_type: "section_features",
+    slice_label: null,
+    variation: "split",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: h2("Håndværk i hver eneste kop"),
+      body: line(
+        "Vi går op i detaljen fra bønne til brew. Her er nogle af de ting du kan regne med, hver gang du handler hos os.",
+      ),
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      image: {
+        id: "mock-features-split-image",
+        url: "https://picsum.photos/seed/featuresplit/1200/1200",
+        alt: null,
+        copyright: null,
+        dimensions: { width: 1200, height: 1200 },
+        edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
+      } as Content.SectionFeaturesSliceSplitPrimary["image"],
+      features: [
+        {
+          icon: "leaf",
+          heading: h3("Sporbare bønner"),
+          body: line("Vi kender hver farm og hver høst bag vores kaffe."),
+        },
+        {
+          icon: "flame",
+          heading: h3("Ristet på stedet"),
+          body: line(
+            "Alt ristes i vores eget værksted i Aarhus — aldrig ældre end en uge.",
+          ),
+        },
+        {
+          icon: "truck",
+          heading: h3("Fri fragt over 300 kr."),
+          body: line("Vi sender gratis på alle større ordrer, hurtigt og sikkert."),
+        },
+      ],
+      feature_color: "Neutral",
+      backdrop: "Ingen",
+      image_side: "Venstre",
+      mobile_order: "Billede øverst",
+      background_theme: "Lys",
+    },
+  },
   cards: {
     id: "mock-section-features-cards",
     slice_type: "section_features",
