@@ -188,7 +188,7 @@
       "name": "About",
       "description": "About",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/31fc49d9bf77023ec99b01a1d9ba45bc334345be.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/eee70ab77ea518023bba9ed7a142dcbb214936a5.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -215,6 +215,29 @@
               "height": 1000
             },
             "thumbnails": []
+          }
+        },
+        "backdrop": {
+          "type": "Select",
+          "config": {
+            "label": "Backdrop bag billede",
+            "default_value": "Roteret",
+            "options": [
+              "Ingen",
+              "Roteret"
+            ]
+          }
+        },
+        "backdrop_color": {
+          "type": "Select",
+          "config": {
+            "label": "Backdrop-farve",
+            "default_value": "Sekundær",
+            "options": [
+              "Sekundær",
+              "Primær",
+              "Neutral"
+            ]
           }
         },
         "image_side": {

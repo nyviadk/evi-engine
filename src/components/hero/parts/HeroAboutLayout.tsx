@@ -2,7 +2,10 @@ import { isFilled, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
-import { EviImage } from "@/src/components/ui/EviImage";
+import {
+  EviBackdropImage,
+  BACKDROP_FROM_LABEL,
+} from "@/src/components/ui/EviBackdropImage";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
   resolve_slice_context,
@@ -48,6 +51,7 @@ export function HeroAboutLayout({
 
   const imageLeftOnDesktop = p.image_side !== "Højre";
   const imageTopOnMobile = p.mobile_order !== "Tekst øverst";
+  const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Roteret"] ?? "rotated";
 
   const contentEl = (
     <EviHeadingGroup
@@ -58,14 +62,11 @@ export function HeroAboutLayout({
     />
   );
   const imageEl = (
-    <EviImage
+    <EviBackdropImage
       field={p.image}
-      aspectRatio="square"
-      variant="plain"
-      imageClassName="object-cover"
+      backdrop={backdrop}
+      color={p.backdrop_color}
       priority={isHero}
-      sizes="(min-width: 768px) 45vw, 92vw"
-      className="shadow-evi rounded-evi"
     />
   );
 

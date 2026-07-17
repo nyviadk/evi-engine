@@ -1071,6 +1071,28 @@ export interface HeroSliceAboutPrimary {
 	image: prismic.ImageField<never>;
 	
 	/**
+	 * Backdrop bag billede field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Roteret
+	 * - **API ID Path**: hero.about.primary.backdrop
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
+	
+	/**
+	 * Backdrop-farve field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Sekundær
+	 * - **API ID Path**: hero.about.primary.backdrop_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop_color: prismic.SelectField<"Sekundær" | "Primær" | "Neutral", "filled">;
+	
+	/**
 	 * Billedets side (desktop) field in *Hero → About → Primary*
 	 *
 	 * - **Field Type**: Select
