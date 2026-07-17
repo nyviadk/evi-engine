@@ -1005,6 +1005,17 @@ export interface HeroSliceSplitPrimary {
 	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
 	
 	/**
+	 * Backdrop-farve field in *Hero → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Sekundær
+	 * - **API ID Path**: hero.split.primary.backdrop_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop_color: prismic.SelectField<"Sekundær" | "Primær" | "Neutral", "filled">;
+	
+	/**
 	 * Baggrundstema field in *Hero → Split → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -1449,6 +1460,17 @@ export interface SectionFeaturesSliceSplitPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
+	
+	/**
+	 * Backdrop-farve field in *SectionFeatures → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Sekundær
+	 * - **API ID Path**: section_features.split.primary.backdrop_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop_color: prismic.SelectField<"Sekundær" | "Primær" | "Neutral", "filled">;
 	
 	/**
 	 * Billedets side (desktop) field in *SectionFeatures → Split → Primary*

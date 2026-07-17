@@ -639,6 +639,7 @@
     transition:
       background-color 200ms ease-out,
       color 200ms ease-out,
+      box-shadow 200ms ease-out,
       opacity 200ms ease-out;
   }
 
@@ -880,10 +881,38 @@
   /* ── Arrow icon animation ── */
 
   .btn-arrow .btn-arrow-icon {
-    transition: transform 300ms ease-out;
+    transition: rotate 250ms ease;
   }
   .btn-arrow:hover .btn-arrow-icon {
-    transform: translateX(4px);
+    /* → i hvile, ↗ på hover — legende flourish, ikke et permanent
+       ekstern-link-signal (pilen er desuden aria-hidden). */
+    rotate: -45deg;
+  }
+
+  /* ── Solid-knap sheen: subtilt lys-glimt fejer hen over på hover ──
+     currentColor = knappens tekstfarve (kontrasterer bg'en), så glimtet
+     virker på ALLE brand-farver uden hardcodede farver. Reduced-motion
+     -reset slår det fra. */
+  [data-slot="evi-button"][data-appearance="solid"] {
+    position: relative;
+    overflow: hidden;
+  }
+  [data-slot="evi-button"][data-appearance="solid"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 40%,
+      color-mix(in oklch, currentColor 14%, transparent) 50%,
+      transparent 60%
+    );
+    transform: translateX(-120%);
+    transition: transform 700ms ease;
+  }
+  [data-slot="evi-button"][data-appearance="solid"]:hover::after {
+    transform: translateX(120%);
   }
 
   /* ═══════════════════════════════════════════════════════

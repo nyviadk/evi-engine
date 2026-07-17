@@ -62,7 +62,12 @@ export function FeaturesSplitLayout({
   const imageTopOnMobile = p.mobile_order !== "Tekst øverst";
 
   const imageEl = (
-    <EviBackdropImage field={p.image} backdrop={backdrop} priority={isHero} />
+    <EviBackdropImage
+      field={p.image}
+      backdrop={backdrop}
+      color={p.backdrop_color}
+      priority={isHero}
+    />
   );
   const contentEl = (
     <EviStack gap="lg">

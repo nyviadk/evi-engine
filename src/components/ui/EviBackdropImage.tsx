@@ -16,11 +16,18 @@ export const BACKDROP_FROM_LABEL: Record<string, BackdropForm> = {
   Primær: "rotated",
 };
 
-// Formens position/rotation/afrunding. Farven sættes separat (theme-surface-
-// secondary): kontrast-adaptiv brand-tint (blød på lys, dæmpet på mørk) — IKKE
-// theme-*-soft (solid lys → grelt på mørke sektioner). Peeker let uden for billedet.
+// Formens position/rotation/afrunding.
 const formClass: Record<Exclude<BackdropForm, "none">, string> = {
   rotated: "inset-[3%] -rotate-3 rounded-evi",
+};
+
+// Backdrop-FARVE (Prismic-label) → surface-tint på formen. Kontrast-adaptive
+// brand-tints (blød på lys, dæmpet på mørk) — IKKE theme-*-soft (solid lys →
+// grelt på mørke sektioner). DELT af alle slices med et backdrop-farvevalg.
+export const BACKDROP_COLOR_CLASS: Record<string, string> = {
+  Sekundær: "theme-surface-secondary",
+  Primær: "theme-surface-primary",
+  Neutral: "theme-surface-neutral",
 };
 
 export type EviBackdropImageProps = {
@@ -36,6 +43,11 @@ export type EviBackdropImageProps = {
    * Udvid via `formClass` + `BACKDROP_FROM_LABEL`. @default "rotated"
    */
   backdrop?: BackdropForm;
+  /**
+   * Backdrop-farve (Prismic-label: "Sekundær"/"Primær"/"Neutral"). Ignoreres når
+   * `backdrop="none"`. Udvid via `BACKDROP_COLOR_CLASS`. @default "Sekundær"
+   */
+  color?: string;
   /** Eager-load (LCP/hero-billede). @default false */
   priority?: boolean;
   className?: string;
@@ -51,6 +63,7 @@ export function EviBackdropImage({
   field,
   mobileField,
   backdrop = "rotated",
+  color = "Sekundær",
   priority = false,
   className,
 }: EviBackdropImageProps): React.ReactElement | null {
@@ -90,7 +103,8 @@ export function EviBackdropImage({
       <div
         aria-hidden
         className={cn(
-          "absolute -z-10 theme-surface-secondary",
+          "absolute -z-10",
+          BACKDROP_COLOR_CLASS[color] ?? "theme-surface-secondary",
           formClass[backdrop],
         )}
       />

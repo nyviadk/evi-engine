@@ -50,6 +50,16 @@ export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
   sizes?: string;
   /** Klasse på selve `<img>` / `<PrismicNextImage>`. */
   imageClassName?: string;
+  /**
+   * Blødt zoom (~1.03) når en forælder med `group`-klassen hover'es. Kræver at
+   * kort-wrapperen har `className="group"` (billedet klippes af containerens
+   * `overflow-hidden`).
+   *
+   * BRUG KUN når HELE kortet er et link — zoom er en "klik mig"-affordance. På
+   * kort hvor kun en knap er klikbar (fx bento) lover det interaktivitet der
+   * ikke findes → brug det ikke der. @default false
+   */
+  hoverZoom?: boolean;
 };
 
 const aspectClasses: Record<AspectRatio, string> = {
@@ -85,6 +95,7 @@ export function EviImage({
   sizes,
   className,
   imageClassName,
+  hoverZoom = false,
   style,
   ...props
 }: EviImageProps): React.ReactElement | null {
@@ -115,6 +126,8 @@ export function EviImage({
   // (billeder har ingen tekst; skærmlæsere bruger alt).
   const imgClasses = cn(
     "size-full object-contain select-none",
+    hoverZoom &&
+      "transition-transform duration-500 ease-out group-hover:scale-[1.03]",
     imageClassName,
   );
 

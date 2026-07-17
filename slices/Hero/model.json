@@ -67,7 +67,7 @@
       "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/82880d8d2813a34c4af5acde88fec26fd9bc42d6.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/5df818bab3e591470e6b5fc6e9db1e67615409ee.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -149,6 +149,18 @@
             "options": [
               "Ingen",
               "Roteret"
+            ]
+          }
+        },
+        "backdrop_color": {
+          "type": "Select",
+          "config": {
+            "label": "Backdrop-farve",
+            "default_value": "Sekundær",
+            "options": [
+              "Sekundær",
+              "Primær",
+              "Neutral"
             ]
           }
         },

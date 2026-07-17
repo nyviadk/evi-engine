@@ -111,7 +111,7 @@ export function EviPhoneMockup({
           {...(preload
             ? { preload: true }
             : { loading: (eager ? "eager" : "lazy") as "eager" | "lazy" })}
-          className="object-cover"
+          className="object-cover select-none"
           fallbackAlt=""
         />
       </div>

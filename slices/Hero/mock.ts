@@ -107,6 +107,7 @@ export const mock: Record<string, Content.HeroSlice> = {
         edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
       } as Content.HeroSliceSplitPrimary["image_mobile"],
       backdrop: "Roteret",
+      backdrop_color: "Sekundær",
       background_theme: "Lys",
     },
   },

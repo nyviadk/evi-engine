@@ -100,6 +100,7 @@ export function HeroSplitLayout({
           field={p.image}
           mobileField={p.image_mobile}
           backdrop={backdrop}
+          color={p.backdrop_color}
           priority={isHero}
         />
       </EviSplit>

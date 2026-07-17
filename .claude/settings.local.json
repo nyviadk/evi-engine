@@ -31,7 +31,11 @@
       "PowerShell(npx prismic field add select background_theme --to-slice section_faq --option \"Lys\" --option \"M�rk\" --option \"Prim�r\" --option \"Sekund�r\" --option \"M�rk bl�d\" --option \"Prim�r bl�d\" --option \"Sekund�r bl�d\" --default-value \"Lys\" --label \"Baggrundstema\")",
       "PowerShell(npx prismic slice connect section_faq --to page 2>&1)",
       "PowerShell(npm run evi:model 2>&1)",
-      "PowerShell(npm run evi:new-slice SectionFaq 2>&1)"
+      "PowerShell(npm run evi:new-slice SectionFaq 2>&1)",
+      "PowerShell(npx prismic field add select backdrop_color --to-slice hero --variation split --option \"Sekund�r\" --option \"Prim�r\" --option \"Neutral\" --default-value \"Sekund�r\" --label \"Backdrop-farve\")",
+      "PowerShell(npx prismic field add select backdrop_color --to-slice section_features --variation split --option \"Sekund�r\" --option \"Prim�r\" --option \"Neutral\" --default-value \"Sekund�r\" --label \"Backdrop-farve\")",
+      "PowerShell(npx prismic field reorder backdrop_color --after backdrop --from-slice hero --variation split)",
+      "PowerShell(npx prismic field reorder backdrop_color --after backdrop --from-slice section_features --variation split)"
     ]
   }
 }
