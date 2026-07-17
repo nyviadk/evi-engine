@@ -693,6 +693,24 @@
     gap: 0.75rem;
   }
 
+  /* ── Mobil: mindre VANDRET luft ──
+     På en 332px-skærm (~300px indhold) åd 32px i hver side så meget, at to
+     hero-CTA'er ikke kunne stå ved siden af hinanden. padding-block røres
+     bevidst IKKE: højderne (32/40/44px) er kalibrerede, og lg's 44px er WCAG's
+     minimum touch-target. Tekst-knapper nulstilles alligevel af
+     `.btn-*-text { padding: 0 }` længere nede. */
+  @media (max-width: 40rem) {
+    .btn-sm {
+      padding-inline: 0.875rem; /* 14px */
+    }
+    .btn-md {
+      padding-inline: 1.125rem; /* 18px */
+    }
+    .btn-lg {
+      padding-inline: 1.25rem; /* 20px */
+    }
+  }
+
   /* ── Progressive Enhancement: Text Box Trim ── */
   @supports (text-box-trim: trim-both) {
     /* Fordi trim fjerner den indre luft, justerer vi padding-block 

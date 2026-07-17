@@ -5,9 +5,13 @@ type BoxSize = "card" | "compact";
 
 // Kasse-FORMEN (afrunding + luft + elevation) ét sted.
 // "card" = fremhævet kort/callout. "compact" = flad, tættere boks til lister.
+//
+// Padding trappes op i 3 trin i stedet for at springe: på en 332px-skærm er der
+// kun ~300px indhold, og 24px luft i hver side åd for meget. Samme skala bruges
+// af bento's billed-kasse + EviImage variant="framed" — hold dem synkroniserede.
 const sizeClass: Record<BoxSize, string> = {
-  card: "rounded-evi p-6 shadow-evi md:p-8",
-  compact: "rounded-evi p-4 md:p-6",
+  card: "rounded-evi p-4 shadow-evi sm:p-6 md:p-8",
+  compact: "rounded-evi p-3 sm:p-4 md:p-6",
 };
 
 /**
@@ -25,7 +29,7 @@ export function evi_box_class(size: BoxSize = "card"): string {
 export type EviBoxProps = React.ComponentProps<"div"> & {
   /** Prismic farve-label ("Neutral"/"Primær"/"Sekundær"). @default "Neutral" */
   surface?: string | null;
-  /** "card" = fremhævet (p-6/md:p-8 + skygge). "compact" = flad (p-4/md:p-6). @default "card" */
+  /** "card" = fremhævet (p-4→p-8 + skygge). "compact" = flad (p-3→p-6). @default "card" */
   size?: BoxSize;
 };
 

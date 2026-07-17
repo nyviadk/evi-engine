@@ -216,7 +216,7 @@ export function FeaturesBentoLayout({
       <EviStack
         justify="end"
         gap="sm"
-        className="w-full p-6 text-evi-text-on-light md:p-8"
+        className="w-full p-4 text-evi-text-on-light sm:p-6 md:p-8"
       >
         <EviRichText
           field={p.card_1_title}

@@ -81,7 +81,7 @@ const mdAspectClasses: Record<AspectRatio, string> = {
 };
 
 const variantClasses: Record<ImageVariant, string> = {
-  framed: "theme-surface-neutral p-6 md:p-8",
+  framed: "theme-surface-neutral p-4 sm:p-6 md:p-8",
   plain: "",
 };
 
