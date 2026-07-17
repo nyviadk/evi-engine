@@ -34,7 +34,8 @@
       "favicon_light": {
         "type": "Image",
         "config": {
-          "label": "Favicon (lys baggrund)",
+          "label": "Favicon — mørkt ikon (til lyst tema)",
+          "placeholder": "Mørk streg/logo — vises på browserens LYSE faneblad",
           "constraint": {
             "width": 512,
             "height": 512
@@ -45,7 +46,8 @@
       "favicon_dark": {
         "type": "Image",
         "config": {
-          "label": "Favicon (mørk baggrund)",
+          "label": "Favicon — lyst ikon (til mørkt tema)",
+          "placeholder": "Lys streg/logo — vises på browserens MØRKE faneblad",
           "constraint": {
             "width": 512,
             "height": 512

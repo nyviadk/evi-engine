@@ -524,10 +524,10 @@ interface SettingsDocumentData {
 	default_og_image: prismic.ImageField<never>;
 	
 	/**
-	 * Favicon (lys baggrund) field in *Indstillinger*
+	 * Favicon — mørkt ikon (til lyst tema) field in *Indstillinger*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: *None*
+	 * - **Placeholder**: Mørk streg/logo — vises på browserens LYSE faneblad
 	 * - **API ID Path**: settings.favicon_light
 	 * - **Tab**: Generelt
 	 * - **Documentation**: https://prismic.io/docs/fields/image
@@ -535,10 +535,10 @@ interface SettingsDocumentData {
 	favicon_light: prismic.ImageField<never>;
 	
 	/**
-	 * Favicon (mørk baggrund) field in *Indstillinger*
+	 * Favicon — lyst ikon (til mørkt tema) field in *Indstillinger*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: *None*
+	 * - **Placeholder**: Lys streg/logo — vises på browserens MØRKE faneblad
 	 * - **API ID Path**: settings.favicon_dark
 	 * - **Tab**: Generelt
 	 * - **Documentation**: https://prismic.io/docs/fields/image
