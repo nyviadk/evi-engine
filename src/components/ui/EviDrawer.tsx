@@ -10,6 +10,7 @@ import {
   type ReactNode,
   type MouseEvent,
 } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/src/lib/utils/cn";
 
 /**
@@ -75,6 +76,18 @@ function Provider({
   const [isOpen, setOpen] = useState(false);
   const generatedId = useId();
   const panelId = panelIdProp ?? `evi-drawer-${generatedId}`;
+
+  // Luk ved rute-skift: et nav-link i draweren soft-navigerer uden at kalde
+  // close() → draweren ville ellers blive hængende åben på den nye side. Gælder
+  // også tilbage/frem-knap. Render-tids-nulstilling (React's anbefalede mønster
+  // for "juster state når en værdi ændrer sig") frem for en effect: sammenlign
+  // mod forrige pathname, luk kun ved faktisk skift.
+  const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
   const value: EviDrawerContextValue = {
     state: { open: isOpen },
