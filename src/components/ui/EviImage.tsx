@@ -51,6 +51,11 @@ export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
   /** Klasse på selve `<img>` / `<PrismicNextImage>`. */
   imageClassName?: string;
   /**
+   * Afrundede hjørner på containeren. Slå fra når billedet skal bløde flush ud
+   * til en forælders kant (fx et kort der selv klipper hjørnerne). @default true
+   */
+  rounded?: boolean;
+  /**
    * Blødt zoom (~1.03) når en forælder med `group`-klassen hover'es. Kræver at
    * kort-wrapperen har `className="group"` (billedet klippes af containerens
    * `overflow-hidden`).
@@ -95,6 +100,7 @@ export function EviImage({
   sizes,
   className,
   imageClassName,
+  rounded = true,
   hoverZoom = false,
   style,
   ...props
@@ -111,7 +117,8 @@ export function EviImage({
     : aspectClasses[aspectRatio];
 
   const containerClasses = cn(
-    "relative w-full overflow-hidden rounded-evi",
+    "relative w-full overflow-hidden",
+    rounded && "rounded-evi",
     aspectClass,
     variantClasses[variant],
     blurUrl && "bg-cover bg-center",

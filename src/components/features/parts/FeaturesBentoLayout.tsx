@@ -240,7 +240,7 @@ export function FeaturesBentoLayout({
   const rightColumn = (
     <EviStack className={BENTO_GAP}>
       {card2Has && (
-        <EviBox>
+        <EviBox className="overflow-hidden">
           <EviAutoGrid size="duo" className="items-end">
             <CardContent
               title={p.card_2_title}
@@ -249,12 +249,21 @@ export function FeaturesBentoLayout({
               linkResolver={linkResolver}
             />
             {isFilled.image(p.card_2_image) && (
+              // Billedet bløder ud til kort-kanterne (siderne + bunden) på mobil,
+              // så det ikke sidder som en indrammet plade i boksens padding.
+              // Negative marginer annullerer boks-paddingen (samme skala) —
+              // KRÆVER `w-auto`: et `w-full`-element beholder sin bredde og
+              // skubbes bare til venstre (kun venstre bløder). EviBox's
+              // overflow-hidden klipper til de runde hjørner. Ved 2 kolonner
+              // (container ≥532px) nulstilles alt → indrammet igen.
               <EviImage
                 field={p.card_2_image}
                 variant="plain"
                 aspectRatio="square"
+                rounded={false}
                 imageClassName="object-cover"
                 sizes="(min-width: 768px) 30vw, 100vw"
+                className="-mx-4 -mb-4 w-auto sm:-mx-6 sm:-mb-6 md:-mx-8 md:-mb-8 @[532px]/grid:m-0 @[532px]/grid:w-full @[532px]/grid:rounded-evi"
               />
             )}
           </EviAutoGrid>
@@ -263,13 +272,19 @@ export function FeaturesBentoLayout({
 
       {(card3Has || card4Has) && (
         <EviAutoGrid size="duo" className={BENTO_GAP}>
+          {/* Farve-roller: kort 4 (bund-højre / bunden af mobil-stakken) er det
+              primære pop → bookender med kort 1's primær-knap i toppen (lodret
+              balance på mobil, primær spredt over bund-rækken på desktop). Kort 3
+              er sekundær TINT (20%), ikke -soft (10%): kort 3 sidder lige under
+              det neutrale kort 2, og en 10%-tint er for tæt på neutral → de to
+              ville se ens ud. */}
           {card3Has && (
             <BentoTextCard
               title={p.card_3_title}
               body={p.card_3_body}
               link={p.card_3_link}
               linkResolver={linkResolver}
-              className="theme-primary"
+              className="theme-surface-secondary"
             />
           )}
           {card4Has && (
@@ -278,7 +293,7 @@ export function FeaturesBentoLayout({
               body={p.card_4_body}
               link={p.card_4_link}
               linkResolver={linkResolver}
-              className="theme-secondary-soft"
+              className="theme-primary"
             />
           )}
         </EviAutoGrid>

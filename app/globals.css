@@ -181,12 +181,13 @@
 @layer components {
   .shadow-evi {
     box-shadow:
-      0 20px 25px -5px color-mix(in oklch, currentColor 18%, transparent),
-      0 8px 10px -6px color-mix(in oklch, currentColor 14%, transparent);
+      0 4px 12px -4px color-mix(in oklch, currentColor 11%, transparent),
+      0 2px 4px -2px color-mix(in oklch, currentColor 7%, transparent);
   }
   .shadow-evi-lg {
-    box-shadow: 0 25px 50px -12px
-      color-mix(in oklch, currentColor 30%, transparent);
+    box-shadow:
+      0 10px 24px -6px color-mix(in oklch, currentColor 15%, transparent),
+      0 4px 8px -4px color-mix(in oklch, currentColor 9%, transparent);
   }
 
   /* A. Solide temaer */

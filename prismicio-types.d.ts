@@ -619,7 +619,7 @@ interface SettingsDocumentData {
 	 * - **Tab**: Udseende og layout
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	layout_width: prismic.SelectField<"Klassisk (1200px)" | "Standard (1280px)" | "Moderne (1440px)" | "Ekspansiv (1664px)" | "Cinematic (1920px)">;
+	layout_width: prismic.SelectField<"Klassisk (1200px)" | "Standard (1280px)" | "Komfort (1360px)" | "Moderne (1440px)" | "Ekspansiv (1664px)" | "Cinematic (1920px)">;
 	
 	/**
 	 * Hjørner / radius field in *Indstillinger*
