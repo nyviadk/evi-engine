@@ -24,7 +24,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "fx Kontakt, Åbningstider, Virksomhedsinfo",
-            "single": "heading3,strong,em,hyperlink"
+            "single": "heading3,strong,em"
           }
         }
       }

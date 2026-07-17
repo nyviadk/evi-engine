@@ -98,7 +98,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
-            "single": "heading2,strong,em,hyperlink"
+            "single": "heading2,strong,em"
           }
         },
         "body": {
@@ -126,7 +126,7 @@
                 "config": {
                   "label": "Overskrift",
                   "placeholder": "Kort titel",
-                  "single": "heading3,strong,em,hyperlink"
+                  "single": "heading3,strong,em"
                 }
               },
               "body": {
@@ -183,7 +183,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
-            "single": "heading2,strong,em,hyperlink"
+            "single": "heading2,strong,em"
           }
         },
         "body": {
@@ -223,7 +223,7 @@
                 "config": {
                   "label": "Overskrift",
                   "placeholder": "Boks-titel",
-                  "single": "heading3,strong,em,hyperlink"
+                  "single": "heading3,strong,em"
                 }
               },
               "body": {
@@ -325,7 +325,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
-            "single": "heading2,strong,em,hyperlink"
+            "single": "heading2,strong,em"
           }
         },
         "body": {
@@ -361,7 +361,7 @@
           "config": {
             "label": "Stor kasse: titel",
             "placeholder": "Kort titel",
-            "single": "heading3,strong,em,hyperlink"
+            "single": "heading3,strong,em"
           }
         },
         "card_1_body": {
@@ -385,7 +385,7 @@
           "config": {
             "label": "Bred kasse: titel",
             "placeholder": "Kort titel",
-            "single": "heading3,strong,em,hyperlink"
+            "single": "heading3,strong,em"
           }
         },
         "card_2_body": {
@@ -421,7 +421,7 @@
           "config": {
             "label": "Kasse 3: titel",
             "placeholder": "Kort titel",
-            "single": "heading3,strong,em,hyperlink"
+            "single": "heading3,strong,em"
           }
         },
         "card_3_body": {
@@ -445,7 +445,7 @@
           "config": {
             "label": "Kasse 4: titel",
             "placeholder": "Kort titel",
-            "single": "heading3,strong,em,hyperlink"
+            "single": "heading3,strong,em"
           }
         },
         "card_4_body": {

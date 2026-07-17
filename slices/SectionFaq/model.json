@@ -15,7 +15,7 @@
           "type": "StructuredText",
           "config": {
             "label": "Overskrift",
-            "single": "heading2,strong,em,hyperlink"
+            "single": "heading2,strong,em"
           }
         },
         "body": {

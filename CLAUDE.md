@@ -44,6 +44,7 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 - **Før ENHVER kommentar: STOP og verificér at den er nødvendig** — forklarer den et ikke-åbenlyst WHY/gotcha? Hvis nej (den oversætter bare koden / er åbenlys) → skriv den IKKE. Default er INGEN kommentar. Kun korte, kontante WHY-kommentarer (`feedback_short_comments`).
 - `isFilled` på ALLE Prismic-værdier (`feedback_prismic_isfilled`).
 - Ingen hardcodede `<h1>`–`<h6>`/`<p>` — tekst via Rich Text + EviRichText (`feedback_no_hardcoded_text_tags`).
+- Rich-text allow-lists (`feedback_richtext_allow_lists`): **heading-felter = `headingN,strong,em`** (bold/italic, ALDRIG `hyperlink` — overskrifter er ikke links); **body/paragraph = `paragraph,strong,em,hyperlink`** (+ `list-item,o-list-item` for multi). `strong,em` på ALLE rich-text-felter. Undt.: FAQ-spørgsmål i `<summary>` = ingen hyperlink (interaktivt-i-interaktivt).
 - Ingen barrel/index re-exports (`feedback_no_barrel_exports`).
 - Ingen default Tailwind-shadows — brug `.shadow-evi`/`.shadow-evi-lg` (`feedback_no_default_shadows`).
 - Knap-pil (`arrow`) KUN på `appearance="text"`-links — aldrig på solid/outline (`feedback_button_arrow_convention`).

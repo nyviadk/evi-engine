@@ -16,7 +16,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "Sidens primære overskrift (h1)",
-            "single": "heading1"
+            "single": "heading1,strong,em"
           }
         },
         "body": {
@@ -24,7 +24,7 @@
           "config": {
             "label": "Beskrivelse",
             "placeholder": "Kort beskrivende tekst under overskriften",
-            "single": "paragraph"
+            "single": "paragraph,strong,em,hyperlink"
           }
         },
         "cta_link": {
@@ -75,7 +75,7 @@
           "config": {
             "label": "Overskrift",
             "placeholder": "Sidens primære overskrift (h1)",
-            "single": "heading1"
+            "single": "heading1,strong,em"
           }
         },
         "body": {
@@ -83,7 +83,7 @@
           "config": {
             "label": "Beskrivelse",
             "placeholder": "Kort tekst under overskriften",
-            "single": "paragraph"
+            "single": "paragraph,strong,em,hyperlink"
           }
         },
         "cta_link": {
@@ -114,7 +114,7 @@
           "config": {
             "label": "Tag: tekst",
             "placeholder": "Kort label, fx Ristet i Aarhus siden 2018",
-            "single": "paragraph"
+            "single": "paragraph,strong,em"
           }
         },
         "image": {
@@ -195,7 +195,7 @@
           "type": "StructuredText",
           "config": {
             "label": "Overskrift",
-            "single": "heading1,strong,em,hyperlink"
+            "single": "heading1,strong,em"
           }
         },
         "body": {
