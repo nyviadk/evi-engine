@@ -7,6 +7,11 @@ import {
 import { PrismicNextLink } from "@prismicio/next";
 
 import { is_link_filled } from "@/src/lib/prismic/links";
+import { has_rich_text } from "@/src/lib/prismic/fields";
+import {
+  evi_card_title_class,
+  evi_card_body_class,
+} from "@/src/lib/utils/card-text";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
@@ -30,9 +35,8 @@ export type FeaturesBentoLayoutProps = {
 };
 
 // Delt titel-/tekst-skala for tekst-kortene (2–4). Kasse 1 er større (feature).
-const CARD_TITLE =
-  "[&_h3]:m-0 [&_h3]:text-lg [&_h3]:leading-snug [&_h3]:font-semibold";
-const CARD_BODY = "[&_p]:m-0 [&_p]:text-sm";
+const CARD_TITLE = evi_card_title_class("lg");
+const CARD_BODY = evi_card_body_class();
 
 // Uniform bento-gap på ALLE celle-mellemrum (primære kolonner, højre-kolonnens
 // to rækker, kasse 3|4) → ét sammenhængende gitter frem for et split med
@@ -162,22 +166,16 @@ export function FeaturesBentoLayout({
   // kolonner). Billede tæller kun for kasse 1 + 2 (de eneste med billed-felt).
   const card1Has =
     isFilled.image(p.card_1_image) ||
-    isFilled.richText(p.card_1_title) ||
-    isFilled.richText(p.card_1_body) ||
+    has_rich_text(p.card_1_title, p.card_1_body) ||
     is_link_filled(p.card_1_link);
   const card2Has =
     isFilled.image(p.card_2_image) ||
-    isFilled.richText(p.card_2_title) ||
-    isFilled.richText(p.card_2_body) ||
+    has_rich_text(p.card_2_title, p.card_2_body) ||
     is_link_filled(p.card_2_link);
   const card3Has =
-    isFilled.richText(p.card_3_title) ||
-    isFilled.richText(p.card_3_body) ||
-    is_link_filled(p.card_3_link);
+    has_rich_text(p.card_3_title, p.card_3_body) || is_link_filled(p.card_3_link);
   const card4Has =
-    isFilled.richText(p.card_4_title) ||
-    isFilled.richText(p.card_4_body) ||
-    is_link_filled(p.card_4_link);
+    has_rich_text(p.card_4_title, p.card_4_body) || is_link_filled(p.card_4_link);
 
   // Udfyldt CTA → header bliver venstre-stillet med knappen yderst til højre;
   // ellers centreret som normalt.
@@ -185,8 +183,7 @@ export function FeaturesBentoLayout({
 
   // Hele sektionen droppes hvis intet felt er udfyldt.
   const hasAnyContent =
-    isFilled.richText(p.heading) ||
-    isFilled.richText(p.body) ||
+    has_rich_text(p.heading, p.body) ||
     hasCta ||
     card1Has ||
     card2Has ||

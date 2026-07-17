@@ -1,4 +1,4 @@
-import { asText, isFilled, type Content } from "@prismicio/client";
+import { asText, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
@@ -15,6 +15,9 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { has_rich_text } from "@/src/lib/prismic/fields";
+import { evi_list_text_class } from "@/src/lib/utils/card-text";
+import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesSplitLayoutProps = {
   slice: Content.SectionFeaturesSliceSplit;
@@ -41,8 +44,8 @@ export function FeaturesSplitLayout({
   const p = slice.primary;
 
   // Kun bokse med tekst — tomme group-rækker skal ikke rendres.
-  const boxes = (p.features ?? []).filter(
-    (f) => isFilled.richText(f.heading) || isFilled.richText(f.body),
+  const boxes = (p.features ?? []).filter((f) =>
+    has_rich_text(f.heading, f.body),
   );
   const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Ingen"] ?? "none";
 
@@ -78,8 +81,15 @@ export function FeaturesSplitLayout({
           >
             <EviStack direction="row" gap="md" align="start">
               <EviIconBadge name={box.icon} />
-              {/* Boks-titel: skalér evi-prose h3 ned til kort-titel-størrelse. */}
-              <div className="evi-prose [&_h3]:m-0 [&_h3]:text-base [&_h3]:font-semibold [&_p]:mt-1 [&_p]:mb-0 [&_p]:text-sm [&_p]:opacity-80">
+              {/* Boks-titel: skalér evi-prose h3 ned til kort-titel-størrelse.
+                  opacity-80 dæmper brødteksten let (kun her, ikke i highlights). */}
+              <div
+                className={cn(
+                  "evi-prose",
+                  evi_list_text_class(),
+                  "[&_p]:opacity-80",
+                )}
+              >
                 <EviRichText.Raw
                   field={box.heading}
                   linkResolver={linkResolver}

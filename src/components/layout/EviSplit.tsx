@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { EVI_ROW_SPAN, type EviCardRows } from "@/src/components/ui/EviCard";
 import { cn } from "@/src/lib/utils/cn";
 
 type SplitPreset = "50-50" | "60-40" | "40-60" | "33-67" | "67-33";
@@ -20,6 +21,15 @@ export type EviSplitProps = Omit<React.ComponentProps<"div">, "children"> & {
    * DOM-rækkefølgen er uændret (a11y-sikkert). @default false
    */
   mobileReverse?: boolean;
+  /**
+   * Række-align panernes indhold: begge paner deler N række-spor, så fx titel og
+   * tekst flugter på tværs af panerne selv når de har forskellig BREDDE (et
+   * 67/33-par wrapper titlen forskelligt — uden det starter teksten i to højder).
+   *
+   * Kræver at hvert pane-barn selv er et subgrid med SAMME antal rækker, dvs.
+   * `<EviCard rows={N}>`. Implicerer `align="stretch"` (rækkerne ER højden).
+   */
+  rows?: EviCardRows;
   /** Præcis 2 børn i DOM-/læse-rækkefølge — led med det primære indhold. */
   children: [ReactNode, ReactNode];
 };
@@ -59,32 +69,52 @@ export function EviSplit({
   align = "stretch",
   reverse = false,
   mobileReverse = false,
+  rows,
   className,
   children,
   ...props
 }: EviSplitProps): React.ReactElement {
   const cols = presetClasses[preset];
   const [first, second] = children;
+  const effectiveAlign = rows ? "stretch" : align;
+
+  // Række-align: hvert pane subgrider splittens rækker og videregiver dem til
+  // sit EviCard-barn, så barnets rækker lander i SPLITTENS spor — det er dét der
+  // får de to paner til at flugte. `gap-0` overskriver splittens row-gap inde i
+  // panet (ellers ville kolonne-gap'et også skille titel fra tekst); gap'et
+  // MELLEM panerne ligger uden for begge subgrids og overlever — det er også
+  // det der holder mobil-stakken adskilt, hvor panerne får hver sit sæt spor.
+  const paneRows = rows
+    ? cn("grid grid-rows-subgrid gap-0", EVI_ROW_SPAN[rows])
+    : undefined;
 
   return (
     <div
       data-slot="evi-split"
       data-preset={preset}
-      data-align={align}
+      data-align={effectiveAlign}
+      data-rows={rows}
       className={cn(
         "col-span-12 grid grid-cols-subgrid gap-y-8 md:gap-y-12",
-        alignClasses[align],
+        alignClasses[effectiveAlign],
         className,
       )}
       {...props}
     >
-      <div className={cn(cols.left, align === "stretch" && "*:h-full")}>
+      <div
+        className={cn(
+          cols.left,
+          !rows && align === "stretch" && "*:h-full",
+          paneRows,
+        )}
+      >
         {first}
       </div>
       <div
         className={cn(
           cols.right,
-          align === "stretch" && "*:h-full",
+          !rows && align === "stretch" && "*:h-full",
+          paneRows,
           // Kun VISUEL reorder via CSS `order` (DOM/læse-/fokus-rækkefølge er
           // uændret): løft 2. barn foran på mobil (mobileReverse) og/eller på
           // desktop (reverse). Ikke-reverse sætter eksplicit order-0 så en

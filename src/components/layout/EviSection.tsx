@@ -1,6 +1,8 @@
 import { cn } from "@/src/lib/utils/cn";
 
 export type EviSectionProps = React.ComponentProps<"section"> & {
+  /** Semantisk element. Sidens footer skal fx være et `<footer>`. @default "section" */
+  as?: "section" | "footer";
   /** Tema-klasse, fx "light", "dark", "primary-soft". @default "light" */
   theme?: string;
   /** Større top/bund padding på hero-sektioner. @default false */
@@ -18,6 +20,7 @@ export type EviSectionProps = React.ComponentProps<"section"> & {
 };
 
 export function EviSection({
+  as: Tag = "section",
   theme = "light",
   hero = false,
   collapsePadding = false,
@@ -32,9 +35,10 @@ export function EviSection({
   // rytme mellem sektioner (asymmetri ser skæv ud). Hero adskiller sig KUN ved
   // toppen: den hugger nav'en (lille top-padding), da nav'en allerede giver
   // visuel adskillelse. fullTopPadding opter ud af hug'et (fx centered hero uden
-  // billede at balancere). compactBottom: mindre bund til page-end-bånd (footer)
-  // hvor der ikke følger en næste sektion — bevidst asymmetrisk der.
-  const pb = compactBottom ? "pb-20 md:pb-28" : "pb-24 md:pb-32";
+  // billede at balancere). compactBottom: markant mindre bund til page-end-bånd
+  // (footer) hvor bunden bare er sidekant-margin, ikke adskillelse til en næste
+  // sektion — bevidst asymmetrisk der (ca. halvdelen af den normale bund).
+  const pb = compactBottom ? "pb-10 md:pb-14" : "pb-24 md:pb-32";
   const pt = collapsePadding
     ? "pt-0"
     : hero && !fullTopPadding
@@ -47,7 +51,7 @@ export function EviSection({
   const gapY = collapseGapY ? "gap-y-4 md:gap-y-16" : "gap-y-12 md:gap-y-16";
 
   return (
-    <section
+    <Tag
       data-slot="evi-section"
       data-theme={theme}
       data-hero={hero || undefined}
@@ -65,6 +69,6 @@ export function EviSection({
       >
         {children}
       </div>
-    </section>
+    </Tag>
   );
 }

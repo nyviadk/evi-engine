@@ -1810,9 +1810,174 @@ export interface SectionFeaturesSliceBentoPrimary {
 export type SectionFeaturesSliceBento = prismic.SharedSliceVariation<"bento", Simplify<SectionFeaturesSliceBentoPrimary>, never>;
 
 /**
+ * Primary content in *SectionFeatures → Icon Bento → Primary*
+ */
+export interface SectionFeaturesSliceIconBentoPrimary {
+	/**
+	 * Overskrift field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: section_features.icon-bento.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: section_features.icon-bento.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 1 (bred): ikon field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: section_features.icon-bento.primary.box_1_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_1_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 1 (bred): titel field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: section_features.icon-bento.primary.box_1_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_1_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 1 (bred): tekst field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: section_features.icon-bento.primary.box_1_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_1_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 2 (smal): ikon field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: section_features.icon-bento.primary.box_2_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_2_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 2 (smal): titel field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: section_features.icon-bento.primary.box_2_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_2_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 2 (smal): tekst field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: section_features.icon-bento.primary.box_2_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_2_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 3 (smal): ikon field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: section_features.icon-bento.primary.box_3_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_3_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 3 (smal): titel field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: section_features.icon-bento.primary.box_3_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_3_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 3 (smal): tekst field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: section_features.icon-bento.primary.box_3_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_3_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 4 (bred): ikon field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: section_features.icon-bento.primary.box_4_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_4_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 4 (bred): titel field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: section_features.icon-bento.primary.box_4_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_4_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 4 (bred): tekst field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: section_features.icon-bento.primary.box_4_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_4_body: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *SectionFeatures → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_features.icon-bento.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Icon Bento variation for SectionFeatures Slice
+ *
+ * - **API ID**: `icon-bento`
+ * - **Description**: Icon Bento
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionFeaturesSliceIconBento = prismic.SharedSliceVariation<"icon-bento", Simplify<SectionFeaturesSliceIconBentoPrimary>, never>;
+
+/**
  * Slice variation for *SectionFeatures*
  */
-type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeaturesSliceCards | SectionFeaturesSliceSplit | SectionFeaturesSliceBento
+type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeaturesSliceCards | SectionFeaturesSliceSplit | SectionFeaturesSliceBento | SectionFeaturesSliceIconBento
 
 /**
  * SectionFeatures Shared Slice
@@ -2092,11 +2257,13 @@ declare module "@prismicio/client" {
 			SectionFeaturesSliceSplitPrimaryFeaturesItem,
 			SectionFeaturesSliceSplitPrimary,
 			SectionFeaturesSliceBentoPrimary,
+			SectionFeaturesSliceIconBentoPrimary,
 			SectionFeaturesSliceVariation,
 			SectionFeaturesSliceDefault,
 			SectionFeaturesSliceCards,
 			SectionFeaturesSliceSplit,
 			SectionFeaturesSliceBento,
+			SectionFeaturesSliceIconBento,
 			SectionHighlightsSlice,
 			SectionHighlightsSliceDefaultPrimaryPointsItem,
 			SectionHighlightsSliceDefaultPrimary,

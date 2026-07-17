@@ -1,14 +1,16 @@
 import { Children } from "react";
 import { cn } from "@/src/lib/utils/cn";
 
-type CardRows = 2 | 3 | 4 | 5 | 6;
+export type EviCardRows = 2 | 3 | 4 | 5 | 6;
 
 export type EviCardProps = React.ComponentProps<"div"> & {
   /** Antal subgrid-rækker. Skal matche antallet af direkte børn — tomme slots wrappes i `<div />`. */
-  rows: CardRows;
+  rows: EviCardRows;
 };
 
-const rowClasses: Record<CardRows, string> = {
+/** Literale row-span-klasser (Tailwind scanner kun statiske strenge). Deles med
+ *  EviSplit's `rows`, så pane-wrapper og kort spænder over de samme spor. */
+export const EVI_ROW_SPAN: Record<EviCardRows, string> = {
   2: "row-span-2",
   3: "row-span-3",
   4: "row-span-4",
@@ -38,7 +40,7 @@ export function EviCard({
       data-rows={rows}
       className={cn(
         "relative isolate grid grid-rows-subgrid gap-0",
-        rowClasses[rows],
+        EVI_ROW_SPAN[rows],
         className,
       )}
       {...props}

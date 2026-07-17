@@ -90,7 +90,7 @@
       "name": "Cards",
       "description": "Cards",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/cards/d98f6427748c8d5387a67c85bdf84e544d163e3c.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/cards/a285fe56d9456fec6fd605acba8ccdcd636503e2.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -317,7 +317,7 @@
       "name": "Bento",
       "description": "Bento",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/bento/846225dd94e4b1c2b965ba7ec40499d1359138e9.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/bento/f2c036badb5ed9f4f917cce5695cfb3ea3b33730.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -462,6 +462,140 @@
             "label": "Kasse 4: knap",
             "allowTargetBlank": true,
             "allowText": true
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "icon-bento",
+      "name": "Icon Bento",
+      "description": "Icon Bento",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/icon-bento/d54764dcde5641503c7baa1acb5dd29c2baa220c.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sektionens overskrift",
+            "single": "heading2,strong,em"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Kort intro under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "box_1_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kasse 1 (bred): ikon",
+            "placeholder": "Iconify-navn, fx lucide:check"
+          }
+        },
+        "box_1_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 1 (bred): titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em"
+          }
+        },
+        "box_1_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 1 (bred): tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "box_2_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kasse 2 (smal): ikon",
+            "placeholder": "Iconify-navn, fx lucide:check"
+          }
+        },
+        "box_2_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 2 (smal): titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em"
+          }
+        },
+        "box_2_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 2 (smal): tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "box_3_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kasse 3 (smal): ikon",
+            "placeholder": "Iconify-navn, fx lucide:check"
+          }
+        },
+        "box_3_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 3 (smal): titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em"
+          }
+        },
+        "box_3_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 3 (smal): tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "box_4_icon": {
+          "type": "Text",
+          "config": {
+            "label": "Kasse 4 (bred): ikon",
+            "placeholder": "Iconify-navn, fx lucide:check"
+          }
+        },
+        "box_4_title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 4 (bred): titel",
+            "placeholder": "Kort titel",
+            "single": "heading3,strong,em"
+          }
+        },
+        "box_4_body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Kasse 4 (bred): tekst",
+            "placeholder": "Kort beskrivelse",
+            "single": "paragraph,strong,em,hyperlink"
           }
         },
         "background_theme": {

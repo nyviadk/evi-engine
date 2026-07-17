@@ -1,4 +1,4 @@
-import { asText, isFilled, type Content } from "@prismicio/client";
+import { asText, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
@@ -12,6 +12,9 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { has_rich_text } from "@/src/lib/prismic/fields";
+import { evi_list_text_class } from "@/src/lib/utils/card-text";
+import { cn } from "@/src/lib/utils/cn";
 
 export type HighlightsLayoutProps = {
   slice: Content.SectionHighlightsSliceDefault;
@@ -42,14 +45,10 @@ export function HighlightsLayout({
   const p = slice.primary;
 
   // Kun punkter med tekst — tomme group-rækker rendres ikke.
-  const points = (p.points ?? []).filter(
-    (pt) => isFilled.richText(pt.title) || isFilled.richText(pt.body),
+  const points = (p.points ?? []).filter((pt) =>
+    has_rich_text(pt.title, pt.body),
   );
-  if (
-    !isFilled.richText(p.heading) &&
-    !isFilled.richText(p.body) &&
-    points.length === 0
-  ) {
+  if (!has_rich_text(p.heading, p.body) && points.length === 0) {
     return null;
   }
 
@@ -87,7 +86,7 @@ export function HighlightsLayout({
                     align="start"
                   >
                     <EviIconBadge name={pt.icon} />
-                    <div className="evi-prose [&_h3]:m-0 [&_h3]:text-base [&_h3]:font-semibold [&_p]:mt-1 [&_p]:mb-0 [&_p]:text-sm">
+                    <div className={cn("evi-prose", evi_list_text_class())}>
                       <EviRichText.Raw
                         field={pt.title}
                         linkResolver={linkResolver}

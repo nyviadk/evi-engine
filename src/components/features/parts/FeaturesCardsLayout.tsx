@@ -13,6 +13,11 @@ import { cn } from "@/src/lib/utils/cn";
 import { evi_box_class } from "@/src/components/ui/EviBox";
 import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
 import { resolve_surface } from "@/src/lib/utils/surface";
+import { has_rich_text } from "@/src/lib/prismic/fields";
+import {
+  evi_card_title_class,
+  evi_card_body_class,
+} from "@/src/lib/utils/card-text";
 
 export type FeaturesCardsLayoutProps = {
   slice: Content.SectionFeaturesSliceCards;
@@ -38,8 +43,8 @@ export function FeaturesCardsLayout({
   );
 
   // Kun kort med tekst — tomme group-rækker skal ikke rendres.
-  const cards = (slice.primary.cards ?? []).filter(
-    (c) => isFilled.richText(c.heading) || isFilled.richText(c.body),
+  const cards = (slice.primary.cards ?? []).filter((c) =>
+    has_rich_text(c.heading, c.body),
   );
 
   const cardColor = slice.primary.card_color;
@@ -78,12 +83,12 @@ export function FeaturesCardsLayout({
             <EviRichText
               field={card.heading}
               linkResolver={linkResolver}
-              className="mt-4 [&_h3]:m-0 [&_h3]:text-xl [&_h3]:leading-snug [&_h3]:font-semibold"
+              className={cn("mt-4", evi_card_title_class("xl"))}
             />
             <EviRichText
               field={card.body}
               linkResolver={linkResolver}
-              className="mt-2 [&_p]:m-0"
+              className={cn("mt-2", evi_card_body_class())}
             />
           </EviCard>
         ))}

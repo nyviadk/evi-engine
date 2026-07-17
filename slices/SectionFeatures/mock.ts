@@ -190,4 +190,35 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
       background_theme: "Lys",
     } as Content.SectionFeaturesSliceBentoPrimary,
   },
+  "icon-bento": {
+    id: "mock-section-features-icon-bento",
+    slice_type: "section_features",
+    slice_label: null,
+    variation: "icon-bento",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: h2("Sådan arbejder vi med kaffen"),
+      body: line(
+        "Fire ting vi aldrig går på kompromis med — fra den grønne bønne lander i Aarhus, til du står med kanden derhjemme.",
+      ),
+      box_1_icon: "flame",
+      box_1_title: h3("Ristet i små portioner"),
+      box_1_body: line(
+        "Vi rister hver uge i vores eget værksted på havnen, så bønnerne aldrig når at blive gamle. Små batches betyder at vi kan justere profilen efter hver enkelt høst — og at du altid får kaffen mens den er på sit bedste.",
+      ),
+      box_2_icon: "sprout",
+      box_2_title: h3("Direkte fra farmeren"),
+      box_2_body: line("100% arabica, købt af farmere vi kender ved navn."),
+      box_3_icon: "leaf",
+      box_3_title: h3("Komposterbar emballage"),
+      box_3_body: line("Poser og filtre kan gå direkte i bioaffaldet."),
+      box_4_icon: "graduation-cap",
+      box_4_title: h3("Vi lærer dig håndværket"),
+      box_4_body: line(
+        "Til vores kurser i butikken gennemgår vi maling, dosering og bryggetid — og du får smagt dig frem til den kaffe der passer til lige præcis din kande.",
+      ),
+      background_theme: "Lys",
+    },
+  },
 };
