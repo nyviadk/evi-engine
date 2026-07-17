@@ -87,7 +87,11 @@ export default function HeaderClassic({
               af .evi-nav-desktop (EviHeaderShells injicerede container-query), så
               vi sætter INGEN breakpoint-klasser på børnene. */}
           <div className="evi-nav-desktop">
-            <NavList items={primary.nav_items} linkResolver={linkResolver} />
+            <NavList
+              items={primary.nav_items}
+              linkResolver={linkResolver}
+              lang={lang}
+            />
             {languageSelectorEnabled && (
               <LanguageSelector
                 locales={tenant.locales}
@@ -120,6 +124,7 @@ export default function HeaderClassic({
               <NavList
                 items={primary.nav_items}
                 linkResolver={linkResolver}
+                lang={lang}
                 itemClassName="py-3 text-lg"
               />
               {isFilled.link(primary.cta_link) && (
