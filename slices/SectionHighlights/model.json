@@ -1,0 +1,87 @@
+{
+  "id": "section_highlights",
+  "name": "SectionHighlights",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_highlights/default/d508968a4f19f07450caa6f18a4c182fe767f29b.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "single": "heading2,strong,em"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "points": {
+          "type": "Group",
+          "config": {
+            "label": "Punkter",
+            "fields": {
+              "icon": {
+                "type": "Text",
+                "config": {
+                  "label": "Ikon"
+                }
+              },
+              "title": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Titel",
+                  "single": "heading3,strong,em"
+                }
+              },
+              "body": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Tekst",
+                  "single": "paragraph,strong,em,hyperlink"
+                }
+              }
+            }
+          }
+        },
+        "box_color": {
+          "type": "Select",
+          "config": {
+            "label": "Boks-farve",
+            "default_value": "Neutral",
+            "options": [
+              "Neutral",
+              "Primær",
+              "Sekundær"
+            ]
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

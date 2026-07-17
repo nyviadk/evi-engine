@@ -6,6 +6,7 @@ import HeaderClassic from "./HeaderClassic";
 import Hero from "./Hero";
 import SectionFaq from "./SectionFaq";
 import SectionFeatures from "./SectionFeatures";
+import SectionHighlights from "./SectionHighlights";
 import SectionPhoneMockup from "./SectionPhoneMockup";
 
 export const components = {
@@ -15,5 +16,6 @@ export const components = {
 	hero: Hero,
 	section_faq: SectionFaq,
 	section_features: SectionFeatures,
+	section_highlights: SectionHighlights,
 	section_phone_mockup: SectionPhoneMockup
 };

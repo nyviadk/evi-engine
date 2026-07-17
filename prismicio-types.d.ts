@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice | SectionFeaturesSlice | SectionFaqSlice
+type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice | SectionFeaturesSlice | SectionFaqSlice | SectionHighlightsSlice
 
 /**
  * Content for Side documents
@@ -1824,6 +1824,121 @@ type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeatur
 export type SectionFeaturesSlice = prismic.SharedSlice<"section_features", SectionFeaturesSliceVariation>;
 
 /**
+ * Item in *SectionHighlights → Default → Primary → Punkter*
+ */
+export interface SectionHighlightsSliceDefaultPrimaryPointsItem {
+	/**
+	 * Ikon field in *SectionHighlights → Default → Primary → Punkter*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_highlights.default.primary.points[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Titel field in *SectionHighlights → Default → Primary → Punkter*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_highlights.default.primary.points[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *SectionHighlights → Default → Primary → Punkter*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_highlights.default.primary.points[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *SectionHighlights → Default → Primary*
+ */
+export interface SectionHighlightsSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *SectionHighlights → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_highlights.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *SectionHighlights → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_highlights.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Punkter field in *SectionHighlights → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_highlights.default.primary.points[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	points: prismic.GroupField<Simplify<SectionHighlightsSliceDefaultPrimaryPointsItem>>;
+	
+	/**
+	 * Boks-farve field in *SectionHighlights → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: section_highlights.default.primary.box_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Baggrundstema field in *SectionHighlights → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: section_highlights.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for SectionHighlights Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionHighlightsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionHighlightsSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *SectionHighlights*
+ */
+type SectionHighlightsSliceVariation = SectionHighlightsSliceDefault
+
+/**
+ * SectionHighlights Shared Slice
+ *
+ * - **API ID**: `section_highlights`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionHighlightsSlice = prismic.SharedSlice<"section_highlights", SectionHighlightsSliceVariation>;
+
+/**
  * Primary content in *SectionPhoneMockup → Masked → Primary*
  */
 export interface SectionPhoneMockupSliceMaskedPrimary {
@@ -1982,6 +2097,11 @@ declare module "@prismicio/client" {
 			SectionFeaturesSliceCards,
 			SectionFeaturesSliceSplit,
 			SectionFeaturesSliceBento,
+			SectionHighlightsSlice,
+			SectionHighlightsSliceDefaultPrimaryPointsItem,
+			SectionHighlightsSliceDefaultPrimary,
+			SectionHighlightsSliceVariation,
+			SectionHighlightsSliceDefault,
 			SectionPhoneMockupSlice,
 			SectionPhoneMockupSliceMaskedPrimary,
 			SectionPhoneMockupSliceVariation,
