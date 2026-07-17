@@ -11,6 +11,7 @@ import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
+import { EviBox, evi_box_class } from "@/src/components/ui/EviBox";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
@@ -104,7 +105,7 @@ function BentoTextCard({
   className?: string;
 }): React.ReactElement {
   return (
-    <EviCard rows={3} className={cn("rounded-evi p-6 shadow-evi md:p-8", className)}>
+    <EviCard rows={3} className={cn(evi_box_class(), className)}>
       {isFilled.richText(title) ? (
         <EviRichText
           field={title}
@@ -242,7 +243,7 @@ export function FeaturesBentoLayout({
   const rightColumn = (
     <EviStack className={BENTO_GAP}>
       {card2Has && (
-        <div className="theme-surface-neutral shadow-evi rounded-evi p-6 md:p-8">
+        <EviBox>
           <EviAutoGrid size="duo" className="items-end">
             <CardContent
               title={p.card_2_title}
@@ -260,7 +261,7 @@ export function FeaturesBentoLayout({
               />
             )}
           </EviAutoGrid>
-        </div>
+        </EviBox>
       )}
 
       {(card3Has || card4Has) && (

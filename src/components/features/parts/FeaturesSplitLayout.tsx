@@ -3,7 +3,8 @@ import { asText, isFilled, type Content } from "@prismicio/client";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviIcon } from "@/src/components/ui/EviIcon";
+import { EviBox } from "@/src/components/ui/EviBox";
+import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
@@ -14,14 +15,6 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
-import { cn } from "@/src/lib/utils/cn";
-
-// feature_color → boks-flade (samme mønster som cards-variationen).
-const BOX_SURFACE: Record<string, string> = {
-  Neutral: "theme-surface-neutral",
-  Primær: "theme-surface-primary",
-  Sekundær: "theme-surface-secondary",
-};
 
 export type FeaturesSplitLayoutProps = {
   slice: Content.SectionFeaturesSliceSplit;
@@ -51,7 +44,6 @@ export function FeaturesSplitLayout({
   const boxes = (p.features ?? []).filter(
     (f) => isFilled.richText(f.heading) || isFilled.richText(f.body),
   );
-  const boxSurface = BOX_SURFACE[p.feature_color ?? "Neutral"] ?? BOX_SURFACE.Neutral;
   const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Ingen"] ?? "none";
 
   // a11y: DOM leder ALTID med indholdet (overskrift først → bedst for skærmlæser
@@ -79,19 +71,13 @@ export function FeaturesSplitLayout({
       />
       <EviStack gap="sm">
         {boxes.map((box) => (
-          <div
+          <EviBox
             key={asText(box.heading) || asText(box.body)}
-            className={cn(boxSurface, "rounded-evi p-4 md:p-6")}
+            surface={p.feature_color}
+            size="compact"
           >
             <EviStack direction="row" gap="md" align="start">
-              {isFilled.keyText(box.icon) && (
-                <span className="inline-flex shrink-0 rounded-full bg-evi-secondary p-2">
-                  <EviIcon
-                    name={box.icon}
-                    className="size-5 text-evi-text-on-secondary"
-                  />
-                </span>
-              )}
+              <EviIconBadge name={box.icon} />
               {/* Boks-titel: skalér evi-prose h3 ned til kort-titel-størrelse. */}
               <div className="evi-prose [&_h3]:m-0 [&_h3]:text-base [&_h3]:font-semibold [&_p]:mt-1 [&_p]:mb-0 [&_p]:text-sm [&_p]:opacity-80">
                 <EviRichText.Raw
@@ -101,7 +87,7 @@ export function FeaturesSplitLayout({
                 <EviRichText.Raw field={box.body} linkResolver={linkResolver} />
               </div>
             </EviStack>
-          </div>
+          </EviBox>
         ))}
       </EviStack>
     </EviStack>

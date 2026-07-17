@@ -17,7 +17,12 @@ export type BrandLinkProps = {
    * (Google Translate) from mangling the brand. Tenant can opt in.
    */
   allowTranslation: boolean;
-  /** Max image height in Tailwind class form (e.g., "h-8" or "h-10"). */
+  /**
+   * Logo-højde som Tailwind-klasse. Bredden er ALTID `w-auto` + `object-contain`,
+   * så tenantens aspect bevares — logo-feltet har derfor kun en HØJDE-constraint
+   * (60px), ingen bredde. Responsiv streng er fint (fx "h-10 md:h-15" så
+   * header'en ikke bliver for høj på mobil). @default "h-15" (60px)
+   */
   imageHeightClass?: string;
   className?: string;
 };
@@ -28,7 +33,7 @@ export function BrandLink({
   hostname,
   homeHref,
   allowTranslation,
-  imageHeightClass = "h-8",
+  imageHeightClass = "h-15",
   className,
 }: BrandLinkProps): React.ReactElement {
   const brand_text =
@@ -40,7 +45,10 @@ export function BrandLink({
     <a
       href={homeHref}
       className={cn(
-        "evi-nav-brand inline-flex items-center rounded-evi text-current no-underline hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2",
+        // w-fit: klik-fladen må aldrig være bredere end logoet/teksten. Uden den
+        // strækkes <a>'et af align-items:stretch i en flex-col (fx footer'ens
+        // EviStack), så hele kolonnen bliver klikbar.
+        "evi-nav-brand inline-flex w-fit items-center rounded-evi text-current no-underline hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2",
         className,
       )}
       aria-label={has_logo ? brand_text : undefined}

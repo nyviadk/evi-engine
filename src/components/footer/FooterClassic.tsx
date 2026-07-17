@@ -99,7 +99,7 @@ export function FooterClassic({
             hostname={hostname}
             homeHref={homeHref}
             allowTranslation={allowBrandTranslation}
-            imageHeightClass="h-10"
+            imageHeightClass="h-12"
           />
           <EviRichText
             field={footer.data.info_text}

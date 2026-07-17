@@ -73,6 +73,7 @@ export default function HeaderClassic({
           hostname={hostname}
           homeHref={homeHref}
           allowTranslation={allow_brand_translation}
+          imageHeightClass="h-10 md:h-15"
         />
 
         <EviStack

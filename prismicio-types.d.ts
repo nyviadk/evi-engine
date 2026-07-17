@@ -215,7 +215,7 @@ interface FooterDocumentData {
 	 * Logo field in *Footer*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: Valgfri — hvis tom vises sitenavn som tekst
+	 * - **Placeholder**: Valgfri — 48px høj, fri bredde. Tom = sitenavn som tekst
 	 * - **API ID Path**: footer.logo
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/fields/image
@@ -794,7 +794,7 @@ export interface HeaderClassicSliceDefaultPrimary {
 	 * Logo field in *HeaderClassic → Default → Primary*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: Valgfri — hvis tom vises sitenavn som tekst
+	 * - **Placeholder**: Valgfri — 60px høj, fri bredde. Tom = sitenavn som tekst
 	 * - **API ID Path**: header_classic.default.primary.logo
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */

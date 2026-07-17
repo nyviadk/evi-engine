@@ -17,6 +17,11 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 3. **Lav modellen via CLI** (aldrig hand-lav model.json — det bryder registry'et):
    - `npx prismic slice create <PascalName> --id <slice_id>` ← det ENESTE der registrerer slicen i `slices/index.ts`.
    - `npx prismic field add <type> <id> --to-slice <slice_id> [flags]` pr. felt (link har `--allow web|document|media`, `--allow-text`, `--repeatable`; kun image-`constraint` mangler flag → hand-edit-escape-hatch).
+   - **Rich-text-felter SKAL have allow-list med (ellers kan kunden ikke formatere):**
+     - Heading: `--allow "headingN,strong,em" --single` ← bold/kursiv, ALDRIG `hyperlink`.
+     - Body (single): `--allow "paragraph,strong,em,hyperlink" --single`.
+     - Body (multi): `--allow "paragraph,strong,em,hyperlink,list-item,o-list-item"`.
+     - Retter du et eksisterende felt: `npx prismic field edit <id> --from-slice <s> --variation <v> --allow "..."` (erstatter listen). Se `feedback_richtext_allow_lists`.
    - `npx prismic slice connect <slice_id> --to page`.
 4. `npm run evi:model` (push → pull → gen types).
 5. `npm run evi:new-slice <PascalName>` (scaffolder index.tsx + mock.ts — overskriver).

@@ -40,6 +40,14 @@
     corner-shape: squircle;
   }
 
+  /* `rounded-full` betyder "cirkel/pille" — men squircle-reset'et ovenfor
+     rendrer den som en superellipse, så cirkler ser masede ud (ikon-badges,
+     EviTag-piller). Opt ud, så formen matcher intentionen. Klasse-selector
+     slår `*` i samme layer. Samme grund som EviPhoneMockup's opt-out nedenfor. */
+  .rounded-full {
+    corner-shape: round;
+  }
+
   html {
     scrollbar-gutter: stable;
     hanging-punctuation: first last;

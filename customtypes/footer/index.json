@@ -10,7 +10,12 @@
         "type": "Image",
         "config": {
           "label": "Logo",
-          "placeholder": "Valgfri — hvis tom vises sitenavn som tekst"
+          "placeholder": "Valgfri — 48px høj, fri bredde. Tom = sitenavn som tekst",
+          "constraint": {
+            "width": null,
+            "height": 48
+          },
+          "thumbnails": []
         }
       },
       "info_text": {

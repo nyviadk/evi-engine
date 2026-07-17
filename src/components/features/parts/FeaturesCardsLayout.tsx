@@ -3,7 +3,6 @@ import { asText, isFilled, type Content } from "@prismicio/client";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviCard } from "@/src/components/ui/EviCard";
-import { EviIcon } from "@/src/components/ui/EviIcon";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
@@ -11,17 +10,9 @@ import {
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
 import { cn } from "@/src/lib/utils/cn";
-
-// Prismic-label (card_color) → kort-flade + ikon-cirkel. Cirklen skifter til
-// neutral på tintede kort, så den ikke smelter sammen med fladen.
-const CARD_SURFACE: Record<string, { card: string; circle: string }> = {
-  Neutral: { card: "theme-surface-neutral", circle: "theme-surface-primary" },
-  Primær: { card: "theme-surface-primary", circle: "theme-surface-neutral" },
-  Sekundær: {
-    card: "theme-surface-secondary",
-    circle: "theme-surface-neutral",
-  },
-};
+import { evi_box_class } from "@/src/components/ui/EviBox";
+import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
+import { resolve_surface } from "@/src/lib/utils/surface";
 
 export type FeaturesCardsLayoutProps = {
   slice: Content.SectionFeaturesSliceCards;
@@ -51,8 +42,7 @@ export function FeaturesCardsLayout({
     (c) => isFilled.richText(c.heading) || isFilled.richText(c.body),
   );
 
-  const surface =
-    CARD_SURFACE[slice.primary.card_color ?? "Neutral"] ?? CARD_SURFACE.Neutral;
+  const cardColor = slice.primary.card_color;
 
   return (
     <EviSection
@@ -73,14 +63,15 @@ export function FeaturesCardsLayout({
           <EviCard
             key={asText(card.heading) || asText(card.body)}
             rows={3}
-            className={cn(surface.card, "rounded-evi p-6 shadow-evi md:p-8")}
+            className={cn(resolve_surface(cardColor), evi_box_class())}
           >
             {isFilled.keyText(card.icon) ? (
-              <span
-                className={cn(surface.circle, "flex w-fit rounded-full p-3")}
-              >
-                <EviIcon name={card.icon} className="size-6 text-evi-primary" />
-              </span>
+              <EviIconBadge
+                name={card.icon}
+                size="md"
+                tone="surface"
+                on={cardColor}
+              />
             ) : (
               <div />
             )}

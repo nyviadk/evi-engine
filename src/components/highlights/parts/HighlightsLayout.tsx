@@ -4,21 +4,14 @@ import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviIcon } from "@/src/components/ui/EviIcon";
+import { EviBox } from "@/src/components/ui/EviBox";
+import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
-import { cn } from "@/src/lib/utils/cn";
-
-// box_color → boks-flade (samme mønster som features cards/split).
-const BOX_SURFACE: Record<string, string> = {
-  Neutral: "theme-surface-neutral",
-  Primær: "theme-surface-primary",
-  Sekundær: "theme-surface-secondary",
-};
 
 export type HighlightsLayoutProps = {
   slice: Content.SectionHighlightsSliceDefault;
@@ -52,9 +45,6 @@ export function HighlightsLayout({
   const points = (p.points ?? []).filter(
     (pt) => isFilled.richText(pt.title) || isFilled.richText(pt.body),
   );
-  const boxSurface =
-    BOX_SURFACE[p.box_color ?? "Neutral"] ?? BOX_SURFACE.Neutral;
-
   if (
     !isFilled.richText(p.heading) &&
     !isFilled.richText(p.body) &&
@@ -87,9 +77,7 @@ export function HighlightsLayout({
             className="[&>p]:max-w-prose"
           />
           {points.length > 0 ? (
-            <div
-              className={cn(boxSurface, "rounded-evi p-6 shadow-evi md:p-8")}
-            >
+            <EviBox surface={p.box_color}>
               <EviStack gap="lg">
                 {points.map((pt) => (
                   <EviStack
@@ -98,14 +86,7 @@ export function HighlightsLayout({
                     gap="md"
                     align="start"
                   >
-                    {isFilled.keyText(pt.icon) && (
-                      <span className="inline-flex shrink-0 rounded-full bg-evi-secondary p-2">
-                        <EviIcon
-                          name={pt.icon}
-                          className="size-5 text-evi-text-on-secondary"
-                        />
-                      </span>
-                    )}
+                    <EviIconBadge name={pt.icon} />
                     <div className="evi-prose [&_h3]:m-0 [&_h3]:text-base [&_h3]:font-semibold [&_p]:mt-1 [&_p]:mb-0 [&_p]:text-sm">
                       <EviRichText.Raw
                         field={pt.title}
@@ -119,7 +100,7 @@ export function HighlightsLayout({
                   </EviStack>
                 ))}
               </EviStack>
-            </div>
+            </EviBox>
           ) : null}
         </EviSplit>
       </EviRow>
