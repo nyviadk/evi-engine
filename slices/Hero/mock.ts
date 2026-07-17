@@ -111,4 +111,48 @@ export const mock: Record<string, Content.HeroSlice> = {
       background_theme: "Lys",
     },
   },
+  about: {
+    id: "mock-hero-about",
+    slice_type: "hero",
+    slice_label: null,
+    variation: "about",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: [
+        {
+          type: "heading1",
+          text: "Ristet med omhu i hjertet af Aarhus",
+          spans: [],
+          direction: "ltr",
+        },
+      ],
+      body: [
+        {
+          type: "paragraph",
+          text: "Kaffemølle Aarhus startede i 2018 som et lille risteri med én tromle og en stædig idé: at kaffe smager bedst, når man kender hele rejsen fra farm til kop.",
+          spans: [],
+          direction: "ltr",
+        },
+        {
+          type: "paragraph",
+          text: "I dag rister vi stadig i små portioner hver uge, køber direkte fra farmere vi kender ved navn, og deler ud af vores viden til smagninger og kurser i butikken. Det handler ikke bare om koffein — det handler om håndværk, mennesker og den gode stund.",
+          spans: [],
+          direction: "ltr",
+        },
+      ],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      image: {
+        id: "mock-hero-about-image",
+        url: "https://images.unsplash.com/photo-1529892485617-25f63cd7b1e9?fit=crop&w=1000&h=1000",
+        alt: null,
+        copyright: null,
+        dimensions: { width: 1000, height: 1000 },
+        edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
+      } as Content.HeroSliceAboutPrimary["image"],
+      image_side: "Venstre",
+      mobile_order: "Billede øverst",
+      background_theme: "Lys",
+    },
+  },
 };

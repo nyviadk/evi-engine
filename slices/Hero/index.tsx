@@ -33,6 +33,12 @@ export default async function Hero({
       );
       return <HeroSplitLayout slice={slice} index={index} context={context} />;
     }
+    case "about": {
+      const { HeroAboutLayout } = await import(
+        "@/src/components/hero/parts/HeroAboutLayout"
+      );
+      return <HeroAboutLayout slice={slice} index={index} context={context} />;
+    }
     default:
       return null;
   }

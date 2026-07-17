@@ -1037,9 +1037,86 @@ export interface HeroSliceSplitPrimary {
 export type HeroSliceSplit = prismic.SharedSliceVariation<"split", Simplify<HeroSliceSplitPrimary>, never>;
 
 /**
+ * Primary content in *Hero → About → Primary*
+ */
+export interface HeroSliceAboutPrimary {
+	/**
+	 * Overskrift field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.about.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.about.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Billede field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Firkantet billede (1:1)
+	 * - **API ID Path**: hero.about.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Billedets side (desktop) field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: hero.about.primary.image_side
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
+	
+	/**
+	 * Rækkefølge på mobil field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Billede øverst
+	 * - **API ID Path**: hero.about.primary.mobile_order
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
+	
+	/**
+	 * Baggrundstema field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: hero.about.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * About variation for Hero Slice
+ *
+ * - **API ID**: `about`
+ * - **Description**: About
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroSliceAbout = prismic.SharedSliceVariation<"about", Simplify<HeroSliceAboutPrimary>, never>;
+
+/**
  * Slice variation for *Hero*
  */
-type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit
+type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit | HeroSliceAbout
 
 /**
  * Hero Shared Slice
@@ -1861,9 +1938,11 @@ declare module "@prismicio/client" {
 			HeroSlice,
 			HeroSliceCenteredPrimary,
 			HeroSliceSplitPrimary,
+			HeroSliceAboutPrimary,
 			HeroSliceVariation,
 			HeroSliceCentered,
 			HeroSliceSplit,
+			HeroSliceAbout,
 			SectionFaqSlice,
 			SectionFaqSliceDefaultPrimaryItemsItem,
 			SectionFaqSliceDefaultPrimary,

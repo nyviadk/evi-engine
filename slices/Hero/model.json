@@ -182,6 +182,80 @@
           }
         }
       }
+    },
+    {
+      "id": "about",
+      "name": "About",
+      "description": "About",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/31fc49d9bf77023ec99b01a1d9ba45bc334345be.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "single": "heading1,strong,em,hyperlink"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Billede",
+            "placeholder": "Firkantet billede (1:1)",
+            "constraint": {
+              "width": 1000,
+              "height": 1000
+            },
+            "thumbnails": []
+          }
+        },
+        "image_side": {
+          "type": "Select",
+          "config": {
+            "label": "Billedets side (desktop)",
+            "default_value": "Venstre",
+            "options": [
+              "Venstre",
+              "Højre"
+            ]
+          }
+        },
+        "mobile_order": {
+          "type": "Select",
+          "config": {
+            "label": "Rækkefølge på mobil",
+            "default_value": "Billede øverst",
+            "options": [
+              "Billede øverst",
+              "Tekst øverst"
+            ]
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
     }
   ]
 }
