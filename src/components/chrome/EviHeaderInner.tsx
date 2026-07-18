@@ -1,37 +1,47 @@
-import { EviStack } from "@/src/components/layout/EviStack";
 import { cn } from "@/src/lib/utils/cn";
 
-export type EviHeaderInnerProps = React.ComponentProps<"div"> & {
-  children: React.ReactNode;
+export type EviHeaderInnerProps = Omit<
+  React.ComponentProps<"div">,
+  "children"
+> & {
+  /** Venstre zone — typisk brand/logo. Flugter til venstre kant. */
+  left: React.ReactNode;
+  /** Midterzone — centreret i headeren (fx nav-links). Valgfri. */
+  center?: React.ReactNode;
+  /** Højre zone — typisk sprog + CTA + mobil-hamburger. Flugter til højre. Valgfri. */
+  right?: React.ReactNode;
 };
 
 /**
- * Inner content wrapper for header slices. Provides:
- *  - `max-w-evi` container (design-token max-width)
- *  - horizontal flex layout, brand-left / actions-right via justify="between"
- *  - centered vertical alignment for mixed heights (logo + nav + button)
- *  - responsive padding
+ * Inner content wrapper for header slices: et 3-zone grid (venstre | center |
+ * højre). Sidezonerne er lige brede (1fr), så midterzonen centreres i headeren
+ * UANSET logo-/action-bredder — mens venstre og højre flugter til hver sin kant.
+ * Midterzonen er `auto` (fylder sit indhold), så et tomt center (fx på mobil hvor
+ * nav'en er skjult) kollapser til 0 og headeren bliver logo-venstre / actions-højre.
  *
- * Composed from EviStack so all flex + gap semantics come from the design
- * system. Slice files should compose `<EviHeaderShell><EviHeaderInner>...`
- * — never render the max-w + flex + padding combo themselves.
+ * Giver desuden `max-w-evi` + responsiv padding. Chrome-primitiv (Tailwind
+ * tilladt, R3.3) — slice-filer komponerer `<EviHeaderShell><EviHeaderInner .../>`
+ * og skriver aldrig grid/max-w/padding selv.
  */
 export function EviHeaderInner({
+  left,
+  center,
+  right,
   className,
-  children,
   ...props
 }: EviHeaderInnerProps): React.ReactElement {
   return (
-    <EviStack
-      direction="row"
-      justify="between"
-      align="center"
-      gap="md"
+    <div
       data-slot="evi-header-inner"
-      className={cn("max-w-evi mx-auto px-4 py-3", className)}
+      className={cn(
+        "mx-auto grid max-w-evi grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-3",
+        className,
+      )}
       {...props}
     >
-      {children}
-    </EviStack>
+      <div className="flex justify-start">{left}</div>
+      <div className="flex justify-center">{center}</div>
+      <div className="flex justify-end">{right}</div>
+    </div>
   );
 }

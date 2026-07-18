@@ -64,80 +64,82 @@ export default function HeaderClassic({
   const allow_brand_translation = settings?.data?.translate_brand === true;
   const navBreakpoint = NAV_BREAKPOINT[mobileNavBreakpoint ?? ""] ?? "48rem";
 
-  return (
-    <EviHeaderShell data-variant="classic" navBreakpoint={navBreakpoint}>
-      <EviHeaderInner>
-        <BrandLink
-          logo={primary.logo}
-          siteName={settings?.data?.site_name}
-          hostname={hostname}
-          homeHref={homeHref}
-          allowTranslation={allow_brand_translation}
-          imageHeightClass="h-10 md:h-15"
-        />
+  const brand = (
+    <BrandLink
+      logo={primary.logo}
+      siteName={settings?.data?.site_name}
+      hostname={hostname}
+      homeHref={homeHref}
+      allowTranslation={allow_brand_translation}
+      imageHeightClass="h-10 md:h-15"
+    />
+  );
 
-        <EviStack
-          as="nav"
-          direction="row"
-          align="center"
-          gap="sm"
-          aria-label="Hovedmenu"
-        >
-          {/* Desktop-cluster: inline nav + fuldt sprog + CTA. Synligheden styres
-              af .evi-nav-desktop (EviHeaderShells injicerede container-query), så
-              vi sætter INGEN breakpoint-klasser på børnene. */}
-          <div className="evi-nav-desktop">
+  // Centreret nav-landmark, kun desktop. Display-toggle via .evi-nav-desktop
+  // (EviHeaderShells injicerede container-query) — named class bærer display, så
+  // der ikke opstår layer-konflikt med Tailwinds display-utility (jf. globals H).
+  const centerNav = (
+    <nav aria-label="Hovedmenu" className="evi-nav-desktop">
+      <NavList
+        items={primary.nav_items}
+        linkResolver={linkResolver}
+        lang={lang}
+      />
+    </nav>
+  );
+
+  // Højre zone: sprog + CTA på desktop, kompakt sprog + hamburger-drawer på mobil
+  // (kun én cluster synlig ad gangen via .evi-nav-desktop/.evi-nav-mobile).
+  const actions = (
+    <>
+      <div className="evi-nav-desktop">
+        {languageSelectorEnabled && (
+          <LanguageSelector
+            locales={tenant.locales}
+            currentLang={lang}
+            languageUrls={languageUrls}
+            className="shrink-0"
+          />
+        )}
+        {isFilled.link(primary.cta_link) && (
+          <HeaderCTAButton link={primary.cta_link} linkResolver={linkResolver} />
+        )}
+      </div>
+
+      <div className="evi-nav-mobile">
+        {languageSelectorEnabled && (
+          <LanguageSelector
+            variant="compact"
+            locales={tenant.locales}
+            currentLang={lang}
+            languageUrls={languageUrls}
+            className="shrink-0"
+          />
+        )}
+        <MobileNavDrawer>
+          <EviStack as="nav" aria-label="Hovedmenu" gap="xs">
             <NavList
               items={primary.nav_items}
               linkResolver={linkResolver}
               lang={lang}
+              itemClassName="py-3 text-lg"
             />
-            {languageSelectorEnabled && (
-              <LanguageSelector
-                locales={tenant.locales}
-                currentLang={lang}
-                languageUrls={languageUrls}
-                className="shrink-0"
-              />
-            )}
-            {isFilled.link(primary.cta_link) && (
-              <HeaderCTAButton
-                link={primary.cta_link}
-                linkResolver={linkResolver}
-              />
-            )}
-          </div>
+          </EviStack>
+          {isFilled.link(primary.cta_link) && (
+            <HeaderCTAButton
+              link={primary.cta_link}
+              linkResolver={linkResolver}
+              className="mt-auto flex w-full justify-center"
+            />
+          )}
+        </MobileNavDrawer>
+      </div>
+    </>
+  );
 
-          {/* Mobil-cluster: kompakt sprogkode (DA/EN) + hamburger-drawer.
-              i18n-UX: sprogvælgeren er synlig, ikke gemt i menuen. */}
-          <div className="evi-nav-mobile">
-            {languageSelectorEnabled && (
-              <LanguageSelector
-                variant="compact"
-                locales={tenant.locales}
-                currentLang={lang}
-                languageUrls={languageUrls}
-                className="shrink-0"
-              />
-            )}
-            <MobileNavDrawer>
-              <NavList
-                items={primary.nav_items}
-                linkResolver={linkResolver}
-                lang={lang}
-                itemClassName="py-3 text-lg"
-              />
-              {isFilled.link(primary.cta_link) && (
-                <HeaderCTAButton
-                  link={primary.cta_link}
-                  linkResolver={linkResolver}
-                  className="mt-auto flex w-full justify-center"
-                />
-              )}
-            </MobileNavDrawer>
-          </div>
-        </EviStack>
-      </EviHeaderInner>
+  return (
+    <EviHeaderShell data-variant="classic" navBreakpoint={navBreakpoint}>
+      <EviHeaderInner left={brand} center={centerNav} right={actions} />
     </EviHeaderShell>
   );
 }
