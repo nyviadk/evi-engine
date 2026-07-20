@@ -1,6 +1,6 @@
 {
-  "id": "section_features",
-  "name": "SectionFeatures",
+  "id": "features",
+  "name": "Features",
   "type": "SharedSlice",
   "variations": [
     {
@@ -8,7 +8,7 @@
       "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/default/b4bd4a06b8b105114f6c52895cea06b51feb3988.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/default/b4bd4a06b8b105114f6c52895cea06b51feb3988.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "feature_1_icon": {
@@ -90,7 +90,7 @@
       "name": "Cards",
       "description": "Cards",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/cards/d21214d538a356a4a0ca1d60751d848f5f60154d.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/cards/d21214d538a356a4a0ca1d60751d848f5f60154d.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -175,7 +175,7 @@
       "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/split/66c6bc0c7c8d5303ff43370ca5cea02d87d06e3f.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/66c6bc0c7c8d5303ff43370ca5cea02d87d06e3f.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -317,7 +317,7 @@
       "name": "Bento",
       "description": "Bento",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/bento/a307644a33aea3998891e7726ffc34d74df9beb8.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/bento/a307644a33aea3998891e7726ffc34d74df9beb8.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -487,7 +487,7 @@
       "name": "Icon Bento",
       "description": "Icon Bento",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_features/icon-bento/74d4b9fa5241527b2c1fe3f5a986bd647e8a5ed0.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/icon-bento/74d4b9fa5241527b2c1fe3f5a986bd647e8a5ed0.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {

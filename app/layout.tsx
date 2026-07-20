@@ -57,7 +57,7 @@ export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): Promise<React.ReactElement> {
   const ctx = await get_evi_context();
   const settings = ctx?.settings;
   const lang = ctx?.lang || "da-dk";

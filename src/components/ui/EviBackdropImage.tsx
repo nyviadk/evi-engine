@@ -1,6 +1,7 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { cn } from "@/src/lib/utils/cn";
+import { resolve_surface } from "@/src/lib/utils/surface";
 
 type BackdropForm = "none" | "rotated";
 
@@ -21,15 +22,6 @@ const formClass: Record<Exclude<BackdropForm, "none">, string> = {
   rotated: "inset-[3%] -rotate-3 rounded-evi",
 };
 
-// Backdrop-FARVE (Prismic-label) → surface-tint på formen. Kontrast-adaptive
-// brand-tints (blød på lys, dæmpet på mørk) — IKKE theme-*-soft (solid lys →
-// grelt på mørke sektioner). DELT af alle slices med et backdrop-farvevalg.
-export const BACKDROP_COLOR_CLASS: Record<string, string> = {
-  Sekundær: "theme-surface-secondary",
-  Primær: "theme-surface-primary",
-  Neutral: "theme-surface-neutral",
-};
-
 export type EviBackdropImageProps = {
   /** Billede (kvadratisk constraint anbefales). Tomt → intet render. */
   field: ImageField;
@@ -45,7 +37,7 @@ export type EviBackdropImageProps = {
   backdrop?: BackdropForm;
   /**
    * Backdrop-farve (Prismic-label: "Sekundær"/"Primær"/"Neutral"). Ignoreres når
-   * `backdrop="none"`. Udvid via `BACKDROP_COLOR_CLASS`. @default "Sekundær"
+   * `backdrop="none"`. Opløses via `resolve_surface`. @default "Sekundær"
    */
   color?: string;
   /** Eager-load (LCP/hero-billede). @default false */
@@ -102,11 +94,7 @@ export function EviBackdropImage({
     >
       <div
         aria-hidden
-        className={cn(
-          "absolute -z-10",
-          BACKDROP_COLOR_CLASS[color] ?? "theme-surface-secondary",
-          formClass[backdrop],
-        )}
+        className={cn("absolute -z-10", resolve_surface(color), formClass[backdrop])}
       />
       {image}
     </div>

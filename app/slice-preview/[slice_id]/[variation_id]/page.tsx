@@ -29,7 +29,7 @@ export default async function SlicePreviewPage({
   params,
 }: {
   params: Promise<{ slice_id: string; variation_id: string }>;
-}) {
+}): Promise<React.ReactElement> {
   if (process.env.NODE_ENV !== "development") notFound();
 
   const { slice_id, variation_id } = await params;

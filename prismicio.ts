@@ -24,7 +24,7 @@ const routes: Route[] = [
 export const createTenantClient = (
   tenant: TenantConfig,
   config: ClientConfig = {},
-) => {
+): ReturnType<typeof baseCreateClient> => {
   const client = baseCreateClient(tenant.repo, {
     routes,
     fetchOptions:

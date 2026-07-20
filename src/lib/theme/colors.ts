@@ -7,7 +7,8 @@ export const DEFAULTS_COLORS = {
 
 function hex_to_rgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "");
-  const full = h.length === 3 ? h[0] + h[0] + h[1] + h[1] + h[2] + h[2] : h;
+  const full =
+    h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
   return [
     parseInt(full.slice(0, 2), 16),
     parseInt(full.slice(2, 4), 16),

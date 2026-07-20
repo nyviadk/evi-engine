@@ -1,4 +1,9 @@
-import { isFilled, type Client, type LinkResolverFunction } from "@prismicio/client";
+import {
+  isFilled,
+  type Client,
+  type LinkResolverFunction,
+  type PrismicDocument,
+} from "@prismicio/client";
 
 // Kun de felter resolve_page_url faktisk bruger.
 // TenantConfig opfylder dette (strukturel typing), men klient-kode
@@ -9,20 +14,16 @@ export type PathConfig = {
 };
 
 /**
- * Bygger et sti-træ for ALLE sider ved at følge parent_page-kæden.
- * Returnerer Map<doc_id, uid_segments[]>
- * F.eks. { "abc123" => ["om-os", "vores-historie", "kontakt"] }
+ * Bygger et sti-træ ud fra ALLE side-docs ved at følge parent_page-kæden.
+ * Returnerer Map<doc_id, uid_segments[]>. Adskilt fra fetchen så en caller der
+ * ALLEREDE har hentet siderne (fx sitemap, med et superset af felter) kan bygge
+ * træet uden et ekstra getAllByType-kald. Docs SKAL indeholde `parent_page`.
  */
-export async function build_page_tree(
-  client: Client,
-): Promise<Map<string, string[]>> {
-  const pages = await client.getAllByType("page", {
-    lang: "*",
-    fetch: ["page.parent_page"],
-  });
-
+export function build_tree_from_docs(
+  pages: readonly PrismicDocument[],
+): Map<string, string[]> {
   // Indeksér alle sider efter deres unikke Prismic ID
-  const by_id = new Map<string, (typeof pages)[number]>();
+  const by_id = new Map<string, PrismicDocument>();
   for (const p of pages) by_id.set(p.id, p);
 
   const cache = new Map<string, string[]>();
@@ -63,6 +64,84 @@ export async function build_page_tree(
 
   for (const p of pages) resolve(p.id);
 
+  return cache;
+}
+
+/** Henter ALLE side-docs (kun `parent_page`) og bygger sti-træet. */
+export async function build_page_tree(
+  client: Client,
+): Promise<Map<string, string[]>> {
+  const pages = await client.getAllByType("page", {
+    lang: "*",
+    fetch: ["page.parent_page"],
+  });
+  return build_tree_from_docs(pages);
+}
+
+export type BreadcrumbCrumb = { id: string; uid: string; title: string };
+
+// Rigtig sidetitel (meta_title) med fallback til stor-forbogstav-uid — samme
+// fallback som generateMetadata, så breadcrumbs og <title> matcher.
+function doc_display_title(doc: PrismicDocument): string {
+  const meta = (doc.data as Record<string, unknown>).meta_title;
+  if (typeof meta === "string" && meta.trim()) return meta;
+  const uid = doc.uid ?? "";
+  return uid ? uid.charAt(0).toUpperCase() + uid.slice(1) : "";
+}
+
+/**
+ * Breadcrumb-sti (rod→blad, ekskl. home) pr. doc-id, med RIGTIGE titler.
+ * Kræver docs med `parent_page` + `meta_title`. Bygges fra samme docs som
+ * sti-træet, så titlerne bæres hele vejen — ikke gættet fra URL-slugs.
+ */
+export function build_breadcrumb_trails(
+  pages: readonly PrismicDocument[],
+): Map<string, BreadcrumbCrumb[]> {
+  const by_id = new Map<string, PrismicDocument>();
+  for (const p of pages) by_id.set(p.id, p);
+
+  const cache = new Map<string, BreadcrumbCrumb[]>();
+
+  function resolve(id: string): BreadcrumbCrumb[] {
+    const cached = cache.get(id);
+    if (cached) return cached;
+
+    const doc = by_id.get(id);
+    if (!doc || !doc.uid) return [];
+
+    const self: BreadcrumbCrumb = {
+      id,
+      uid: doc.uid,
+      title: doc_display_title(doc),
+    };
+    // Midlertidig værdi — beskytter mod cirkulære parent-referencer.
+    cache.set(id, [self]);
+
+    // Home er roden → ingen breadcrumb-sti.
+    if (doc.uid === "home") {
+      cache.set(id, []);
+      return [];
+    }
+
+    if (
+      isFilled.contentRelationship(doc.data.parent_page) &&
+      doc.data.parent_page.id !== id
+    ) {
+      const parent_doc = by_id.get(doc.data.parent_page.id);
+      if (parent_doc && parent_doc.uid !== "home") {
+        const parent_trail = resolve(doc.data.parent_page.id);
+        if (parent_trail.length > 0) {
+          const trail = [...parent_trail, self];
+          cache.set(id, trail);
+          return trail;
+        }
+      }
+    }
+
+    return [self];
+  }
+
+  for (const p of pages) resolve(p.id);
   return cache;
 }
 

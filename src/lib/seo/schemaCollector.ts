@@ -20,9 +20,8 @@ import type {
 interface SchemaInput {
   business: BusinessDocumentData | null;
   baseUrl: string;
-  pagePath: string;
-  pageTitle: string;
-  lang: string;
+  /** Breadcrumb-sti med RIGTIGE titler + opløste URLs (rod→blad, ekskl. home). */
+  breadcrumbs: readonly { name: string; url: string }[];
   siteName?: string | null;
 }
 
@@ -47,8 +46,7 @@ function buildSameAs(
 
 function buildBreadcrumbs(
   baseUrl: string,
-  pagePath: string,
-  lang: string,
+  crumbs: readonly { name: string; url: string }[],
   siteName?: string | null,
 ): BreadcrumbList {
   const items: ListItem[] = [
@@ -60,28 +58,13 @@ function buildBreadcrumbs(
     },
   ];
 
-  const cleanPath = pagePath.replace(/^\//, "").replace(/\/$/, "");
-  if (cleanPath && cleanPath !== lang) {
-    const segments = cleanPath.split("/").filter(Boolean);
-    const startIdx = segments[0] === lang ? 1 : 0;
-    let currentPath = segments[0] === lang ? `/${lang}` : "";
-
-    for (let i = startIdx; i < segments.length; i++) {
-      const segment = segments[i];
-      if (segment === "home") continue;
-
-      currentPath += `/${segment}`;
-      const label = segment
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase());
-
-      items.push({
-        "@type": "ListItem",
-        position: items.length + 1,
-        name: label,
-        item: `${baseUrl}${currentPath}`,
-      });
-    }
+  for (const crumb of crumbs) {
+    items.push({
+      "@type": "ListItem",
+      position: items.length + 1,
+      name: crumb.name,
+      item: crumb.url,
+    });
   }
 
   return {
@@ -170,7 +153,7 @@ function buildWebSiteSchema(
 // ── Main collector ──
 
 export function collectSchemaGraph(input: SchemaInput): Graph | null {
-  const { business, baseUrl, pagePath, lang, siteName } = input;
+  const { business, baseUrl, breadcrumbs, siteName } = input;
 
   const mode = business?.schema_mode || MODE_AUTO;
   const graph: Thing[] = [];
@@ -187,7 +170,7 @@ export function collectSchemaGraph(input: SchemaInput): Graph | null {
 
   // 3. BreadcrumbList (Auto + Kun brødkrummer)
   if (mode === MODE_AUTO || mode === MODE_BREADCRUMBS) {
-    graph.push(buildBreadcrumbs(baseUrl, pagePath, lang, siteName));
+    graph.push(buildBreadcrumbs(baseUrl, breadcrumbs, siteName));
   }
 
   // 4. Custom JSON-LD (altid, uanset mode — hvis feltet har indhold)

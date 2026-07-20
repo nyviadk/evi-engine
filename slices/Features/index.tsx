@@ -9,18 +9,18 @@ import { FeaturesIconBentoLayout } from "@/src/components/features/parts/Feature
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 /**
- * SectionFeatures — Features-kategori. Tynd dispatcher på variation (R4.2);
+ * Features — Features-kategori. Tynd dispatcher på variation (R4.2);
  * hver variation = én layout-part i features/parts/. "default" = trust-bar
  * (ikon+tekst-kolonner), "cards" = overskrift + repeatable kort-grid, "split" =
  * billede + vertikal boks-liste, "bento" = 4-kasse bento-gitter (billeder),
  * "icon-bento" = asymmetrisk 2×2 bento med ikon-kasser.
  */
-export default function SectionFeatures({
+export default function Features({
   slice,
   index,
   context,
 }: SliceComponentProps<
-  Content.SectionFeaturesSlice,
+  Content.FeaturesSlice,
   EviPageSliceContext
 >): React.ReactElement | null {
   switch (slice.variation) {

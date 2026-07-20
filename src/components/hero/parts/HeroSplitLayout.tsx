@@ -1,16 +1,16 @@
-import { type Content } from "@prismicio/client";
-import { PrismicNextLink } from "@prismicio/next";
+import { isFilled, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
-import { EviButton } from "@/src/components/ui/EviButton";
 import { EviTag } from "@/src/components/ui/EviTag";
 import {
   EviBackdropImage,
   BACKDROP_FROM_LABEL,
 } from "@/src/components/ui/EviBackdropImage";
+import { HeroCtaGroup } from "@/src/components/hero/parts/HeroCtaGroup";
+import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
@@ -32,7 +32,7 @@ export function HeroSplitLayout({
   slice,
   index,
   context,
-}: HeroSplitLayoutProps): React.ReactElement {
+}: HeroSplitLayoutProps): React.ReactElement | null {
   const { linkResolver } = context;
   const { theme, isHero, collapsePadding } = resolve_slice_context(
     context,
@@ -42,6 +42,14 @@ export function HeroSplitLayout({
 
   const has_cta = is_link_filled(p.cta_link);
   const has_cta_2 = is_link_filled(p.cta_link_secondary);
+  if (
+    !has_rich_text(p.heading, p.body) &&
+    !has_cta &&
+    !has_cta_2 &&
+    !isFilled.image(p.image)
+  ) {
+    return null;
+  }
   const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Roteret"] ?? "rotated";
 
   return (
@@ -64,36 +72,11 @@ export function HeroSplitLayout({
             linkResolver={linkResolver}
             isHero={isHero}
           />
-          {(has_cta || has_cta_2) && (
-            <EviStack direction="row" wrap gap="sm">
-              {has_cta && (
-                <EviButton
-                  asChild
-                  variant="primary"
-                  appearance="solid"
-                  size="lg"
-                >
-                  <PrismicNextLink
-                    field={p.cta_link}
-                    linkResolver={linkResolver}
-                  />
-                </EviButton>
-              )}
-              {has_cta_2 && (
-                <EviButton
-                  asChild
-                  variant="primary"
-                  appearance="outline"
-                  size="lg"
-                >
-                  <PrismicNextLink
-                    field={p.cta_link_secondary}
-                    linkResolver={linkResolver}
-                  />
-                </EviButton>
-              )}
-            </EviStack>
-          )}
+          <HeroCtaGroup
+            primary={p.cta_link}
+            secondary={p.cta_link_secondary}
+            linkResolver={linkResolver}
+          />
         </EviStack>
 
         <EviBackdropImage

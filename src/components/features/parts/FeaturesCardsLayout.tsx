@@ -20,7 +20,7 @@ import {
 } from "@/src/lib/utils/card-text";
 
 export type FeaturesCardsLayoutProps = {
-  slice: Content.SectionFeaturesSliceCards;
+  slice: Content.FeaturesSliceCards;
   index: number;
   context: EviPageSliceContext;
 };
@@ -54,7 +54,7 @@ export function FeaturesCardsLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-features-cards"
+      data-slot="features-cards"
     >
       <EviHeadingGroup
         title={slice.primary.heading}

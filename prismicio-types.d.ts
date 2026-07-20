@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = SectionPhoneMockupSlice | HeroSlice | SectionFeaturesSlice | SectionFaqSlice | SectionHighlightsSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice
 
 /**
  * Content for Side documents
@@ -689,6 +689,845 @@ interface SettingsDocumentData {
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
 export type AllDocumentTypes = BusinessDocument | FooterDocument | NavigationDocument | PageDocument | SettingsDocument;
+
+/**
+ * Item in *Faq → Default → Primary → Spørgsmål*
+ */
+export interface FaqSliceDefaultPrimaryItemsItem {
+	/**
+	 * Spørgsmål field in *Faq → Default → Primary → Spørgsmål*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: faq.default.primary.items[].question
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	question: prismic.RichTextField;
+	
+	/**
+	 * Svar field in *Faq → Default → Primary → Spørgsmål*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: faq.default.primary.items[].answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	answer: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Faq → Default → Primary*
+ */
+export interface FaqSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Faq → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: faq.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Faq → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: faq.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift: knap (valgfri) field in *Faq → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: faq.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Spørgsmål field in *Faq → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: faq.default.primary.items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	items: prismic.GroupField<Simplify<FaqSliceDefaultPrimaryItemsItem>>;
+	
+	/**
+	 * Baggrundstema field in *Faq → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: faq.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Faq Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FaqSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FaqSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Faq*
+ */
+type FaqSliceVariation = FaqSliceDefault
+
+/**
+ * Faq Shared Slice
+ *
+ * - **API ID**: `faq`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
+
+/**
+ * Item in *Features → Cards → Primary → Kort*
+ */
+export interface FeaturesSliceCardsPrimaryCardsItem {
+	/**
+	 * Ikon field in *Features → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:brain
+	 * - **API ID Path**: features.cards.primary.cards[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Overskrift field in *Features → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.cards.primary.cards[].heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *Features → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.cards.primary.cards[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+}
+
+/**
+ * Item in *Features → Split → Primary → Bokse*
+ */
+export interface FeaturesSliceSplitPrimaryFeaturesItem {
+	/**
+	 * Ikon field in *Features → Split → Primary → Bokse*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: features.split.primary.features[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Overskrift field in *Features → Split → Primary → Bokse*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Boks-titel
+	 * - **API ID Path**: features.split.primary.features[].heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *Features → Split → Primary → Bokse*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.split.primary.features[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Features → Default → Primary*
+ */
+export interface FeaturesSliceDefaultPrimary {
+	/**
+	 * Kolonne 1: ikon field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: features.default.primary.feature_1_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_1_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 1: tekst field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.default.primary.feature_1_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_1_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonne 2: ikon field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: features.default.primary.feature_2_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_2_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 2: tekst field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.default.primary.feature_2_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_2_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonne 3: ikon field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: features.default.primary.feature_3_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_3_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 3: tekst field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.default.primary.feature_3_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_3_text: prismic.RichTextField;
+	
+	/**
+	 * Kolonne 4: ikon field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
+	 * - **API ID Path**: features.default.primary.feature_4_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	feature_4_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kolonne 4: tekst field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.default.primary.feature_4_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_4_text: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *Features → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: features.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Features Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FeaturesSliceDefaultPrimary>, never>;
+
+/**
+ * Primary content in *Features → Cards → Primary*
+ */
+export interface FeaturesSliceCardsPrimary {
+	/**
+	 * Overskrift field in *Features → Cards → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: features.cards.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Features → Cards → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: features.cards.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Kort field in *Features → Cards → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.cards.primary.cards[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	cards: prismic.GroupField<Simplify<FeaturesSliceCardsPrimaryCardsItem>>;
+	
+	/**
+	 * Kort-farve field in *Features → Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: features.cards.primary.card_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Baggrundstema field in *Features → Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: features.cards.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Cards variation for Features Slice
+ *
+ * - **API ID**: `cards`
+ * - **Description**: Cards
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSliceCards = prismic.SharedSliceVariation<"cards", Simplify<FeaturesSliceCardsPrimary>, never>;
+
+/**
+ * Primary content in *Features → Split → Primary*
+ */
+export interface FeaturesSliceSplitPrimary {
+	/**
+	 * Overskrift field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: features.split.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: features.split.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Billede field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Firkantet billede (1:1)
+	 * - **API ID Path**: features.split.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Bokse field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.split.primary.features[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	features: prismic.GroupField<Simplify<FeaturesSliceSplitPrimaryFeaturesItem>>;
+	
+	/**
+	 * Boks-farve field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: features.split.primary.feature_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	feature_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Backdrop bag billede field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Ingen
+	 * - **API ID Path**: features.split.primary.backdrop
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
+	
+	/**
+	 * Backdrop-farve field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Sekundær
+	 * - **API ID Path**: features.split.primary.backdrop_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	backdrop_color: prismic.SelectField<"Sekundær" | "Primær" | "Neutral", "filled">;
+	
+	/**
+	 * Billedets side (desktop) field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: features.split.primary.image_side
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
+	
+	/**
+	 * Rækkefølge på mobil field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Billede øverst
+	 * - **API ID Path**: features.split.primary.mobile_order
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
+	
+	/**
+	 * Baggrundstema field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: features.split.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Split variation for Features Slice
+ *
+ * - **API ID**: `split`
+ * - **Description**: Split
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSliceSplit = prismic.SharedSliceVariation<"split", Simplify<FeaturesSliceSplitPrimary>, never>;
+
+/**
+ * Primary content in *Features → Bento → Primary*
+ */
+export interface FeaturesSliceBentoPrimary {
+	/**
+	 * Overskrift field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: features.bento.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: features.bento.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift: knap (fx Se alle ydelser) field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.bento.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Stor kasse: billede field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Højformat-billede (4:5)
+	 * - **API ID Path**: features.bento.primary.card_1_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	card_1_image: prismic.ImageField<never>;
+	
+	/**
+	 * Stor kasse: titel field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.bento.primary.card_1_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_1_title: prismic.RichTextField;
+	
+	/**
+	 * Stor kasse: tekst field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.bento.primary.card_1_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_1_body: prismic.RichTextField;
+	
+	/**
+	 * Stor kasse: knap field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.bento.primary.card_1_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	card_1_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Bred kasse: titel field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.bento.primary.card_2_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_2_title: prismic.RichTextField;
+	
+	/**
+	 * Bred kasse: tekst field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.bento.primary.card_2_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_2_body: prismic.RichTextField;
+	
+	/**
+	 * Bred kasse: knap field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.bento.primary.card_2_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	card_2_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Bred kasse: billede field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Firkantet billede (1:1)
+	 * - **API ID Path**: features.bento.primary.card_2_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	card_2_image: prismic.ImageField<never>;
+	
+	/**
+	 * Kasse 3: titel field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.bento.primary.card_3_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_3_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 3: tekst field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.bento.primary.card_3_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_3_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 3: knap field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.bento.primary.card_3_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	card_3_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Kasse 4: titel field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.bento.primary.card_4_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_4_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 4: tekst field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.bento.primary.card_4_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	card_4_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 4: knap field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.bento.primary.card_4_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	card_4_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Baggrundstema field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: features.bento.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Bento variation for Features Slice
+ *
+ * - **API ID**: `bento`
+ * - **Description**: Bento
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSliceBento = prismic.SharedSliceVariation<"bento", Simplify<FeaturesSliceBentoPrimary>, never>;
+
+/**
+ * Primary content in *Features → Icon Bento → Primary*
+ */
+export interface FeaturesSliceIconBentoPrimary {
+	/**
+	 * Overskrift field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: features.icon-bento.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: features.icon-bento.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 1 (bred): ikon field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: features.icon-bento.primary.box_1_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_1_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 1 (bred): titel field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.icon-bento.primary.box_1_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_1_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 1 (bred): tekst field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.icon-bento.primary.box_1_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_1_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 2 (smal): ikon field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: features.icon-bento.primary.box_2_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_2_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 2 (smal): titel field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.icon-bento.primary.box_2_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_2_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 2 (smal): tekst field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.icon-bento.primary.box_2_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_2_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 3 (smal): ikon field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: features.icon-bento.primary.box_3_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_3_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 3 (smal): titel field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.icon-bento.primary.box_3_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_3_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 3 (smal): tekst field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.icon-bento.primary.box_3_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_3_body: prismic.RichTextField;
+	
+	/**
+	 * Kasse 4 (bred): ikon field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:check
+	 * - **API ID Path**: features.icon-bento.primary.box_4_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	box_4_icon: prismic.KeyTextField;
+	
+	/**
+	 * Kasse 4 (bred): titel field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort titel
+	 * - **API ID Path**: features.icon-bento.primary.box_4_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_4_title: prismic.RichTextField;
+	
+	/**
+	 * Kasse 4 (bred): tekst field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse
+	 * - **API ID Path**: features.icon-bento.primary.box_4_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_4_body: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: features.icon-bento.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Icon Bento variation for Features Slice
+ *
+ * - **API ID**: `icon-bento`
+ * - **Description**: Icon Bento
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSliceIconBento = prismic.SharedSliceVariation<"icon-bento", Simplify<FeaturesSliceIconBentoPrimary>, never>;
+
+/**
+ * Slice variation for *Features*
+ */
+type FeaturesSliceVariation = FeaturesSliceDefault | FeaturesSliceCards | FeaturesSliceSplit | FeaturesSliceBento | FeaturesSliceIconBento
+
+/**
+ * Features Shared Slice
+ *
+ * - **API ID**: `features`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSlice = prismic.SharedSlice<"features", FeaturesSliceVariation>;
 
 /**
  * Primary content in *FooterColumnLinks → Default → Primary*
@@ -1150,1049 +1989,210 @@ type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit | HeroSliceAbout
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
- * Item in *SectionFaq → Default → Primary → Spørgsmål*
+ * Item in *Highlights → Default → Primary → Punkter*
  */
-export interface SectionFaqSliceDefaultPrimaryItemsItem {
+export interface HighlightsSliceDefaultPrimaryPointsItem {
 	/**
-	 * Spørgsmål field in *SectionFaq → Default → Primary → Spørgsmål*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_faq.default.primary.items[].question
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	question: prismic.RichTextField;
-	
-	/**
-	 * Svar field in *SectionFaq → Default → Primary → Spørgsmål*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_faq.default.primary.items[].answer
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	answer: prismic.RichTextField;
-}
-
-/**
- * Primary content in *SectionFaq → Default → Primary*
- */
-export interface SectionFaqSliceDefaultPrimary {
-	/**
-	 * Overskrift field in *SectionFaq → Default → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_faq.default.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Brødtekst field in *SectionFaq → Default → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_faq.default.primary.body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-	
-	/**
-	 * Overskrift: knap (valgfri) field in *SectionFaq → Default → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_faq.default.primary.cta_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Spørgsmål field in *SectionFaq → Default → Primary*
-	 *
-	 * - **Field Type**: Group
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_faq.default.primary.items[]
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-	 */
-	items: prismic.GroupField<Simplify<SectionFaqSliceDefaultPrimaryItemsItem>>;
-	
-	/**
-	 * Baggrundstema field in *SectionFaq → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_faq.default.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-}
-
-/**
- * Default variation for SectionFaq Slice
- *
- * - **API ID**: `default`
- * - **Description**: Default
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFaqSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionFaqSliceDefaultPrimary>, never>;
-
-/**
- * Slice variation for *SectionFaq*
- */
-type SectionFaqSliceVariation = SectionFaqSliceDefault
-
-/**
- * SectionFaq Shared Slice
- *
- * - **API ID**: `section_faq`
- * - **Description**: *None*
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFaqSlice = prismic.SharedSlice<"section_faq", SectionFaqSliceVariation>;
-
-/**
- * Item in *SectionFeatures → Cards → Primary → Kort*
- */
-export interface SectionFeaturesSliceCardsPrimaryCardsItem {
-	/**
-	 * Ikon field in *SectionFeatures → Cards → Primary → Kort*
+	 * Ikon field in *Highlights → Default → Primary → Punkter*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:brain
-	 * - **API ID Path**: section_features.cards.primary.cards[].icon
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: highlights.default.primary.points[].icon
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	icon: prismic.KeyTextField;
 	
 	/**
-	 * Overskrift field in *SectionFeatures → Cards → Primary → Kort*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.cards.primary.cards[].heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Tekst field in *SectionFeatures → Cards → Primary → Kort*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.cards.primary.cards[].body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-}
-
-/**
- * Item in *SectionFeatures → Split → Primary → Bokse*
- */
-export interface SectionFeaturesSliceSplitPrimaryFeaturesItem {
-	/**
-	 * Ikon field in *SectionFeatures → Split → Primary → Bokse*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:check
-	 * - **API ID Path**: section_features.split.primary.features[].icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	icon: prismic.KeyTextField;
-	
-	/**
-	 * Overskrift field in *SectionFeatures → Split → Primary → Bokse*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Boks-titel
-	 * - **API ID Path**: section_features.split.primary.features[].heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Tekst field in *SectionFeatures → Split → Primary → Bokse*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.split.primary.features[].body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-}
-
-/**
- * Primary content in *SectionFeatures → Default → Primary*
- */
-export interface SectionFeaturesSliceDefaultPrimary {
-	/**
-	 * Kolonne 1: ikon field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
-	 * - **API ID Path**: section_features.default.primary.feature_1_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	feature_1_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kolonne 1: tekst field in *SectionFeatures → Default → Primary*
+	 * Titel field in *Highlights → Default → Primary → Punkter*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.default.primary.feature_1_text
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	feature_1_text: prismic.RichTextField;
-	
-	/**
-	 * Kolonne 2: ikon field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
-	 * - **API ID Path**: section_features.default.primary.feature_2_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	feature_2_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kolonne 2: tekst field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.default.primary.feature_2_text
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	feature_2_text: prismic.RichTextField;
-	
-	/**
-	 * Kolonne 3: ikon field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
-	 * - **API ID Path**: section_features.default.primary.feature_3_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	feature_3_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kolonne 3: tekst field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.default.primary.feature_3_text
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	feature_3_text: prismic.RichTextField;
-	
-	/**
-	 * Kolonne 4: ikon field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:badge-check
-	 * - **API ID Path**: section_features.default.primary.feature_4_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	feature_4_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kolonne 4: tekst field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.default.primary.feature_4_text
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	feature_4_text: prismic.RichTextField;
-	
-	/**
-	 * Baggrundstema field in *SectionFeatures → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_features.default.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-}
-
-/**
- * Default variation for SectionFeatures Slice
- *
- * - **API ID**: `default`
- * - **Description**: Default
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFeaturesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionFeaturesSliceDefaultPrimary>, never>;
-
-/**
- * Primary content in *SectionFeatures → Cards → Primary*
- */
-export interface SectionFeaturesSliceCardsPrimary {
-	/**
-	 * Overskrift field in *SectionFeatures → Cards → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Sektionens overskrift
-	 * - **API ID Path**: section_features.cards.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Brødtekst field in *SectionFeatures → Cards → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort intro under overskriften
-	 * - **API ID Path**: section_features.cards.primary.body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-	
-	/**
-	 * Kort field in *SectionFeatures → Cards → Primary*
-	 *
-	 * - **Field Type**: Group
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.cards.primary.cards[]
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-	 */
-	cards: prismic.GroupField<Simplify<SectionFeaturesSliceCardsPrimaryCardsItem>>;
-	
-	/**
-	 * Kort-farve field in *SectionFeatures → Cards → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Neutral
-	 * - **API ID Path**: section_features.cards.primary.card_color
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
-	
-	/**
-	 * Baggrundstema field in *SectionFeatures → Cards → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_features.cards.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-}
-
-/**
- * Cards variation for SectionFeatures Slice
- *
- * - **API ID**: `cards`
- * - **Description**: Cards
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFeaturesSliceCards = prismic.SharedSliceVariation<"cards", Simplify<SectionFeaturesSliceCardsPrimary>, never>;
-
-/**
- * Primary content in *SectionFeatures → Split → Primary*
- */
-export interface SectionFeaturesSliceSplitPrimary {
-	/**
-	 * Overskrift field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Sektionens overskrift
-	 * - **API ID Path**: section_features.split.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Brødtekst field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort intro under overskriften
-	 * - **API ID Path**: section_features.split.primary.body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-	
-	/**
-	 * Billede field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: Firkantet billede (1:1)
-	 * - **API ID Path**: section_features.split.primary.image
-	 * - **Documentation**: https://prismic.io/docs/fields/image
-	 */
-	image: prismic.ImageField<never>;
-	
-	/**
-	 * Bokse field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Group
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.split.primary.features[]
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-	 */
-	features: prismic.GroupField<Simplify<SectionFeaturesSliceSplitPrimaryFeaturesItem>>;
-	
-	/**
-	 * Boks-farve field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Neutral
-	 * - **API ID Path**: section_features.split.primary.feature_color
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	feature_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
-	
-	/**
-	 * Backdrop bag billede field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Ingen
-	 * - **API ID Path**: section_features.split.primary.backdrop
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	backdrop: prismic.SelectField<"Ingen" | "Roteret", "filled">;
-	
-	/**
-	 * Backdrop-farve field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Sekundær
-	 * - **API ID Path**: section_features.split.primary.backdrop_color
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	backdrop_color: prismic.SelectField<"Sekundær" | "Primær" | "Neutral", "filled">;
-	
-	/**
-	 * Billedets side (desktop) field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Venstre
-	 * - **API ID Path**: section_features.split.primary.image_side
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
-	
-	/**
-	 * Rækkefølge på mobil field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Billede øverst
-	 * - **API ID Path**: section_features.split.primary.mobile_order
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
-	
-	/**
-	 * Baggrundstema field in *SectionFeatures → Split → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_features.split.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-}
-
-/**
- * Split variation for SectionFeatures Slice
- *
- * - **API ID**: `split`
- * - **Description**: Split
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFeaturesSliceSplit = prismic.SharedSliceVariation<"split", Simplify<SectionFeaturesSliceSplitPrimary>, never>;
-
-/**
- * Primary content in *SectionFeatures → Bento → Primary*
- */
-export interface SectionFeaturesSliceBentoPrimary {
-	/**
-	 * Overskrift field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Sektionens overskrift
-	 * - **API ID Path**: section_features.bento.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Brødtekst field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort intro under overskriften
-	 * - **API ID Path**: section_features.bento.primary.body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-	
-	/**
-	 * Overskrift: knap (fx Se alle ydelser) field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.bento.primary.cta_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Stor kasse: billede field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: Højformat-billede (4:5)
-	 * - **API ID Path**: section_features.bento.primary.card_1_image
-	 * - **Documentation**: https://prismic.io/docs/fields/image
-	 */
-	card_1_image: prismic.ImageField<never>;
-	
-	/**
-	 * Stor kasse: titel field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.bento.primary.card_1_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_1_title: prismic.RichTextField;
-	
-	/**
-	 * Stor kasse: tekst field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.bento.primary.card_1_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_1_body: prismic.RichTextField;
-	
-	/**
-	 * Stor kasse: knap field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.bento.primary.card_1_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	card_1_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Bred kasse: titel field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.bento.primary.card_2_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_2_title: prismic.RichTextField;
-	
-	/**
-	 * Bred kasse: tekst field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.bento.primary.card_2_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_2_body: prismic.RichTextField;
-	
-	/**
-	 * Bred kasse: knap field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.bento.primary.card_2_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	card_2_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Bred kasse: billede field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: Firkantet billede (1:1)
-	 * - **API ID Path**: section_features.bento.primary.card_2_image
-	 * - **Documentation**: https://prismic.io/docs/fields/image
-	 */
-	card_2_image: prismic.ImageField<never>;
-	
-	/**
-	 * Kasse 3: titel field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.bento.primary.card_3_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_3_title: prismic.RichTextField;
-	
-	/**
-	 * Kasse 3: tekst field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.bento.primary.card_3_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_3_body: prismic.RichTextField;
-	
-	/**
-	 * Kasse 3: knap field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.bento.primary.card_3_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	card_3_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Kasse 4: titel field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.bento.primary.card_4_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_4_title: prismic.RichTextField;
-	
-	/**
-	 * Kasse 4: tekst field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.bento.primary.card_4_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	card_4_body: prismic.RichTextField;
-	
-	/**
-	 * Kasse 4: knap field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_features.bento.primary.card_4_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	card_4_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Baggrundstema field in *SectionFeatures → Bento → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_features.bento.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-}
-
-/**
- * Bento variation for SectionFeatures Slice
- *
- * - **API ID**: `bento`
- * - **Description**: Bento
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFeaturesSliceBento = prismic.SharedSliceVariation<"bento", Simplify<SectionFeaturesSliceBentoPrimary>, never>;
-
-/**
- * Primary content in *SectionFeatures → Icon Bento → Primary*
- */
-export interface SectionFeaturesSliceIconBentoPrimary {
-	/**
-	 * Overskrift field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Sektionens overskrift
-	 * - **API ID Path**: section_features.icon-bento.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	heading: prismic.RichTextField;
-	
-	/**
-	 * Brødtekst field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort intro under overskriften
-	 * - **API ID Path**: section_features.icon-bento.primary.body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-	
-	/**
-	 * Kasse 1 (bred): ikon field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:check
-	 * - **API ID Path**: section_features.icon-bento.primary.box_1_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	box_1_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kasse 1 (bred): titel field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.icon-bento.primary.box_1_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_1_title: prismic.RichTextField;
-	
-	/**
-	 * Kasse 1 (bred): tekst field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.icon-bento.primary.box_1_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_1_body: prismic.RichTextField;
-	
-	/**
-	 * Kasse 2 (smal): ikon field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:check
-	 * - **API ID Path**: section_features.icon-bento.primary.box_2_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	box_2_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kasse 2 (smal): titel field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.icon-bento.primary.box_2_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_2_title: prismic.RichTextField;
-	
-	/**
-	 * Kasse 2 (smal): tekst field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.icon-bento.primary.box_2_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_2_body: prismic.RichTextField;
-	
-	/**
-	 * Kasse 3 (smal): ikon field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:check
-	 * - **API ID Path**: section_features.icon-bento.primary.box_3_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	box_3_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kasse 3 (smal): titel field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.icon-bento.primary.box_3_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_3_title: prismic.RichTextField;
-	
-	/**
-	 * Kasse 3 (smal): tekst field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.icon-bento.primary.box_3_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_3_body: prismic.RichTextField;
-	
-	/**
-	 * Kasse 4 (bred): ikon field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Iconify-navn, fx lucide:check
-	 * - **API ID Path**: section_features.icon-bento.primary.box_4_icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	box_4_icon: prismic.KeyTextField;
-	
-	/**
-	 * Kasse 4 (bred): titel field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort titel
-	 * - **API ID Path**: section_features.icon-bento.primary.box_4_title
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_4_title: prismic.RichTextField;
-	
-	/**
-	 * Kasse 4 (bred): tekst field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Kort beskrivelse
-	 * - **API ID Path**: section_features.icon-bento.primary.box_4_body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	box_4_body: prismic.RichTextField;
-	
-	/**
-	 * Baggrundstema field in *SectionFeatures → Icon Bento → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_features.icon-bento.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-}
-
-/**
- * Icon Bento variation for SectionFeatures Slice
- *
- * - **API ID**: `icon-bento`
- * - **Description**: Icon Bento
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFeaturesSliceIconBento = prismic.SharedSliceVariation<"icon-bento", Simplify<SectionFeaturesSliceIconBentoPrimary>, never>;
-
-/**
- * Slice variation for *SectionFeatures*
- */
-type SectionFeaturesSliceVariation = SectionFeaturesSliceDefault | SectionFeaturesSliceCards | SectionFeaturesSliceSplit | SectionFeaturesSliceBento | SectionFeaturesSliceIconBento
-
-/**
- * SectionFeatures Shared Slice
- *
- * - **API ID**: `section_features`
- * - **Description**: *None*
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type SectionFeaturesSlice = prismic.SharedSlice<"section_features", SectionFeaturesSliceVariation>;
-
-/**
- * Item in *SectionHighlights → Default → Primary → Punkter*
- */
-export interface SectionHighlightsSliceDefaultPrimaryPointsItem {
-	/**
-	 * Ikon field in *SectionHighlights → Default → Primary → Punkter*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_highlights.default.primary.points[].icon
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	icon: prismic.KeyTextField;
-	
-	/**
-	 * Titel field in *SectionHighlights → Default → Primary → Punkter*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_highlights.default.primary.points[].title
+	 * - **API ID Path**: highlights.default.primary.points[].title
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	title: prismic.RichTextField;
 	
 	/**
-	 * Tekst field in *SectionHighlights → Default → Primary → Punkter*
+	 * Tekst field in *Highlights → Default → Primary → Punkter*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_highlights.default.primary.points[].body
+	 * - **API ID Path**: highlights.default.primary.points[].body
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
 }
 
 /**
- * Primary content in *SectionHighlights → Default → Primary*
+ * Primary content in *Highlights → Default → Primary*
  */
-export interface SectionHighlightsSliceDefaultPrimary {
+export interface HighlightsSliceDefaultPrimary {
 	/**
-	 * Overskrift field in *SectionHighlights → Default → Primary*
+	 * Overskrift field in *Highlights → Default → Primary*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_highlights.default.primary.heading
+	 * - **API ID Path**: highlights.default.primary.heading
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	heading: prismic.RichTextField;
 	
 	/**
-	 * Brødtekst field in *SectionHighlights → Default → Primary*
+	 * Brødtekst field in *Highlights → Default → Primary*
 	 *
 	 * - **Field Type**: Rich Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_highlights.default.primary.body
+	 * - **API ID Path**: highlights.default.primary.body
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
 	
 	/**
-	 * Punkter field in *SectionHighlights → Default → Primary*
+	 * Punkter field in *Highlights → Default → Primary*
 	 *
 	 * - **Field Type**: Group
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_highlights.default.primary.points[]
+	 * - **API ID Path**: highlights.default.primary.points[]
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
-	points: prismic.GroupField<Simplify<SectionHighlightsSliceDefaultPrimaryPointsItem>>;
+	points: prismic.GroupField<Simplify<HighlightsSliceDefaultPrimaryPointsItem>>;
 	
 	/**
-	 * Boks-farve field in *SectionHighlights → Default → Primary*
+	 * Boks-farve field in *Highlights → Default → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: *None*
 	 * - **Default Value**: Neutral
-	 * - **API ID Path**: section_highlights.default.primary.box_color
+	 * - **API ID Path**: highlights.default.primary.box_color
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
 	
 	/**
-	 * Baggrundstema field in *SectionHighlights → Default → Primary*
+	 * Baggrundstema field in *Highlights → Default → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: *None*
 	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_highlights.default.primary.background_theme
+	 * - **API ID Path**: highlights.default.primary.background_theme
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
 }
 
 /**
- * Default variation for SectionHighlights Slice
+ * Default variation for Highlights Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type SectionHighlightsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionHighlightsSliceDefaultPrimary>, never>;
+export type HighlightsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HighlightsSliceDefaultPrimary>, never>;
 
 /**
- * Slice variation for *SectionHighlights*
+ * Slice variation for *Highlights*
  */
-type SectionHighlightsSliceVariation = SectionHighlightsSliceDefault
+type HighlightsSliceVariation = HighlightsSliceDefault
 
 /**
- * SectionHighlights Shared Slice
+ * Highlights Shared Slice
  *
- * - **API ID**: `section_highlights`
+ * - **API ID**: `highlights`
  * - **Description**: *None*
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type SectionHighlightsSlice = prismic.SharedSlice<"section_highlights", SectionHighlightsSliceVariation>;
+export type HighlightsSlice = prismic.SharedSlice<"highlights", HighlightsSliceVariation>;
 
 /**
- * Primary content in *SectionPhoneMockup → Masked → Primary*
+ * Primary content in *PhoneMockup → Masked → Primary*
  */
-export interface SectionPhoneMockupSliceMaskedPrimary {
+export interface PhoneMockupSliceMaskedPrimary {
 	/**
-	 * Venstre telefon field in *SectionPhoneMockup → Masked → Primary*
+	 * Venstre telefon field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshot_left
+	 * - **API ID Path**: phone_mockup.masked.primary.screenshot_left
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	screenshot_left: prismic.ImageField<never>;
 	
 	/**
-	 * Midterste telefon field in *SectionPhoneMockup → Masked → Primary*
+	 * Midterste telefon field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshot_center
+	 * - **API ID Path**: phone_mockup.masked.primary.screenshot_center
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	screenshot_center: prismic.ImageField<never>;
 	
 	/**
-	 * Højre telefon field in *SectionPhoneMockup → Masked → Primary*
+	 * Højre telefon field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: section_phone_mockup.masked.primary.screenshot_right
+	 * - **API ID Path**: phone_mockup.masked.primary.screenshot_right
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	screenshot_right: prismic.ImageField<never>;
 	
 	/**
-	 * Baggrundstema field in *SectionPhoneMockup → Masked → Primary*
+	 * Baggrundstema field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: *None*
 	 * - **Default Value**: Lys
-	 * - **API ID Path**: section_phone_mockup.masked.primary.background_theme
+	 * - **API ID Path**: phone_mockup.masked.primary.background_theme
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
 	
 	/**
-	 * Boks-baggrund field in *SectionPhoneMockup → Masked → Primary*
+	 * Boks-baggrund field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: *None*
 	 * - **Default Value**: Neutral
-	 * - **API ID Path**: section_phone_mockup.masked.primary.box_background
+	 * - **API ID Path**: phone_mockup.masked.primary.box_background
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	box_background: prismic.SelectField<"Neutral" | "Lys" | "Mørk" | "Primær tint" | "Sekundær tint" | "Ingen", "filled">;
 	
 	/**
-	 * Boks-fill field in *SectionPhoneMockup → Masked → Primary*
+	 * Boks-fill field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Select
 	 * - **Placeholder**: *None*
 	 * - **Default Value**: Gradient
-	 * - **API ID Path**: section_phone_mockup.masked.primary.box_fill
+	 * - **API ID Path**: phone_mockup.masked.primary.box_fill
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	box_fill: prismic.SelectField<"Gradient" | "Solid", "filled">;
 }
 
 /**
- * Masked variation for SectionPhoneMockup Slice
+ * Masked variation for PhoneMockup Slice
  *
  * - **API ID**: `masked`
  * - **Description**: Masked
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type SectionPhoneMockupSliceMasked = prismic.SharedSliceVariation<"masked", Simplify<SectionPhoneMockupSliceMaskedPrimary>, never>;
+export type PhoneMockupSliceMasked = prismic.SharedSliceVariation<"masked", Simplify<PhoneMockupSliceMaskedPrimary>, never>;
 
 /**
- * Slice variation for *SectionPhoneMockup*
+ * Slice variation for *PhoneMockup*
  */
-type SectionPhoneMockupSliceVariation = SectionPhoneMockupSliceMasked
+type PhoneMockupSliceVariation = PhoneMockupSliceMasked
 
 /**
- * SectionPhoneMockup Shared Slice
+ * PhoneMockup Shared Slice
  *
- * - **API ID**: `section_phone_mockup`
+ * - **API ID**: `phone_mockup`
  * - **Description**: *None*
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type SectionPhoneMockupSlice = prismic.SharedSlice<"section_phone_mockup", SectionPhoneMockupSliceVariation>;
+export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
 declare module "@prismicio/client" {
 	interface CreateClient {
@@ -2225,6 +2225,25 @@ declare module "@prismicio/client" {
 			SettingsDocumentData,
 			SettingsDocumentDataRedirectsItem,
 			AllDocumentTypes,
+			FaqSlice,
+			FaqSliceDefaultPrimaryItemsItem,
+			FaqSliceDefaultPrimary,
+			FaqSliceVariation,
+			FaqSliceDefault,
+			FeaturesSlice,
+			FeaturesSliceDefaultPrimary,
+			FeaturesSliceCardsPrimaryCardsItem,
+			FeaturesSliceCardsPrimary,
+			FeaturesSliceSplitPrimaryFeaturesItem,
+			FeaturesSliceSplitPrimary,
+			FeaturesSliceBentoPrimary,
+			FeaturesSliceIconBentoPrimary,
+			FeaturesSliceVariation,
+			FeaturesSliceDefault,
+			FeaturesSliceCards,
+			FeaturesSliceSplit,
+			FeaturesSliceBento,
+			FeaturesSliceIconBento,
 			FooterColumnLinksSlice,
 			FooterColumnLinksSliceDefaultPrimary,
 			FooterColumnLinksSliceVariation,
@@ -2245,34 +2264,15 @@ declare module "@prismicio/client" {
 			HeroSliceCentered,
 			HeroSliceSplit,
 			HeroSliceAbout,
-			SectionFaqSlice,
-			SectionFaqSliceDefaultPrimaryItemsItem,
-			SectionFaqSliceDefaultPrimary,
-			SectionFaqSliceVariation,
-			SectionFaqSliceDefault,
-			SectionFeaturesSlice,
-			SectionFeaturesSliceDefaultPrimary,
-			SectionFeaturesSliceCardsPrimaryCardsItem,
-			SectionFeaturesSliceCardsPrimary,
-			SectionFeaturesSliceSplitPrimaryFeaturesItem,
-			SectionFeaturesSliceSplitPrimary,
-			SectionFeaturesSliceBentoPrimary,
-			SectionFeaturesSliceIconBentoPrimary,
-			SectionFeaturesSliceVariation,
-			SectionFeaturesSliceDefault,
-			SectionFeaturesSliceCards,
-			SectionFeaturesSliceSplit,
-			SectionFeaturesSliceBento,
-			SectionFeaturesSliceIconBento,
-			SectionHighlightsSlice,
-			SectionHighlightsSliceDefaultPrimaryPointsItem,
-			SectionHighlightsSliceDefaultPrimary,
-			SectionHighlightsSliceVariation,
-			SectionHighlightsSliceDefault,
-			SectionPhoneMockupSlice,
-			SectionPhoneMockupSliceMaskedPrimary,
-			SectionPhoneMockupSliceVariation,
-			SectionPhoneMockupSliceMasked
+			HighlightsSlice,
+			HighlightsSliceDefaultPrimaryPointsItem,
+			HighlightsSliceDefaultPrimary,
+			HighlightsSliceVariation,
+			HighlightsSliceDefault,
+			PhoneMockupSlice,
+			PhoneMockupSliceMaskedPrimary,
+			PhoneMockupSliceVariation,
+			PhoneMockupSliceMasked
 		}
 	}
 }

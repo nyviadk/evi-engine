@@ -4,6 +4,7 @@ import type { SliceComponentProps } from "@prismicio/react";
 import type { EviFooterSliceContext } from "@/src/components/footer/types";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviStack } from "@/src/components/layout/EviStack";
+import { has_rich_text } from "@/src/lib/prismic/fields";
 
 /**
  * A single footer column that renders a heading + a rich-text body. Used
@@ -23,9 +24,11 @@ export default function FooterColumnText({
 }: SliceComponentProps<
   Content.FooterColumnTextSlice,
   EviFooterSliceContext
->): React.ReactElement {
+>): React.ReactElement | null {
   const { primary } = slice;
   const { linkResolver } = context;
+
+  if (!has_rich_text(primary.heading, primary.body)) return null;
 
   return (
     <EviStack gap="md" data-slot="footer-column" data-variant="text">

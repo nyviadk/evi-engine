@@ -11,7 +11,7 @@ import {
 } from "@/src/lib/prismic/slices";
 
 // Fast 4 kolonner som [ikon, tekst]-par (navngivne felter, ikke repeatable).
-function get_columns(p: Content.SectionFeaturesSliceDefaultPrimary) {
+function get_columns(p: Content.FeaturesSliceDefaultPrimary) {
   return [
     { key: "1", icon: p.feature_1_icon, text: p.feature_1_text },
     { key: "2", icon: p.feature_2_icon, text: p.feature_2_text },
@@ -21,7 +21,7 @@ function get_columns(p: Content.SectionFeaturesSliceDefaultPrimary) {
 }
 
 export type FeaturesColumnsLayoutProps = {
-  slice: Content.SectionFeaturesSliceDefault;
+  slice: Content.FeaturesSliceDefault;
   index: number;
   context: EviPageSliceContext;
 };
@@ -51,7 +51,7 @@ export function FeaturesColumnsLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-features"
+      data-slot="features"
     >
       <EviAutoGrid size="quad">
         {columns.map((c) => (

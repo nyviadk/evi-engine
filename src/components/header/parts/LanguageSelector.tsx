@@ -83,7 +83,7 @@ export function LanguageSelector({
         )}
       >
         {locales.map((locale) => {
-          const language_code = locale.split("-")[0];
+          const language_code = locale.split("-")[0] ?? locale;
           let label = language_code.toUpperCase(); // compact: fx "DA"
           if (!compact) {
             let raw_label = locale.toUpperCase();

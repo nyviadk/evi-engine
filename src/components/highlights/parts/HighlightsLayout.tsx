@@ -17,13 +17,13 @@ import { evi_list_text_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 
 export type HighlightsLayoutProps = {
-  slice: Content.SectionHighlightsSliceDefault;
+  slice: Content.HighlightsSliceDefault;
   index: number;
   context: EviPageSliceContext;
 };
 
 /**
- * SectionHighlights: intro (titel + brødtekst) i venstre kolonne, en boks med
+ * Highlights: intro (titel + brødtekst) i venstre kolonne, en boks med
  * ikon-punkter i højre.
  *
  * Det særlige: boksen centreres lodret mod BRØDTEKSTEN — ikke titel+tekst.
@@ -57,7 +57,7 @@ export function HighlightsLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-highlights"
+      data-slot="highlights"
     >
       {/* Egen 12-kol-grid (ikke sektionens) → EviSplit kan subgride på den, OG
           vi styrer selv gap-y, så titlen sidder tæt på brødteksten. */}

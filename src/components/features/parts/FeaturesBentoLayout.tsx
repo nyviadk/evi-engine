@@ -29,7 +29,7 @@ import {
 import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesBentoLayoutProps = {
-  slice: Content.SectionFeaturesSliceBento;
+  slice: Content.FeaturesSliceBento;
   index: number;
   context: EviPageSliceContext;
 };
@@ -78,8 +78,8 @@ function CardContent({
   link,
   linkResolver,
 }: {
-  title: Content.SectionFeaturesSliceBentoPrimary["card_2_title"];
-  body: Content.SectionFeaturesSliceBentoPrimary["card_2_body"];
+  title: Content.FeaturesSliceBentoPrimary["card_2_title"];
+  body: Content.FeaturesSliceBentoPrimary["card_2_body"];
   link: LinkField;
   linkResolver: LinkResolverFunction;
 }): React.ReactElement {
@@ -102,8 +102,8 @@ function BentoTextCard({
   linkResolver,
   className,
 }: {
-  title: Content.SectionFeaturesSliceBentoPrimary["card_3_title"];
-  body: Content.SectionFeaturesSliceBentoPrimary["card_3_body"];
+  title: Content.FeaturesSliceBentoPrimary["card_3_title"];
+  body: Content.FeaturesSliceBentoPrimary["card_3_body"];
   link: LinkField;
   linkResolver: LinkResolverFunction;
   className?: string;
@@ -306,7 +306,7 @@ export function FeaturesBentoLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-features-bento"
+      data-slot="features-bento"
     >
       <EviSectionHeader
         title={p.heading}

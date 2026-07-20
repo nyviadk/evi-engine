@@ -13,7 +13,17 @@ export type SystemPageCopy = {
   retry: string;
 };
 
+const EN: SystemPageCopy = {
+  notFoundTitle: "Page not found",
+  notFoundBody: "We couldn't find the page you were looking for.",
+  home: "Go to homepage",
+  errorTitle: "Something went wrong",
+  errorBody: "An unexpected error occurred. Please try again shortly.",
+  retry: "Try again",
+};
+
 const COPY: Record<string, SystemPageCopy> = {
+  en: EN,
   da: {
     notFoundTitle: "Siden blev ikke fundet",
     notFoundBody: "Vi kunne ikke finde den side, du ledte efter.",
@@ -22,18 +32,10 @@ const COPY: Record<string, SystemPageCopy> = {
     errorBody: "Der opstod en uventet fejl. Prøv igen om lidt.",
     retry: "Prøv igen",
   },
-  en: {
-    notFoundTitle: "Page not found",
-    notFoundBody: "We couldn't find the page you were looking for.",
-    home: "Go to homepage",
-    errorTitle: "Something went wrong",
-    errorBody: "An unexpected error occurred. Please try again shortly.",
-    retry: "Try again",
-  },
 };
 
 /** Oversættelse ud fra en locale ("da-dk" → da-delen). Ukendt sprog → engelsk. */
 export function system_copy(locale: string | null | undefined): SystemPageCopy {
-  const lang = (locale ?? "").split("-")[0].toLowerCase();
-  return COPY[lang] ?? COPY.en;
+  const lang = ((locale ?? "").split("-")[0] ?? "").toLowerCase();
+  return COPY[lang] ?? EN;
 }

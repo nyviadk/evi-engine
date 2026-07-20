@@ -30,10 +30,10 @@ const faq = (question: string, answer: string) => ({
   answer: line(answer),
 });
 
-export const mock: Record<string, Content.SectionFaqSlice> = {
+export const mock: Record<string, Content.FaqSlice> = {
   default: {
-    id: "mock-section-faq-default",
-    slice_type: "section_faq",
+    id: "mock-faq-default",
+    slice_type: "faq",
     slice_label: null,
     variation: "default",
     version: "scaffold",
@@ -68,6 +68,6 @@ export const mock: Record<string, Content.SectionFaqSlice> = {
         ),
       ],
       background_theme: "Lys",
-    } as Content.SectionFaqSliceDefaultPrimary,
+    } as Content.FaqSliceDefaultPrimary,
   },
 };

@@ -5,6 +5,8 @@ import { FooterLinkList } from "@/src/components/footer/parts/FooterLinkList";
 import type { EviFooterSliceContext } from "@/src/components/footer/types";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
+import { has_rich_text } from "@/src/lib/prismic/fields";
+import { is_link_filled } from "@/src/lib/prismic/links";
 
 /**
  * A single footer column that renders a heading + a vertical list of links.
@@ -24,9 +26,12 @@ export default function FooterColumnLinks({
 }: SliceComponentProps<
   Content.FooterColumnLinksSlice,
   EviFooterSliceContext
->): React.ReactElement {
+>): React.ReactElement | null {
   const { primary } = slice;
   const { linkResolver } = context;
+
+  const has_links = (primary.links ?? []).some(is_link_filled);
+  if (!has_rich_text(primary.heading) && !has_links) return null;
 
   return (
     <EviStack gap="md" data-slot="footer-column" data-variant="links">

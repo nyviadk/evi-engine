@@ -1,6 +1,6 @@
 {
-  "id": "section_highlights",
-  "name": "SectionHighlights",
+  "id": "faq",
+  "name": "Faq",
   "type": "SharedSlice",
   "variations": [
     {
@@ -8,7 +8,7 @@
       "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_highlights/default/cecd1f43db46e6dce823e345045d6befaf561db6.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/faq/default/c6b05b55ea815fb2fd97aa2131f7a090b7986b22.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -22,47 +22,37 @@
           "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
-            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+            "single": "paragraph,strong,em,hyperlink"
           }
         },
-        "points": {
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Overskrift: knap (valgfri)",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "items": {
           "type": "Group",
           "config": {
-            "label": "Punkter",
+            "label": "Spørgsmål",
             "fields": {
-              "icon": {
-                "type": "Text",
-                "config": {
-                  "label": "Ikon"
-                }
-              },
-              "title": {
+              "question": {
                 "type": "StructuredText",
                 "config": {
-                  "label": "Titel",
+                  "label": "Spørgsmål",
                   "single": "heading3,strong,em"
                 }
               },
-              "body": {
+              "answer": {
                 "type": "StructuredText",
                 "config": {
-                  "label": "Tekst",
-                  "single": "paragraph,strong,em,hyperlink"
+                  "label": "Svar",
+                  "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
                 }
               }
             }
-          }
-        },
-        "box_color": {
-          "type": "Select",
-          "config": {
-            "label": "Boks-farve",
-            "default_value": "Neutral",
-            "options": [
-              "Neutral",
-              "Primær",
-              "Sekundær"
-            ]
           }
         },
         "background_theme": {

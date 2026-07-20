@@ -1,6 +1,7 @@
-import { asText, isFilled, type Content } from "@prismicio/client";
+import { asText, type Content } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
 
+import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
@@ -15,7 +16,7 @@ import {
 } from "@/src/lib/prismic/slices";
 
 export type FaqAccordionLayoutProps = {
-  slice: Content.SectionFaqSliceDefault;
+  slice: Content.FaqSliceDefault;
   index: number;
   context: EviPageSliceContext;
 };
@@ -40,21 +41,20 @@ export function FaqAccordionLayout({
   const p = slice.primary;
 
   // Kun spørgsmål med indhold — tomme group-rækker rendres ikke.
-  const items = (p.items ?? []).filter(
-    (item) =>
-      isFilled.richText(item.question) || isFilled.richText(item.answer),
+  const items = (p.items ?? []).filter((item) =>
+    has_rich_text(item.question, item.answer),
   );
 
-  const hasHeader = isFilled.richText(p.heading) || isFilled.richText(p.body);
-  const hasCta = is_link_filled(p.cta_link);
-  if (!hasHeader && !hasCta && items.length === 0) return null;
+  const has_header = has_rich_text(p.heading, p.body);
+  const has_cta = is_link_filled(p.cta_link);
+  if (!has_header && !has_cta && items.length === 0) return null;
 
   return (
     <EviSection
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-faq"
+      data-slot="faq"
     >
       <EviHeadingGroup
         title={p.heading}
@@ -87,7 +87,7 @@ export function FaqAccordionLayout({
           </EviAccordion>
         </EviRow>
       )}
-      {hasCta && (
+      {has_cta && (
         <EviRow>
           <EviStack align="center">
             <EviButton asChild variant="primary" appearance="solid">

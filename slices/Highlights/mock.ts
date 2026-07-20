@@ -29,10 +29,10 @@ const point = (icon: string, title: string, body: string) => ({
   body: line(body),
 });
 
-export const mock: Record<string, Content.SectionHighlightsSlice> = {
+export const mock: Record<string, Content.HighlightsSlice> = {
   default: {
-    id: "mock-section-highlights-default",
-    slice_type: "section_highlights",
+    id: "mock-highlights-default",
+    slice_type: "highlights",
     slice_label: null,
     variation: "default",
     version: "scaffold",
@@ -80,6 +80,6 @@ export const mock: Record<string, Content.SectionHighlightsSlice> = {
       ],
       box_color: "Neutral",
       background_theme: "Lys",
-    } as Content.SectionHighlightsSliceDefaultPrimary,
+    } as Content.HighlightsSliceDefaultPrimary,
   },
 };

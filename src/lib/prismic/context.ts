@@ -3,7 +3,11 @@ import { headers } from "next/headers";
 
 import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
-import { build_page_tree, create_link_resolver } from "@/src/lib/prismic/paths";
+import {
+  build_breadcrumb_trails,
+  build_tree_from_docs,
+  create_link_resolver,
+} from "@/src/lib/prismic/paths";
 
 /**
  * Centraliseret request-scope Prismic data-adgang.
@@ -54,12 +58,21 @@ export type EviTenantContext = NonNullable<
 // ── Tier 1: per-route helpers ──
 
 /**
- * Sti-træ for ALLE sider. Bruges af både sitemap og det fælles context-batch.
+ * Sti-træ + breadcrumb-trails for ALLE sider, bygget fra ÉT fetch (parent_page +
+ * meta_title). `tree` driver URL-opløsning; `trails` bærer rigtige sidetitler
+ * til breadcrumbs. Sitemap bygger sit eget tree fra sin egen fetch (C5).
  */
 export const get_evi_tree = cache(async () => {
   const base = await get_evi_tenant();
   if (!base) return null;
-  return build_page_tree(base.client);
+  const docs = await base.client.getAllByType("page", {
+    lang: "*",
+    fetch: ["page.parent_page", "page.meta_title"],
+  });
+  return {
+    tree: build_tree_from_docs(docs),
+    trails: build_breadcrumb_trails(docs),
+  };
 });
 
 /**
@@ -87,8 +100,9 @@ export const get_evi_page = cache(
 );
 
 /**
- * Alle sider på tværs af sprog med kun de felter sitemap.xml behøver
- * (uid, last_publication_date, alternate_languages, lang).
+ * Alle sider på tværs af sprog med de felter sitemap.xml behøver. Inkl.
+ * `parent_page` så sitemap kan bygge sti-træet (build_tree_from_docs) fra
+ * SAMME fetch — ét getAllByType-kald frem for ét til pages + ét til træet.
  */
 export const get_evi_sitemap_pages = cache(async () => {
   const base = await get_evi_tenant();
@@ -100,6 +114,7 @@ export const get_evi_sitemap_pages = cache(async () => {
       "page.last_publication_date",
       "page.alternate_languages",
       "page.lang",
+      "page.parent_page",
     ],
   });
 });
@@ -111,9 +126,7 @@ export const get_evi_context = cache(async () => {
   if (!base) return null;
   const { client, lang, tenant } = base;
 
-  // get_evi_tree bruges her så cache-entry'en kan deles med direkte tree-
-  // konsumenter (sitemap). Inden i Promise.all bliver det stadig parallelt.
-  const [tree, settings, business, nav_in_lang, footer_in_lang] =
+  const [treeData, settings, business, nav_in_lang, footer_in_lang] =
     await Promise.all([
       get_evi_tree(),
       client
@@ -126,33 +139,37 @@ export const get_evi_context = cache(async () => {
       client.getSingle("footer", { lang }).catch(() => null),
     ]);
 
-  // tree kan kun være null hvis tenant manglede — men base er allerede
+  // treeData kan kun være null hvis tenant manglede — men base er allerede
   // tjekket. Vi narrower derfor strengt før vi bygger link_resolver.
-  if (!tree) return null;
+  if (!treeData) return null;
+  const { tree, trails } = treeData;
 
   // Navigation og footer fetches i den ønskede locale først; falder tilbage
   // til default_locale hvis oversættelsen ikke findes — så editoren ikke
-  // skal duplikere identisk chrome-indhold på tværs af sprog.
-  const navigation =
+  // skal duplikere identisk chrome-indhold på tværs af sprog. De to fallbacks
+  // fyres PARALLELT (ikke sekventielt) — rammes for enhver ikke-oversat chrome.
+  const needs_fallback = lang !== tenant.default_locale;
+  const [navigation, footer] = await Promise.all([
     nav_in_lang ||
-    (lang !== tenant.default_locale
-      ? await client
-          .getSingle("navigation", { lang: tenant.default_locale })
-          .catch(() => null)
-      : null);
-  const footer =
+      (needs_fallback
+        ? client
+            .getSingle("navigation", { lang: tenant.default_locale })
+            .catch(() => null)
+        : null),
     footer_in_lang ||
-    (lang !== tenant.default_locale
-      ? await client
-          .getSingle("footer", { lang: tenant.default_locale })
-          .catch(() => null)
-      : null);
+      (needs_fallback
+        ? client
+            .getSingle("footer", { lang: tenant.default_locale })
+            .catch(() => null)
+        : null),
+  ]);
 
   const link_resolver = create_link_resolver(tree, tenant);
 
   return {
     ...base,
     tree,
+    breadcrumbTrails: trails,
     link_resolver,
     settings,
     business,

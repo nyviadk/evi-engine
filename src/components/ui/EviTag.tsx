@@ -6,12 +6,19 @@ import {
 import { EviIcon } from "@/src/components/ui/EviIcon";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { cn } from "@/src/lib/utils/cn";
+import { resolve_surface } from "@/src/lib/utils/surface";
 
 export type EviTagProps = {
   /** Iconify-navn (fx "ph:plant" / "lucide:leaf"). Tomt → intet ikon. */
   icon?: string | null;
   /** Tag-tekst (Prismic rich-text, single paragraph). Tomt → hele tag'et skjules. */
   text?: RichTextField | null;
+  /**
+   * Flade-farve (Prismic-label) → adaptiv surface-tint via `resolve_surface`.
+   * Udeladt → self-contained `theme-primary-soft` (læsbar på ENHVER sektion,
+   * også mørk — modsat de transparente tints der ville dæmpes for meget).
+   */
+  surface?: string | null;
   linkResolver: LinkResolverFunction;
   className?: string;
 };
@@ -26,18 +33,20 @@ export type EviTagProps = {
 export function EviTag({
   icon,
   text,
+  surface,
   linkResolver,
   className,
 }: EviTagProps): React.ReactElement | null {
   if (!isFilled.richText(text)) return null;
 
+  const surfaceClass = surface == null ? "theme-primary-soft" : resolve_surface(surface);
+
   return (
     <div
       data-slot="evi-tag"
       className={cn(
-        // theme-primary-soft: blød brand-tint + kontrast-sikker tekst (self-
-        // contained, uafhængig af sektionens tema). Ikke grå/neutral.
-        "theme-primary-soft inline-flex w-fit items-center gap-2 rounded-full py-1.5 pr-4 pl-3 text-sm [&_p]:m-0",
+        surfaceClass,
+        "inline-flex w-fit items-center gap-2 rounded-full py-1.5 pr-4 pl-3 text-sm [&_p]:m-0",
         className,
       )}
     >

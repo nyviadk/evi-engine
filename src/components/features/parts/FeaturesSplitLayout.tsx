@@ -20,7 +20,7 @@ import { evi_list_text_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesSplitLayoutProps = {
-  slice: Content.SectionFeaturesSliceSplit;
+  slice: Content.FeaturesSliceSplit;
   index: number;
   context: EviPageSliceContext;
 };
@@ -108,7 +108,7 @@ export function FeaturesSplitLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-features-split"
+      data-slot="features-split"
     >
       <EviSplit
         preset="50-50"

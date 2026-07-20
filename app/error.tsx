@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactElement } from "react";
 import { EviButton } from "@/src/components/ui/EviButton";
 
 /**
@@ -9,7 +10,12 @@ import { EviButton } from "@/src/components/ui/EviButton";
  * uses typography tokens. Button uses EviButton so it inherits .btn styling
  * (including cursor-pointer, transitions, focus states).
  */
-export default function Error({ reset }: { error: Error; reset: () => void }) {
+export default function Error({
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}): ReactElement {
   return (
     <div
       className="flex min-h-screen flex-col items-center justify-center px-6 text-center"

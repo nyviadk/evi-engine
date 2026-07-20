@@ -2,6 +2,7 @@ import { isFilled, type ImageField } from "@prismicio/client";
 import type { CSSProperties } from "react";
 import { EviPhoneMockup } from "@/src/components/ui/EviPhoneMockup";
 import { cn } from "@/src/lib/utils/cn";
+import { resolve_phone_surface } from "@/src/lib/utils/surface";
 
 /**
  * Desktop-komposition. Carousel/komposition-skiftet er CONTAINER-baseret
@@ -19,48 +20,15 @@ type PhoneLayout =
   | "floating" // skewY + drop-shadow
   | "masked"; // vifte i gradient-boks, bund clippet
 
-/**
- * Baggrund for layouts med en container-boks (pt. "masked"). Token-baseret
- * surface-klasse (globals section D) så den er adaptiv/contrast-sikker pr.
- * sektions-tema — ikke en hardcodet farve.
- */
-type PhoneSurface =
-  | "neutral"
-  | "primary"
-  | "secondary"
-  | "light"
-  | "dark"
-  | "none";
-type PhoneFill = "gradient" | "solid";
-
-const SURFACE_CLASS: Record<PhoneFill, Record<PhoneSurface, string>> = {
-  solid: {
-    neutral: "theme-surface-neutral",
-    primary: "theme-surface-primary",
-    secondary: "theme-surface-secondary",
-    light: "theme-surface-light",
-    dark: "theme-surface-dark",
-    none: "",
-  },
-  gradient: {
-    neutral: "theme-surface-neutral-gradient",
-    primary: "theme-surface-primary-gradient",
-    secondary: "theme-surface-secondary-gradient",
-    light: "theme-surface-light-gradient",
-    dark: "theme-surface-dark-gradient",
-    none: "",
-  },
-};
-
 export type EviPhoneCarouselProps = {
   /** Screenshots — ét mockup pr. billede. Tomme felter skippes. */
   fields: ImageField[];
   /** Desktop-komposition. @default "row" */
   layout?: PhoneLayout;
-  /** Boks-baggrund for layouts med container (masked). @default "neutral" */
-  surface?: PhoneSurface;
-  /** Solid eller gradient fill af boks-baggrunden. @default "gradient" */
-  fill?: PhoneFill;
+  /** Boks-baggrund (Prismic-label) for layouts med container (masked) → `resolve_phone_surface`. */
+  surface?: string | null;
+  /** Solid eller gradient fill af boks-baggrunden (Prismic-label). */
+  fill?: string | null;
   /** Eager-load billederne (above-the-fold) så de ikke flasher tomme. */
   eager?: boolean;
   /**
@@ -130,7 +98,8 @@ function phoneStyle(
       const unit = layout === "masked" ? 15 : 12;
       transform.push(`rotate(${(-offset * unit).toFixed(2)}deg)`);
       if (i > 0)
-        style["--phone-shift"] = `calc(var(--evi-phone-w) * -${OVERLAP[layout]})`;
+        style["--phone-shift"] =
+          `calc(var(--evi-phone-w) * -${OVERLAP[layout]})`;
       if (layout !== "fan") style["--phone-origin"] = "top";
       style.zIndex = Math.round(10 - Math.abs(offset)); // center i front
       break;
@@ -144,7 +113,8 @@ function phoneStyle(
       break;
     case "floating":
       transform.push("rotate(-3deg) skewY(-2deg)");
-      style.filter = "drop-shadow(0 50px 60px rgb(0 0 0 / 0.35))";
+      style.filter =
+        "drop-shadow(0 30px 40px color-mix(in oklch, currentColor 22%, transparent))";
       break;
     case "row":
       break;
@@ -189,8 +159,8 @@ const PAD_Y: Record<PhoneLayout, string> = {
 export function EviPhoneCarousel({
   fields,
   layout = "row",
-  surface = "neutral",
-  fill = "gradient",
+  surface,
+  fill,
   eager = false,
   preload = false,
   className,
@@ -240,6 +210,11 @@ export function EviPhoneCarousel({
       <div
         data-slot="evi-phone-track"
         data-layout={layout}
+        // role="group" samler telefonerne; ingen hardcodet aria-label (locale-
+        // specifik) — hvert billede bærer sin egen Prismic-alt. tabIndex kun i
+        // scroll-tilstand (flere billeder, smal container) så tastatur kan pil-scrolle.
+        role="group"
+        tabIndex={single ? undefined : 0}
         className={cn(
           "flex w-full gap-4 py-4",
           single
@@ -250,24 +225,27 @@ export function EviPhoneCarousel({
           layout === "masked" &&
             cn(
               "rounded-evi @[430px]/phones:h-[calc(var(--evi-phone-w)*1.39)] @[430px]/phones:items-start @[430px]/phones:overflow-hidden @[430px]/phones:pt-[calc(var(--evi-phone-w)*0.178)]",
-              SURFACE_CLASS[fill][surface],
+              resolve_phone_surface(surface, fill),
             ),
           PAD_Y[layout],
         )}
       >
-        {images.map((field, i) => (
-          <EviPhoneMockup
-            key={i}
-            field={field}
-            eager={eager}
-            preload={preloadLcp}
+        {images.map((field, i) => {
+          const itemKey = `${i}-${field.url ?? ""}`;
+          return (
+            <EviPhoneMockup
+              key={itemKey}
+              field={field}
+              eager={eager}
+              preload={preloadLcp}
             // mx-0 slår EviPhoneMockups base-mx-auto fra: på et flex-item
             // opsluger auto-margins al fri plads og skubber telefonerne fra
             // hinanden (overskriver justify-center/gap/overlap).
-            className="mx-0 shrink-0 snap-center"
-            style={phoneStyle(layout, i, center)}
-          />
-        ))}
+              className="mx-0 shrink-0 snap-center"
+              style={phoneStyle(layout, i, center)}
+            />
+          );
+        })}
       </div>
     </div>
   );

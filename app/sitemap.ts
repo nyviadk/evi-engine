@@ -1,18 +1,15 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import {
   get_evi_tenant,
-  get_evi_tree,
   get_evi_sitemap_pages,
 } from "@/src/lib/prismic/context";
 import {
   build_translation_url_map,
+  build_tree_from_docs,
   resolve_page_url,
 } from "@/src/lib/prismic/paths";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Tenant skal være kendt før vi kan bygge base_url; tree + pages fyres
-  // parallelt da de er uafhængige Prismic-kald. cache() i context.ts sikrer
-  // tenant-lookup'et kun sker én gang selvom alle tre helpers bruger det.
   const tenant_ctx = await get_evi_tenant();
   if (!tenant_ctx) return [];
 
@@ -21,11 +18,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base_url = `${protocol}://${hostname}`;
 
   try {
-    const [tree, pages] = await Promise.all([
-      get_evi_tree(),
-      get_evi_sitemap_pages(),
-    ]);
-    if (!tree || !pages) return [];
+    // Ét getAllByType (pages med parent_page) → byg sti-træet lokalt, undgå et
+    // separat get_evi_tree-kald der ville hente hele kataloget igen.
+    const pages = await get_evi_sitemap_pages();
+    if (!pages) return [];
+    const tree = build_tree_from_docs(pages);
 
     const resolvable = pages.filter((doc) => doc.uid);
 

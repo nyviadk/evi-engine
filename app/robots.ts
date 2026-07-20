@@ -1,5 +1,5 @@
 import { is_staging_domain } from "@/src/lib/seo/domains";
-import { MetadataRoute } from "next";
+import { type MetadataRoute } from "next";
 import { headers } from "next/headers";
 
 export default async function robots(): Promise<MetadataRoute.Robots> {

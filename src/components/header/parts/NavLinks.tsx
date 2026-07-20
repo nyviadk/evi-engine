@@ -29,7 +29,7 @@ export type NavLinksProps = {
 
 /** Sti uden query/hash og uden efterstillet skråstreg (roden forbliver "/"). */
 function normalize_path(path: string): string {
-  const trimmed = path.split(/[?#]/)[0].replace(/\/+$/, "");
+  const trimmed = (path.split(/[?#]/)[0] ?? path).replace(/\/+$/, "");
   return trimmed === "" ? "/" : trimmed;
 }
 

@@ -26,19 +26,19 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "section_phone_mockup": {
-              "type": "SharedSlice"
-            },
             "hero": {
               "type": "SharedSlice"
             },
-            "section_features": {
+            "features": {
               "type": "SharedSlice"
             },
-            "section_faq": {
+            "faq": {
               "type": "SharedSlice"
             },
-            "section_highlights": {
+            "highlights": {
+              "type": "SharedSlice"
+            },
+            "phone_mockup": {
               "type": "SharedSlice"
             }
           }

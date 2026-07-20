@@ -79,8 +79,8 @@ export function compute_slice_contexts(
       };
 
     const prev = slices[index - 1];
-    const prevTheme = resolve_section_theme(prev.primary?.background_theme);
-    const prevHasImage = Boolean(prev.primary?.backgroundSectionImage?.url);
+    const prevTheme = resolve_section_theme(prev?.primary?.background_theme);
+    const prevHasImage = Boolean(prev?.primary?.backgroundSectionImage?.url);
 
     const sameType = theme_type(theme) === theme_type(prevTheme);
     const sameVisual =

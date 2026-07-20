@@ -62,14 +62,14 @@ export async function decrypt_token(
   encoded: string,
   key: CryptoKey,
 ): Promise<string> {
-  const parts = encoded.split(":");
-  if (parts.length !== 3 || parts[0] !== VERSION) {
+  const [version, iv_b64, ct_b64] = encoded.split(":");
+  if (!iv_b64 || !ct_b64 || version !== VERSION) {
     throw new Error(
-      `Unexpected token format (expected "${VERSION}:iv:ct", got "${parts[0] ?? ""}:…")`,
+      `Unexpected token format (expected "${VERSION}:iv:ct", got "${version ?? ""}:…")`,
     );
   }
-  const iv = base64_to_bytes(parts[1]);
-  const ct = base64_to_bytes(parts[2]);
+  const iv = base64_to_bytes(iv_b64);
+  const ct = base64_to_bytes(ct_b64);
   const pt = await crypto.subtle.decrypt(
     { name: "AES-GCM", iv: iv as BufferSource },
     key,

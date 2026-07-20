@@ -50,7 +50,7 @@ export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): Promise<React.ReactElement> {
   const [ctx, h] = await Promise.all([get_evi_context(), headers()]);
 
   // x-evi-pathname set by middleware, encoded to survive HTTP ASCII rules.
@@ -60,13 +60,16 @@ export default async function Layout({
   // Parse the current page's Prismic UID from the pathname so we can look up
   // its alternate_languages. Path shape: /<locale>/<...uid_segments>. Root
   // /<locale> maps to Prismic UID "home" (matches page.tsx convention).
+  //
+  // KOBLING: page.tsx udleder SAMME (uid, lang) fra route-params i stedet for
+  // x-evi-pathname. De to udledninger SKAL give samme værdi — det er dét der
+  // gør React.cache-dedup'et af get_evi_page under (ingen ekstra Prismic-
+  // round-trip) holdbart. Ændrer du udledningen ét sted, ret det andet, ellers
+  // genindføres et tavst duplikat-fetch (ingen test fanger det).
   const path_segments = current_pathname.split("/").filter(Boolean);
   const uid_segments = path_segments.slice(1);
   const prismic_uid = uid_segments[uid_segments.length - 1] || "home";
 
-  // Fetch page (React.cache dedups with page.tsx's identical call — no extra
-  // Prismic round-trip). Returns null when there's no tenant, no page, or the
-  // uid doesn't exist in the current locale.
   const page = ctx ? await get_evi_page(prismic_uid, ctx.lang) : null;
 
   const header_slices = ctx?.navigation?.data?.slices ?? [];

@@ -1,25 +1,25 @@
 import { type Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 
-import { FaqAccordionLayout } from "@/src/components/faq/parts/FaqAccordionLayout";
+import { HighlightsLayout } from "@/src/components/highlights/parts/HighlightsLayout";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 /**
- * SectionFaq — FAQ-sektion. Tynd dispatcher på variation (R4.2). "default" =
- * enkelt-kolonne accordion (native <details>) med sektion-header + valgfri CTA.
+ * Highlights — tynd dispatcher (R4.2). "default" = intro (titel + brødtekst)
+ * venstre, ikon-punkt-boks højre (centreret mod brødteksten).
  */
-export default function SectionFaq({
+export default function Highlights({
   slice,
   index,
   context,
 }: SliceComponentProps<
-  Content.SectionFaqSlice,
+  Content.HighlightsSlice,
   EviPageSliceContext
 >): React.ReactElement | null {
   switch (slice.variation) {
     case "default":
       return (
-        <FaqAccordionLayout slice={slice} index={index} context={context} />
+        <HighlightsLayout slice={slice} index={index} context={context} />
       );
     default:
       return null;

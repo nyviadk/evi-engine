@@ -1,6 +1,6 @@
 import {
   SliceSimulator,
-  SliceSimulatorParams,
+  type SliceSimulatorParams,
   getSlices,
 } from "@prismicio/next";
 import { SliceZone } from "@prismicio/react";
@@ -15,7 +15,7 @@ import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 
 export default async function SliceSimulatorPage({
   searchParams,
-}: SliceSimulatorParams) {
+}: SliceSimulatorParams): Promise<React.ReactElement> {
   const { state } = await searchParams;
   const slices = getSlices(state);
 

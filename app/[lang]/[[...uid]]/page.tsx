@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import type { ReactElement } from "react";
 import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
 
@@ -15,9 +17,14 @@ import { is_staging_domain } from "@/src/lib/seo/domains";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
-export default async function Page(props: { params: Params }) {
+export default async function Page(props: {
+  params: Params;
+}): Promise<ReactElement> {
+  // KOBLING: layout.tsx udleder SAMME (uid, lang) fra x-evi-pathname i stedet
+  // for route-params. Hold de to udledninger i sync — det er dét der lader
+  // get_evi_page's React.cache dedup'e på tværs af layout + page (ét fetch).
   const { lang, uid } = await props.params;
-  const prismic_uid = uid ? uid[uid.length - 1] : "home";
+  const prismic_uid = uid?.[uid.length - 1] ?? "home";
 
   // Fyr side-fetch parallelt med det globale context-batch. get_evi_context()
   // henter tree+settings+business+navigation; get_evi_page() henter selve
@@ -33,9 +40,10 @@ export default async function Page(props: { params: Params }) {
 
   const { tree, tenant, settings, business, link_resolver, hostname } = ctx;
 
-  // Home må kun tilgås på roden — aldrig på /home eller /<noget>/home.
-  // Catcher fx /da-dk/home, gamle indekserede links, copy-paste fejl.
-  // 308 (permanent) fordi /home aldrig er en kanonisk URL i denne engine.
+  // Home må kun tilgås på roden. Komplementær til middleware'ens
+  // redirect_home_to_root: den fanger den bogstavelige /home-URL, DETTE fanger
+  // en side hvis uid er "home" men nås via en ikke-home-sti. Samme regel, samme
+  // status (308) — ret begge hvis reglen ændres.
   if (page.uid === "home" && uid && uid.length > 0) {
     permanentRedirect(resolve_page_url(page.id, lang, tree, tenant));
   }
@@ -62,14 +70,18 @@ export default async function Page(props: { params: Params }) {
   // JSON-LD Schema
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
   const baseUrl = `${protocol}://${hostname}`;
-  const pagePath = resolve_page_url(page.id, lang, tree, tenant);
+
+  // Breadcrumbs med rigtige sidetitler: trail'en (fra sti-træets fetch) bærer
+  // titlerne, page opløser hvert led til en fuld URL.
+  const breadcrumbs = (ctx.breadcrumbTrails.get(page.id) ?? []).map((crumb) => ({
+    name: crumb.title,
+    url: `${baseUrl}${resolve_page_url(crumb.id, lang, tree, tenant)}`,
+  }));
 
   const schemaGraph = collectSchemaGraph({
     business: business?.data ?? null,
     baseUrl,
-    pagePath,
-    pageTitle: page.data.meta_title || page.uid,
-    lang,
+    breadcrumbs,
     siteName: settings?.data?.site_name,
   });
 
@@ -92,9 +104,11 @@ export default async function Page(props: { params: Params }) {
   );
 }
 
-export async function generateMetadata(props: { params: Params }) {
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
   const { lang, uid } = await props.params;
-  const prismic_uid = uid ? uid[uid.length - 1] : "home";
+  const prismic_uid = uid?.[uid.length - 1] ?? "home";
 
   // Samme parallel-mønster som Page(): context-batch + side-fetch fyres
   // samtidig. get_evi_page håndterer locale-fallback internt, så metadata
@@ -195,9 +209,9 @@ export async function generateMetadata(props: { params: Params }) {
     // Open Graph (Facebook, LinkedIn)
     openGraph: {
       title: fullTitle,
-      description: page.data.meta_description,
+      description: page.data.meta_description ?? undefined,
       url: full_canonical_url,
-      siteName: siteName,
+      siteName: siteName ?? undefined,
       locale: lang,
       type: "website",
       ...(og_image_url && {

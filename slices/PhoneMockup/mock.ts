@@ -26,10 +26,10 @@ function screenshot(unsplashId: string): ImageField {
   } as unknown as ImageField;
 }
 
-export const mock: Record<string, Content.SectionPhoneMockupSlice> = {
+export const mock: Record<string, Content.PhoneMockupSlice> = {
   masked: {
-    id: "mock-section-phone-mockup-masked",
-    slice_type: "section_phone_mockup",
+    id: "mock-phone-mockup-masked",
+    slice_type: "phone_mockup",
     slice_label: null,
     variation: "masked",
     version: "sktwi1xtmkfgx8626",
@@ -42,6 +42,6 @@ export const mock: Record<string, Content.SectionPhoneMockupSlice> = {
       screenshot_left: screenshot("1529892485617-25f63cd7b1e9"),
       screenshot_center: screenshot("1495474472287-4d71bcdd2085"),
       screenshot_right: screenshot("1559056199-641a0ac8b55e"),
-    } as Content.SectionPhoneMockupSliceMaskedPrimary,
+    } as Content.PhoneMockupSliceMaskedPrimary,
   },
 };

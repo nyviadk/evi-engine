@@ -13,7 +13,11 @@ export const repositoryName = prismicConfig.repositoryName;
  *
  * @param config - Configuration for the Prismic client.
  */
-export const createClient = ({ previewData, req, ...config }: CreateClientConfig = {}) => {
+export const createClient = ({
+  previewData,
+  req,
+  ...config
+}: CreateClientConfig = {}): ReturnType<typeof baseCreateClient> => {
 	const client = baseCreateClient(repositoryName, {
 		routes: prismicConfig.routes,
 		...config,

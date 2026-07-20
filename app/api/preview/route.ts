@@ -1,9 +1,11 @@
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 import { redirectToPreviewURL } from "@prismicio/next";
 import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+): Promise<Response | undefined> {
   // 1. Aflæs domænet (f.eks. jens.web.nyvia.dk)
   const hostname = request.headers.get("host") || "localhost:3000";
 

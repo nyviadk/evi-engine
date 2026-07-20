@@ -44,10 +44,10 @@ const bentoImg = (id: string, w: number, h: number): ImageField =>
 const webLink = (text: string): LinkField =>
   ({ link_type: "Web", url: "#", text }) as unknown as LinkField;
 
-export const mock: Record<string, Content.SectionFeaturesSlice> = {
+export const mock: Record<string, Content.FeaturesSlice> = {
   split: {
-    id: "mock-section-features-split",
-    slice_type: "section_features",
+    id: "mock-features-split",
+    slice_type: "features",
     slice_label: null,
     variation: "split",
     version: "scaffold",
@@ -65,7 +65,7 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
         copyright: null,
         dimensions: { width: 1200, height: 1200 },
         edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
-      } as Content.SectionFeaturesSliceSplitPrimary["image"],
+      } as Content.FeaturesSliceSplitPrimary["image"],
       features: [
         {
           icon: "leaf",
@@ -94,8 +94,8 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
     },
   },
   cards: {
-    id: "mock-section-features-cards",
-    slice_type: "section_features",
+    id: "mock-features-cards",
+    slice_type: "features",
     slice_label: null,
     variation: "cards",
     version: "scaffold",
@@ -133,8 +133,8 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
     },
   },
   default: {
-    id: "mock-section-features-default",
-    slice_type: "section_features",
+    id: "mock-features-default",
+    slice_type: "features",
     slice_label: null,
     variation: "default",
     version: "scaffold",
@@ -152,8 +152,8 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
     },
   },
   bento: {
-    id: "mock-section-features-bento",
-    slice_type: "section_features",
+    id: "mock-features-bento",
+    slice_type: "features",
     slice_label: null,
     variation: "bento",
     version: "scaffold",
@@ -188,11 +188,11 @@ export const mock: Record<string, Content.SectionFeaturesSlice> = {
       ),
       card_4_link: webLink("Gå til webshop"),
       background_theme: "Lys",
-    } as Content.SectionFeaturesSliceBentoPrimary,
+    } as Content.FeaturesSliceBentoPrimary,
   },
   "icon-bento": {
-    id: "mock-section-features-icon-bento",
-    slice_type: "section_features",
+    id: "mock-features-icon-bento",
+    slice_type: "features",
     slice_label: null,
     variation: "icon-bento",
     version: "scaffold",

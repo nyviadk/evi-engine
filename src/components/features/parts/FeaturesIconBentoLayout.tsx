@@ -20,7 +20,7 @@ import {
 import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesIconBentoLayoutProps = {
-  slice: Content.SectionFeaturesSliceIconBento;
+  slice: Content.FeaturesSliceIconBento;
   index: number;
   context: EviPageSliceContext;
 };
@@ -48,8 +48,8 @@ const BOX_TONES = [
 
 type BoxFields = {
   icon: string | null;
-  title: Content.SectionFeaturesSliceIconBentoPrimary["box_1_title"];
-  body: Content.SectionFeaturesSliceIconBentoPrimary["box_1_body"];
+  title: Content.FeaturesSliceIconBentoPrimary["box_1_title"];
+  body: Content.FeaturesSliceIconBentoPrimary["box_1_body"];
 };
 
 function box_has_content(box: BoxFields): boolean {
@@ -118,13 +118,12 @@ export function FeaturesIconBentoLayout({
   );
   const p = slice.primary;
 
-  const boxes: BoxFields[] = [
+  const [box1, box2, box3, box4]: [BoxFields, BoxFields, BoxFields, BoxFields] = [
     { icon: p.box_1_icon, title: p.box_1_title, body: p.box_1_body },
     { icon: p.box_2_icon, title: p.box_2_title, body: p.box_2_body },
     { icon: p.box_3_icon, title: p.box_3_title, body: p.box_3_body },
     { icon: p.box_4_icon, title: p.box_4_title, body: p.box_4_body },
   ];
-  const [box1, box2, box3, box4] = boxes;
 
   const topRowHas = box_has_content(box1) || box_has_content(box2);
   const bottomRowHas = box_has_content(box3) || box_has_content(box4);
@@ -138,7 +137,7 @@ export function FeaturesIconBentoLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
-      data-slot="section-features-icon-bento"
+      data-slot="features-icon-bento"
     >
       <EviSectionHeader
         title={p.heading}

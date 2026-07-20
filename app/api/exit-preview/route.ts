@@ -1,5 +1,5 @@
 import { exitPreview } from "@prismicio/next";
 
-export function GET() {
+export function GET(): ReturnType<typeof exitPreview> {
   return exitPreview();
 }

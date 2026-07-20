@@ -23,12 +23,12 @@ async function timing_safe_equal(a: string, b: string): Promise<boolean> {
 
   let diff = a_bytes.length ^ b_bytes.length;
   for (let i = 0; i < len; i++) {
-    diff |= a_pad[i] ^ b_pad[i];
+    diff |= (a_pad[i] ?? 0) ^ (b_pad[i] ?? 0);
   }
   return diff === 0;
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = await request.text();
     // Prismic webhook payloads er typisk 1-5KB. 100KB er rigelig headroom.
@@ -87,6 +87,6 @@ export async function POST(request: Request) {
   }
 }
 
-export function GET() {
+export function GET(): NextResponse {
   return new NextResponse("Method Not Allowed", { status: 405 });
 }

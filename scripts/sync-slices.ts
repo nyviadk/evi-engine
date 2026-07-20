@@ -25,7 +25,7 @@ function get_master_key(): Promise<CryptoKey> {
     const match = contents.match(
       new RegExp(`^\\s*${DEV_VARS_KEY}\\s*=\\s*"?([^"\\r\\n]+)"?\\s*$`, "m"),
     );
-    if (!match) {
+    if (!match?.[1]) {
       throw new Error(
         `${DEV_VARS_KEY} mangler i .dev.vars — kør scripts/push-tenant.mjs først`,
       );
@@ -54,13 +54,13 @@ function extract_json(raw: string): string {
 }
 
 async function decrypt_token(encoded: string): Promise<string> {
-  const parts = encoded.split(":");
-  if (parts.length !== 3 || parts[0] !== "v1") {
+  const [version, iv_b64, ct_b64] = encoded.split(":");
+  if (!iv_b64 || !ct_b64 || version !== "v1") {
     throw new Error(`Uventet token-format (forventede v1:iv:ct)`);
   }
   const key = await get_master_key();
-  const iv = Buffer.from(parts[1], "base64");
-  const ct = Buffer.from(parts[2], "base64");
+  const iv = Buffer.from(iv_b64, "base64");
+  const ct = Buffer.from(ct_b64, "base64");
   const pt = await webcrypto.subtle.decrypt(
     { name: "AES-GCM", iv },
     key,

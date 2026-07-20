@@ -116,6 +116,19 @@ const eslintConfig = defineConfig([
       "no-unused-private-class-members": "error",
       "no-implicit-coercion": "warn",
       "object-shorthand": ["warn", "always"],
+
+      // Konsistens på tværs af layout-parts: læs slice-felter via `const p =
+      // slice.primary`, destrukturér ikke `slice.primary` direkte (sibling-
+      // parts skal se ens ud).
+      "no-restricted-syntax": [
+        "warn",
+        {
+          selector:
+            "VariableDeclarator[id.type='ObjectPattern'][init.object.name='slice'][init.property.name='primary']",
+          message:
+            "Destrukturér ikke slice.primary — brug `const p = slice.primary` for konsistens på tværs af layout-parts.",
+        },
+      ],
     },
   },
 

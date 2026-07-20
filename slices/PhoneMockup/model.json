@@ -1,6 +1,6 @@
 {
-  "id": "section_phone_mockup",
-  "name": "SectionPhoneMockup",
+  "id": "phone_mockup",
+  "name": "PhoneMockup",
   "type": "SharedSlice",
   "variations": [
     {
@@ -8,7 +8,7 @@
       "name": "Masked",
       "description": "Masked",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/section_phone_mockup/masked/fe091a2a7d94935bec7f766be596d37a8ea051f8.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/phone_mockup/masked/fe091a2a7d94935bec7f766be596d37a8ea051f8.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "screenshot_left": {

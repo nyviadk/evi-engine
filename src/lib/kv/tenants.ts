@@ -52,9 +52,13 @@ async function get_kv_binding(): Promise<KVNamespace | null> {
   }
 }
 
-// Master-key hentes fra Secrets Store og import'es én gang per Worker-instance
-// (import_master_key caches internt). Kastes hvis binding mangler.
+// CryptoKey caches pr. Worker-isolate: master-key skifter aldrig inden for et
+// deployment, så vi springer BÅDE Secrets Store-hentningen OG importen over
+// efter første kald (før var kun importen cached → binding.get() kørte hver gang).
+let cached_master_key: CryptoKey | null = null;
+
 async function get_master_key(): Promise<CryptoKey> {
+  if (cached_master_key) return cached_master_key;
   const ctx = await getCloudflareContext({ async: true });
   const binding = ctx?.env?.TOKEN_MASTER_KEY;
   if (!binding) {
@@ -63,7 +67,8 @@ async function get_master_key(): Promise<CryptoKey> {
     );
   }
   const raw_b64 = await binding.get();
-  return import_master_key(raw_b64);
+  cached_master_key = await import_master_key(raw_b64);
+  return cached_master_key;
 }
 
 async function decrypt_tenant_tokens(
@@ -96,13 +101,36 @@ async function encrypt_tenant_tokens(
   };
 }
 
+// Cacher den KRYPTEREDE KV-entry pr. isolate med kort TTL, så samme request's
+// middleware + RSC (to separate execution-boundaries) ikke rammer KV to gange.
+// Bevidst ciphertext, ikke plaintext — dekryptering sker stadig pr. kald, så
+// tokens ikke ligger dekrypteret i module-scope. Config-ændringer (redirects,
+// onboarding) er manuelle, så ~60s staleness er acceptabelt.
+const TENANT_CACHE_TTL_MS = 60_000;
+const tenant_raw_cache = new Map<
+  string,
+  { value: TenantConfig | null; expires: number }
+>();
+
+async function get_stored_config(
+  kv: KVNamespace,
+  key: string,
+): Promise<TenantConfig | null> {
+  const now = Date.now();
+  const cached = tenant_raw_cache.get(key);
+  if (cached && cached.expires > now) return cached.value;
+  const stored = await kv.get<TenantConfig>(key, "json");
+  tenant_raw_cache.set(key, { value: stored, expires: now + TENANT_CACHE_TTL_MS });
+  return stored;
+}
+
 export async function get_tenant_config(
   hostname: string,
 ): Promise<TenantConfig | null> {
   const key = normalize_hostname(hostname);
   const kv = await get_kv_binding();
   if (kv) {
-    const stored = await kv.get<TenantConfig>(key, "json");
+    const stored = await get_stored_config(kv, key);
     if (!stored) return null;
     // Tokens i KV er encrypted med AES-GCM (v1:iv:ct format). Dekryptér før
     // resten af app'en får dem — resten af koden ser altid plaintext.

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import { get_tenant_config } from "@/src/lib/kv/tenants";
+import { get_tenant_config, type TenantConfig } from "@/src/lib/kv/tenants";
 import {
   create_response_with_hsts,
   create_secure_url,
@@ -12,8 +12,7 @@ import {
 export const runtime = "experimental-edge";
 
 // Bot-scannere prober for WordPress/PHP-huller. Vi kører intet af det → altid
-// junk. Match → billigt 404 i middleware FØR tenant-lookup/render
-
+// junk. Match → billigt 404 i middleware FØR tenant-lookup/render.
 const BOT_SCANNER_PATH =
   /\.php\b|\.aspx?\b|\/wp-|\/cgi-bin|\/xmlrpc|\/vendor\/|\/\.(?:env|git)\b/i;
 
@@ -27,124 +26,107 @@ function get_browser_locale(
   };
   const languages = new Negotiator({ headers }).languages();
   try {
-    // Vi tvinger localematcher til at bruge små bogstaver for at undgå loops (f.eks. da-DK -> da-dk)
+    // Tving små bogstaver for at undgå loops (fx da-DK -> da-dk).
     return match(languages, locales, default_locale).toLowerCase();
   } catch {
     return default_locale.toLowerCase();
   }
 }
-// --- HOVEDLOGIK ---
 
-export async function middleware(request: NextRequest) {
-  // Browseren sender æøå URL-encoded ("/%C3%A6blekage"), men i Prismic/KV
-  // står de som læsbare tegn ("/æblekage"). Decode så lookups matcher.
-  // try/catch fordi decodeURIComponent smider ved malformet input.
-  const raw_pathname = request.nextUrl.pathname;
-  let pathname: string;
+// Browseren sender æøå URL-encoded ("/%C3%A6blekage"), men i Prismic/KV står de
+// som læsbare tegn. Decode så lookups matcher; try/catch fordi decodeURIComponent
+// smider ved malformet input.
+function decode_pathname(raw: string): string {
   try {
-    pathname = decodeURIComponent(raw_pathname);
+    return decodeURIComponent(raw);
   } catch {
-    pathname = raw_pathname;
+    return raw;
   }
+}
 
-  // Junk-stier fra scannere: billigt 404 før alt andet (ingen KV-lookup/render).
-  if (BOT_SCANNER_PATH.test(pathname)) {
-    return new NextResponse(null, { status: 404 });
-  }
-  // request.nextUrl.host er derived fra CF's routing (mere pålidelig end raw
-  // Host-header). Fald tilbage til header hvis nextUrl mangler. validate_hostname
-  // reject'er malformede/spoofede værdier — request kører videre uden tenant-lookup.
-  const raw_hostname =
-    request.nextUrl.host || request.headers.get("host") || "";
-  const hostname = validate_hostname(raw_hostname) || "localhost:3000";
+function reject_bot_scanner(pathname: string): NextResponse | null {
+  return BOT_SCANNER_PATH.test(pathname)
+    ? new NextResponse(null, { status: 404 })
+    : null;
+}
 
-  // www → apex 301. Begge værter serverer samme indhold; uden denne
-  // redirect splittes SEO-signaler mellem www.kunde.dk og kunde.dk.
-  if (hostname.startsWith("www.")) {
-    const apex = hostname.slice(4);
-    const target = new URL(request.nextUrl);
-    target.host = apex;
-    target.protocol = "https:";
-    return create_response_with_hsts(NextResponse.redirect(target, 301));
-  }
+// www → apex 301. Begge værter serverer samme indhold; uden denne redirect
+// splittes SEO-signaler mellem www.kunde.dk og kunde.dk.
+function redirect_www_to_apex(
+  hostname: string,
+  request: NextRequest,
+): NextResponse | null {
+  if (!hostname.startsWith("www.")) return null;
+  const target = new URL(request.nextUrl);
+  target.host = hostname.slice(4);
+  target.protocol = "https:";
+  return create_response_with_hsts(NextResponse.redirect(target, 301));
+}
 
-  if (hostname === "nyvia.dk") {
-    return NextResponse.next();
-  }
-
-  const tenant = await get_tenant_config(hostname);
-  if (!tenant) return create_response_with_hsts(NextResponse.next());
-
-  // 1. Tjek manuelle Redirects (Vanity URLs som /sommer)
+// Manuelle vanity-redirects (fx /sommer → /kampagne), konfigureret pr. tenant.
+function resolve_vanity_redirect(
+  tenant: TenantConfig,
+  pathname: string,
+  request: NextRequest,
+): NextResponse | null {
   const fuzzy_target = tenant.redirects[pathname];
-  if (fuzzy_target) {
-    return create_response_with_hsts(
-      NextResponse.redirect(
-        create_secure_url(fuzzy_target.destination, request),
-        fuzzy_target.type,
-      ),
-    );
-  }
-
-  // Find sproget fra URL'en (hvis det findes)
-  const lower_pathname = pathname.toLowerCase();
-  const locale_from_path = tenant.locales.find(
-    (loc) =>
-      lower_pathname === `/${loc}` || lower_pathname.startsWith(`/${loc}/`),
+  if (!fuzzy_target) return null;
+  return create_response_with_hsts(
+    NextResponse.redirect(
+      create_secure_url(fuzzy_target.destination, request),
+      fuzzy_target.type,
+    ),
   );
+}
 
-  // Home må aldrig bo på /home — canonical er roden.
-  // Kort-circuit: hvis URL'en ender på /home (med eller uden lang-prefix),
-  // redirect til den korrekte rod i ÉT hop i stedet for at lade page.tsx gøre det.
-  const path_without_locale = locale_from_path
-    ? lower_pathname.replace(`/${locale_from_path}`, "") || "/"
-    : lower_pathname;
+// Home hører kun til roden — /home (med/uden lang-prefix) redirectes i ÉT hop.
+// 308 (permanent, method-preserving) matcher page.tsx's permanentRedirect for
+// SAMME regel — ret begge steder hvis reglen ændres (der er ingen test der
+// fanger at de driver fra hinanden).
+function redirect_home_to_root(
+  tenant: TenantConfig,
+  locale_from_path: string | undefined,
+  path_without_locale: string,
+  request: NextRequest,
+): NextResponse | null {
+  if (path_without_locale !== "/home") return null;
+  const needs_prefix =
+    tenant.force_lang_prefix || locale_from_path !== tenant.default_locale;
+  const target_locale = locale_from_path || tenant.default_locale;
+  const clean_root = needs_prefix ? `/${target_locale}` : "/";
+  return create_response_with_hsts(
+    NextResponse.redirect(create_secure_url(clean_root, request), 308),
+  );
+}
 
-  if (path_without_locale === "/home") {
-    const needs_prefix =
-      tenant.force_lang_prefix || locale_from_path !== tenant.default_locale;
-    const target_locale = locale_from_path || tenant.default_locale;
-    const clean_root = needs_prefix ? `/${target_locale}` : "/";
-    return create_response_with_hsts(
-      NextResponse.redirect(create_secure_url(clean_root, request), 301),
-    );
-  }
-
+// Lokaliserings-routing: sæt x-evi-locale/x-evi-pathname og enten rewrite (sprog
+// mangler i URL), rydder-op-redirect (default-locale uden prefix) eller passthrough.
+function apply_locale_routing(
+  tenant: TenantConfig,
+  pathname: string,
+  locale_from_path: string | undefined,
+  request: NextRequest,
+): NextResponse {
   const request_headers = new Headers(request.headers);
 
-  // 2. SCENARIE: SPROGET MANGLER I URL'EN (f.eks. /kontakt)
+  // SCENARIE: sproget mangler i URL'en (fx /kontakt).
   if (!locale_from_path) {
-    // force_lang_prefix: styrer hvilken locale non-prefix URL'er mapper til.
-    //   - true:  altid tenant.default_locale (deterministisk, bot-venligt)
-    //   - false: browser-locale (skjult prefix, indhold varierer per Accept-Language)
-    //
-    // Googlebot sender ofte Accept-Language: en-US; hvis vi mappede til
-    // browser-locale i force-mode ville /kontakt ende på /en-eu/kontakt
-    // som måske ikke findes. default_locale garanterer at siden findes.
+    // force_lang_prefix: true → altid default_locale (deterministisk, bot-venligt);
+    // false → browser-locale. Googlebot sender ofte en-US; default_locale
+    // garanterer at siden findes i force-mode.
     const target_locale = tenant.force_lang_prefix
       ? tenant.default_locale
       : get_browser_locale(request, tenant.locales, tenant.default_locale);
 
     const new_path = `/${target_locale}${pathname === "/" ? "" : pathname}`;
     request_headers.set("x-evi-locale", target_locale);
-    // x-evi-pathname: kanonisk sti med locale-prefix. Bruges af server-
-    // komponenter (fx sprog-selector i header) til at bygge language-variant
-    // URLs uden at kende siden. Uden middleware kan Next ikke bare exponere
-    // pathname i server components — vi må explicit videresende det.
-    // encodeURI så non-ASCII (æøå) er header-safe; layout decoder ved read.
+    // x-evi-pathname: kanonisk sti med locale-prefix, brugt af server-komponenter
+    // (fx sprog-selector). encodeURI så non-ASCII (æøå) er header-safe.
     request_headers.set("x-evi-pathname", encodeURI(new_path));
 
-    // Rewrite (ikke redirect) i BEGGE modes: bots får 200 OK direkte i
-    // stedet for 301 som visse form-URL-validatorer afviser (fx Google
-    // Forms input). Canonical-tag i generateMetadata peger stadig på den
-    // præfikserede URL når force_lang_prefix er true, så SEO forbliver
-    // korrekt — Google indekserer /da-dk/kontakt som canonical, /kontakt
-    // som alias. Se resolve_page_url i src/lib/prismic/paths.ts.
-    //
-    // Vary: Accept-Language sikrer at caches (browser, CDN, R2) ikke
-    // serverer forkert sprogindhold til efterfølgende brugere — kun
-    // strengt nødvendigt når force er false, men sat i begge modes
-    // for at gøre cache-nøglen entydig hvis en tenant flipper indstillingen.
+    // Rewrite (ikke redirect): bots får 200 OK direkte i stedet for 301 som
+    // visse form-URL-validatorer afviser. Canonical-tag i generateMetadata
+    // holder SEO korrekt. Vary sikrer at caches ikke serverer forkert sprog.
     const response = NextResponse.rewrite(
       create_secure_url(new_path, request),
       { request: { headers: request_headers } },
@@ -153,28 +135,64 @@ export async function middleware(request: NextRequest) {
     return create_response_with_hsts(response);
   }
 
-  // 3. SCENARIE: SPROGET ER I URL'EN (f.eks. /da-dk/kontakt)
-
-  // LOGIK-TJEK: Skal vi rydde op i URL'en?
-  // Hvis det er standard-sproget (da-dk), og Jens IKKE vil have præfiks (false)
+  // SCENARIE: default-sproget står i URL'en men tenant vil ikke have prefix →
+  // ryd op (/da-dk/kontakt → /kontakt).
   if (locale_from_path === tenant.default_locale && !tenant.force_lang_prefix) {
     const clean_path = pathname.replace(`/${locale_from_path}`, "") || "/";
-    // 301 Redirect: Vi rydder op og sender dem fra /da-dk/kontakt -> /kontakt
     return create_response_with_hsts(
       NextResponse.redirect(create_secure_url(clean_path, request), 301),
     );
   }
 
-  // Ellers: Alt er som det skal være (f.eks. det er en /en-eu/ side eller force er true)
+  // Ellers: URL'en er allerede korrekt (fx /en-eu/ eller force=true).
   request_headers.set("x-evi-locale", locale_from_path);
   request_headers.set("x-evi-pathname", encodeURI(pathname));
-
-  // Send requestet videre med den nye header i bagagen
   return create_response_with_hsts(
-    NextResponse.next({
-      request: { headers: request_headers },
-    }),
+    NextResponse.next({ request: { headers: request_headers } }),
   );
+}
+
+export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const pathname = decode_pathname(request.nextUrl.pathname);
+
+  const bot = reject_bot_scanner(pathname);
+  if (bot) return bot;
+
+  // request.nextUrl.host er derived fra CF's routing (mere pålidelig end raw
+  // Host-header). validate_hostname reject'er malformede/spoofede værdier.
+  const raw_hostname =
+    request.nextUrl.host || request.headers.get("host") || "";
+  const hostname = validate_hostname(raw_hostname) || "localhost:3000";
+
+  const www = redirect_www_to_apex(hostname, request);
+  if (www) return www;
+
+  if (hostname === "nyvia.dk") return NextResponse.next();
+
+  const tenant = await get_tenant_config(hostname);
+  if (!tenant) return create_response_with_hsts(NextResponse.next());
+
+  const vanity = resolve_vanity_redirect(tenant, pathname, request);
+  if (vanity) return vanity;
+
+  const lower_pathname = pathname.toLowerCase();
+  const locale_from_path = tenant.locales.find(
+    (loc) =>
+      lower_pathname === `/${loc}` || lower_pathname.startsWith(`/${loc}/`),
+  );
+  const path_without_locale = locale_from_path
+    ? lower_pathname.replace(`/${locale_from_path}`, "") || "/"
+    : lower_pathname;
+
+  const home = redirect_home_to_root(
+    tenant,
+    locale_from_path,
+    path_without_locale,
+    request,
+  );
+  if (home) return home;
+
+  return apply_locale_routing(tenant, pathname, locale_from_path, request);
 }
 
 export const config = {

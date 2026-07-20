@@ -1,6 +1,13 @@
 "use client";
 
-export default function GlobalError({ reset }: { error: Error; reset: () => void }) {
+import type { ReactElement } from "react";
+
+export default function GlobalError({
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}): ReactElement {
   return (
     <html lang="da">
       <body
