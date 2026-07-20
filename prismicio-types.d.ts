@@ -665,7 +665,19 @@ interface SettingsDocumentData {
 	 * - **Tab**: Udseende og layout
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	color_scheme: prismic.SelectField<"Lys" | "Mørk" | "Lys & mørk (auto)", "filled">;/**
+	color_scheme: prismic.SelectField<"Lys" | "Mørk" | "Lys & mørk (auto)", "filled">;
+	
+	/**
+	 * Tekststørrelse field in *Indstillinger*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Standard (16px)
+	 * - **API ID Path**: settings.text_scale
+	 * - **Tab**: Udseende og layout
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	text_scale: prismic.SelectField<"Standard (16px)" | "Stor (18px)" | "Ekstra stor (20px)", "filled">;/**
 	 * Viderestillinger field in *Indstillinger*
 	 *
 	 * - **Field Type**: Group

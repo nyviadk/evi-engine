@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import { compute_theme_vars, DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { WIDTH_MAP } from "@/src/lib/theme/width";
 import { RADIUS_MAP } from "@/src/lib/theme/radius";
+import { TEXT_SCALE_MAP } from "@/src/lib/theme/textScale";
 import { resolveFonts } from "@/src/lib/theme/fontResolver";
 import { get_evi_context } from "@/src/lib/prismic/context";
 
@@ -72,6 +73,7 @@ export default async function RootLayout({
 
   const userWidthChoice = settings?.data?.layout_width as string;
   const userRadiusChoice = settings?.data?.border_radius as string;
+  const textScale = TEXT_SCALE_MAP[settings?.data?.text_scale as string];
 
   // Font-resolver: custom_font_input → font_select → "Inter"
   const fonts = resolveFonts({
@@ -95,6 +97,8 @@ export default async function RootLayout({
     ...computedColors,
     "--evi-max-width": WIDTH_MAP[userWidthChoice] || "1280px",
     "--radius-evi": RADIUS_MAP[userRadiusChoice] || "0.5rem",
+    "--type-scale": textScale?.scale ?? "1",
+    "--heading-damp": textScale?.headingDamp ?? "1",
     "--evi-heading-font": fonts.headingFont,
     "--evi-body-font": fonts.bodyFont,
     colorScheme,

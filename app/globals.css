@@ -49,6 +49,9 @@
   }
 
   html {
+    /* Browser-basis × tekstskala (Prismic text_scale) → skalerer HELE det
+       rem-baserede design proportionelt: tekst, spacing, nav, knapper, footer. */
+    font-size: calc(100% * var(--type-scale));
     scrollbar-gutter: stable;
     hanging-punctuation: first last;
     -webkit-font-smoothing: antialiased;
@@ -119,6 +122,15 @@
     --color-dark: #302031;
     --color-primary: #0c6170;
     --color-secondary: #4d3b4d;
+
+    /* Tekstskala (Prismic text_scale → app/layout.tsx). Ganges på html
+       font-size, så alt rem-baseret skalerer proportionelt. 1 = uændret. */
+    --type-scale: 1;
+
+    /* Dæmpning af store overskrifter (h1-h3), sat PR. tekstskala i textScale.ts
+       → app/layout.tsx: 1 = fuld skalering (Standard/Stor), <1 dæmper (Ekstra
+       stor) så display-type ikke skriger. Ganges på deres clamp. */
+    --heading-damp: 1;
 
     /* Auto-beregnede kontraster (solide) */
     --text-on-light: var(--color-dark);
@@ -454,7 +466,7 @@
      i danske sammensatte ord. Max + hældning er urørt: desktop er uændret. */
 
   .evi-prose h1 {
-    font-size: clamp(2rem, 5vw + 1rem, 3.815rem); /* 32px → f₆ 61px max */
+    font-size: calc(clamp(2rem, 5vw + 1rem, 3.815rem) * var(--heading-damp)); /* 32px → f₆ 61px max, dæmpet ved stor skala */
     line-height: 1.15;
     letter-spacing: -0.02em;
     font-weight: 700;
@@ -463,7 +475,7 @@
   }
 
   .evi-prose h2 {
-    font-size: clamp(1.625rem, 3.5vw + 0.75rem, 3.052rem); /* 26px → f₅ 49px max */
+    font-size: calc(clamp(1.625rem, 3.5vw + 0.75rem, 3.052rem) * var(--heading-damp)); /* 26px → f₅ 49px max, dæmpet */
     line-height: 1.15;
     letter-spacing: -0.015em;
     font-weight: 700;
@@ -472,7 +484,7 @@
   }
 
   .evi-prose h3 {
-    font-size: clamp(1.375rem, 2.5vw + 0.75rem, 2.441rem); /* 22px → f₄ 39px max */
+    font-size: calc(clamp(1.375rem, 2.5vw + 0.75rem, 2.441rem) * var(--heading-damp)); /* 22px → f₄ 39px max, dæmpet */
     line-height: 1.2;
     letter-spacing: -0.01em;
     font-weight: 700;

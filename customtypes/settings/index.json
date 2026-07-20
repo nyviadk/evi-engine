@@ -179,6 +179,18 @@
             "Lys & mørk (auto)"
           ]
         }
+      },
+      "text_scale": {
+        "type": "Select",
+        "config": {
+          "label": "Tekststørrelse",
+          "default_value": "Standard (16px)",
+          "options": [
+            "Standard (16px)",
+            "Stor (18px)",
+            "Ekstra stor (20px)"
+          ]
+        }
       }
     },
     "Viderestillinger": {
