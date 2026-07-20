@@ -40,6 +40,9 @@
             },
             "phone_mockup": {
               "type": "SharedSlice"
+            },
+            "testimonials": {
+              "type": "SharedSlice"
             }
           }
         }

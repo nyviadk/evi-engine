@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice
 
 /**
  * Content for Side documents
@@ -2194,6 +2194,131 @@ type PhoneMockupSliceVariation = PhoneMockupSliceMasked
  */
 export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
+/**
+ * Item in *Testimonials → Default → Primary → Anmeldelser*
+ */
+export interface TestimonialsSliceDefaultPrimaryTestimonialsItem {
+	/**
+	 * Overskrift field in *Testimonials → Default → Primary → Anmeldelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.default.primary.testimonials[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Anmeldelse field in *Testimonials → Default → Primary → Anmeldelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.default.primary.testimonials[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Afsender field in *Testimonials → Default → Primary → Anmeldelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.default.primary.testimonials[].attribution
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	attribution: prismic.RichTextField;
+	
+	/**
+	 * Boks-farve field in *Testimonials → Default → Primary → Anmeldelser*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: testimonials.default.primary.testimonials[].box_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+}
+
+/**
+ * Primary content in *Testimonials → Default → Primary*
+ */
+export interface TestimonialsSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Anmeldelser field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.default.primary.testimonials[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	testimonials: prismic.GroupField<Simplify<TestimonialsSliceDefaultPrimaryTestimonialsItem>>;
+	
+	/**
+	 * Baggrundstema field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: testimonials.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	
+	/**
+	 * Vis flere-tekst field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Læs flere
+	 * - **API ID Path**: testimonials.default.primary.more_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	more_label: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Testimonials Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TestimonialsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TestimonialsSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Testimonials*
+ */
+type TestimonialsSliceVariation = TestimonialsSliceDefault
+
+/**
+ * Testimonials Shared Slice
+ *
+ * - **API ID**: `testimonials`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TestimonialsSlice = prismic.SharedSlice<"testimonials", TestimonialsSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -2272,7 +2397,12 @@ declare module "@prismicio/client" {
 			PhoneMockupSlice,
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
-			PhoneMockupSliceMasked
+			PhoneMockupSliceMasked,
+			TestimonialsSlice,
+			TestimonialsSliceDefaultPrimaryTestimonialsItem,
+			TestimonialsSliceDefaultPrimary,
+			TestimonialsSliceVariation,
+			TestimonialsSliceDefault
 		}
 	}
 }

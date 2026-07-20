@@ -1,0 +1,95 @@
+{
+  "id": "testimonials",
+  "name": "Testimonials",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/testimonials/default/71a52e77f3d532158f7d9d8ce31b8665dd64d2ea.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "single": "heading2,strong,em"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "testimonials": {
+          "type": "Group",
+          "config": {
+            "label": "Anmeldelser",
+            "fields": {
+              "title": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Overskrift",
+                  "single": "heading3,strong,em"
+                }
+              },
+              "body": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Anmeldelse",
+                  "single": "paragraph,strong,em,hyperlink"
+                }
+              },
+              "attribution": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Afsender",
+                  "single": "paragraph,strong,em"
+                }
+              },
+              "box_color": {
+                "type": "Select",
+                "config": {
+                  "label": "Boks-farve",
+                  "default_value": "Neutral",
+                  "options": [
+                    "Neutral",
+                    "Primær",
+                    "Sekundær"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        },
+        "more_label": {
+          "type": "Text",
+          "config": {
+            "label": "Vis flere-tekst",
+            "placeholder": "Fx Læs flere"
+          }
+        }
+      }
+    }
+  ]
+}

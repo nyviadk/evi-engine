@@ -8,6 +8,7 @@ import HeaderClassic from "./HeaderClassic";
 import Hero from "./Hero";
 import Highlights from "./Highlights";
 import PhoneMockup from "./PhoneMockup";
+import Testimonials from "./Testimonials";
 
 export const components = {
 	faq: Faq,
@@ -17,5 +18,6 @@ export const components = {
 	header_classic: HeaderClassic,
 	hero: Hero,
 	highlights: Highlights,
-	phone_mockup: PhoneMockup
+	phone_mockup: PhoneMockup,
+	testimonials: Testimonials
 };
