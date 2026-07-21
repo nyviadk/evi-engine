@@ -13,6 +13,12 @@
       "skillPath": "skills/cloudflare/SKILL.md",
       "computedHash": "3db237b77d15da8ee3ee87b73f2d4b2bce1c43e4f066613fb3c7ea2ad626390c"
     },
+    "fallow": {
+      "source": "fallow-rs/fallow-skills",
+      "sourceType": "github",
+      "skillPath": "fallow/skills/fallow/SKILL.md",
+      "computedHash": "bb1c8051e571d03013c21a0a5160239cdcd0991dcb20eebba55a8fb3b24ab507"
+    },
     "next-best-practices": {
       "source": "vercel-labs/next-skills",
       "sourceType": "github",
