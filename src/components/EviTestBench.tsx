@@ -15,6 +15,7 @@ import { EviCard } from "@/src/components/ui/EviCard";
 import { EviPhoneCarousel } from "@/src/components/ui/EviPhoneCarousel";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
+import { compute_theme_vars } from "@/src/lib/theme/colors";
 
 // Placeholder screenshot i iPhone-portrait ratio.
 const MOCK_PHONE_IMAGE = {
@@ -24,147 +25,6 @@ const MOCK_PHONE_IMAGE = {
   copyright: null,
   dimensions: { width: 720, height: 1560 },
 } as unknown as ImageField;
-
-// ── Client-side WCAG contrast (mirrors src/lib/colors.ts) ──
-
-function hex_to_rgb(hex: string): [number, number, number] {
-  const h = hex.replace("#", "");
-  const full =
-    h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
-  return [
-    parseInt(full.slice(0, 2), 16),
-    parseInt(full.slice(2, 4), 16),
-    parseInt(full.slice(4, 6), 16),
-  ];
-}
-
-function srgb_to_linear(c: number) {
-  const s = c / 255;
-  return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-}
-
-function luminance(r: number, g: number, b: number) {
-  return (
-    0.2126 * srgb_to_linear(r) +
-    0.7152 * srgb_to_linear(g) +
-    0.0722 * srgb_to_linear(b)
-  );
-}
-
-function contrast_ratio(l1: number, l2: number) {
-  const lighter = Math.max(l1, l2);
-  const darker = Math.min(l1, l2);
-  return (lighter + 0.05) / (darker + 0.05);
-}
-
-function contrast_color(surface: string, a: string, b: string) {
-  const sl = luminance(...hex_to_rgb(surface));
-  const ar = contrast_ratio(sl, luminance(...hex_to_rgb(a)));
-  const br = contrast_ratio(sl, luminance(...hex_to_rgb(b)));
-  return ar >= br ? a : b;
-}
-
-function mix_rgb(
-  base: [number, number, number],
-  overlay: [number, number, number],
-  amount: number,
-): [number, number, number] {
-  return [
-    Math.round(base[0] * (1 - amount) + overlay[0] * amount),
-    Math.round(base[1] * (1 - amount) + overlay[1] * amount),
-    Math.round(base[2] * (1 - amount) + overlay[2] * amount),
-  ];
-}
-
-function rgb_to_hex(r: number, g: number, b: number) {
-  return `#${[r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
-}
-
-function compute_btn_on_section(
-  btn_color: string,
-  btn_text: string,
-  section_bg: string,
-  section_text: string,
-): { bg: string; text: string; ink: string } {
-  const ratio = contrast_ratio(
-    luminance(...hex_to_rgb(btn_color)),
-    luminance(...hex_to_rgb(section_bg)),
-  );
-  return {
-    bg: ratio >= 1.5 ? btn_color : section_text,
-    text: ratio >= 1.5 ? btn_text : section_bg,
-    ink: ratio >= 4.5 ? btn_color : section_text,
-  };
-}
-
-function apply_theme(
-  light: string,
-  dark: string,
-  primary: string,
-  secondary: string,
-) {
-  // Solid contrast
-  const text_on_light = contrast_color(light, dark, light);
-  const text_on_dark = contrast_color(dark, dark, light);
-  const text_on_primary = contrast_color(primary, dark, light);
-  const text_on_secondary = contrast_color(secondary, dark, light);
-
-  // Soft contrast
-  const light_rgb = hex_to_rgb(light);
-  const soft_vars: Record<string, string> = {};
-  for (const [name, hex] of [
-    ["light", light],
-    ["dark", dark],
-    ["primary", primary],
-    ["secondary", secondary],
-  ] as const) {
-    const mixed = rgb_to_hex(...mix_rgb(light_rgb, hex_to_rgb(hex), 0.1));
-    soft_vars[`--text-on-${name}-soft`] = contrast_color(mixed, dark, light);
-  }
-
-  // Button safety vars
-  const sections = [
-    { name: "light", bg: light, text: text_on_light },
-    { name: "dark", bg: dark, text: text_on_dark },
-    { name: "primary", bg: primary, text: text_on_primary },
-    { name: "secondary", bg: secondary, text: text_on_secondary },
-  ];
-
-  const btn_vars: Record<string, string> = {};
-  for (const btn of [
-    { name: "primary", color: primary, text: text_on_primary },
-    { name: "secondary", color: secondary, text: text_on_secondary },
-  ]) {
-    for (const section of sections) {
-      const result = compute_btn_on_section(
-        btn.color,
-        btn.text,
-        section.bg,
-        section.text,
-      );
-      btn_vars[`--btn-${btn.name}-bg-on-${section.name}`] = result.bg;
-      btn_vars[`--btn-${btn.name}-text-on-${section.name}`] = result.text;
-      btn_vars[`--btn-${btn.name}-ink-on-${section.name}`] = result.ink;
-    }
-  }
-
-  const vars: Record<string, string> = {
-    "--color-light": light,
-    "--color-dark": dark,
-    "--color-primary": primary,
-    "--color-secondary": secondary,
-    "--text-on-light": text_on_light,
-    "--text-on-dark": text_on_dark,
-    "--text-on-primary": text_on_primary,
-    "--text-on-secondary": text_on_secondary,
-    ...soft_vars,
-    ...btn_vars,
-  };
-
-  for (const [k, v] of Object.entries(vars)) {
-    document.body.style.setProperty(k, v);
-  }
-}
 
 // ── Fake slices ──
 
@@ -239,7 +99,20 @@ export function EviTestBench(): ReactElement {
   const gridContexts = compute_slice_contexts(gridDemoSlices, colors);
 
   useEffect(() => {
-    apply_theme(light, dark, primary, secondary);
+    // Genbruger produktionens theme-beregning (colors.ts), men bevarer den
+    // PRÆ-refactor var-mængde 1:1: den gamle apply_theme satte IKKE --theme-link-*
+    // på benchen, så vi springer dem over (ren refactor, ingen adfærdsændring).
+    // Produktionens <html> sætter link-vars uændret andetsteds.
+    const vars = compute_theme_vars({
+      color_light: light,
+      color_dark: dark,
+      color_primary: primary,
+      color_secondary: secondary,
+    });
+    for (const [key, value] of Object.entries(vars)) {
+      if (key.startsWith("--theme-link-")) continue;
+      document.body.style.setProperty(key, String(value));
+    }
   }, [light, dark, primary, secondary]);
 
   return (

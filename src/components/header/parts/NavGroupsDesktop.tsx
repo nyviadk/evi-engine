@@ -1,46 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/src/lib/utils/cn";
 import { is_active_path } from "@/src/components/header/parts/navActive";
-import type {
-  NavGroup,
-  NavLink,
-} from "@/src/components/header/parts/navGroups";
+import { NavAnchor } from "@/src/components/header/parts/NavAnchor";
+import type { NavGroup } from "@/src/components/header/parts/navGroups";
 
 const ITEM =
   "block rounded-evi px-3 py-2 text-current no-underline hover:bg-current/5 focus-visible:outline-2 focus-visible:outline-offset-2";
-const ACTIVE = "font-semibold underline decoration-2 underline-offset-4";
-
-function NavAnchor({
-  item,
-  active,
-  className,
-  children,
-}: {
-  item: NavLink;
-  active: boolean;
-  className?: string;
-  children?: React.ReactNode;
-}): React.ReactElement {
-  const cls = cn(ITEM, active && ACTIVE, className);
-  return item.external ? (
-    <a href={item.href} target={item.target} rel={item.rel} className={cls}>
-      {children ?? item.label}
-    </a>
-  ) : (
-    <Link
-      href={item.href}
-      aria-current={active ? "page" : undefined}
-      className={cls}
-    >
-      {children ?? item.label}
-    </Link>
-  );
-}
 
 export type NavGroupsDesktopProps = { groups: NavGroup[]; lang?: string };
 
@@ -75,7 +44,7 @@ export function NavGroupsDesktop({
               <NavAnchor
                 item={top}
                 active={topActive}
-                className="inline-flex items-center"
+                className={cn(ITEM, "inline-flex items-center")}
               >
                 {top.label}
                 {chevron}
@@ -99,6 +68,7 @@ export function NavGroupsDesktop({
                       <NavAnchor
                         item={item}
                         active={is_active_path(item.href, pathname, lang)}
+                        className={ITEM}
                       />
                     </li>
                   );

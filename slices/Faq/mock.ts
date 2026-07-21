@@ -1,8 +1,9 @@
 // SYNTETISK MOCK-DATA — bruges kun til slice-preview-generering.
 // Se R4.7 i regelbogen (memory: project_rulebook.md).
 
-import type { Content, LinkField, RichTextField } from "@prismicio/client";
+import type { Content } from "@prismicio/client";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
+import { line, h2, h3, webLink } from "@/src/lib/preview/mockFields";
 
 // Mock ejer sin egen preview-context.
 export const context: EviPageSliceContext = {
@@ -12,18 +13,6 @@ export const context: EviPageSliceContext = {
 
 // Fuld-bredde sektion → block w-full (ellers kollapser layoutet i previewet).
 export const previewWrapperClassName = "block w-full";
-
-const line = (text: string): RichTextField => [
-  { type: "paragraph", text, spans: [], direction: "ltr" },
-];
-const h2 = (text: string): RichTextField => [
-  { type: "heading2", text, spans: [], direction: "ltr" },
-];
-const h3 = (text: string): RichTextField => [
-  { type: "heading3", text, spans: [], direction: "ltr" },
-];
-const webLink = (text: string): LinkField =>
-  ({ link_type: "Web", url: "#", text }) as unknown as LinkField;
 
 const faq = (question: string, answer: string) => ({
   question: h3(question),

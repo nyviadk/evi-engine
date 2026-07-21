@@ -50,7 +50,7 @@ export async function sync_tenants_for_repo(
   };
 }
 
-export async function sync_one_tenant(hostname: string): Promise<SyncStatus> {
+async function sync_one_tenant(hostname: string): Promise<SyncStatus> {
   const existing = await get_tenant_config(hostname);
   if (!existing || !existing.repo || !existing.prismic_token) {
     console.warn(
@@ -138,7 +138,7 @@ function map_redirects(
   return out;
 }
 
-export async function compute_synced_hash(
+async function compute_synced_hash(
   fields: SyncedFields,
 ): Promise<string> {
   const canonical = stable_stringify(fields);

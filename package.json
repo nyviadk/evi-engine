@@ -9,6 +9,7 @@
     "lint": "node scripts/check-prismic-guards.mjs && eslint .",
     "lint:fix": "eslint . --fix",
     "check:prismic-guards": "node scripts/check-prismic-guards.mjs",
+    "test": "tsx --test \"src/**/*.test.ts\"",
     "format": "prettier --write .",
     "evi:sync-slices": "tsx scripts/sync-slices.ts",
     "evi:preview-slices": "node scripts/preview-slices.mjs",

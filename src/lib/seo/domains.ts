@@ -1,5 +1,5 @@
 // Vi skriver KUN den rene version af domænerne her! Ingen www.
-export const OFFICIAL_NYVIA_DOMAINS = [
+const OFFICIAL_NYVIA_DOMAINS = [
   "nyvia.dk",
   "evi.nyvia.dk",
   "horizon.nyvia.dk",

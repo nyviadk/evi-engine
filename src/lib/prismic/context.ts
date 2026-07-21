@@ -51,10 +51,6 @@ export const get_evi_tenant = cache(async () => {
   return { hostname, lang, tenant, client };
 });
 
-export type EviTenantContext = NonNullable<
-  Awaited<ReturnType<typeof get_evi_tenant>>
->;
-
 // ── Tier 1: per-route helpers ──
 
 /**

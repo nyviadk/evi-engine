@@ -14,7 +14,7 @@ export type SliceWithPrimary = {
  * flash). Resten lazy-loades. Position-baseret → automatisk korrekt uanset
  * hvor editor placerer en billed-slice.
  */
-export const EAGER_ABOVE_FOLD_SLICES = 3;
+const EAGER_ABOVE_FOLD_SLICES = 3;
 
 export interface SliceContext {
   theme: string;

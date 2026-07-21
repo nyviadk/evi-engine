@@ -42,13 +42,13 @@ type DrawerState = { open: boolean };
 type DrawerActions = { open: () => void; close: () => void };
 type DrawerMeta = { panelId: string };
 
-export type EviDrawerContextValue = {
+type EviDrawerContextValue = {
   state: DrawerState;
   actions: DrawerActions;
   meta: DrawerMeta;
 };
 
-export const EviDrawerContext = createContext<EviDrawerContextValue | null>(
+const EviDrawerContext = createContext<EviDrawerContextValue | null>(
   null,
 );
 
@@ -64,7 +64,7 @@ function useEviDrawer(): EviDrawerContextValue {
 
 // ── Provider ──
 
-export type EviDrawerProviderProps = {
+type EviDrawerProviderProps = {
   children: ReactNode;
   panelId?: string;
 };

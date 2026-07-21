@@ -1,12 +1,12 @@
 "use client";
 
 import { useId, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/src/lib/utils/cn";
 import { is_active_path } from "@/src/components/header/parts/navActive";
+import { NavAnchor } from "@/src/components/header/parts/NavAnchor";
 import type {
   NavGroup,
   NavLink,
@@ -14,32 +14,6 @@ import type {
 
 const ROW =
   "block rounded-evi px-3 py-3 text-current no-underline hover:bg-current/5 focus-visible:outline-2 focus-visible:outline-offset-2";
-const ACTIVE = "font-semibold underline decoration-2 underline-offset-4";
-
-function MobileAnchor({
-  item,
-  active,
-  className,
-}: {
-  item: NavLink;
-  active: boolean;
-  className?: string;
-}): React.ReactElement {
-  const cls = cn(ROW, active && ACTIVE, className);
-  return item.external ? (
-    <a href={item.href} target={item.target} rel={item.rel} className={cls}>
-      {item.label}
-    </a>
-  ) : (
-    <Link
-      href={item.href}
-      aria-current={active ? "page" : undefined}
-      className={cls}
-    >
-      {item.label}
-    </Link>
-  );
-}
 
 function Dropdown({
   items,
@@ -62,9 +36,10 @@ function Dropdown({
         const itemKey = `${ii}-${item.href}`;
         return (
           <li key={itemKey}>
-            <MobileAnchor
+            <NavAnchor
               item={item}
               active={is_active_path(item.href, pathname, lang)}
+              className={ROW}
             />
           </li>
         );
@@ -98,9 +73,10 @@ function MobileNavGroup({
     return (
       <li>
         {top.kind === "link" ? (
-          <MobileAnchor
+          <NavAnchor
             item={top}
             active={is_active_path(top.href, pathname, lang)}
+            className={ROW}
           />
         ) : (
           <span className={cn(ROW, "cursor-default opacity-60")}>
@@ -143,9 +119,10 @@ function MobileNavGroup({
     <li>
       {/* Kun teksten navigerer; resten af rækken + pilen er toggle-knappen. */}
       <div className="flex items-stretch">
-        <MobileAnchor
+        <NavAnchor
           item={top}
           active={is_active_path(top.href, pathname, lang)}
+          className={ROW}
         />
         <button
           type="button"

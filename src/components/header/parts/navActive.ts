@@ -1,12 +1,12 @@
 /** Sti uden query/hash og uden efterstillet skråstreg (roden forbliver "/"). */
-export function normalize_path(path: string): string {
+function normalize_path(path: string): string {
   const trimmed = (path.split(/[?#]/)[0] ?? path).replace(/\/+$/, "");
   return trimmed === "" ? "/" : trimmed;
 }
 
 /** Fjern ledende `/<lang>`-segment, så en præfikset sti og et præfiks-løst link
  *  lander i samme sti-rum. */
-export function strip_locale(path: string, lang?: string): string {
+function strip_locale(path: string, lang?: string): string {
   if (!lang) return path;
   if (path === `/${lang}`) return "/";
   if (path.startsWith(`/${lang}/`)) return path.slice(lang.length + 1);

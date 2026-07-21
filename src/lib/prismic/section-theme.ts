@@ -12,7 +12,7 @@
  *
  * Prismic Select-feltets `option`-strings ER labels her — hold dem synk'et.
  */
-export const SECTION_THEME_MAP = {
+const SECTION_THEME_MAP = {
   Lys: "light",
   Mørk: "dark",
   Primær: "primary",

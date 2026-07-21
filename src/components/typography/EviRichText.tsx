@@ -54,8 +54,8 @@ type SharedProps = {
   extraComponents?: RichTextComponents;
 };
 
-export type EviRichTextRawProps = SharedProps;
-export type EviRichTextProps = SharedProps &
+type EviRichTextRawProps = SharedProps;
+type EviRichTextProps = SharedProps &
   Omit<React.ComponentProps<"div">, "children">;
 
 // Heading-overrides hoistes til modul-niveau — de capture ingen variabler,
