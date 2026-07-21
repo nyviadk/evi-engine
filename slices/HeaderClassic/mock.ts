@@ -37,6 +37,18 @@ export const context: EviHeaderSliceContext = {
   languageUrls: {},
 };
 
+// Et menupunkt: url = "#" → rigtigt link; url = null → rent tekst-top (fx
+// "Shop" hvor der ikke findes en samleside). Første link i en gruppe = det
+// synlige punkt, resten = dropdown.
+let navKey = 0;
+const link = (text: string, url: string | null) => {
+  navKey += 1;
+  const key = String(navKey);
+  return url === null
+    ? { link_type: "Any" as const, key, text }
+    : { link_type: "Web" as const, url, key, text };
+};
+
 export const mock: Record<string, Content.HeaderClassicSlice> = {
   default: {
     id: "mock-header-classic-default",
@@ -46,17 +58,43 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
     version: "sktwi1xtmkfgx8626",
     items: [],
     primary: {
-      // Tom logo → BrandLink falder tilbage til site_name (via settings.data.site_name).
-      // settings er null i preview → BrandLink falder yderligere tilbage til hostname.
-      // hostname er PERSONA.domain → "kaffemolle.example" vises som brand-tekst.
+      // Tom logo → BrandLink falder tilbage til site_name (settings null i
+      // preview → videre til hostname = PERSONA.domain som brand-tekst).
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       logo: {} as Content.HeaderClassicSliceDefaultPrimary["logo"],
-      nav_items: PERSONA.nav.top.map((label, i) => ({
-        link_type: "Web" as const,
-        url: "#",
-        key: String(i + 1),
-        text: label,
-      })) as Content.HeaderClassicSliceDefaultPrimary["nav_items"],
+      nav_groups: [
+        // Link-top MED dropdown
+        {
+          links: [
+            link("Kaffe", "#"),
+            link("Kaffedrikke", "#"),
+            link("Espressobar", "#"),
+            link("Filterkaffe", "#"),
+          ],
+        },
+        // Tekst-top (ingen samleside) MED dropdown
+        {
+          links: [
+            link("Shop", null),
+            link("Brygudstyr", "#"),
+            link("Gavekort", "#"),
+            link("Abonnement", "#"),
+            link("Kurser", "#"),
+          ],
+        },
+        // Link-top MED dropdown
+        {
+          links: [
+            link("Om os", "#"),
+            link("Vores historie", "#"),
+            link("Kaffefarmerne", "#"),
+            link("Bæredygtighed", "#"),
+          ],
+        },
+        // Enkelt-links (ingen dropdown)
+        { links: [link("Blog", "#")] },
+        { links: [link("Kontakt", "#")] },
+      ] as Content.HeaderClassicSliceDefaultPrimary["nav_groups"],
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       cta_link: {
         link_type: "Web" as const,

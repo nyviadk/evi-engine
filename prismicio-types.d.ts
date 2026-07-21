@@ -1638,6 +1638,21 @@ type FooterColumnTextSliceVariation = FooterColumnTextSliceDefault
 export type FooterColumnTextSlice = prismic.SharedSlice<"footer_column_text", FooterColumnTextSliceVariation>;
 
 /**
+ * Item in *HeaderClassic → Default → Primary → Menupunkter*
+ */
+export interface HeaderClassicSliceDefaultPrimaryNavGroupsItem {
+	/**
+	 * Links field in *HeaderClassic → Default → Primary → Menupunkter*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: header_classic.default.primary.nav_groups[].links
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+}
+
+/**
  * Primary content in *HeaderClassic → Default → Primary*
  */
 export interface HeaderClassicSliceDefaultPrimary {
@@ -1652,16 +1667,6 @@ export interface HeaderClassicSliceDefaultPrimary {
 	logo: prismic.ImageField<never>;
 	
 	/**
-	 * Menupunkter field in *HeaderClassic → Default → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: Tilføj links med tekst
-	 * - **API ID Path**: header_classic.default.primary.nav_items
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	nav_items: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
-	
-	/**
 	 * Call-to-action field in *HeaderClassic → Default → Primary*
 	 *
 	 * - **Field Type**: Link
@@ -1670,6 +1675,16 @@ export interface HeaderClassicSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Menupunkter field in *HeaderClassic → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: header_classic.default.primary.nav_groups[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	nav_groups: prismic.GroupField<Simplify<HeaderClassicSliceDefaultPrimaryNavGroupsItem>>;
 }
 
 /**
@@ -2390,6 +2405,7 @@ declare module "@prismicio/client" {
 			FooterColumnTextSliceVariation,
 			FooterColumnTextSliceDefault,
 			HeaderClassicSlice,
+			HeaderClassicSliceDefaultPrimaryNavGroupsItem,
 			HeaderClassicSliceDefaultPrimary,
 			HeaderClassicSliceVariation,
 			HeaderClassicSliceDefault,

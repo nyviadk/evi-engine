@@ -3,7 +3,9 @@ import { isFilled } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 
 import { BrandLink } from "@/src/components/header/parts/BrandLink";
-import { NavList } from "@/src/components/header/parts/NavList";
+import { resolve_nav_groups } from "@/src/components/header/parts/navGroups";
+import { NavGroupsDesktop } from "@/src/components/header/parts/NavGroupsDesktop";
+import { NavGroupsMobile } from "@/src/components/header/parts/NavGroupsMobile";
 import { HeaderCTAButton } from "@/src/components/header/parts/HeaderCTAButton";
 import { LanguageSelector } from "@/src/components/header/parts/LanguageSelector";
 import { MobileNavDrawer } from "@/src/components/header/parts/MobileNavDrawer";
@@ -63,6 +65,7 @@ export default function HeaderClassic({
 
   const allow_brand_translation = settings?.data?.translate_brand === true;
   const navBreakpoint = NAV_BREAKPOINT[mobileNavBreakpoint ?? ""] ?? "48rem";
+  const navGroups = resolve_nav_groups(primary.nav_groups, linkResolver);
 
   const brand = (
     <BrandLink
@@ -80,11 +83,7 @@ export default function HeaderClassic({
   // der ikke opstår layer-konflikt med Tailwinds display-utility (jf. globals H).
   const centerNav = (
     <nav aria-label="Hovedmenu" className="evi-nav-desktop">
-      <NavList
-        items={primary.nav_items}
-        linkResolver={linkResolver}
-        lang={lang}
-      />
+      <NavGroupsDesktop groups={navGroups} lang={lang} />
     </nav>
   );
 
@@ -118,12 +117,7 @@ export default function HeaderClassic({
         )}
         <MobileNavDrawer>
           <EviStack as="nav" aria-label="Hovedmenu" gap="xs">
-            <NavList
-              items={primary.nav_items}
-              linkResolver={linkResolver}
-              lang={lang}
-              itemClassName="py-3 text-lg"
-            />
+            <NavGroupsMobile groups={navGroups} lang={lang} />
           </EviStack>
           {isFilled.link(primary.cta_link) && (
             <HeaderCTAButton

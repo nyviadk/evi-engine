@@ -7,7 +7,7 @@
       "id": "default",
       "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/header_classic/default/64a44b7534ffa22d17bb2995b49f0a2ac0f3c781.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/header_classic/default/45cee471aa8b175167b0f8c13a1c87b90725c14c.png?auto=compress%2Cformat",
       "docURL": "",
       "version": "",
       "primary": {
@@ -23,16 +23,6 @@
             "thumbnails": []
           }
         },
-        "nav_items": {
-          "type": "Link",
-          "config": {
-            "label": "Menupunkter",
-            "placeholder": "Tilføj links med tekst",
-            "allowTargetBlank": true,
-            "allowText": true,
-            "repeat": true
-          }
-        },
         "cta_link": {
           "type": "Link",
           "config": {
@@ -40,6 +30,23 @@
             "placeholder": "Valgfri — hvis tom vises ingen knap",
             "allowTargetBlank": true,
             "allowText": true
+          }
+        },
+        "nav_groups": {
+          "type": "Group",
+          "config": {
+            "label": "Menupunkter",
+            "fields": {
+              "links": {
+                "type": "Link",
+                "config": {
+                  "label": "Links",
+                  "allowTargetBlank": true,
+                  "allowText": true,
+                  "repeat": true
+                }
+              }
+            }
           }
         }
       }
