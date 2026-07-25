@@ -999,16 +999,25 @@
     visibility: hidden;
     opacity: 0;
     translate: 0 -0.25rem;
+    /* pointer-events transitioneres IKKE (i modsætning til visibility, der bliver
+       "visible" i fade-ud'ens 130ms) → panelet er ikke-hit-testbart fra frame ét:
+       intet klik, markøren falder igennem, ingen stale link-hover. Sikkert her
+       fordi hover er JS-styret — fall-through udløser ingen genåbning. */
+    pointer-events: none;
     transition:
       opacity 130ms ease-out,
       translate 130ms ease-out,
       visibility 130ms;
   }
-  .evi-nav-group:hover > .evi-nav-dropdown,
+  /* Åben via pointer (JS `[data-open]`) ELLER tastatur-fokus. Pointer-hover er
+     JS-styret (ikke CSS `:hover`) så klik kan lukke uden at hover flimrer det åbent
+     igen — se NavGroupsDesktop. `:focus-within` beholdes for tastatur. */
+  .evi-nav-group[data-open] > .evi-nav-dropdown,
   .evi-nav-group:focus-within > .evi-nav-dropdown {
     visibility: visible;
     opacity: 1;
     translate: 0 0;
+    pointer-events: auto;
   }
 
   /* Base (mobil-first): desktop-cluster skjult, mobil-cluster vist. Den

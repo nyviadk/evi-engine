@@ -40,7 +40,17 @@
       "PowerShell(npx prismic slice add-variation \"About\" --to hero --id about 2>&1)",
       "Bash(set -eo pipefail)",
       "Bash(npx next *)",
-      "Bash(echo \"dev pid: $!\")"
+      "Bash(echo \"dev pid: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:55010/slice-preview/header_classic/default)",
+      "Bash(taskkill //F //PID 45464)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f \"next-server\")",
+      "Bash(echo \"pid $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:55011/slice-preview/header_classic/default)",
+      "Bash(sed -i 's/54994/55011/' _verify.mjs)",
+      "Bash(node _verify.mjs)",
+      "Bash(pkill -f \"_verify.mjs\")",
+      "Bash(rm -f _verify.mjs _num_*.png _shot_*.png)"
     ]
   }
 }

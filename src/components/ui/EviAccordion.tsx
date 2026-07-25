@@ -1,12 +1,14 @@
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/src/lib/utils/cn";
+import { EviAccordionSummary } from "@/src/components/ui/EviAccordionSummary";
 
 /**
- * EviAccordion — liste af native `<details>`-disclosures (ingen JS, tastatur +
- * skærmlæser gratis, samme filosofi som EviDrawer's native `<dialog>`). Åben/luk
- * animeres via `::details-content` i globals.css (progressivt: browsere uden
- * support åbner/lukker øjeblikkeligt — stadig fuldt funktionelt), og den globale
- * `prefers-reduced-motion`-reset slår animationen fra.
+ * EviAccordion — liste af native `<details>`-disclosures (tastatur + skærmlæser
+ * gratis, samme filosofi som EviDrawer's native `<dialog>`). Åben/luk animeres via
+ * `::details-content` i globals.css (progressivt: browsere uden support åbner/lukker
+ * øjeblikkeligt — stadig fuldt funktionelt), og den globale `prefers-reduced-motion`-
+ * reset slår animationen fra. Toggle er 100% native/ingen JS; kun `<summary>` bærer
+ * en lille klient-handler ([[EviAccordionSummary]]) der undgår dobbeltklik-markering.
  *
  * @example
  * <EviAccordion>
@@ -51,13 +53,13 @@ export function EviAccordionItem({
       className={cn("border-b border-current/10", className)}
       {...props}
     >
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 [&::-webkit-details-marker]:hidden">
+      <EviAccordionSummary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 focus-visible:outline-2 focus-visible:outline-offset-2 [&::-webkit-details-marker]:hidden">
         <div className="min-w-0 flex-1">{summary}</div>
         <ChevronDown
           className="evi-accordion-chevron size-5 shrink-0"
           aria-hidden
         />
-      </summary>
+      </EviAccordionSummary>
       <div className="pb-5">{children}</div>
     </details>
   );

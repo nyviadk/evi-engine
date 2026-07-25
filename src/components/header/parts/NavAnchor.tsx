@@ -18,15 +18,24 @@ export function NavAnchor({
   active,
   className,
   children,
+  onClick,
 }: {
   item: NavLink;
   active: boolean;
   className?: string;
   children?: React.ReactNode;
+  /** Fx til at blur'e ankeret ved klik (lukker desktop-dropdownen efter nav). */
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }): React.ReactElement {
   const cls = cn(className, active && NAV_ACTIVE);
   return item.external ? (
-    <a href={item.href} target={item.target} rel={item.rel} className={cls}>
+    <a
+      href={item.href}
+      target={item.target}
+      rel={item.rel}
+      className={cls}
+      onClick={onClick}
+    >
       {children ?? item.label}
     </a>
   ) : (
@@ -34,6 +43,7 @@ export function NavAnchor({
       href={item.href}
       aria-current={active ? "page" : undefined}
       className={cls}
+      onClick={onClick}
     >
       {children ?? item.label}
     </Link>

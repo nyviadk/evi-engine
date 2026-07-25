@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
@@ -15,9 +16,17 @@ export type NavGroupsDesktopProps = { groups: NavGroup[]; lang?: string };
 
 /**
  * Desktop-nav med dropdowns. Top-punktet (link eller ren tekst) står i baren;
- * har gruppen dropdown-links, folder de ud på hover/tastatur-fokus — ren CSS
- * (`:hover`/`:focus-within`, se globals H), ingen JS. Aktivt punkt via
- * usePathname (headeren re-renderes ikke server-side ved soft-navigation).
+ * har gruppen dropdown-links, folder de ud på hover (pointer) / tastatur-fokus.
+ * Aktivt punkt via usePathname (headeren re-renderes ikke server-side ved
+ * soft-navigation).
+ *
+ * Åben-tilstand er JS-STYRET (pointer enter/leave → `openIdx`), IKKE CSS `:hover`.
+ * Grunden: en ren hover-menu kan ikke lukkes på klik — pointeren står stadig over
+ * panelet, så `:hover` (eller enhver "skjul + ryd på pointerleave"-hack) flimrer
+ * det åbent igen. Med state genåbner panelet KUN ved en ægte NY pointer-enter i
+ * gruppen; at lukke på klik efterlader det lukket indtil man rehover'er. Tastatur
+ * bruger fortsat CSS `:focus-within` (uafhængig sti); klik blur'er så fokus ikke
+ * holder det åbent.
  *
  * Keys = index + label/href: labels/URLs er ikke garanteret unikke (editor kan
  * gentage dem), så index sikrer entydighed; listen reorderes ikke i runtime.
@@ -27,6 +36,14 @@ export function NavGroupsDesktop({
   lang,
 }: NavGroupsDesktopProps): React.ReactElement {
   const pathname = usePathname();
+  // Hvilken gruppe er åben via pointer (én ad gangen, som en menubar). null = ingen.
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const closeOnClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.currentTarget.blur(); // slip :focus-within (tastatur-stien)
+    setOpenIdx(null);
+  };
+
   return (
     <ul className="evi-nav-groups">
       {groups.map((group, gi) => {
@@ -39,11 +56,22 @@ export function NavGroupsDesktop({
           <ChevronDown size={16} aria-hidden className="ml-0.5 shrink-0" />
         ) : null;
         return (
-          <li key={groupKey} className="evi-nav-group">
+          <li
+            key={groupKey}
+            className="evi-nav-group"
+            data-open={hasDropdown && openIdx === gi ? "" : undefined}
+            onPointerEnter={hasDropdown ? () => setOpenIdx(gi) : undefined}
+            onPointerLeave={
+              hasDropdown
+                ? () => setOpenIdx((cur) => (cur === gi ? null : cur))
+                : undefined
+            }
+          >
             {top.kind === "link" ? (
               <NavAnchor
                 item={top}
                 active={topActive}
+                onClick={hasDropdown ? closeOnClick : undefined}
                 className={cn(ITEM, "inline-flex items-center")}
               >
                 {top.label}
@@ -68,6 +96,7 @@ export function NavGroupsDesktop({
                       <NavAnchor
                         item={item}
                         active={is_active_path(item.href, pathname, lang)}
+                        onClick={closeOnClick}
                         className={ITEM}
                       />
                     </li>
