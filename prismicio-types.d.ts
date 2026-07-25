@@ -192,6 +192,18 @@ interface BusinessDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	custom_schema_json: prismic.KeyTextField;
+	
+	/**
+	 * FAQ-schema (Bing + AI-svarmaskiner) field in *Business*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Ja
+	 * - **API ID Path**: business.faq_schema
+	 * - **Tab**: Avanceret SEO
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	faq_schema: prismic.SelectField<"Ja" | "Nej", "filled">;
 }
 
 /**

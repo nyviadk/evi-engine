@@ -8,6 +8,7 @@ import type {
   PersonLeaf,
   CorporationLeaf,
   WebSiteLeaf,
+  FAQPage,
 } from "schema-dts";
 import { isFilled } from "@prismicio/client";
 import type {
@@ -20,9 +21,13 @@ import type {
 interface SchemaInput {
   business: BusinessDocumentData | null;
   baseUrl: string;
+  /** Nuværende sides canonical URL — binder FAQPage-noden til den rigtige (under)side. */
+  pageUrl: string;
   /** Breadcrumb-sti med RIGTIGE titler + opløste URLs (rod→blad, ekskl. home). */
   breadcrumbs: readonly { name: string; url: string }[];
   siteName?: string | null;
+  /** Udtrukne FAQ Q&A fra sidens faq-slices (question=ren tekst, answer=HTML). */
+  faqItems?: readonly { question: string; answer: string }[];
 }
 
 // ── Schema mode constants (matcher Prismic select-værdier) ──
@@ -150,10 +155,35 @@ function buildWebSiteSchema(
   };
 }
 
+// FAQPage — side-indholds-drevet (ikke business). Er en WebPage-subtype, så den
+// bærer sidens egen `url`/`@id` (ellers ville den i grafen hænge tvetydigt på
+// baseUrl/forsiden) og `isPartOf` binder den til WebSite-noden. Googles FAQ-rich-
+// result udgik maj 2026 → dette er primært for Bing/AI-svarmaskiner + ren graf.
+function buildFaqPageSchema(
+  faqItems: readonly { question: string; answer: string }[],
+  pageUrl: string,
+  baseUrl: string,
+): FAQPage {
+  return {
+    "@type": "FAQPage",
+    "@id": `${pageUrl}#faqpage`,
+    url: pageUrl,
+    isPartOf: { "@id": `${baseUrl}/#website` },
+    mainEntity: faqItems.map((it) => ({
+      "@type": "Question",
+      name: it.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: it.answer,
+      },
+    })),
+  };
+}
+
 // ── Main collector ──
 
 export function collectSchemaGraph(input: SchemaInput): Graph | null {
-  const { business, baseUrl, breadcrumbs, siteName } = input;
+  const { business, baseUrl, pageUrl, breadcrumbs, siteName, faqItems } = input;
 
   const mode = business?.schema_mode || MODE_AUTO;
   const graph: Thing[] = [];
@@ -190,6 +220,13 @@ export function collectSchemaGraph(input: SchemaInput): Graph | null {
         e instanceof Error ? e.message : e,
       );
     }
+  }
+
+  // 5. FAQPage — opt-out via business.faq_schema="Nej" (default Ja, også når der
+  //    ikke er nogen business-doc). Uafhængig af schema_mode; kun hvis siden har
+  //    mindst ét udfyldt spørgsmål/svar.
+  if (business?.faq_schema !== "Nej" && faqItems && faqItems.length > 0) {
+    graph.push(buildFaqPageSchema(faqItems, pageUrl, baseUrl));
   }
 
   if (graph.length === 0) return null;

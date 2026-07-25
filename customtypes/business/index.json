@@ -120,6 +120,17 @@
           "label": "Custom JSON-LD (Power User)",
           "placeholder": "Indsæt valid JSON-LD kode her. Brug kun hvis du ved, hvad du laver!"
         }
+      },
+      "faq_schema": {
+        "type": "Select",
+        "config": {
+          "label": "FAQ-schema (Bing + AI-svarmaskiner)",
+          "default_value": "Ja",
+          "options": [
+            "Ja",
+            "Nej"
+          ]
+        }
       }
     }
   },

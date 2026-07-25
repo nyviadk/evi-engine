@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactElement } from "react";
 import { notFound, redirect, permanentRedirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
+import { asHTML, asText, isFilled } from "@prismicio/client";
 
 import { components } from "@/slices";
 import {
@@ -78,11 +79,26 @@ export default async function Page(props: {
     url: `${baseUrl}${resolve_page_url(crumb.id, lang, tree, tenant)}`,
   }));
 
+  // FAQ → FAQPage-schema: saml alle faq-slices' Q&A (kun udfyldte par). asHTML
+  // bevarer links/lister i svaret (Answer.text tillader begrænset HTML) — kræver
+  // link_resolver til interne Prismic-links. Alle par flettes til ÉN FAQPage
+  // (Google: max én pr. side). pageUrl = samme udtryk som canonical.
+  const pageUrl = `${baseUrl}${resolve_page_url(page.id, lang, tree, tenant)}`;
+  const faqItems = page.data.slices
+    .flatMap((s) => (s.slice_type === "faq" ? s.primary.items : []))
+    .filter((it) => isFilled.richText(it.question) && isFilled.richText(it.answer))
+    .map((it) => ({
+      question: asText(it.question),
+      answer: asHTML(it.answer, { linkResolver: link_resolver }),
+    }));
+
   const schemaGraph = collectSchemaGraph({
     business: business?.data ?? null,
     baseUrl,
+    pageUrl,
     breadcrumbs,
     siteName: settings?.data?.site_name,
+    faqItems,
   });
 
   return (
