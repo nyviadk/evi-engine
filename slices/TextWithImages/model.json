@@ -1,0 +1,95 @@
+{
+  "id": "text_with_images",
+  "name": "TextWithImages",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/default/7d71b6e7115dd0fb49711c3a438c17bc3e7885f5.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Kort overskrift over teksten",
+            "single": "heading2,strong,em"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Beskrivende tekst ved siden af billedet",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Billede",
+            "placeholder": "Liggende billede (4:3)",
+            "constraint": {
+              "width": 1200,
+              "height": 900
+            },
+            "thumbnails": []
+          }
+        },
+        "image_display": {
+          "type": "Select",
+          "config": {
+            "label": "Billedvisning",
+            "placeholder": "Med ramme (paspartout) eller kant-til-kant",
+            "default_value": "Rammet",
+            "options": [
+              "Rammet",
+              "Kant-til-kant"
+            ]
+          }
+        },
+        "image_side": {
+          "type": "Select",
+          "config": {
+            "label": "Billedets side (desktop)",
+            "default_value": "Venstre",
+            "options": [
+              "Venstre",
+              "Højre"
+            ]
+          }
+        },
+        "mobile_order": {
+          "type": "Select",
+          "config": {
+            "label": "Rækkefølge på mobil",
+            "default_value": "Billede øverst",
+            "options": [
+              "Billede øverst",
+              "Tekst øverst"
+            ]
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

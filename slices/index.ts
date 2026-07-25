@@ -9,6 +9,7 @@ import Hero from "./Hero";
 import Highlights from "./Highlights";
 import PhoneMockup from "./PhoneMockup";
 import Testimonials from "./Testimonials";
+import TextWithImages from "./TextWithImages";
 
 export const components = {
 	faq: Faq,
@@ -19,5 +20,6 @@ export const components = {
 	hero: Hero,
 	highlights: Highlights,
 	phone_mockup: PhoneMockup,
-	testimonials: Testimonials
+	testimonials: Testimonials,
+	text_with_images: TextWithImages
 };

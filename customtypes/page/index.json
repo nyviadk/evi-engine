@@ -43,6 +43,9 @@
             },
             "testimonials": {
               "type": "SharedSlice"
+            },
+            "text_with_images": {
+              "type": "SharedSlice"
             }
           }
         }

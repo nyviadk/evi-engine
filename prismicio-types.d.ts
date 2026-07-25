@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice
 
 /**
  * Content for Side documents
@@ -2377,6 +2377,108 @@ type TestimonialsSliceVariation = TestimonialsSliceDefault
  */
 export type TestimonialsSlice = prismic.SharedSlice<"testimonials", TestimonialsSliceVariation>;
 
+/**
+ * Primary content in *TextWithImages → Default → Primary*
+ */
+export interface TextWithImagesSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort overskrift over teksten
+	 * - **API ID Path**: text_with_images.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Beskrivende tekst ved siden af billedet
+	 * - **API ID Path**: text_with_images.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Billede field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Liggende billede (4:3)
+	 * - **API ID Path**: text_with_images.default.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Billedvisning field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Med ramme (paspartout) eller kant-til-kant
+	 * - **Default Value**: Rammet
+	 * - **API ID Path**: text_with_images.default.primary.image_display
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_display: prismic.SelectField<"Rammet" | "Kant-til-kant", "filled">;
+	
+	/**
+	 * Billedets side (desktop) field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: text_with_images.default.primary.image_side
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
+	
+	/**
+	 * Rækkefølge på mobil field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Billede øverst
+	 * - **API ID Path**: text_with_images.default.primary.mobile_order
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
+	
+	/**
+	 * Baggrundstema field in *TextWithImages → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: text_with_images.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for TextWithImages Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextWithImagesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TextWithImagesSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *TextWithImages*
+ */
+type TextWithImagesSliceVariation = TextWithImagesSliceDefault
+
+/**
+ * TextWithImages Shared Slice
+ *
+ * - **API ID**: `text_with_images`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextWithImagesSlice = prismic.SharedSlice<"text_with_images", TextWithImagesSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -2461,7 +2563,11 @@ declare module "@prismicio/client" {
 			TestimonialsSliceDefaultPrimaryTestimonialsItem,
 			TestimonialsSliceDefaultPrimary,
 			TestimonialsSliceVariation,
-			TestimonialsSliceDefault
+			TestimonialsSliceDefault,
+			TextWithImagesSlice,
+			TextWithImagesSliceDefaultPrimary,
+			TextWithImagesSliceVariation,
+			TextWithImagesSliceDefault
 		}
 	}
 }
