@@ -66,6 +66,13 @@
             }
           }
         },
+        "more_label": {
+          "type": "Text",
+          "config": {
+            "label": "Vis flere-tekst",
+            "placeholder": "Fx Læs flere"
+          }
+        },
         "background_theme": {
           "type": "Select",
           "config": {
@@ -80,13 +87,6 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
-        },
-        "more_label": {
-          "type": "Text",
-          "config": {
-            "label": "Vis flere-tekst",
-            "placeholder": "Fx Læs flere"
           }
         }
       }

@@ -792,6 +792,16 @@ export interface CaseStudiesSliceDefaultPrimary {
 	cases: prismic.GroupField<Simplify<CaseStudiesSliceDefaultPrimaryCasesItem>>;
 	
 	/**
+	 * Læs alle-tekst field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Læs alle
+	 * - **API ID Path**: case_studies.default.primary.more_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	more_label: prismic.KeyTextField;
+	
+	/**
 	 * Baggrundstema field in *CaseStudies → Default → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -801,16 +811,6 @@ export interface CaseStudiesSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-	
-	/**
-	 * Læs alle-tekst field in *CaseStudies → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Fx Læs alle
-	 * - **API ID Path**: case_studies.default.primary.more_label
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	more_label: prismic.KeyTextField;
 }
 
 /**
@@ -2341,17 +2341,6 @@ export interface PhoneMockupSliceMaskedPrimary {
 	screenshot_right: prismic.ImageField<never>;
 	
 	/**
-	 * Baggrundstema field in *PhoneMockup → Masked → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Lys
-	 * - **API ID Path**: phone_mockup.masked.primary.background_theme
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-	
-	/**
 	 * Boks-baggrund field in *PhoneMockup → Masked → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -2372,6 +2361,17 @@ export interface PhoneMockupSliceMaskedPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	box_fill: prismic.SelectField<"Gradient" | "Solid", "filled">;
+	
+	/**
+	 * Baggrundstema field in *PhoneMockup → Masked → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: phone_mockup.masked.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
 }
 
 /**
@@ -2478,6 +2478,16 @@ export interface TestimonialsSliceDefaultPrimary {
 	testimonials: prismic.GroupField<Simplify<TestimonialsSliceDefaultPrimaryTestimonialsItem>>;
 	
 	/**
+	 * Vis flere-tekst field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Læs flere
+	 * - **API ID Path**: testimonials.default.primary.more_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	more_label: prismic.KeyTextField;
+	
+	/**
 	 * Baggrundstema field in *Testimonials → Default → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -2487,16 +2497,6 @@ export interface TestimonialsSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
-	
-	/**
-	 * Vis flere-tekst field in *Testimonials → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Fx Læs flere
-	 * - **API ID Path**: testimonials.default.primary.more_label
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	more_label: prismic.KeyTextField;
 }
 
 /**

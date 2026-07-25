@@ -44,22 +44,6 @@
             "thumbnails": []
           }
         },
-        "background_theme": {
-          "type": "Select",
-          "config": {
-            "label": "Baggrundstema",
-            "default_value": "Lys",
-            "options": [
-              "Lys",
-              "Mørk",
-              "Primær",
-              "Sekundær",
-              "Mørk blød",
-              "Primær blød",
-              "Sekundær blød"
-            ]
-          }
-        },
         "box_background": {
           "type": "Select",
           "config": {
@@ -83,6 +67,22 @@
             "options": [
               "Gradient",
               "Solid"
+            ]
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
             ]
           }
         }

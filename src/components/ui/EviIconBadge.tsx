@@ -7,9 +7,14 @@ import { resolve_surface_contrast } from "@/src/lib/utils/surface";
 type BadgeSize = "sm" | "md";
 type BadgeTone = "solid" | "surface";
 
-const sizeClass: Record<BadgeSize, { box: string; icon: string }> = {
-  sm: { box: "p-2", icon: "size-5" },
-  md: { box: "p-3", icon: "size-6" },
+const sizeClass: Record<
+  BadgeSize,
+  { box: string; icon: string; numBox: string; numText: string }
+> = {
+  // numBox = fast kvadrat (≈ padding + ikon-størrelse) → badgen forbliver en
+  // cirkel uanset om tallet er "1" eller "04" (w-fit ville give en oval).
+  sm: { box: "p-2", icon: "size-5", numBox: "size-9", numText: "text-sm" },
+  md: { box: "p-3", icon: "size-6", numBox: "size-12", numText: "text-lg" },
 };
 
 export type EviIconBadgeProps = {
@@ -45,24 +50,37 @@ export function EviIconBadge({
 }: EviIconBadgeProps): React.ReactElement | null {
   if (!isFilled.keyText(name)) return null;
 
-  const { box, icon } = sizeClass[size];
+  // Rent numerisk værdi (fx "1", "04", "12") → render tallet centreret i badgen
+  // i stedet for et ikon. Ingen model-ændring: ikon-feltet er allerede tekst.
+  const value = name.trim();
+  const isNumber = /^\d{1,3}$/.test(value);
+
+  const { box, icon, numBox, numText } = sizeClass[size];
   const surfaceClass =
     tone === "surface" ? resolve_surface_contrast(on) : "bg-evi-secondary";
-  const iconColor =
+  const fgColor =
     tone === "surface" ? "text-evi-primary" : "text-evi-text-on-secondary";
 
   return (
     <span
       data-slot="evi-icon-badge"
       data-tone={tone}
+      data-variant={isNumber ? "number" : "icon"}
       className={cn(
-        "inline-flex w-fit shrink-0 rounded-full",
-        box,
+        "inline-flex shrink-0 items-center justify-center rounded-full",
+        isNumber ? numBox : cn("w-fit", box),
         surfaceClass,
         className,
       )}
     >
-      <EviIcon name={name} className={cn(icon, iconColor)} />
+      {isNumber ? (
+        // tabular-nums → cifre har samme bredde, så 01/02/03 flugter på tværs.
+        <span className={cn("font-semibold leading-none tabular-nums", numText, fgColor)}>
+          {value}
+        </span>
+      ) : (
+        <EviIcon name={name} className={cn(icon, fgColor)} />
+      )}
     </span>
   );
 }
