@@ -16,6 +16,13 @@ import { has_rich_text } from "@/src/lib/prismic/fields";
 import { evi_list_text_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 
+// Prismic-label → EviSplit vertikal-align. Default centreret (uændret adfærd);
+// "Øverst" bruges når boksen er højere end teksten og centrering ser skæv ud.
+const CONTENT_ALIGN: Record<string, "start" | "center"> = {
+  Centreret: "center",
+  Øverst: "start",
+};
+
 export type HighlightsLayoutProps = {
   slice: Content.HighlightsSliceDefault;
   index: number;
@@ -28,8 +35,9 @@ export type HighlightsLayoutProps = {
  *
  * Det særlige: boksen centreres lodret mod BRØDTEKSTEN — ikke titel+tekst.
  * Titlen begrænses til venstre kolonnes bredde og sidder øverst; derunder en
- * `[brødtekst | boks]`-række med `items-center`, så boksens midte flugter med
- * brødtekstens (titlen trækker ikke midten skævt op). Boks-rækkerne genbruger
+ * `[brødtekst | boks]`-række hvis lodrette align `content_align` styrer (default
+ * `Centreret` — boksens midte flugter med brødtekstens; `Øverst` når boksen er
+ * højere end teksten). Boks-rækkerne genbruger
  * FeaturesSplit's ikon-række-mønster. Domain-part (Tailwind tilladt, R3.3).
  */
 export function HighlightsLayout({
@@ -43,6 +51,7 @@ export function HighlightsLayout({
     index,
   );
   const p = slice.primary;
+  const contentAlign = CONTENT_ALIGN[p.content_align ?? "Centreret"] ?? "center";
 
   // Kun punkter med tekst — tomme group-rækker rendres ikke.
   const points = (p.points ?? []).filter((pt) =>
@@ -69,7 +78,7 @@ export function HighlightsLayout({
             isHero={isHero}
           />
         </div>
-        <EviSplit preset="50-50" align="center">
+        <EviSplit preset="50-50" align={contentAlign}>
           <EviRichText
             field={p.body}
             linkResolver={linkResolver}

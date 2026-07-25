@@ -2,15 +2,18 @@ import { isFilled, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
+import { EviStack } from "@/src/components/layout/EviStack";
 import {
   EviBackdropImage,
   BACKDROP_FROM_LABEL,
 } from "@/src/components/ui/EviBackdropImage";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
+import { HeroCtaGroup } from "@/src/components/hero/parts/HeroCtaGroup";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { is_link_filled } from "@/src/lib/prismic/links";
 
 export type HeroAboutLayoutProps = {
   slice: Content.HeroSliceAbout;
@@ -41,10 +44,14 @@ export function HeroAboutLayout({
   );
   const p = slice.primary;
 
+  const has_cta = is_link_filled(p.cta_link);
+  const has_cta_2 = is_link_filled(p.cta_link_secondary);
   if (
     !isFilled.richText(p.heading) &&
     !isFilled.richText(p.body) &&
-    !isFilled.image(p.image)
+    !isFilled.image(p.image) &&
+    !has_cta &&
+    !has_cta_2
   ) {
     return null;
   }
@@ -53,13 +60,22 @@ export function HeroAboutLayout({
   const imageTopOnMobile = p.mobile_order !== "Tekst øverst";
   const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Roteret"] ?? "rotated";
 
+  // CTA sidder INDE i indholds-kolonnen (under overskrift/tekst, ved siden af
+  // billedet) — ikke under hele sektionen. HeroCtaGroup rendrer intet når tom.
   const contentEl = (
-    <EviHeadingGroup
-      title={p.heading}
-      description={p.body}
-      linkResolver={linkResolver}
-      isHero={isHero}
-    />
+    <EviStack gap="lg" align="start">
+      <EviHeadingGroup
+        title={p.heading}
+        description={p.body}
+        linkResolver={linkResolver}
+        isHero={isHero}
+      />
+      <HeroCtaGroup
+        primary={p.cta_link}
+        secondary={p.cta_link_secondary}
+        linkResolver={linkResolver}
+      />
+    </EviStack>
   );
   const imageEl = (
     <EviBackdropImage

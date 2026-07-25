@@ -1927,6 +1927,26 @@ export interface HeroSliceAboutPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Call-to-action field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.about.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Sekundær knap field in *Hero → About → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.about.primary.cta_link_secondary
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
 	 * Billede field in *Hero → About → Primary*
 	 *
 	 * - **Field Type**: Image
@@ -2094,6 +2114,17 @@ export interface HighlightsSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Lodret justering field in *Highlights → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Hvordan tekst og boks flugter ved forskellig højde
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: highlights.default.primary.content_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	content_align: prismic.SelectField<"Centreret" | "Øverst", "filled">;
 	
 	/**
 	 * Baggrundstema field in *Highlights → Default → Primary*

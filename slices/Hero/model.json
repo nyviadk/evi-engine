@@ -188,7 +188,7 @@
       "name": "About",
       "description": "About",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/4a50c004534bbca5dec6fa22a168a5aeff9caee0.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/4e9c0d19d8561812001d2e1a809f4ffaf007a9bc.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -203,6 +203,22 @@
           "config": {
             "label": "Brødtekst",
             "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Call-to-action",
+            "allowTargetBlank": true,
+            "allowText": true
+          }
+        },
+        "cta_link_secondary": {
+          "type": "Link",
+          "config": {
+            "label": "Sekundær knap",
+            "allowTargetBlank": true,
+            "allowText": true
           }
         },
         "image": {

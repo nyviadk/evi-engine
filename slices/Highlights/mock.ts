@@ -70,6 +70,7 @@ export const mock: Record<string, Content.HighlightsSlice> = {
         ),
       ],
       box_color: "Neutral",
+      content_align: "Øverst",
       background_theme: "Lys",
     } as Content.HighlightsSliceDefaultPrimary,
   },

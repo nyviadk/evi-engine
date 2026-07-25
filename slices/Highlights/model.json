@@ -8,7 +8,7 @@
       "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/highlights/default/cecd1f43db46e6dce823e345045d6befaf561db6.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/highlights/default/9c1870fdf2049f8f7fefe39cf0a3a144fc609384.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -62,6 +62,18 @@
               "Neutral",
               "Primær",
               "Sekundær"
+            ]
+          }
+        },
+        "content_align": {
+          "type": "Select",
+          "config": {
+            "label": "Lodret justering",
+            "placeholder": "Hvordan tekst og boks flugter ved forskellig højde",
+            "default_value": "Centreret",
+            "options": [
+              "Centreret",
+              "Øverst"
             ]
           }
         },

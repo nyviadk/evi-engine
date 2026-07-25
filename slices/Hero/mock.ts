@@ -142,6 +142,18 @@ export const mock: Record<string, Content.HeroSlice> = {
         },
       ],
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      cta_link: {
+        link_type: "Web" as const,
+        url: "#",
+        text: "Besøg butikken",
+      } as Content.HeroSliceAboutPrimary["cta_link"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      cta_link_secondary: {
+        link_type: "Web" as const,
+        url: "#",
+        text: "Book en smagning",
+      } as Content.HeroSliceAboutPrimary["cta_link_secondary"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       image: {
         id: "mock-hero-about-image",
         url: "https://images.unsplash.com/photo-1529892485617-25f63cd7b1e9?fit=crop&w=1000&h=1000",
