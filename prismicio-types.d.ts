@@ -1237,6 +1237,17 @@ export interface FeaturesSliceSplitPrimary {
 	feature_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
 	
 	/**
+	 * Boks-layout field in *Features → Split → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Enkelt kolonne
+	 * - **API ID Path**: features.split.primary.feature_layout
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	feature_layout: prismic.SelectField<"Enkelt kolonne" | "To kolonner", "filled">;
+	
+	/**
 	 * Backdrop bag billede field in *Features → Split → Primary*
 	 *
 	 * - **Field Type**: Select

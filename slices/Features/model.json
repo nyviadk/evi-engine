@@ -175,7 +175,7 @@
       "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/66c6bc0c7c8d5303ff43370ca5cea02d87d06e3f.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/5d9726cae7d423767f12f331b5b5903e447d8170.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
@@ -246,6 +246,17 @@
               "Neutral",
               "Primær",
               "Sekundær"
+            ]
+          }
+        },
+        "feature_layout": {
+          "type": "Select",
+          "config": {
+            "label": "Boks-layout",
+            "default_value": "Enkelt kolonne",
+            "options": [
+              "Enkelt kolonne",
+              "To kolonner"
             ]
           }
         },

@@ -38,7 +38,9 @@
       "PowerShell(npx prismic field reorder backdrop_color --after backdrop --from-slice section_features --variation split)",
       "PowerShell(npx prismic slice add-variation --help 2>&1)",
       "PowerShell(npx prismic slice add-variation \"About\" --to hero --id about 2>&1)",
-      "Bash(set -eo pipefail)"
+      "Bash(set -eo pipefail)",
+      "Bash(npx next *)",
+      "Bash(echo \"dev pid: $!\")"
     ]
   }
 }

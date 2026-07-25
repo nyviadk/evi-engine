@@ -3,8 +3,9 @@ import { asText, type Content } from "@prismicio/client";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
+import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviBox } from "@/src/components/ui/EviBox";
-import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
+import { EviIconRow } from "@/src/components/ui/EviIconRow";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
@@ -48,6 +49,10 @@ export function FeaturesSplitLayout({
     has_rich_text(f.heading, f.body),
   );
   const backdrop = BACKDROP_FROM_LABEL[p.backdrop ?? "Ingen"] ?? "none";
+  // "To kolonner": boksene lægges i en 2-kol-grid når content-kolonnen er bred nok
+  // (EviAutoGrid duo, container-query). Ved 3+ punkter bliver den lodrette stak for
+  // lang; EviIconRow stakker så ikon over tekst i de smallere grid-celler.
+  const twoColumn = p.feature_layout === "To kolonner";
 
   // a11y: DOM leder ALTID med indholdet (overskrift først → bedst for skærmlæser
   // + heading-navigation). Billed-siden (desktop) og mobil-rækkefølgen er PURT
@@ -64,6 +69,22 @@ export function FeaturesSplitLayout({
       priority={isHero}
     />
   );
+  const boxList = boxes.map((box) => (
+    <EviBox
+      key={asText(box.heading) || asText(box.body)}
+      surface={p.feature_color}
+      size="compact"
+    >
+      {/* EviIconRow: ikon ved siden af på brede kort, over teksten på smalle
+          (fx en 2-kol-celle). opacity-80 dæmper brødteksten let (kun her). */}
+      <EviIconRow icon={box.icon}>
+        <div className={cn("evi-prose", evi_list_text_class(), "[&_p]:opacity-80")}>
+          <EviRichText.Raw field={box.heading} linkResolver={linkResolver} />
+          <EviRichText.Raw field={box.body} linkResolver={linkResolver} />
+        </div>
+      </EviIconRow>
+    </EviBox>
+  ));
   const contentEl = (
     <EviStack gap="lg">
       <EviHeadingGroup
@@ -72,34 +93,13 @@ export function FeaturesSplitLayout({
         linkResolver={linkResolver}
         isHero={isHero}
       />
-      <EviStack gap="sm">
-        {boxes.map((box) => (
-          <EviBox
-            key={asText(box.heading) || asText(box.body)}
-            surface={p.feature_color}
-            size="compact"
-          >
-            <EviStack direction="row" gap="md" align="start">
-              <EviIconBadge name={box.icon} />
-              {/* Boks-titel: skalér evi-prose h3 ned til kort-titel-størrelse.
-                  opacity-80 dæmper brødteksten let (kun her, ikke i highlights). */}
-              <div
-                className={cn(
-                  "evi-prose",
-                  evi_list_text_class(),
-                  "[&_p]:opacity-80",
-                )}
-              >
-                <EviRichText.Raw
-                  field={box.heading}
-                  linkResolver={linkResolver}
-                />
-                <EviRichText.Raw field={box.body} linkResolver={linkResolver} />
-              </div>
-            </EviStack>
-          </EviBox>
-        ))}
-      </EviStack>
+      {twoColumn ? (
+        <EviAutoGrid size="duo" gap="compact">
+          {boxList}
+        </EviAutoGrid>
+      ) : (
+        <EviStack gap="sm">{boxList}</EviStack>
+      )}
     </EviStack>
   );
 

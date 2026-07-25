@@ -66,7 +66,14 @@ export const mock: Record<string, Content.FeaturesSlice> = {
           heading: h3("Fri fragt over 300 kr."),
           body: line("Vi sender gratis på alle større ordrer, hurtigt og sikkert."),
         },
+        {
+          icon: "recycle",
+          heading: h3("Genopfyldning"),
+          body: line("Send posen retur, så fylder vi den op — mindre emballage, mere kaffe."),
+        },
       ],
+      // 4 punkter → "To kolonner" bryder den for lange lodrette stak op.
+      feature_layout: "To kolonner",
       feature_color: "Neutral",
       backdrop: "Roteret",
       backdrop_color: "Primær",

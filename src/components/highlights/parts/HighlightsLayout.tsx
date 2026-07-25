@@ -5,7 +5,7 @@ import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviBox } from "@/src/components/ui/EviBox";
-import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
+import { EviIconRow } from "@/src/components/ui/EviIconRow";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
@@ -88,13 +88,10 @@ export function HighlightsLayout({
             <EviBox surface={p.box_color}>
               <EviStack gap="lg">
                 {points.map((pt) => (
-                  <EviStack
+                  <EviIconRow
                     key={asText(pt.title) || asText(pt.body)}
-                    direction="row"
-                    gap="md"
-                    align="start"
+                    icon={pt.icon}
                   >
-                    <EviIconBadge name={pt.icon} />
                     <div className={cn("evi-prose", evi_list_text_class())}>
                       <EviRichText.Raw
                         field={pt.title}
@@ -105,7 +102,7 @@ export function HighlightsLayout({
                         linkResolver={linkResolver}
                       />
                     </div>
-                  </EviStack>
+                  </EviIconRow>
                 ))}
               </EviStack>
             </EviBox>
