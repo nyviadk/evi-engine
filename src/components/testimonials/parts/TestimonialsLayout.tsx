@@ -5,7 +5,7 @@ import { EviMasonry } from "@/src/components/layout/EviMasonry";
 import { EviSectionHeader } from "@/src/components/typography/EviSectionHeader";
 import { EviBox } from "@/src/components/ui/EviBox";
 import { EviRichText } from "@/src/components/typography/EviRichText";
-import { TestimonialsReveal } from "@/src/components/testimonials/parts/TestimonialsReveal";
+import { EviReveal } from "@/src/components/ui/EviReveal";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -65,7 +65,7 @@ export function TestimonialsLayout({
       <EviBox
         key={asText(t.title) || asText(t.body)}
         surface={t.box_color}
-        data-tm-overflow={overflow || undefined}
+        data-reveal-overflow={overflow || undefined}
         className={cn(
           overflow && "max-md:hidden group-data-open/reveal:max-md:block",
         )}
@@ -99,18 +99,9 @@ export function TestimonialsLayout({
         isHero={isHero}
       />
       {collapsible ? (
-        <>
-          <TestimonialsReveal moreLabel={moreLabel}>
-            <EviMasonry maxColumns={maxColumns}>{boxes}</EviMasonry>
-          </TestimonialsReveal>
-          {/* Uden JS: afslør de skjulte kort + skjul den døde knap (CSP tillader
-              inline style). Med JS overtager TestimonialsReveal. */}
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: `<style>[data-tm-overflow]{display:block!important}[data-slot="testimonials-more"]{display:none!important}</style>`,
-            }}
-          />
-        </>
+        <EviReveal label={moreLabel} moreClassName="md:hidden">
+          <EviMasonry maxColumns={maxColumns}>{boxes}</EviMasonry>
+        </EviReveal>
       ) : (
         <EviMasonry maxColumns={maxColumns}>{boxes}</EviMasonry>
       )}

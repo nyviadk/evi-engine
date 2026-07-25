@@ -46,6 +46,9 @@
             },
             "text_with_images": {
               "type": "SharedSlice"
+            },
+            "case_studies": {
+              "type": "SharedSlice"
             }
           }
         }

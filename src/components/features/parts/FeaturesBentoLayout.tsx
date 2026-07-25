@@ -16,7 +16,11 @@ import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
-import { EviBox, evi_box_class } from "@/src/components/ui/EviBox";
+import {
+  EviBox,
+  evi_box_class,
+  evi_card_bleed_class,
+} from "@/src/components/ui/EviBox";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
@@ -249,13 +253,8 @@ export function FeaturesBentoLayout({
               linkResolver={linkResolver}
             />
             {isFilled.image(p.card_2_image) && (
-              // Billedet bløder ud til kort-kanterne (siderne + bunden) på mobil,
-              // så det ikke sidder som en indrammet plade i boksens padding.
-              // Negative marginer annullerer boks-paddingen (samme skala) —
-              // KRÆVER `w-auto`: et `w-full`-element beholder sin bredde og
-              // skubbes bare til venstre (kun venstre bløder). EviBox's
-              // overflow-hidden klipper til de runde hjørner. Ved 2 kolonner
-              // (container ≥532px) nulstilles alt → indrammet igen.
+              // Billedet bløder ud til kort-kanterne (siderne + bunden) på mobil;
+              // ved 2 kolonner (container ≥532px) nulstilles alt → indrammet igen.
               <EviImage
                 field={p.card_2_image}
                 variant="plain"
@@ -263,7 +262,10 @@ export function FeaturesBentoLayout({
                 rounded={false}
                 imageClassName="object-cover"
                 sizes="(min-width: 768px) 30vw, 100vw"
-                className="-mx-4 -mb-4 w-auto sm:-mx-6 sm:-mb-6 md:-mx-8 md:-mb-8 @[532px]/grid:m-0 @[532px]/grid:w-full @[532px]/grid:rounded-evi"
+                className={cn(
+                  evi_card_bleed_class("bottom"),
+                  "@[532px]/grid:m-0 @[532px]/grid:w-full @[532px]/grid:rounded-evi",
+                )}
               />
             )}
           </EviAutoGrid>

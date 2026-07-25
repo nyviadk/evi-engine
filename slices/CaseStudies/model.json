@@ -1,0 +1,106 @@
+{
+  "id": "case_studies",
+  "name": "CaseStudies",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/case_studies/default/8e27fc4275b3430ce616a749dd0fa71cca9b0f05.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sektionens overskrift",
+            "single": "heading2,strong,em"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Kort intro under overskriften",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "cases": {
+          "type": "Group",
+          "config": {
+            "label": "Cases",
+            "fields": {
+              "image": {
+                "type": "Image",
+                "config": {
+                  "label": "Billede",
+                  "placeholder": "Liggende billede (4:3)",
+                  "constraint": {
+                    "width": 1200,
+                    "height": 900
+                  },
+                  "thumbnails": []
+                }
+              },
+              "title": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Titel",
+                  "placeholder": "Casens titel",
+                  "single": "heading3,strong,em"
+                }
+              },
+              "description": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Beskrivelse",
+                  "placeholder": "Kort beskrivelse af casen",
+                  "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+                }
+              },
+              "meta": {
+                "type": "Table",
+                "config": {
+                  "label": "2 kolonner: label + værdi"
+                }
+              },
+              "cta_link": {
+                "type": "Link",
+                "config": {
+                  "label": "Læs mere-link",
+                  "allowTargetBlank": true,
+                  "allowText": true
+                }
+              }
+            }
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        },
+        "more_label": {
+          "type": "Text",
+          "config": {
+            "label": "Læs alle-tekst",
+            "placeholder": "Fx Læs alle"
+          }
+        }
+      }
+    }
+  ]
+}

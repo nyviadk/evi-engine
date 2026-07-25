@@ -355,7 +355,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice
 
 /**
  * Content for Side documents
@@ -701,6 +701,140 @@ interface SettingsDocumentData {
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
 export type AllDocumentTypes = BusinessDocument | FooterDocument | NavigationDocument | PageDocument | SettingsDocument;
+
+/**
+ * Item in *CaseStudies → Default → Primary → Cases*
+ */
+export interface CaseStudiesSliceDefaultPrimaryCasesItem {
+	/**
+	 * Billede field in *CaseStudies → Default → Primary → Cases*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Liggende billede (4:3)
+	 * - **API ID Path**: case_studies.default.primary.cases[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Titel field in *CaseStudies → Default → Primary → Cases*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Casens titel
+	 * - **API ID Path**: case_studies.default.primary.cases[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *CaseStudies → Default → Primary → Cases*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse af casen
+	 * - **API ID Path**: case_studies.default.primary.cases[].description
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	description: prismic.RichTextField;
+	
+	/**
+	 * 2 kolonner: label + værdi field in *CaseStudies → Default → Primary → Cases*
+	 *
+	 * - **Field Type**: Table
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: case_studies.default.primary.cases[].meta
+	 * - **Documentation**: https://prismic.io/docs/fields/table
+	 */
+	meta: prismic.TableField;
+	
+	/**
+	 * Læs mere-link field in *CaseStudies → Default → Primary → Cases*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: case_studies.default.primary.cases[].cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Primary content in *CaseStudies → Default → Primary*
+ */
+export interface CaseStudiesSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: case_studies.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: case_studies.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Cases field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: case_studies.default.primary.cases[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	cases: prismic.GroupField<Simplify<CaseStudiesSliceDefaultPrimaryCasesItem>>;
+	
+	/**
+	 * Baggrundstema field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: case_studies.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	
+	/**
+	 * Læs alle-tekst field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Læs alle
+	 * - **API ID Path**: case_studies.default.primary.more_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	more_label: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for CaseStudies Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CaseStudiesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<CaseStudiesSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *CaseStudies*
+ */
+type CaseStudiesSliceVariation = CaseStudiesSliceDefault
+
+/**
+ * CaseStudies Shared Slice
+ *
+ * - **API ID**: `case_studies`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CaseStudiesSlice = prismic.SharedSlice<"case_studies", CaseStudiesSliceVariation>;
 
 /**
  * Item in *Faq → Default → Primary → Spørgsmål*
@@ -2510,6 +2644,11 @@ declare module "@prismicio/client" {
 			SettingsDocumentData,
 			SettingsDocumentDataRedirectsItem,
 			AllDocumentTypes,
+			CaseStudiesSlice,
+			CaseStudiesSliceDefaultPrimaryCasesItem,
+			CaseStudiesSliceDefaultPrimary,
+			CaseStudiesSliceVariation,
+			CaseStudiesSliceDefault,
 			FaqSlice,
 			FaqSliceDefaultPrimaryItemsItem,
 			FaqSliceDefaultPrimary,
