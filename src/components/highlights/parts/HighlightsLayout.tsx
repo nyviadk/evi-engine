@@ -1,4 +1,4 @@
-import { asText, type Content } from "@prismicio/client";
+import { type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
@@ -87,9 +87,9 @@ export function HighlightsLayout({
           {points.length > 0 ? (
             <EviBox surface={p.box_color}>
               <EviStack gap="lg">
-                {points.map((pt) => (
+                {points.map((pt, i) => (
                   <EviIconRow
-                    key={asText(pt.title) || asText(pt.body)}
+                    key={i}
                     icon={pt.icon}
                   >
                     <div className={cn("evi-prose", evi_list_text_class())}>

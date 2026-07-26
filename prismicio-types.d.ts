@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice
 
 /**
  * Content for Side documents
@@ -2410,6 +2410,161 @@ type PhoneMockupSliceVariation = PhoneMockupSliceMasked
 export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
 /**
+ * Item in *Prices → Default → Primary → Pakker*
+ */
+export interface PricesSliceDefaultPrimaryPlansItem {
+	/**
+	 * Pakketitel field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Pris field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[].price
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	price: prismic.RichTextField;
+	
+	/**
+	 * Undertekst (fx pr. samtale) field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[].caption
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	caption: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Inkluderet (punktliste) field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[].included
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	included: prismic.RichTextField;
+	
+	/**
+	 * Liste-ikon (tom = check) field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx star — tom = check
+	 * - **API ID Path**: prices.default.primary.plans[].included_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	included_icon: prismic.KeyTextField;
+	
+	/**
+	 * Knap (valgfri) field in *Prices → Default → Primary → Pakker*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[].cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Primary content in *Prices → Default → Primary*
+ */
+export interface PricesSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Prices → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Prices → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Kort-farve field in *Prices → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: prices.default.primary.card_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	
+	/**
+	 * Pakker field in *Prices → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: prices.default.primary.plans[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	plans: prismic.GroupField<Simplify<PricesSliceDefaultPrimaryPlansItem>>;
+	
+	/**
+	 * Baggrundstema field in *Prices → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: prices.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Prices Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PricesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PricesSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Prices*
+ */
+type PricesSliceVariation = PricesSliceDefault
+
+/**
+ * Prices Shared Slice
+ *
+ * - **API ID**: `prices`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PricesSlice = prismic.SharedSlice<"prices", PricesSliceVariation>;
+
+/**
  * Item in *Testimonials → Default → Primary → Anmeldelser*
  */
 export interface TestimonialsSliceDefaultPrimaryTestimonialsItem {
@@ -2721,6 +2876,11 @@ declare module "@prismicio/client" {
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
 			PhoneMockupSliceMasked,
+			PricesSlice,
+			PricesSliceDefaultPrimaryPlansItem,
+			PricesSliceDefaultPrimary,
+			PricesSliceVariation,
+			PricesSliceDefault,
 			TestimonialsSlice,
 			TestimonialsSliceDefaultPrimaryTestimonialsItem,
 			TestimonialsSliceDefaultPrimary,

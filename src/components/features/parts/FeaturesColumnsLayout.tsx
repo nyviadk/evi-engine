@@ -54,9 +54,9 @@ export function FeaturesColumnsLayout({
       data-slot="features"
     >
       <EviAutoGrid size="quad">
-        {columns.map((c) => (
+        {columns.map((c, i) => (
           <EviStack
-            key={c.key}
+            key={i}
             direction="row"
             align="center"
             justify="center"

@@ -1,4 +1,4 @@
-import { asText, isFilled, type Content } from "@prismicio/client";
+import { isFilled, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviMasonry } from "@/src/components/layout/EviMasonry";
@@ -63,7 +63,7 @@ export function TestimonialsLayout({
     const overflow = collapsible && i >= MOBILE_VISIBLE;
     return (
       <EviBox
-        key={asText(t.title) || asText(t.body)}
+        key={i}
         surface={t.box_color}
         data-reveal-overflow={overflow || undefined}
         className={cn(

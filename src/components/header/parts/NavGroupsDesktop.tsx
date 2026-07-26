@@ -28,8 +28,8 @@ export type NavGroupsDesktopProps = { groups: NavGroup[]; lang?: string };
  * bruger fortsat CSS `:focus-within` (uafhængig sti); klik blur'er så fokus ikke
  * holder det åbent.
  *
- * Keys = index + label/href: labels/URLs er ikke garanteret unikke (editor kan
- * gentage dem), så index sikrer entydighed; listen reorderes ikke i runtime.
+ * Keys = index: nav rendres statisk og reorderes aldrig i runtime, så index er
+ * et stabilt key (og labels/URLs er ikke garanteret unikke).
  */
 export function NavGroupsDesktop({
   groups,
@@ -49,7 +49,6 @@ export function NavGroupsDesktop({
       {groups.map((group, gi) => {
         const { top, items } = group;
         const hasDropdown = items.length > 0;
-        const groupKey = `${gi}-${top.label}`;
         const topActive =
           top.kind === "link" && is_active_path(top.href, pathname, lang);
         const chevron = hasDropdown ? (
@@ -57,7 +56,7 @@ export function NavGroupsDesktop({
         ) : null;
         return (
           <li
-            key={groupKey}
+            key={gi}
             className="evi-nav-group"
             data-open={hasDropdown && openIdx === gi ? "" : undefined}
             onPointerEnter={hasDropdown ? () => setOpenIdx(gi) : undefined}
@@ -90,9 +89,8 @@ export function NavGroupsDesktop({
             {hasDropdown ? (
               <ul className="evi-nav-dropdown">
                 {items.map((item, ii) => {
-                  const itemKey = `${ii}-${item.href}`;
                   return (
-                    <li key={itemKey}>
+                    <li key={ii}>
                       <NavAnchor
                         item={item}
                         active={is_active_path(item.href, pathname, lang)}

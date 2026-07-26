@@ -33,9 +33,8 @@ function Dropdown({
       className="mt-1 ml-4 flex flex-col gap-1 border-l border-current/20 pl-4 text-base"
     >
       {items.map((item, ii) => {
-        const itemKey = `${ii}-${item.href}`;
         return (
-          <li key={itemKey}>
+          <li key={ii}>
             <NavAnchor
               item={item}
               active={is_active_path(item.href, pathname, lang)}
@@ -157,10 +156,9 @@ export function NavGroupsMobile({
   return (
     <ul className="flex flex-col gap-1 text-lg">
       {groups.map((group, gi) => {
-        const key = `${gi}-${group.top.label}`;
         return (
           <MobileNavGroup
-            key={key}
+            key={gi}
             group={group}
             pathname={pathname}
             lang={lang}

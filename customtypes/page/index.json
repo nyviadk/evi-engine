@@ -49,6 +49,9 @@
             },
             "case_studies": {
               "type": "SharedSlice"
+            },
+            "prices": {
+              "type": "SharedSlice"
             }
           }
         }

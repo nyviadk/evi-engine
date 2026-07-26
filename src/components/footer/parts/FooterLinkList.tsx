@@ -45,9 +45,8 @@ export function FooterLinkList({
     >
       {items.map((link, i) => {
         if (!is_link_filled(link)) return null;
-        const itemKey = `${i}-${link.text}`;
         return (
-          <li key={itemKey}>
+          <li key={i}>
             <PrismicNextLink
               field={link}
               linkResolver={linkResolver}

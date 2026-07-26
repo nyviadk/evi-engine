@@ -68,9 +68,7 @@ export function EviSectionHeader({
           appearance="outline"
           className="shrink-0"
         >
-          <PrismicNextLink field={ctaLink} linkResolver={linkResolver}>
-            {ctaLink.text}
-          </PrismicNextLink>
+          <PrismicNextLink field={ctaLink} linkResolver={linkResolver} />
         </EviButton>
       </EviStack>
     );

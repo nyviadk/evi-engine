@@ -70,7 +70,11 @@ const eslintConfig = defineConfig([
 
       // ─── React / Hooks ────────────────────────────────────────────────
       "react/jsx-key": ["error", { checkFragmentShorthand: true }],
-      "react/no-array-index-key": "warn",
+      // Off: vores slice-lister rendres statisk server-side fra Prismic-repeatables
+      // og reorderes ALDRIG i runtime (advarslen handler om reordering af stateful
+      // lister). Index er derfor et stabilt, korrekt key — og indhold (fx titler)
+      // er ikke garanteret unikt. jsx-key (error) fanger stadig MANGLENDE keys.
+      "react/no-array-index-key": "off",
       "react/self-closing-comp": "warn",
       "react/jsx-no-useless-fragment": ["warn", { allowExpressions: true }],
       "react/jsx-curly-brace-presence": [

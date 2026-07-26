@@ -1,7 +1,7 @@
 import { Children } from "react";
 import { cn } from "@/src/lib/utils/cn";
 
-export type EviCardRows = 2 | 3 | 4 | 5 | 6;
+export type EviCardRows = 2 | 3 | 4 | 5 | 6 | 7;
 
 export type EviCardProps = React.ComponentProps<"div"> & {
   /** Antal subgrid-rækker. Skal matche antallet af direkte børn — tomme slots wrappes i `<div />`. */
@@ -16,6 +16,7 @@ export const EVI_ROW_SPAN: Record<EviCardRows, string> = {
   4: "row-span-4",
   5: "row-span-5",
   6: "row-span-6",
+  7: "row-span-7",
 };
 
 export function EviCard({

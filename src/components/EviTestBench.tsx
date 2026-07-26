@@ -1,9 +1,5 @@
 "use client";
 
-/* eslint-disable react/no-array-index-key --
-   Intern, host-gated test-bench: alle map's er STATISKE demo-arrays der aldrig
-   reorderes/muterer, så index-keys er funktionelt korrekte her. */
-
 import type { ReactElement } from "react";
 import { useState, useEffect } from "react";
 import type { ImageField } from "@prismicio/client";

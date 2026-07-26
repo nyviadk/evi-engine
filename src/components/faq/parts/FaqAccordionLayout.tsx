@@ -1,4 +1,4 @@
-import { asText, type Content } from "@prismicio/client";
+import { type Content } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
 
 import { has_rich_text } from "@/src/lib/prismic/fields";
@@ -66,9 +66,9 @@ export function FaqAccordionLayout({
       {items.length > 0 && (
         <EviRow>
           <EviAccordion className="mx-auto w-full max-w-3xl">
-            {items.map((item) => (
+            {items.map((item, i) => (
               <EviAccordionItem
-                key={asText(item.question) || asText(item.answer)}
+                key={i}
                 summary={
                   <EviRichText
                     field={item.question}
@@ -91,9 +91,7 @@ export function FaqAccordionLayout({
         <EviRow>
           <EviStack align="center">
             <EviButton asChild variant="primary" appearance="solid">
-              <PrismicNextLink field={p.cta_link} linkResolver={linkResolver}>
-                {p.cta_link.text}
-              </PrismicNextLink>
+              <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
             </EviButton>
           </EviStack>
         </EviRow>

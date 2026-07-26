@@ -67,9 +67,7 @@ function CardLink({
       arrow
       className={cn("w-fit", className)}
     >
-      <PrismicNextLink field={field} linkResolver={linkResolver}>
-        {field.text}
-      </PrismicNextLink>
+      <PrismicNextLink field={field} linkResolver={linkResolver} />
     </EviButton>
   );
 }

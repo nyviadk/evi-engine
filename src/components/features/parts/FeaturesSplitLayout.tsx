@@ -1,4 +1,4 @@
-import { asText, type Content } from "@prismicio/client";
+import { type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
@@ -69,9 +69,9 @@ export function FeaturesSplitLayout({
       priority={isHero}
     />
   );
-  const boxList = boxes.map((box) => (
+  const boxList = boxes.map((box, i) => (
     <EviBox
-      key={asText(box.heading) || asText(box.body)}
+      key={i}
       surface={p.feature_color}
       size="compact"
     >

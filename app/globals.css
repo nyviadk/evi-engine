@@ -924,12 +924,26 @@
 
   /* ── Arrow icon animation ── */
 
-  .btn-arrow .btn-arrow-icon {
+  /* Pilen er et CSS ::after (mask-image) frem for et injiceret React-ikon — så
+     EviButton kan tilføje den uden at røre child'ens indhold. Det får den til at
+     virke med asChild + self-closing PrismicNextLink (der selv rendrer sin label).
+     currentColor + mask farver pilen som teksten. */
+  .btn-arrow::after {
+    content: "";
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    margin-inline-start: 0.15em;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E")
+      no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E")
+      no-repeat center / contain;
     transition: rotate 250ms ease;
   }
-  .btn-arrow:hover .btn-arrow-icon {
+  .btn-arrow:hover::after {
     /* → i hvile, ↗ på hover — legende flourish, ikke et permanent
-       ekstern-link-signal (pilen er desuden aria-hidden). */
+       ekstern-link-signal (pilen er dekorativ). */
     rotate: -45deg;
   }
 

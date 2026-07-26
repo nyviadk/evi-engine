@@ -155,11 +155,10 @@ function CaseCard({
               arrow
               className="self-start"
             >
-              <PrismicNextLink field={item.cta_link} linkResolver={linkResolver}>
-                {isFilled.keyText(item.cta_link.text)
-                  ? item.cta_link.text
-                  : "Læs mere"}
-              </PrismicNextLink>
+              <PrismicNextLink
+                field={item.cta_link}
+                linkResolver={linkResolver}
+              />
             </EviButton>
           ) : null}
         </EviStack>
@@ -195,10 +194,9 @@ export function CaseStudiesDefaultLayout({
   const list = (
     <EviStack gap="xl">
       {cases.map((item, i) => {
-        const key = `case-${i}`;
         return (
           <CaseCard
-            key={key}
+            key={i}
             item={item}
             linkResolver={linkResolver}
             collapsed={collapsible && i >= CASE_VISIBLE}

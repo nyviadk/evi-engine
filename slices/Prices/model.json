@@ -1,6 +1,6 @@
 {
-  "id": "case_studies",
-  "name": "CaseStudies",
+  "id": "prices",
+  "name": "Prices",
   "type": "SharedSlice",
   "variations": [
     {
@@ -8,14 +8,13 @@
       "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/case_studies/default/9c72bbea3bdb92fd2a97b9c41ff43b7851694ef3.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/prices/default/0d738ae9c45033d209d79b6e4def83bd96013098.png?auto=compress%2Cformat",
       "version": "",
       "primary": {
         "heading": {
           "type": "StructuredText",
           "config": {
             "label": "Overskrift",
-            "placeholder": "Sektionens overskrift",
             "single": "heading2,strong,em"
           }
         },
@@ -23,65 +22,77 @@
           "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
-            "placeholder": "Kort intro under overskriften",
-            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+            "single": "paragraph,strong,em,hyperlink"
           }
         },
-        "cases": {
+        "card_color": {
+          "type": "Select",
+          "config": {
+            "label": "Kort-farve",
+            "default_value": "Neutral",
+            "options": [
+              "Neutral",
+              "Primær",
+              "Sekundær"
+            ]
+          }
+        },
+        "plans": {
           "type": "Group",
           "config": {
-            "label": "Cases",
+            "label": "Pakker",
             "fields": {
-              "image": {
-                "type": "Image",
-                "config": {
-                  "label": "Billede",
-                  "placeholder": "Liggende billede (4:3)",
-                  "constraint": {
-                    "width": 1200,
-                    "height": 900
-                  },
-                  "thumbnails": []
-                }
-              },
               "title": {
                 "type": "StructuredText",
                 "config": {
-                  "label": "Titel",
-                  "placeholder": "Casens titel",
+                  "label": "Pakketitel",
                   "single": "heading3,strong,em"
                 }
               },
-              "description": {
+              "price": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Pris",
+                  "single": "paragraph,strong,em"
+                }
+              },
+              "caption": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Undertekst (fx pr. samtale)",
+                  "single": "paragraph,strong,em"
+                }
+              },
+              "body": {
                 "type": "StructuredText",
                 "config": {
                   "label": "Beskrivelse",
-                  "placeholder": "Kort beskrivelse af casen",
                   "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
                 }
               },
-              "meta": {
-                "type": "Table",
+              "included": {
+                "type": "StructuredText",
                 "config": {
-                  "label": "2 kolonner: label + værdi"
+                  "label": "Inkluderet (punktliste)",
+                  "multi": "list-item,strong,em"
+                }
+              },
+              "included_icon": {
+                "type": "Text",
+                "config": {
+                  "label": "Liste-ikon (tom = check)",
+                  "placeholder": "fx star — tom = check"
                 }
               },
               "cta_link": {
                 "type": "Link",
                 "config": {
-                  "label": "Læs mere-link",
+                  "label": "Knap (valgfri)",
                   "allowTargetBlank": true,
                   "allowText": true
                 }
               }
             }
-          }
-        },
-        "more_label": {
-          "type": "Text",
-          "config": {
-            "label": "Læs alle-tekst",
-            "placeholder": "Fx Læs alle"
           }
         },
         "background_theme": {

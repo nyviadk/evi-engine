@@ -1,4 +1,4 @@
-import { asText, isFilled, type Content } from "@prismicio/client";
+import { isFilled, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
@@ -64,9 +64,9 @@ export function FeaturesCardsLayout({
         align="center"
       />
       <EviAutoGrid size="trio">
-        {cards.map((card) => (
+        {cards.map((card, i) => (
           <EviCard
-            key={asText(card.heading) || asText(card.body)}
+            key={i}
             rows={3}
             className={cn(resolve_surface(cardColor), evi_box_class())}
           >

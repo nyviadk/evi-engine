@@ -231,10 +231,9 @@ export function EviPhoneCarousel({
         )}
       >
         {images.map((field, i) => {
-          const itemKey = `${i}-${field.url ?? ""}`;
           return (
             <EviPhoneMockup
-              key={itemKey}
+              key={i}
               field={field}
               eager={eager}
               preload={preloadLcp}

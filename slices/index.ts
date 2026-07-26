@@ -9,6 +9,7 @@ import HeaderClassic from "./HeaderClassic";
 import Hero from "./Hero";
 import Highlights from "./Highlights";
 import PhoneMockup from "./PhoneMockup";
+import Prices from "./Prices";
 import Testimonials from "./Testimonials";
 import TextWithImages from "./TextWithImages";
 
@@ -22,6 +23,7 @@ export const components = {
 	hero: Hero,
 	highlights: Highlights,
 	phone_mockup: PhoneMockup,
+	prices: Prices,
 	testimonials: Testimonials,
 	text_with_images: TextWithImages
 };
