@@ -8,7 +8,8 @@
       "Bash(echo \"---tsc:$?---\")",
       "Bash(echo \"---eslint:$?---\")",
       "Bash(echo \"tsc:$?\")",
-      "Bash(echo \"eslint:$?\")"
+      "Bash(echo \"eslint:$?\")",
+      "Bash(python -c \"import json; json.load\\(open\\('slices/Maps/model.json'\\)\\); print\\('JSON gyldig'\\)\")"
     ],
     "deny": [
       "Bash(npm run deploy*)",

@@ -1,0 +1,119 @@
+{
+  "id": "maps",
+  "name": "Maps",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "Default",
+      "docURL": "",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/maps/default/25457206ab5fcf887783504ec0d0d53e345d5727.png?auto=compress%2Cformat",
+      "version": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Overskrift",
+            "single": "heading2,strong,em"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Brødtekst",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "heading_align": {
+          "type": "Select",
+          "config": {
+            "label": "Overskrift-justering",
+            "default_value": "Venstre",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          }
+        },
+        "map_image": {
+          "type": "Image",
+          "config": {
+            "label": "Kort-billede",
+            "constraint": {
+              "width": 1200,
+              "height": 900
+            },
+            "thumbnails": []
+          }
+        },
+        "box_heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Boks-overskrift (fx Klinikkens adresse)",
+            "single": "heading3,strong,em"
+          }
+        },
+        "address": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Adresse",
+            "single": "paragraph,strong,em"
+          }
+        },
+        "info_items": {
+          "type": "Group",
+          "config": {
+            "label": "Info-punkter",
+            "fields": {
+              "icon": {
+                "type": "Text",
+                "config": {
+                  "label": "Ikon",
+                  "placeholder": "Iconify-navn (fx car — tom = intet ikon)"
+                }
+              },
+              "text": {
+                "type": "StructuredText",
+                "config": {
+                  "label": "Tekst",
+                  "single": "paragraph,strong,em,hyperlink"
+                }
+              }
+            }
+          }
+        },
+        "google_maps_label": {
+          "type": "Text",
+          "config": {
+            "label": "Google Maps-knaptekst",
+            "placeholder": "fx Åbn Google Maps"
+          }
+        },
+        "apple_maps_label": {
+          "type": "Text",
+          "config": {
+            "label": "Apple Maps-knaptekst",
+            "placeholder": "fx Åbn Apple Maps"
+          }
+        },
+        "background_theme": {
+          "type": "Select",
+          "config": {
+            "label": "Baggrundstema",
+            "default_value": "Lys",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

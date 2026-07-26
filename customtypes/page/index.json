@@ -55,6 +55,9 @@
             },
             "gallery": {
               "type": "SharedSlice"
+            },
+            "maps": {
+              "type": "SharedSlice"
             }
           }
         }

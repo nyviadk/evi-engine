@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice
 
 /**
  * Content for Side documents
@@ -2499,6 +2499,161 @@ type HighlightsSliceVariation = HighlightsSliceDefault
 export type HighlightsSlice = prismic.SharedSlice<"highlights", HighlightsSliceVariation>;
 
 /**
+ * Item in *Maps → Default → Primary → Info-punkter*
+ */
+export interface MapsSliceDefaultPrimaryInfoItemsItem {
+	/**
+	 * Ikon field in *Maps → Default → Primary → Info-punkter*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn (fx car — tom = intet ikon)
+	 * - **API ID Path**: maps.default.primary.info_items[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Tekst field in *Maps → Default → Primary → Info-punkter*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.info_items[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	text: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Maps → Default → Primary*
+ */
+export interface MapsSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: maps.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Kort-billede field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.map_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	map_image: prismic.ImageField<never>;
+	
+	/**
+	 * Boks-overskrift (fx Klinikkens adresse) field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.box_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_heading: prismic.RichTextField;
+	
+	/**
+	 * Adresse field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.address
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	address: prismic.RichTextField;
+	
+	/**
+	 * Info-punkter field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: maps.default.primary.info_items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	info_items: prismic.GroupField<Simplify<MapsSliceDefaultPrimaryInfoItemsItem>>;
+	
+	/**
+	 * Google Maps-knaptekst field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Åbn Google Maps
+	 * - **API ID Path**: maps.default.primary.google_maps_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	google_maps_label: prismic.KeyTextField;
+	
+	/**
+	 * Apple Maps-knaptekst field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Åbn Apple Maps
+	 * - **API ID Path**: maps.default.primary.apple_maps_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	apple_maps_label: prismic.KeyTextField;
+	
+	/**
+	 * Baggrundstema field in *Maps → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: maps.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Maps Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MapsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<MapsSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Maps*
+ */
+type MapsSliceVariation = MapsSliceDefault
+
+/**
+ * Maps Shared Slice
+ *
+ * - **API ID**: `maps`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type MapsSlice = prismic.SharedSlice<"maps", MapsSliceVariation>;
+
+/**
  * Primary content in *PhoneMockup → Masked → Primary*
  */
 export interface PhoneMockupSliceMaskedPrimary {
@@ -3079,6 +3234,11 @@ declare module "@prismicio/client" {
 			HighlightsSliceDefaultPrimary,
 			HighlightsSliceVariation,
 			HighlightsSliceDefault,
+			MapsSlice,
+			MapsSliceDefaultPrimaryInfoItemsItem,
+			MapsSliceDefaultPrimary,
+			MapsSliceVariation,
+			MapsSliceDefault,
 			PhoneMockupSlice,
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
