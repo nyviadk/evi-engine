@@ -9,6 +9,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { cn } from "@/src/lib/utils/cn";
 import { evi_box_class } from "@/src/components/ui/EviBox";
 import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
@@ -61,7 +62,7 @@ export function FeaturesCardsLayout({
         description={slice.primary.body}
         linkResolver={linkResolver}
         isHero={isHero}
-        align="center"
+        align={resolve_heading_align(slice.primary.heading_align)}
       />
       <EviAutoGrid size="trio">
         {cards.map((card, i) => (

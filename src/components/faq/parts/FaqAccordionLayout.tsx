@@ -14,6 +14,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
 
 export type FaqAccordionLayoutProps = {
   slice: Content.FaqSliceDefault;
@@ -61,7 +62,7 @@ export function FaqAccordionLayout({
         description={p.body}
         linkResolver={linkResolver}
         isHero={isHero}
-        align="center"
+        align={resolve_heading_align(p.heading_align)}
       />
       {items.length > 0 && (
         <EviRow>

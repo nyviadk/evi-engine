@@ -25,6 +25,17 @@
             "single": "paragraph,strong,em,hyperlink"
           }
         },
+        "heading_align": {
+          "type": "Select",
+          "config": {
+            "label": "Overskrift-justering",
+            "default_value": "Venstre",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          }
+        },
         "feature_image": {
           "type": "Image",
           "config": {

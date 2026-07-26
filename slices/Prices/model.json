@@ -25,6 +25,17 @@
             "single": "paragraph,strong,em,hyperlink"
           }
         },
+        "heading_align": {
+          "type": "Select",
+          "config": {
+            "label": "Overskrift-justering",
+            "default_value": "Centreret",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          }
+        },
         "card_color": {
           "type": "Select",
           "config": {

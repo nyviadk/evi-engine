@@ -80,6 +80,7 @@ export const mock: Record<string, Content.TestimonialsSlice> = {
           "Sekundær",
         ),
       ],
+      heading_align: "Centreret",
       background_theme: "Lys",
       more_label: "Læs flere",
     } as Content.TestimonialsSliceDefaultPrimary,

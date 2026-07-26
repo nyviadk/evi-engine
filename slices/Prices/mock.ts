@@ -93,6 +93,7 @@ export const mock: Record<string, Content.PricesSlice> = {
         },
       ],
       card_color: "Neutral",
+      heading_align: "Centreret",
       background_theme: "Lys",
     },
   },

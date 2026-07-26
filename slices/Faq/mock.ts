@@ -56,6 +56,7 @@ export const mock: Record<string, Content.FaqSlice> = {
           "Ja, digitale gavekort kan købes i webshoppen og bruges på både bønner, udstyr og vores kaffekurser.",
         ),
       ],
+      heading_align: "Centreret",
       background_theme: "Lys",
     } as Content.FaqSliceDefaultPrimary,
   },

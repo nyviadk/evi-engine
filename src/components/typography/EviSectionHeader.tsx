@@ -21,6 +21,12 @@ export type EviSectionHeaderProps = {
   linkResolver: LinkResolverFunction;
   /** Heading-niveau-shift — se EviRichText. */
   isHero?: boolean;
+  /**
+   * Tekst-justering af overskriften. Gælder KUN uden CTA — MED en CTA er headeren
+   * altid venstrestillet (knap yderst til højre), da centrering + knap ser skævt
+   * ud. @default "center"
+   */
+  align?: "start" | "center";
 };
 
 /**
@@ -38,6 +44,7 @@ export function EviSectionHeader({
   ctaLink,
   linkResolver,
   isHero,
+  align = "center",
 }: EviSectionHeaderProps): React.ReactElement | null {
   const hasCta = ctaLink !== undefined && is_link_filled(ctaLink);
 
@@ -80,7 +87,7 @@ export function EviSectionHeader({
       description={description}
       linkResolver={linkResolver}
       isHero={isHero}
-      align="center"
+      align={align}
     />
   );
 }

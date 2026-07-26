@@ -9,6 +9,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 
 export type GalleryDefaultLayoutProps = {
@@ -54,6 +55,7 @@ export function GalleryDefaultLayout({
           description={p.body}
           linkResolver={linkResolver}
           isHero={isHero}
+          align={resolve_heading_align(p.heading_align)}
         />
       ) : null}
 

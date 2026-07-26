@@ -109,6 +109,17 @@
             "single": "paragraph,strong,em,hyperlink"
           }
         },
+        "heading_align": {
+          "type": "Select",
+          "config": {
+            "label": "Overskrift-justering",
+            "default_value": "Centreret",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          }
+        },
         "cards": {
           "type": "Group",
           "config": {
@@ -347,6 +358,17 @@
             "single": "paragraph,strong,em,hyperlink"
           }
         },
+        "heading_align": {
+          "type": "Select",
+          "config": {
+            "label": "Overskrift-justering",
+            "default_value": "Centreret",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          }
+        },
         "cta_link": {
           "type": "Link",
           "config": {
@@ -515,6 +537,17 @@
             "label": "Brødtekst",
             "placeholder": "Kort intro under overskriften",
             "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "heading_align": {
+          "type": "Select",
+          "config": {
+            "label": "Overskrift-justering",
+            "default_value": "Centreret",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
           }
         },
         "box_1_icon": {

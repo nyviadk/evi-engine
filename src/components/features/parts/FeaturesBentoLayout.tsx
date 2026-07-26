@@ -30,6 +30,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesBentoLayoutProps = {
@@ -314,6 +315,7 @@ export function FeaturesBentoLayout({
         ctaLink={p.cta_link}
         linkResolver={linkResolver}
         isHero={isHero}
+        align={resolve_heading_align(p.heading_align)}
       />
       <EviSplit preset="40-60" align="stretch" className={BENTO_GAP}>
         {card1}

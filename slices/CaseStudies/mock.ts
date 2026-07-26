@@ -112,6 +112,7 @@ export const mock: Record<string, Content.CaseStudiesSlice> = {
       ],
       // 3 cases > CASE_VISIBLE → "læs alle"-knappen vises i previewet.
       more_label: "Læs alle",
+      heading_align: "Venstre",
       background_theme: "Lys",
     },
   },

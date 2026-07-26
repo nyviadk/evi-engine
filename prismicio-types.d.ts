@@ -794,6 +794,17 @@ export interface CaseStudiesSliceDefaultPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Overskrift-justering field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: case_studies.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
 	 * Cases field in *CaseStudies → Default → Primary*
 	 *
 	 * - **Field Type**: Group
@@ -896,6 +907,17 @@ export interface FaqSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Faq → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: faq.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
 	
 	/**
 	 * Overskrift: knap (valgfri) field in *Faq → Default → Primary*
@@ -1152,6 +1174,17 @@ export interface FeaturesSliceCardsPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Overskrift-justering field in *Features → Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: features.cards.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
 	 * Kort field in *Features → Cards → Primary*
 	 *
 	 * - **Field Type**: Group
@@ -1349,6 +1382,17 @@ export interface FeaturesSliceBentoPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Overskrift-justering field in *Features → Bento → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: features.bento.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
 	 * Overskrift: knap (fx Se alle ydelser) field in *Features → Bento → Primary*
 	 *
 	 * - **Field Type**: Link
@@ -1542,6 +1586,17 @@ export interface FeaturesSliceIconBentoPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Features → Icon Bento → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: features.icon-bento.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
 	
 	/**
 	 * Kasse 1 (bred): ikon field in *Features → Icon Bento → Primary*
@@ -1842,6 +1897,17 @@ export interface GallerySliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: gallery.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
 	
 	/**
 	 * Feature-billede (16:9) field in *Gallery → Default → Primary*
@@ -2623,6 +2689,17 @@ export interface PricesSliceDefaultPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Overskrift-justering field in *Prices → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: prices.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
 	 * Kort-farve field in *Prices → Default → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -2747,6 +2824,17 @@ export interface TestimonialsSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: testimonials.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
 	
 	/**
 	 * Anmeldelser field in *Testimonials → Default → Primary*

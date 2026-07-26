@@ -12,6 +12,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import {
   evi_card_title_class,
@@ -144,6 +145,7 @@ export function FeaturesIconBentoLayout({
         description={p.body}
         linkResolver={linkResolver}
         isHero={isHero}
+        align={resolve_heading_align(p.heading_align)}
       />
       {(topRowHas || bottomRowHas) && (
         <EviRow className={cn("grid grid-cols-12", BENTO_GAP)}>

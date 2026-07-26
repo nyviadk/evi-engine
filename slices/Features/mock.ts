@@ -118,6 +118,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
         },
       ],
       card_color: "Sekundær",
+      heading_align: "Centreret",
       background_theme: "Lys",
     },
   },
@@ -176,6 +177,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
         "Bønner, udstyr og gavekort — altid friskristet og sendt hurtigt afsted.",
       ),
       card_4_link: webLink("Gå til webshop"),
+      heading_align: "Centreret",
       background_theme: "Lys",
     } as Content.FeaturesSliceBentoPrimary,
   },
@@ -207,6 +209,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
       box_4_body: line(
         "Til vores kurser i butikken gennemgår vi maling, dosering og bryggetid — og du får smagt dig frem til den kaffe der passer til lige præcis din kande.",
       ),
+      heading_align: "Centreret",
       background_theme: "Lys",
     },
   },

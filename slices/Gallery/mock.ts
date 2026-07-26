@@ -63,6 +63,7 @@ export const mock: Record<string, Content.GallerySlice> = {
         { image: img(B, 1200, 900), caption: noCaption },
         { image: img(C, 1200, 900), caption: line("Pakket og klar til levering") },
       ],
+      heading_align: "Venstre",
       background_theme: "Lys",
     },
   },
