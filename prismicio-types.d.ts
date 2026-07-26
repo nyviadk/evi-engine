@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice
 
 /**
  * Content for Side documents
@@ -1795,6 +1795,120 @@ type FooterColumnTextSliceVariation = FooterColumnTextSliceDefault
 export type FooterColumnTextSlice = prismic.SharedSlice<"footer_column_text", FooterColumnTextSliceVariation>;
 
 /**
+ * Item in *Gallery → Default → Primary → Galleri-billeder*
+ */
+export interface GallerySliceDefaultPrimaryItemsItem {
+	/**
+	 * Billede field in *Gallery → Default → Primary → Galleri-billeder*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.items[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Beskrivelse (valgfri) field in *Gallery → Default → Primary → Galleri-billeder*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.items[].caption
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	caption: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Gallery → Default → Primary*
+ */
+export interface GallerySliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Feature-billede (16:9) field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.feature_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	feature_image: prismic.ImageField<never>;
+	
+	/**
+	 * Feature-beskrivelse field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.feature_caption
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	feature_caption: prismic.RichTextField;
+	
+	/**
+	 * Galleri-billeder field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: gallery.default.primary.items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	items: prismic.GroupField<Simplify<GallerySliceDefaultPrimaryItemsItem>>;
+	
+	/**
+	 * Baggrundstema field in *Gallery → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: gallery.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Gallery Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type GallerySliceDefault = prismic.SharedSliceVariation<"default", Simplify<GallerySliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Gallery*
+ */
+type GallerySliceVariation = GallerySliceDefault
+
+/**
+ * Gallery Shared Slice
+ *
+ * - **API ID**: `gallery`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type GallerySlice = prismic.SharedSlice<"gallery", GallerySliceVariation>;
+
+/**
  * Item in *HeaderClassic → Default → Primary → Menupunkter*
  */
 export interface HeaderClassicSliceDefaultPrimaryNavGroupsItem {
@@ -2854,6 +2968,11 @@ declare module "@prismicio/client" {
 			FooterColumnTextSliceDefaultPrimary,
 			FooterColumnTextSliceVariation,
 			FooterColumnTextSliceDefault,
+			GallerySlice,
+			GallerySliceDefaultPrimaryItemsItem,
+			GallerySliceDefaultPrimary,
+			GallerySliceVariation,
+			GallerySliceDefault,
 			HeaderClassicSlice,
 			HeaderClassicSliceDefaultPrimaryNavGroupsItem,
 			HeaderClassicSliceDefaultPrimary,

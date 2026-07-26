@@ -5,6 +5,7 @@ import Faq from "./Faq";
 import Features from "./Features";
 import FooterColumnLinks from "./FooterColumnLinks";
 import FooterColumnText from "./FooterColumnText";
+import Gallery from "./Gallery";
 import HeaderClassic from "./HeaderClassic";
 import Hero from "./Hero";
 import Highlights from "./Highlights";
@@ -19,6 +20,7 @@ export const components = {
 	features: Features,
 	footer_column_links: FooterColumnLinks,
 	footer_column_text: FooterColumnText,
+	gallery: Gallery,
 	header_classic: HeaderClassic,
 	hero: Hero,
 	highlights: Highlights,

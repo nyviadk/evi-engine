@@ -52,6 +52,9 @@
             },
             "prices": {
               "type": "SharedSlice"
+            },
+            "gallery": {
+              "type": "SharedSlice"
             }
           }
         }
