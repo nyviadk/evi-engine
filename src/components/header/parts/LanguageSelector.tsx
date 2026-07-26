@@ -37,16 +37,11 @@ export type LanguageSelectorProps = {
  *     new page has different height. Full reload sidesteps browser scroll-
  *     restoration entirely: fresh URL, browser defaults scroll to top.
  *
- * Language labels vises i det NATIVE sprog for hver locale — dvs. dansk står
- * som "Dansk" og engelsk som "English" uanset hvilken locale brugeren i
- * øjeblikket er på. Dette matcher konventionen på multilinguale sites (bruger
- * skal kunne genkende sit eget sprog uden at kunne sitets nuværende sprog).
- * Intl.DisplayNames instantieres per option med den locale som display-sprog,
- * så .of(language_code) returnerer endonymet. Dansk returnerer lowercase fra
- * Intl ("dansk"); vi kapitaliserer første bogstav.
+ * Labels vises som endonym (hvert sprog i sit eget navn: "Dansk", "English") via
+ * Intl.DisplayNames med locale som display-sprog. Dansk returnerer lowercase →
+ * vi kapitaliserer første bogstav.
  *
- * Silently renders nothing when the tenant only has one locale — nothing to
- * switch to.
+ * Renders nothing when the tenant only has one locale.
  */
 export function LanguageSelector({
   locales,
@@ -84,7 +79,7 @@ export function LanguageSelector({
       >
         {locales.map((locale) => {
           const language_code = locale.split("-")[0] ?? locale;
-          let label = language_code.toUpperCase(); // compact: fx "DA"
+          let label = language_code.toUpperCase();
           if (!compact) {
             let raw_label = locale.toUpperCase();
             try {

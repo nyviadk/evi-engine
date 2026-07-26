@@ -39,10 +39,8 @@ export function EviHeadingGroup({
       data-align={align}
       className={cn(
         "evi-prose col-span-12",
-        // Measure PER element, ikke på hele gruppen: overskrifter måles bredere
-        // (~30ch ved DERES egen størrelse → ~35-40 tegn/linje, wrapper ikke for
-        // tidligt), brødtekst holdes på det læsbare ~65ch. `ch` regnes på selve
-        // elementet, så clamp-fluid størrelser giver konsistent tegn-measure.
+        // Measure PER element: `ch` regnes på elementets egen (clamp-fluide)
+        // størrelse → overskrifter ~30ch, brødtekst det læsbare ~65ch.
         "[&>h1]:max-w-[30ch] [&>h2]:max-w-[30ch] [&>h3]:max-w-[30ch] [&>p]:max-w-prose",
         // "center" er venstre på mobil (centreret fler-linjet tekst er svær at
         // læse på smalle skærme) og centreres først fra md og op.

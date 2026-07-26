@@ -4,11 +4,9 @@ import type { SliceComponentProps } from "@prismicio/react";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 /**
- * Hero — core-kategori-slice (R4.1). TYND DISPATCHER: hver variation lazy-
- * importeres via `await import()`, så kun den brugte variations kode loades
- * (mindre server-bundle pr. render — samme mekanik som EviIcons dynamiske
- * import, virker på Cloudflare Workers). `switch` narrower samtidig
- * slice-typen til den konkrete variation. Layouts i src/components/hero/parts/.
+ * Hero — tynd dispatcher (R4.1). Hver variation lazy-importeres via
+ * `await import()`, så kun den brugte variations kode indgår i server-bundlen
+ * pr. render (virker på Cloudflare Workers). Layouts i src/components/hero/parts/.
  */
 export default async function Hero({
   slice,

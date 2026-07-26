@@ -1,5 +1,3 @@
-// Mapping Dictionaries: Oversætter Prismic Selects til rene CSS-værdier
-
 export const RADIUS_MAP: Record<string, string> = {
   "Skarpe hjørner (0px)": "0px",
   "Lille afrunding (4px)": "0.25rem",

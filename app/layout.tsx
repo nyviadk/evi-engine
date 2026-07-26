@@ -63,7 +63,6 @@ export default async function RootLayout({
   const settings = ctx?.settings;
   const lang = ctx?.lang || "da-dk";
 
-  // Udregn farverne (din nuværende motor)
   const computedColors = compute_theme_vars({
     color_light: settings?.data?.color_light ?? null,
     color_dark: settings?.data?.color_dark ?? null,
@@ -75,7 +74,6 @@ export default async function RootLayout({
   const userRadiusChoice = settings?.data?.border_radius as string;
   const textScale = TEXT_SCALE_MAP[settings?.data?.text_scale as string];
 
-  // Font-resolver: custom_font_input → font_select → "Inter"
   const fonts = resolveFonts({
     custom_font_input: settings?.data?.custom_font_input as string,
     font_select: settings?.data?.font_select as string,
@@ -91,7 +89,6 @@ export default async function RootLayout({
         ? "light dark"
         : "light";
 
-  // Byg det endelige style-objekt, der skydes ind på <body>.
   // React.CSSProperties tillader ikke vilkårlige --custom-properties direkte.
   const themeStyle: React.CSSProperties & Record<`--${string}`, string> = {
     ...computedColors,

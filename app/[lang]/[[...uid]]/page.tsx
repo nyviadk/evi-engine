@@ -143,29 +143,23 @@ export async function generateMetadata(props: {
   const siteName = settings?.data?.site_name;
   const isHome = page.uid === "home";
 
-  // 2. Find sidens navn (Prioritet: Meta felt -> Capitalized UID)
   const pageLabel =
     metaTitle || page.uid.charAt(0).toUpperCase() + page.uid.slice(1);
 
-  // 3. Den "Smarte" Titel-logik
   let fullTitle: string;
 
   if (isHome && !metaTitle && siteName) {
-    // Scenarie: Forsiden uden manuel titel -> "Frisør Jensen"
     fullTitle = siteName;
   } else if (siteName) {
-    // Tjek om kunden selv har lavet branding (brugt en pipe | )
+    // Pipe i metaTitle = kunden har selv styret sin branding — lad den stå.
     if (metaTitle?.includes("|")) {
-      fullTitle = metaTitle; // De har selv styret det, lad det være
+      fullTitle = metaTitle;
     } else {
-      // Standard: "Ydelser | Frisør Jensen"
       fullTitle = `${pageLabel} | ${siteName}`;
     }
   } else {
-    // Fallback hvis firma-navn slet ikke er udfyldt
     fullTitle = pageLabel;
   }
-  // URL-generering til SEO
   const canonical_path = resolve_page_url(page.id, lang, tree, tenant);
   const full_canonical_url = `${base_url}${canonical_path}`;
 
@@ -204,25 +198,21 @@ export async function generateMetadata(props: {
     settings?.data?.default_og_image?.url ||
     null;
 
-  // Staging-tjek
   const is_staging = is_staging_domain(hostname);
 
   return {
     title: fullTitle,
     description: page.data.meta_description,
 
-    // Canonical Tag
     alternates: {
       canonical: full_canonical_url,
       languages: alternate_langs,
     },
 
-    // SEO Robots
     robots: is_staging
       ? { index: false, follow: false }
       : { index: true, follow: true },
 
-    // Open Graph (Facebook, LinkedIn)
     openGraph: {
       title: fullTitle,
       description: page.data.meta_description ?? undefined,
@@ -242,7 +232,6 @@ export async function generateMetadata(props: {
       }),
     },
 
-    // Twitter Cards (X)
     twitter: {
       card: "summary_large_image",
       title: fullTitle,

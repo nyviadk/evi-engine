@@ -13,21 +13,14 @@ export type EviButtonProps = React.ComponentProps<"button"> & {
   /** Knappens størrelse. @default "md" */
   size?: Size;
   /**
-   * Vis pil-ikon der animerer ved hover. Pilen er et rent CSS `::after`
-   * (mask-image, se globals F) — IKKE et injiceret React-child. Derfor virker den
-   * også med `asChild`, hvor child'en (fx et allowText-`PrismicNextLink`) selv
-   * rendrer sin label; pilen behøver ingen eksplicitte children at stå ved siden af.
-   *
-   * KONVENTION: pil bruges KUN med `appearance="text"`. Tekst-links mangler
-   * knap-chrome, så pilen giver dem "videre"-affordance; solid/outline-knapper er
-   * selv-tydelige → pil = overflødig pynt (`feedback_button_arrow_convention`).
-   * @default false
+   * Hover-animeret pil. Rent CSS `::after` (mask-image) — ikke et React-child, så
+   * den virker også med `asChild`. KONVENTION: kun med `appearance="text"`
+   * (`feedback_button_arrow_convention`). @default false
    */
   arrow?: boolean;
   /**
-   * Render det første child som rod-elementet i stedet for `<button>`, og
-   * komponer button-stylingen + alle props/handlers på det. Brug fx til at
-   * style et `<PrismicNextLink>` som en knap uden at duplikere markup:
+   * Render child'en som rod-element og komponer button-styling + props på det
+   * (fx style et `<PrismicNextLink>` som knap uden duplikeret markup).
    *
    * @example
    * <EviButton asChild variant="primary">

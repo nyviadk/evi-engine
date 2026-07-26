@@ -9,7 +9,11 @@
       "Bash(echo \"---eslint:$?---\")",
       "Bash(echo \"tsc:$?\")",
       "Bash(echo \"eslint:$?\")",
-      "Bash(python -c \"import json; json.load\\(open\\('slices/Maps/model.json'\\)\\); print\\('JSON gyldig'\\)\")"
+      "Bash(python -c \"import json; json.load\\(open\\('slices/Maps/model.json'\\)\\); print\\('JSON gyldig'\\)\")",
+      "Bash(echo \"TSC_EXIT=$?\")",
+      "Bash(echo \"ESLINT_EXIT=$?\")",
+      "Bash(grep -vE '^[+-][[:space:]]*\\(//|/\\\\*|\\\\*|\\\\{/\\\\*|.*\\\\*/|\\\\{\\)')",
+      "Bash(grep -vE '^[+-][[:space:]]*$')"
     ],
     "deny": [
       "Bash(npm run deploy*)",

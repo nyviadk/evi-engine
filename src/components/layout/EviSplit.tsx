@@ -78,12 +78,9 @@ export function EviSplit({
   const [first, second] = children;
   const effectiveAlign = rows ? "stretch" : align;
 
-  // Række-align: hvert pane subgrider splittens rækker og videregiver dem til
-  // sit EviCard-barn, så barnets rækker lander i SPLITTENS spor — det er dét der
-  // får de to paner til at flugte. `gap-0` overskriver splittens row-gap inde i
-  // panet (ellers ville kolonne-gap'et også skille titel fra tekst); gap'et
-  // MELLEM panerne ligger uden for begge subgrids og overlever — det er også
-  // det der holder mobil-stakken adskilt, hvor panerne får hver sit sæt spor.
+  // Række-align: hvert pane subgrider splittens rækker og videregiver dem til sit
+  // EviCard, så børnenes rækker flugter. `gap-0` dræber row-gap'et INDE i panet
+  // (ellers skiller det også titel fra tekst); gap'et MELLEM panerne overlever.
   const paneRows = rows
     ? cn("grid grid-rows-subgrid gap-0", EVI_ROW_SPAN[rows])
     : undefined;
@@ -115,10 +112,8 @@ export function EviSplit({
           cols.right,
           !rows && align === "stretch" && "*:h-full",
           paneRows,
-          // Kun VISUEL reorder via CSS `order` (DOM/læse-/fokus-rækkefølge er
-          // uændret): løft 2. barn foran på mobil (mobileReverse) og/eller på
-          // desktop (reverse). Ikke-reverse sætter eksplicit order-0 så en
-          // mobil-reverse nulstilles korrekt ved @3xl.
+          // Kun VISUEL reorder via CSS `order` (DOM/fokus-rækkefølge uændret).
+          // Eksplicit order-0 så en mobil-reverse nulstilles korrekt ved @3xl.
           mobileReverse ? "order-first" : "order-0",
           reverse ? "@3xl/section:order-first" : "@3xl/section:order-0",
         )}

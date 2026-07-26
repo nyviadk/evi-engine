@@ -19,17 +19,13 @@ export type EviCheckListProps = {
    */
   icon?: string | null;
   linkResolver: LinkResolverFunction;
-  /** Ekstra klasser på `<ul>`. */
   className?: string;
 };
 
 /**
- * EviCheckList — render et list-felt som en "checkliste" med ÉT delt ikon (default
- * check). Tynd wrapper over [[EviIconList]]: hver blok (list-item ELLER en "stray"
- * paragraph — Prismic kan ikke fjerne paragraph helt som base-blok) konverteres til
- * en paragraph og bliver ét punkt, alle med samme ikon. Løser repeatable-i-
- * repeatable (ét list-felt frem for en nested gruppe) og genbruger ikon+tekst-
- * render'en frem for at duplikere den.
+ * EviCheckList — list-felt som "checkliste" med ét delt ikon (default check).
+ * Tynd wrapper over [[EviIconList]]. Løser repeatable-i-repeatable (ét list-felt
+ * frem for nested gruppe); et list-felt kan ikke bære ikon pr. række.
  */
 export function EviCheckList({
   field,
@@ -40,9 +36,7 @@ export function EviCheckList({
   if (!isFilled.richText(field)) return null;
 
   const iconName = isFilled.keyText(icon) ? icon : "check";
-  // list-item/o-list-item → paragraph, så teksten render'es UDEN liste-wrapper
-  // (ellers gav en list-blok et nested <ul><li>). Inline fed/kursiv/links (spans)
-  // følger med. Hvert punkt deler `iconName`.
+  // list-item → paragraph, så teksten render'es uden nested <ul><li>.
   const items: EviIconListItem[] = field.map((block) => ({
     icon: iconName,
     text: [{ ...block, type: "paragraph" }] as RichTextField,

@@ -17,15 +17,12 @@ export type EviIconListItem = {
 export type EviIconListProps = {
   items: readonly EviIconListItem[];
   linkResolver: LinkResolverFunction;
-  /** Klasser på `<ul>`. */
   className?: string;
 };
 
 /**
- * EviIconList — liste af "diskret ikon + tekst"-rækker. Til info-punkter (fx
- * "🚗 Gratis parkering ved døren"), kontakt-detaljer o.l. Modsat EviIconRow/
- * EviIconBadge er ikonet HER bart (ingen badge-flade) — et lille markør-ikon
- * foran teksten. Tomt ikon → bare indrykket tekst. Semantisk `<ul>`. Genbrugbar.
+ * EviIconList — liste af "bart ikon + tekst"-rækker. Modsat EviIconRow/EviIconBadge
+ * er ikonet bart (ingen badge-flade). Tomt ikon → bare tekst.
  */
 export function EviIconList({
   items,

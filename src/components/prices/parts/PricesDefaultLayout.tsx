@@ -80,19 +80,16 @@ export function PricesDefaultLayout({
               rows={7}
               className={cn(resolve_surface(cardColor), evi_box_class())}
             >
-              {/* 1 · titel */}
               <EviRichText
                 field={plan.title}
                 linkResolver={linkResolver}
                 className={evi_card_title_class("lg")}
               />
-              {/* 2 · pris (stort) */}
               <EviRichText
                 field={plan.price}
                 linkResolver={linkResolver}
                 className="mt-2 [&_p]:m-0 [&_p]:text-3xl [&_p]:font-bold"
               />
-              {/* 3 · undertekst */}
               {isFilled.richText(plan.caption) ? (
                 <EviRichText
                   field={plan.caption}
@@ -102,9 +99,7 @@ export function PricesDefaultLayout({
               ) : (
                 <div />
               )}
-              {/* 4 · divider */}
               <EviDivider className="my-5" />
-              {/* 5 · beskrivelse (multi → afsnit/lister beholder prose-afstand) */}
               {isFilled.richText(plan.body) ? (
                 <EviRichText
                   field={plan.body}
@@ -114,7 +109,6 @@ export function PricesDefaultLayout({
               ) : (
                 <div />
               )}
-              {/* 6 · inkluderet-checkliste */}
               {isFilled.richText(plan.included) ? (
                 <EviCheckList
                   field={plan.included}
@@ -125,7 +119,6 @@ export function PricesDefaultLayout({
               ) : (
                 <div />
               )}
-              {/* 7 · CTA (valgfri) — flugter i bunden via subgrid */}
               {has_cta ? (
                 <EviButton
                   asChild

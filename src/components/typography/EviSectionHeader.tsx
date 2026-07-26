@@ -35,8 +35,6 @@ export type EviSectionHeaderProps = {
  * - **Uden CTA** → centreret overskrift (klassisk sektion-intro).
  * - **Med CTA** → overskrift venstre-stillet + knap top-flugtet yderst til højre
  *   (wrapper under på mobil). Knappen relaterer til titlen (det primære element).
- *
- * Bruges af bento- og FAQ-sektioner med samme princip.
  */
 export function EviSectionHeader({
   title,

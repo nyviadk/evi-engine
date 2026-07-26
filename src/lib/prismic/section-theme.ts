@@ -28,10 +28,6 @@ export type SectionThemeKey = (typeof SECTION_THEME_MAP)[SectionThemeLabel];
 /**
  * Slår et Prismic-label op og returnerer den tilsvarende CSS-tema-nøgle.
  * Ukendt/tomt label falder tilbage til `fallback` (default "light").
- *
- * Kald direkte med feltet fra Prismic:
- *   const theme = resolve_section_theme(slice.primary.background_theme);
- *   <EviSection theme={theme}>...
  */
 export function resolve_section_theme(
   label: string | null | undefined,

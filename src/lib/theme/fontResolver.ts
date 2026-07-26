@@ -1,7 +1,7 @@
 const SYSTEM_FALLBACK =
   'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
-// Byg Bunny Fonts URL med specifikke vægte (IKKE range-syntaks)
+// Specifikke vægte, IKKE range-syntaks.
 function buildBunnyUrl(fontName: string): string {
   const slug = fontName.trim().replace(/\s+/g, "+");
   // swap: render-blocking stylesheet → font klar ved paint, vist på første load

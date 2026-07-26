@@ -63,7 +63,6 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       logo: {} as Content.HeaderClassicSliceDefaultPrimary["logo"],
       nav_groups: [
-        // Link-top MED dropdown
         {
           links: [
             link("Kaffe", "#"),
@@ -72,7 +71,6 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
             link("Filterkaffe", "#"),
           ],
         },
-        // Tekst-top (ingen samleside) MED dropdown
         {
           links: [
             link("Shop", null),
@@ -82,7 +80,6 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
             link("Kurser", "#"),
           ],
         },
-        // Link-top MED dropdown
         {
           links: [
             link("Om os", "#"),
@@ -91,7 +88,6 @@ export const mock: Record<string, Content.HeaderClassicSlice> = {
             link("Bæredygtighed", "#"),
           ],
         },
-        // Enkelt-links (ingen dropdown)
         { links: [link("Blog", "#")] },
         { links: [link("Kontakt", "#")] },
       ] as Content.HeaderClassicSliceDefaultPrimary["nav_groups"],

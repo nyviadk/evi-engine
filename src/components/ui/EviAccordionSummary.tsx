@@ -1,14 +1,10 @@
 "use client";
 
 /**
- * Accordion-overskriften (`<summary>`) som en tynd klient-komponent — KUN for at
- * neutralisere dobbeltklik-tekstmarkering. Et `<summary>` markerer normalt ordet
- * ved dobbeltklik (browser-default), hvilket "flimrer" når man bare vil åbne/lukke.
- *
- * `preventDefault` KUN ved `detail > 1` (dobbelt/tripel-klik) dræber ord-markeringen,
- * men lader single-klik + træk-markering være i fred → man kan stadig markere teksten
- * manuelt. Toggle udløses af `click` (ikke `mousedown`) → helt uberørt. Uden JS
- * (før hydrering) fungerer alt native; handleren er ren progressiv enhancement.
+ * `<summary>` som klient-komponent KUN for at neutralisere browserens
+ * dobbeltklik-ordmarkering (flimrer ved åbn/luk). `preventDefault` kun ved
+ * `detail > 1`, så single-klik + træk-markering bevares; toggle sker på `click`
+ * → uberørt. Ren progressiv enhancement (native uden JS).
  */
 export function EviAccordionSummary({
   className,

@@ -5,7 +5,6 @@ import type { Content } from "@prismicio/client";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 import { h2 } from "@/src/lib/preview/mockFields";
 
-// Mock ejer sin egen preview-context.
 export const context: EviPageSliceContext = {
   linkResolver: () => "/",
   sliceContexts: [{ theme: "light", isHero: false, collapsePadding: false }],

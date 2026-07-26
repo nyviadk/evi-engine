@@ -18,17 +18,16 @@ export type EviRevealProps = {
 };
 
 /**
- * Delt "vis resten"-reveal: slicens eneste client-JS er én boolean. Al tung
- * rendering sker på serveren og sendes ind som children — kun toggle'en hydreres.
+ * Delt "vis resten"-reveal: slicens eneste client-JS er én boolean; al tung
+ * rendering sker på serveren og sendes ind som children.
  *
  * Kalderen markerer de OVERSKYDENDE elementer med `data-reveal-overflow` + en
  * skjul-klasse styret af `group-data-open/reveal`:
  *  - alle breakpoints: `hidden group-data-open/reveal:block`
- *  - kun mobil (desktop viser alt): `max-md:hidden group-data-open/reveal:max-md:block` + `moreClassName="md:hidden"`
+ *  - kun mobil: `max-md:hidden group-data-open/reveal:max-md:block` + `moreClassName="md:hidden"`
  *
- * "Skærmbredde-styret + uden CLS" KRÆVER JS (ingen native disclosure kan gøre
- * det i ren CSS). Progressive enhancement via `<noscript>`: uden JS afsløres alt
- * overskydende + knappen skjules, så intet indhold låses inde.
+ * "Skærmbredde-styret + uden CLS" KRÆVER JS. PE via `<noscript>`: uden JS afsløres
+ * alt overskydende + knappen skjules.
  */
 export function EviReveal({
   children,

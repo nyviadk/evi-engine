@@ -27,29 +27,14 @@ type SharedProps = {
   /** Resolver til interne dokument-links. */
   linkResolver: LinkResolverFunction;
   /**
-   * Heading-niveau-shift baseret på slice-position på siden.
-   *
-   * Hver slice-template har sin egen "default" heading-level (h1 for
-   * hero-templates, h2 for normale tekst-slices). Når en slice ender i
-   * den modsatte position af sit default, shifter vi:
-   *
-   * - `true` — slice er nu hero (typisk sidens første slice). Hvis dens
-   *   template skriver h2 som default, opgrader til h1, så siden har
-   *   præcis én h1.
-   * - `false` — slice er ikke hero (slice #2 og frem). Hvis dens template
-   *   skriver h1 som default, degrader til h2, så vi ikke får flere h1'er.
-   * - `undefined` — ingen shift; slice'ens default heading-level beholdes.
-   *
-   * Sættes automatisk af `compute_slice_contexts` ud fra index.
+   * Heading-niveau-shift efter slice-position, så siden har præcis én h1:
+   * `true` (hero) opgraderer h2→h1; `false` degraderer h1→h2; `undefined` = ingen
+   * shift. Sættes automatisk af `compute_slice_contexts`.
    */
   isHero?: boolean;
   /**
-   * Yderligere block-overrides der merges oveni EviRichText's built-ins.
-   * Caller wins ved overlap — så en override her overskriver den default
-   * heading- eller hyperlink-serializer.
-   *
-   * Bruges når en specifik render-usage har brug for ekstra transformation
-   * (fx FooterCopyright der prepender "© {year} " til paragraph-blocks).
+   * Ekstra block-overrides merget oveni built-ins; caller wins ved overlap
+   * (fx FooterCopyright der prepender "© {year} " til paragraphs).
    */
   extraComponents?: RichTextComponents;
 };
@@ -58,9 +43,8 @@ type EviRichTextRawProps = SharedProps;
 type EviRichTextProps = SharedProps &
   Omit<React.ComponentProps<"div">, "children">;
 
-// Heading-overrides hoistes til modul-niveau — de capture ingen variabler,
-// så de kan deles på tværs af alle render-kald i stedet for at blive
-// genskabt hver gang. (jf. vercel-react-best-practices: rerender-no-inline-components)
+// Heading-overrides hoistet til modul-niveau — capture ingen variabler, så de
+// deles frem for at genskabes pr. render (jf. vercel-react-best-practices).
 const HEADING_OVERRIDES_HERO: RichTextComponents = {
   heading2: ({ children }: { children: React.ReactNode }) => (
     <h1>{children}</h1>
@@ -88,9 +72,8 @@ function Raw({
         ? HEADING_OVERRIDES_NON_HERO
         : null;
 
-  // hyperlink-serializeren capture'r linkResolver-prop'en og må derfor
-  // blive defineret pr. render. Sjælden hot path og ingen remount-bivirkninger
-  // (server component), så det er acceptabelt indtil resolver kommer fra context.
+  // hyperlink-serializeren capture'r linkResolver → må defineres pr. render.
+  // Server component, ingen remount-bivirkninger → acceptabelt.
   return (
     <PrismicRichText
       field={field}

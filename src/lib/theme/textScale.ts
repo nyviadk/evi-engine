@@ -1,5 +1,3 @@
-// Mapping Dictionaries: Oversætter Prismic Selects til rene CSS-værdier
-
 // Pr. tekstskala-valg: `scale` ganges på html font-size (skalerer alt rem-baseret);
 // `headingDamp` ganges oveni PÅ store overskrifter (h1-h3) — 1 = fuld skalering,
 // <1 dæmper så display-type ikke skriger ved den største tekst.

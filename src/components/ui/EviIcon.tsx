@@ -5,7 +5,6 @@ import { cn } from "@/src/lib/utils/cn";
 import { sanitize_svg_body } from "@/src/lib/utils/security";
 
 // Dynamic imports — pack parses først når den bruges (cold-start speedup).
-// Efter første import caches den af JS module-loader.
 const PACK_LOADERS: Record<string, () => Promise<IconifyJSON>> = {
   lucide: () => import("@iconify-json/lucide").then((m) => m.icons),
   ph: () => import("@iconify-json/ph").then((m) => m.icons),

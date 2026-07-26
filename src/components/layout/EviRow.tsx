@@ -25,16 +25,8 @@ const paddingBottom: Record<Padding, string> = {
 };
 
 /**
- * Full-width grid slot for placing content inside an EviSection's 12-col grid.
- * Handles the `col-span-12` placement + optional top/bottom divider + optional
- * padding — so slice files never write `col-span-12`, `border-t`, or `pt-*`
- * classes themselves.
- *
- * Use for footer bottom bars, section separators, cross-cutting bands, etc.
- *
- * Examples:
- *   <EviRow>{...}</EviRow>                        → full-width plain
- *   <EviRow divider="top" padding="md">{...}</EviRow>  → separated bottom band
+ * Full-width (`col-span-12`) slot inside an EviSection's 12-col grid, with
+ * optional divider + padding — so slice files never write those classes themselves.
  */
 export function EviRow({
   divider = "none",

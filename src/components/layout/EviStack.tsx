@@ -110,18 +110,13 @@ const rowFromJustifyClasses: Record<RowFrom, Record<Justify, string>> = {
 };
 
 /**
- * Layout primitive for flex-based stacking. Handles axis, gap, alignment,
- * and semantic element choice — so callers never write raw flex classes.
+ * Layout primitive for flex-based stacking (axis, gap, alignment, semantic
+ * element) — so callers never write raw flex classes.
  *
  * Examples:
- *   <EviStack gap="md">                              → vertical <div>
  *   <EviStack as="ul" gap="sm">                      → vertical <ul>
  *   <EviStack direction="row" wrap gap="md">         → horizontal wrap row
- *   <EviStack as="nav" direction="row">              → semantic <nav>
  *   <EviStack direction="row" justify="between" align="center"> → toolbar
- *
- * Rule of thumb: if you find yourself writing any of `flex`, `flex-col`,
- * `flex-row`, `items-*`, `justify-*`, `gap-*` — you want EviStack.
  */
 export function EviStack<T extends React.ElementType = "div">({
   as,

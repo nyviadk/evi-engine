@@ -2,9 +2,8 @@ import { cn } from "@/src/lib/utils/cn";
 
 type MasonryColumns = 1 | 2 | 3 | 4;
 
-// column-count fungerer som MAKSIMUM når column-width også er sat (CSS multicol):
-// browseren fylder så mange ~19rem-brede spalter der er plads til, cappet her —
-// så få kort aldrig efterlader en tom spalte, og mange lander på et pænt loft.
+// column-count = MAKSIMUM når column-width også er sat (CSS multicol): browseren
+// fylder så mange ~19rem-spalter der er plads til, cappet her.
 const maxColumnClass: Record<MasonryColumns, string> = {
   1: "[column-count:1]",
   2: "[column-count:2]",

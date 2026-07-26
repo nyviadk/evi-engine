@@ -45,16 +45,6 @@ export type FooterClassicProps = {
  *  │ copyright text                    legal · privacy · terms   │
  *  └─────────────────────────────────────────────────────────────┘
  *
- * All layout via Evi primitives:
- *  - EviSection      → section frame med tenant-valgt tema (default "dark")
- *  - EviSplit 33-67  → brand pane (left) + columns pane (right)
- *  - EviAutoGrid fluid → columns auto-fit + wrap
- *  - EviRow          → bottom band with top-divider
- *  - EviStack        → flex row/col with align/justify
- *  - EviRichText     → copyright text
- *  - BrandLink       → brand mark (image or text)
- *  - FooterLinkList  → semantic list of links
- *
  * No raw Tailwind classes, no free JSX. Rule of thumb: if a line has
  * a `className` that isn't just a data-slot passthrough, something is wrong.
  */

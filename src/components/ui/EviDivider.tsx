@@ -1,10 +1,8 @@
 import { cn } from "@/src/lib/utils/cn";
 
 /**
- * EviDivider — en tynd vandret adskiller. Native `<hr>` (implicit
- * `role="separator"` → gratis a11y), farvet med `current`-tokenet så den følger
- * sektionens/kortets tema (læsbar på lys, mørk og tonede flader). Genbrugbar på
- * tværs af kort, lister, sektioner.
+ * EviDivider — vandret `<hr>` farvet med `current`-tokenet, så den følger
+ * sektionens/kortets tema (læsbar på lys, mørk og tonede flader).
  */
 export function EviDivider({
   className,

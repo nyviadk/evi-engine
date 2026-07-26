@@ -43,14 +43,12 @@ export async function POST(request: Request): Promise<NextResponse> {
       return new NextResponse("Invalid JSON", { status: 400 });
     }
 
-    // Prismic sender altid deres repo-navn i 'domain' feltet!
+    // Prismic sender altid deres repo-navn i 'domain'-feltet.
     const prismic_repo = json_data.domain;
     const prismic_secret = json_data.secret;
 
-    // Vi henter vores globale webhook-kodeord fra .env filen
     const expected_secret = process.env.PRISMIC_WEBHOOK_SECRET;
 
-    // 1. Tjek om kodeordet passer (timing-safe compare)
     if (
       !expected_secret ||
       typeof prismic_secret !== "string" ||
@@ -59,20 +57,16 @@ export async function POST(request: Request): Promise<NextResponse> {
       return new NextResponse("Ugyldigt kodeord", { status: 401 });
     }
 
-    // 2. Sikkerhed: Fik vi et repo-navn fra Prismic?
     if (typeof prismic_repo !== "string" || prismic_repo.length === 0) {
       return new NextResponse("Mangler repo-navn", { status: 400 });
     }
 
-    // 3. Sync Prismic-afledte tenant-felter ind i KV for alle hostnames der
-    //    bruger dette repo. Hash-compare skipper no-op writes.
+    // Hash-compare i sync skipper no-op writes.
     const sync_summary = await sync_tenants_for_repo(prismic_repo);
 
-    // 4. Ryd indholds-cachen for denne ene kunde (delt tag på tværs af alle
-    //    hostnames der bruger samme repo — staging + prod invalideres samlet).
-    //
-    // `{ expire: 0 }` = immediate expiration → næste request bliver blocking
-    // cache-miss og henter fresh content.
+    // Delt tag på tværs af alle hostnames med samme repo — staging + prod
+    // invalideres samlet. `{ expire: 0 }` = immediate: næste request bliver
+    // blocking cache-miss og henter fresh content.
     revalidateTag(`prismic-${prismic_repo}`, { expire: 0 });
 
     return NextResponse.json({

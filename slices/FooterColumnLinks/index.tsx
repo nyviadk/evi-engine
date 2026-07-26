@@ -9,16 +9,9 @@ import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
 
 /**
- * A single footer column that renders a heading + a vertical list of links.
- *
- * Fields:
- *  - heading — Rich Text locked to a single heading3 block (renders via
- *              EviRichText so it inherits evi-prose typography tokens; no
- *              hardcoded <h3> in JSX)
- *  - links   — repeatable Prismic Link with text + target_blank
- *
- * Rendered inside the FooterClassic auto-grid — parent controls column width
- * and wrap behavior. Slice only owns its own vertical rhythm.
+ * A single footer column: a heading + a vertical list of links. Rendered
+ * inside the FooterClassic auto-grid — parent controls column width and wrap;
+ * slice only owns its own vertical rhythm.
  */
 export default function FooterColumnLinks({
   slice,

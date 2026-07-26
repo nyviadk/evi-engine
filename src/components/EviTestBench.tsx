@@ -13,7 +13,6 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { compute_slice_contexts } from "@/src/lib/prismic/slices";
 import { compute_theme_vars } from "@/src/lib/theme/colors";
 
-// Placeholder screenshot i iPhone-portrait ratio.
 const MOCK_PHONE_IMAGE = {
   id: "testbench-phone",
   url: "https://picsum.photos/seed/evi-phone/720/1560",
@@ -21,8 +20,6 @@ const MOCK_PHONE_IMAGE = {
   copyright: null,
   dimensions: { width: 720, height: 1560 },
 } as unknown as ImageField;
-
-// ── Fake slices ──
 
 type FakeSlice = { primary: { theme: string } };
 
@@ -40,49 +37,37 @@ const fakeSlices: FakeSlice[] = [
   { primary: { theme: "dark" } },
 ];
 
-// Grid demo section themes — used with compute_slice_contexts for collapsePadding
 const gridDemoThemes: string[] = [
-  // A. EviSplit — alle 5 presets
   "light",
   "light",
   "light",
   "light",
   "light",
-  // B. EviSplit — 4 align varianter
   "dark",
   "dark",
   "dark",
   "dark",
-  // C. Realistisk slice
   "primary",
-  // D. EviAutoGrid — 3 sizes
   "light",
   "dark",
   "secondary",
-  // E. EviCard varianter
   "light",
   "primary-soft",
   "dark",
   "secondary-soft",
-  // F. Nesting
   "primary",
   "light",
   "dark",
-  // G. Split på soft/tint temaer
   "primary-soft",
   "secondary-soft",
   "primary-tint",
   "secondary-tint",
-  // H. Full composition
   "light",
-  // I. 3-kolonne grid med variable blok-bredder
   "secondary-soft",
 ];
 const gridDemoSlices: FakeSlice[] = gridDemoThemes.map((t) => ({
   primary: { theme: t },
 }));
-
-// ── Component ──
 
 export function EviTestBench(): ReactElement {
   const [light, setLight] = useState("#fafafa");
@@ -95,10 +80,8 @@ export function EviTestBench(): ReactElement {
   const gridContexts = compute_slice_contexts(gridDemoSlices, colors);
 
   useEffect(() => {
-    // Genbruger produktionens theme-beregning (colors.ts), men bevarer den
-    // PRÆ-refactor var-mængde 1:1: den gamle apply_theme satte IKKE --theme-link-*
-    // på benchen, så vi springer dem over (ren refactor, ingen adfærdsændring).
-    // Produktionens <html> sætter link-vars uændret andetsteds.
+    // Springer --theme-link-* over: pre-refactor apply_theme satte dem aldrig på
+    // benchen (produktionens <html> sætter dem andetsteds).
     const vars = compute_theme_vars({
       color_light: light,
       color_dark: dark,
@@ -113,7 +96,6 @@ export function EviTestBench(): ReactElement {
 
   return (
     <>
-      {/* Floating color picker bar */}
       <div
         className="flex flex-wrap gap-6 px-4 py-3 sm:sticky sm:inset-x-0 sm:top-0 sm:z-50 sm:items-center sm:justify-center"
         style={{ background: "rgba(0,0,0,0.85)", color: "#fff", fontSize: 13 }}
@@ -159,7 +141,6 @@ export function EviTestBench(): ReactElement {
       {/* Spacer for fixed bar */}
       <div className="h-14" />
 
-      {/* Theme sections — typography + buttons */}
       {fakeSlices.map((_, index) => {
         const ctx = sliceContexts[index] ?? {
           theme: "light",
@@ -176,7 +157,6 @@ export function EviTestBench(): ReactElement {
               #{index + 1} — theme-{ctx.theme}
               {ctx.collapsePadding && " — pt collapsed (same as above)"}
             </p>
-            {/* ── Typography demo (evi-prose) ── */}
             <div className="evi-prose col-span-12 mb-8 max-w-prose">
               <h1>Heading 1 — theme-{ctx.theme}</h1>
               <p>
@@ -229,7 +209,6 @@ export function EviTestBench(): ReactElement {
               </blockquote>
             </div>
 
-            {/* ── Button grid: 3 variants × 3 appearances × 3 sizes ── */}
             <EviStack gap="lg" className="col-span-12 mb-4">
               {(["primary", "secondary", "neutral"] as const).map((variant) => (
                 <EviStack key={variant} gap="sm">
@@ -278,12 +257,9 @@ export function EviTestBench(): ReactElement {
         );
       })}
 
-      {/* ═══════════════════════════════════════════════════════
-           GRID SYSTEM DEMOS — with collapsePadding
-           ═══════════════════════════════════════════════════════ */}
       {(() => {
-        // Index offsets into gridContexts for each section group
-        // A: 0-4, B: 5-8, C: 9, D: 10-12, E: 13-16, F: 17-19, G: 20-23, H: 24
+        // gridContexts-offsets pr. sektionsgruppe: A 0-4, B 5-8, C 9, D 10-12,
+        // E 13-16, F 17-19, G 20-23, H 24, I 25.
         const g = gridContexts;
         const presets = ["50-50", "60-40", "40-60", "33-67", "67-33"] as const;
         const aligns = ["start", "center", "end", "stretch"] as const;
@@ -296,7 +272,6 @@ export function EviTestBench(): ReactElement {
 
         return (
           <>
-            {/* ── A. EviSplit — alle 5 presets ── */}
             {presets.map((preset, i) => (
               <EviSection
                 key={`split-${preset}`}
@@ -329,7 +304,6 @@ export function EviTestBench(): ReactElement {
               </EviSection>
             ))}
 
-            {/* ── B. EviSplit — 4 align varianter ── */}
             {aligns.map((align, i) => (
               <EviSection
                 key={`align-${align}`}
@@ -364,7 +338,6 @@ export function EviTestBench(): ReactElement {
               </EviSection>
             ))}
 
-            {/* ── C. Realistisk slice ── */}
             <EviSection
               theme={g[9]?.theme}
               collapsePadding={g[9]?.collapsePadding}
@@ -392,7 +365,6 @@ export function EviTestBench(): ReactElement {
               </EviSplit>
             </EviSection>
 
-            {/* ── D. EviAutoGrid — alle 3 sizes ── */}
             <EviSection
               theme={g[10]?.theme}
               collapsePadding={g[10]?.collapsePadding}
@@ -470,7 +442,6 @@ export function EviTestBench(): ReactElement {
               </EviAutoGrid>
             </EviSection>
 
-            {/* ── E. EviCard — subgrid row alignment ── */}
             <EviSection
               theme={g[13]?.theme}
               collapsePadding={g[13]?.collapsePadding}
@@ -645,7 +616,6 @@ export function EviTestBench(): ReactElement {
               </EviAutoGrid>
             </EviSection>
 
-            {/* ── F. Nesting — EviAutoGrid inde i EviSplit ── */}
             <EviSection
               theme={g[17]?.theme}
               collapsePadding={g[17]?.collapsePadding}
@@ -764,7 +734,6 @@ export function EviTestBench(): ReactElement {
               </EviSplit>
             </EviSection>
 
-            {/* ── G. EviSplit på soft/tint temaer ── */}
             {softTintThemes.map((theme, i) => (
               <EviSection
                 key={`split-theme-${theme}`}
@@ -804,7 +773,6 @@ export function EviTestBench(): ReactElement {
               </EviSection>
             ))}
 
-            {/* ── H. Full composition — intro + split + cards i samme sektion ── */}
             <EviSection
               theme={g[24]?.theme}
               collapsePadding={g[24]?.collapsePadding}
@@ -854,7 +822,6 @@ export function EviTestBench(): ReactElement {
               </EviAutoGrid>
             </EviSection>
 
-            {/* ── I. 3-kolonne grid med variable blok-bredder ── */}
             <EviSection
               theme={g[25]?.theme}
               collapsePadding={g[25]?.collapsePadding}
@@ -864,11 +831,7 @@ export function EviTestBench(): ReactElement {
                 I. 3-kolonne grid — blokke med width=1/2, collapseGapY=true
                 (gap-y = gap-x)
               </p>
-              {/*
-                EviSection's grid er 12-kolonne. 1 "kolonne" = col-span-4,
-                2 "kolonner" = col-span-8. Auto-flow wrapper til næste række
-                når 12 er fyldt. På mobil falder alle blokke til fuld bredde.
-              */}
+              {/* 12-kol grid: width=1 → col-span-4, width=2 → col-span-8; auto-flow wrapper ved 12. */}
               {[
                 { width: 2, label: "Blok 1 — width=2 (2 kol)" },
                 { width: 1, label: "Blok 2 — width=1 (1 kol)" },
@@ -900,10 +863,6 @@ export function EviTestBench(): ReactElement {
       })()}
 
 
-      {/* ═══════════════════════════════════════════════════════
-           EviPhoneCarousel — den reusable slice-komponent
-           (mobil: snap-carousel + dots · desktop: komposition)
-           ═══════════════════════════════════════════════════════ */}
       <EviSection theme="light" collapsePadding>
         <EviStack gap="md" className="col-span-12">
           <h2 className="text-2xl font-bold">EviPhoneCarousel — slice-klar</h2>

@@ -5,10 +5,7 @@ import { resolve_surface } from "@/src/lib/utils/surface";
 
 type BackdropForm = "none" | "rotated";
 
-// Prismic-label (backdrop-select) → dekorativ FORM bag billedet. DELT af alle
-// slices med et backdrop-valg (hero/split, features/split) → samme forms overalt.
-// SKALÉR MED FLERE FORMER senere: (1) ny option i select-modellen, (2) ny nøgle
-// her + i BackdropForm-typen, (3) entry i formClass. Legacy FARVE-labels
+// Prismic-label (backdrop-select) → dekorativ FORM bag billedet. Legacy FARVE-labels
 // (Sekundær/Primær fra før forms) → rotated, så gammelt indhold stadig renderer.
 export const BACKDROP_FROM_LABEL: Record<string, BackdropForm> = {
   Ingen: "none",
@@ -17,7 +14,6 @@ export const BACKDROP_FROM_LABEL: Record<string, BackdropForm> = {
   Primær: "rotated",
 };
 
-// Formens position/rotation/afrunding.
 const formClass: Record<Exclude<BackdropForm, "none">, string> = {
   rotated: "inset-[3%] -rotate-3 rounded-evi",
 };
@@ -77,7 +73,6 @@ export function EviBackdropImage({
     />
   );
 
-  // "none" → ingen form, bare det afrundede billede.
   if (backdrop === "none") {
     return (
       <div data-slot="evi-backdrop-image" data-backdrop="none" className={className}>

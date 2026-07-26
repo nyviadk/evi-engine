@@ -26,15 +26,12 @@ export type EviFigureProps = Pick<
   /** Valgfri billedtekst under billedet. Tom → ingen `<figcaption>`. */
   caption?: RichTextField | null;
   linkResolver: LinkResolverFunction;
-  /** Klasser på `<figure>`. */
   className?: string;
 };
 
 /**
- * EviFigure — et billede med valgfri billedtekst i et semantisk `<figure>` +
- * `<figcaption>` (a11y gratis). Videresender alle relevante `EviImage`-props
- * (aspect, variant, sizes, priority…). Genbrugbar til gallerier, content-billeder
- * m.m. — så billede+tekst-mønsteret ikke hand-rulles hver gang.
+ * EviFigure — billede + valgfri billedtekst i semantisk `<figure>`/`<figcaption>`.
+ * Videresender relevante `EviImage`-props (aspect, variant, sizes, priority…).
  */
 export function EviFigure({
   field,

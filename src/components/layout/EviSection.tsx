@@ -31,13 +31,9 @@ export function EviSection({
   children,
   ...props
 }: EviSectionProps): React.ReactElement {
-  // Normale sektioner er SYMMETRISKE (top = bund) → balancerede bånd + jævn
-  // rytme mellem sektioner (asymmetri ser skæv ud). Hero adskiller sig KUN ved
-  // toppen: den hugger nav'en (lille top-padding), da nav'en allerede giver
-  // visuel adskillelse. fullTopPadding opter ud af hug'et (fx centered hero uden
-  // billede at balancere). compactBottom: markant mindre bund til page-end-bånd
-  // (footer) hvor bunden bare er sidekant-margin, ikke adskillelse til en næste
-  // sektion — bevidst asymmetrisk der (ca. halvdelen af den normale bund).
+  // Normale sektioner er symmetriske (top = bund). Hero hugger nav'en (lille
+  // top), da nav'en selv adskiller; compactBottom giver bevidst mindre bund til
+  // page-end-bånd (footer).
   const pb = compactBottom ? "pb-10 md:pb-14" : "pb-24 md:pb-32";
   const pt = collapsePadding
     ? "pt-0"
@@ -45,9 +41,7 @@ export function EviSection({
       ? "pt-8 md:pt-12"
       : "pt-24 md:pt-32";
 
-  // Standard gap-y er stor (12/16) så blokke visuelt adskilles som
-  // selvstændige enheder. collapseGapY matcher gap-y til gap-x, hvilket
-  // giver layouts som 3-kol blok-grid'en et sammenhængende "gitter"-look.
+  // collapseGapY matcher gap-y til gap-x → sammenhængende "gitter"-look (fx 3-kol grid).
   const gapY = collapseGapY ? "gap-y-4 md:gap-y-16" : "gap-y-12 md:gap-y-16";
 
   return (
@@ -60,9 +54,8 @@ export function EviSection({
     >
       <div
         className={cn(
-          // overflow-x-clip: roterede/forskudte dekorationer (fx EviBackdropImage)
-          // kan aldrig lave vandret side-scroll. Kun x — y forbliver visible, og
-          // børn med egen overflow-x-auto (EviPhoneCarousel) scroller uændret.
+          // overflow-x-clip: dekorationer (fx EviBackdropImage) kan ikke lave
+          // vandret side-scroll. Kun x — y visible, så børns overflow-x-auto virker.
           "@container/section isolate mx-auto grid max-w-evi grid-cols-12 gap-x-4 overflow-x-clip px-4 md:gap-x-16",
           gapY,
         )}

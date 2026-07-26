@@ -26,20 +26,16 @@ export type FeaturesIconBentoLayoutProps = {
   context: EviPageSliceContext;
 };
 
-// Uniform gap på ALLE celle-mellemrum (kolonner + de to rækker) → ét
-// sammenhængende gitter frem for to splits med hver sin rytme. Overrider både
-// EviRow-grid'ets arvede gap og EviSplit's eget gap-y.
+// Uniform gap på alle celle-mellemrum → ét sammenhængende gitter; overrider
+// EviRow-grid'ets arvede gap og EviSplit's gap-y.
 const BENTO_GAP = "gap-4 md:gap-6";
 
 const BOX_TITLE = cn("evi-prose mt-4", evi_card_title_class("lg"));
 const BOX_BODY = cn("evi-prose mt-2", evi_card_body_class());
 
-// Faste farve-roller pr. position (som bento-variationen): de STORE kasser (1 og
-// 4) holdes rolige som neutral tint, de SMÅ (2 og 3) er farve-pops diagonalt
-// placeret — primær solid øverst-højre, sekundær blød nederst-venstre. Roller er
-// faste; de faktiske farver kommer fra tenantens brand via theme-klasserne.
-// Opake theme-klasser sætter selv tekstfarven → currentColor-ikonet forbliver
-// læsbart.
+// Faste farve-roller pr. position: store kasser (1, 4) neutrale, små (2, 3)
+// farve-pops diagonalt. Opake theme-klasser sætter tekstfarven → currentColor-
+// ikonet forbliver læsbart.
 const BOX_TONES = [
   "theme-surface-neutral",
   "theme-primary",
@@ -57,13 +53,9 @@ function box_has_content(box: BoxFields): boolean {
   return isFilled.keyText(box.icon) || has_rich_text(box.title, box.body);
 }
 
-// EviCard (3 rækker: ikon / titel / tekst) frem for EviBox: ligger i en
-// række-alignet EviSplit, så de tre rækker deler spor på tværs af parret — titel
-// og tekst flugter selv når den brede kasses titel wrapper til to linjer. Faste
-// 3 slots → tomme wrappes i <div /> (subgrid-optælling, jf. bento).
-//
-// Ikonet er currentColor → arver kassens tekstfarve (theme-klassen sætter den),
-// så det er læsbart uanset kasse-tone og sektions-tema.
+// EviCard (subgrid) frem for EviBox: de tre rækker (ikon/titel/tekst) flugter på
+// tværs af parret selv når den brede kasses titel wrapper. Faste 3 slots → tomme
+// wrappes i <div /> (subgrid-optælling).
 function IconBox({
   box,
   tone,

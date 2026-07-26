@@ -7,15 +7,11 @@ type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
 
 /**
  * Visuel ramme:
- * - `framed`: soft baggrund + padding rundt om billedet. Neutral-surface er
- *   selv placeholder mens billedet loader.
- * - `plain`: ingen baggrund/padding — billedet fylder containeren. Får en blød
- *   LQIP-blur (imgix, ~1-2kb) som CSS-baggrund, så store billeder ikke popper
- *   ind på tom baggrund. Nul Worker-arbejde — browseren henter tinten selv.
+ * - `framed`: soft baggrund + padding; neutral-surface er selv placeholder.
+ * - `plain`: kant-til-kant; LQIP-blur (imgix, ~1-2kb) som CSS-baggrund så store
+ *   billeder ikke popper ind på tom flade. Nul Worker-arbejde.
  *
- * Eksplicit variant fremfor booleans (jf. vercel-composition-patterns):
- * fremtidige visuelle stilarter ("bordered", "shadow", "card") tilføjes
- * her uden at sprænge prop-API'et.
+ * Eksplicit variant frem for booleans (jf. vercel-composition-patterns).
  */
 type ImageVariant = "framed" | "plain";
 
@@ -75,8 +71,7 @@ const aspectClasses: Record<AspectRatio, string> = {
   auto: "aspect-auto",
 };
 
-// Literale md:-varianter (Tailwind scanner kun statiske strenge) → mobil-first
-// aspect med desktop-override ved md, når mobileAspectRatio er sat.
+// Literale md:-varianter (Tailwind scanner kun statiske strenge).
 const mdAspectClasses: Record<AspectRatio, string> = {
   landscape: "md:aspect-4/3",
   square: "md:aspect-square",
@@ -107,11 +102,9 @@ export function EviImage({
 }: EviImageProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
 
-  // LQIP-blur kun for `plain` (kant-til-kant cover). `framed` bruger sin
-  // neutral-surface som placeholder. lqip_url bygger KUN en URL-streng.
+  // LQIP-blur kun for `plain`; `framed` bruger sin neutral-surface som placeholder.
   const blurUrl = variant === "plain" ? lqip_url(field.url) : undefined;
 
-  // Mobil-first aspect (mobileAspectRatio) med desktop-override ved md.
   const aspectClass = mobileAspectRatio
     ? cn(aspectClasses[mobileAspectRatio], mdAspectClasses[aspectRatio])
     : aspectClasses[aspectRatio];
@@ -128,9 +121,8 @@ export function EviImage({
     ? { ...style, backgroundImage: `url("${blurUrl}")` }
     : style;
 
-  // select-none: vores billeder er præsentationelle — undgå at de highlightes
-  // blåt/ghost-dragges når man markerer tekst i nærheden. Ingen a11y-omkostning
-  // (billeder har ingen tekst; skærmlæsere bruger alt).
+  // select-none: præsentationelle billeder skal ikke highlightes/ghost-dragges
+  // ved tekst-markering. Ingen a11y-omkostning (skærmlæsere bruger alt).
   const imgClasses = cn(
     "size-full object-contain select-none",
     hoverZoom &&
@@ -138,14 +130,10 @@ export function EviImage({
     imageClassName,
   );
 
-  // Rå <img> til (a) hero (priority) ELLER (b) art direction (mobileField —
-  // next/image kan ikke <picture>). Hero tvinges til JPEG (force_jpg): imgix'
-  // AVIF/WebP-uploads dekoder for langsomt → det store LCP-billede popper ind
-  // efter paint = flash. JPEG dekoder hurtigt (derfor flasher Unsplash/fm=jpg
-  // aldrig — bekræftet i praksis). Hero får også et JPEG-srcSet (responsiv
-  // opløsning; hver variant er JPEG = ingen dekode-flash). decoding="sync" =
-  // ekstra atomisk sikkerhed. width/height → CLS. next/image kan ikke tvinges
-  // til fm=jpg uden custom loader.
+  // Rå <img> til hero (priority) ELLER art direction (mobileField — next/image
+  // kan ikke <picture>). Hero tvinges til JPEG: imgix' AVIF/WebP dekoder for
+  // langsomt → LCP-billedet flasher; JPEG dekoder hurtigt. decoding="sync" +
+  // width/height mod CLS. next/image kan ikke tvinges til fm=jpg uden custom loader.
   if (priority || isFilled.image(mobileField)) {
     const width = field.dimensions?.width ?? undefined;
     const height = field.dimensions?.height ?? undefined;
@@ -189,8 +177,7 @@ export function EviImage({
     );
   }
 
-  // Ellers (ikke-hero, intet mobil-billede) → PrismicNextImage: srcset + sizes,
-  // lazy. WebP/AVIF er fint her (ikke LCP → langsommere dekode ses ikke).
+  // Ikke-hero → PrismicNextImage (lazy). WebP/AVIF fint her (ikke LCP).
   return (
     <div
       data-slot="evi-image"

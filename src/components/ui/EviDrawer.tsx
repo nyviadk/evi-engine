@@ -24,8 +24,7 @@ import { cn } from "@/src/lib/utils/cn";
  * Følger vercel-composition-patterns som [[EviDisclosure]]: state i Provider,
  * subkomponenter læser interface'et via context (React 19 `use()`), ingen
  * forwardRef. Panelet ejer sin egen dialog-ref (ref rejser ALDRIG gennem
- * context — det bryder React 19's refs-under-render-regel). Bruges til
- * mobil-nav, filter-paneler, cart-drawers, m.m.
+ * context — det bryder React 19's refs-under-render-regel).
  *
  * ```tsx
  * <EviDrawer.Provider>
@@ -77,11 +76,9 @@ function Provider({
   const generatedId = useId();
   const panelId = panelIdProp ?? `evi-drawer-${generatedId}`;
 
-  // Luk ved rute-skift: et nav-link i draweren soft-navigerer uden at kalde
-  // close() → draweren ville ellers blive hængende åben på den nye side. Gælder
-  // også tilbage/frem-knap. Render-tids-nulstilling (React's anbefalede mønster
-  // for "juster state når en værdi ændrer sig") frem for en effect: sammenlign
-  // mod forrige pathname, luk kun ved faktisk skift.
+  // Luk ved rute-skift: et nav-link soft-navigerer uden at kalde close() →
+  // draweren ville ellers hænge åben. Render-tids-nulstilling (Reacts mønster for
+  // "juster state når en værdi ændrer sig") frem for en effect.
   const pathname = usePathname();
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (pathname !== prevPathname) {
@@ -137,10 +134,9 @@ function Panel({
 }: React.ComponentProps<"dialog">): React.ReactElement {
   const { state, actions, meta } = useEviDrawer();
   const dialogRef = useRef<HTMLDialogElement>(null);
-  // Separat visuel state driver slide-transitionen via [data-state] i CSS —
-  // uafhængigt af native [open]. Så kan vi animere IND på næste frame og UD
-  // FØR close(), uden @starting-style/allow-discrete (som CSS-optimizeren
-  // kan droppe → dialog falder tilbage til browser-default).
+  // Separat visuel state driver slide-transitionen via [data-state], uafhængigt af
+  // native [open] → animér IND på næste frame og UD FØR close(), uden
+  // @starting-style/allow-discrete (som CSS-optimizeren kan droppe).
   const [visualOpen, setVisualOpen] = useState(false);
 
   useEffect(() => {

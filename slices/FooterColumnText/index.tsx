@@ -7,16 +7,8 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 
 /**
- * A single footer column that renders a heading + a rich-text body. Used
- * for company info (address, CVR, opening hours) — content that isn't a
- * navigation link list.
- *
- * Fields:
- *  - heading — Rich Text locked to a single heading3 block
- *  - body    — Rich Text (paragraphs, links, emphasis)
- *
- * Both fields render via EviRichText so text inherits evi-prose typography
- * tokens — no hardcoded tags in JSX.
+ * A single footer column: heading + rich-text body. For company info
+ * (address, CVR, opening hours) — content that isn't a navigation link list.
  */
 export default function FooterColumnText({
   slice,

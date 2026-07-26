@@ -3,12 +3,9 @@ import { resolve_surface } from "@/src/lib/utils/surface";
 
 type BoxSize = "card" | "compact";
 
-// Kasse-FORMEN (afrunding + luft + elevation) ét sted.
-// "card" = fremhævet kort/callout. "compact" = flad, tættere boks til lister.
-//
-// Padding trappes op i 3 trin i stedet for at springe: på en 332px-skærm er der
-// kun ~300px indhold, og 24px luft i hver side åd for meget. Samme skala bruges
-// af bento's billed-kasse + EviImage variant="framed" — hold dem synkroniserede.
+// Kasse-FORMEN (afrunding + luft + elevation) ét sted. Padding trappes i 3 trin:
+// på en 332px-skærm ville 24px i hver side æde for meget. Samme skala bruges af
+// bento + EviImage variant="framed" — hold dem synkroniserede.
 const sizeClass: Record<BoxSize, string> = {
   card: "rounded-evi p-4 shadow-evi sm:p-6 md:p-8",
   compact: "rounded-evi p-3 sm:p-4 md:p-6",
@@ -27,15 +24,12 @@ export function evi_box_class(size: BoxSize = "card"): string {
 }
 
 /**
- * Negative margener der PRÆCIST modsvarer EviBox' card-padding (p-4 sm:p-6
- * md:p-8) → et `variant="plain"`-billede kan bløde ud til kort-kanten i stedet
- * for at sidde som en indrammet plade i paddingen. `edge` vælger top- eller
- * bund-bleed (siderne bløder altid). Kræver `w-auto` (medtaget) + at kortet har
- * `overflow-hidden` (klipper billedet til de runde hjørner).
+ * Negative margener der modsvarer EviBox' card-padding → et `variant="plain"`-
+ * billede bløder ud til kort-kanten frem for at sidde indrammet i paddingen.
+ * Kræver `w-auto` (medtaget) + `overflow-hidden` på kortet.
  *
- * Reset til indrammet ("m-0 w-full rounded-evi" ved container-bredden) sættes af
- * KALDEREN litteralt — Tailwind scanner kun statiske strenge, så breakpoint-
- * præfikset kan ikke interpoleres her:
+ * Reset til indrammet sættes af KALDEREN litteralt — Tailwind scanner kun statiske
+ * strenge, så breakpoint-præfikset kan ikke interpoleres her:
  *   cn(evi_card_bleed_class("top"), "@3xl/section:m-0 @3xl/section:w-full @3xl/section:rounded-evi")
  */
 export function evi_card_bleed_class(edge: "top" | "bottom"): string {

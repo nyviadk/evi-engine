@@ -7,7 +7,6 @@ import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 /**
  * TextWithImages — tynd dispatcher (R4.2). "default" = simpel billede+tekst-
  * sektion: overskrift + brødtekst i den ene kolonne, rammet billede i den anden.
- * `image_side` + `mobile_order` styrer placering (desktop-side / mobil-rækkefølge).
  */
 export default function TextWithImages({
   slice,

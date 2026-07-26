@@ -144,17 +144,12 @@ const PAD_Y: Record<PhoneLayout, string> = {
 };
 
 /**
- * Reusable phone-showcase til slices. Bygger på EviPhoneMockup og deler
- * dens fluid-skalering (bredde via --evi-phone-w).
+ * Reusable phone-showcase. CONTAINER-drevet (@container/phones): skalerer +
+ * skifter layout efter SIN EGEN bredde, så den ligger lige så godt i en
+ * EviSplit-kolonne som i fuld bredde.
  *
- * CONTAINER-drevet: fylder sin forælder (w-full) og skalerer + skifter
- * layout efter SIN EGEN bredde (@container/phones). Ligger derfor lige så
- * godt i en EviSplit-kolonne (ved siden af tekst) som i en fuld-bredde slot.
- *
- * Smal container (< 430px): ~1.6 telefon synlig i en snap-carousel — den
- * halvt-synlige nabo hinter scroll. ≥430px folder `layout` sin komposition
- * ud. Alle højder capper ved ~65dvh via en dvh-term i bredden (aspect ratio
- * holdes, ingen letterbox). Scroll-affordance + transforms i globals.css.
+ * < 430px: snap-carousel (~1.6 telefon synlig hinter scroll). ≥430px folder
+ * `layout` kompositionen ud. Højder capper ved ~65dvh via en dvh-term i bredden.
  */
 export function EviPhoneCarousel({
   fields,

@@ -43,14 +43,10 @@ export type FeaturesBentoLayoutProps = {
 const CARD_TITLE = evi_card_title_class("lg");
 const CARD_BODY = evi_card_body_class();
 
-// Uniform bento-gap på ALLE celle-mellemrum (primære kolonner, højre-kolonnens
-// to rækker, kasse 3|4) → ét sammenhængende gitter frem for et split med
-// afvigende indre spacing. Overrider EviSplit's arvede sektions-kolonne-gap
-// (subgrid-gap kan sættes med en klasse) samt AutoGrid/Stack's egne gaps.
+// Uniform gap på alle celle-mellemrum → ét sammenhængende gitter; overrider
+// EviSplit/AutoGrid/Stack's egne gaps.
 const BENTO_GAP = "gap-4 md:gap-6";
 
-// "Læs mere →"-link: allowText-link som text-knap med animeret pil (EviButton
-// arrow-prop klarer pilen — også med asChild).
 function CardLink({
   field,
   linkResolver,
@@ -164,9 +160,8 @@ export function FeaturesBentoLayout({
   );
   const p = slice.primary;
 
-  // Guard pr. kasse: en kasse rendres kun hvis den har indhold — ellers ingen
-  // tom flade/overlay-boks (jf. FeaturesColumnsLayout der filtrerer tomme
-  // kolonner). Billede tæller kun for kasse 1 + 2 (de eneste med billed-felt).
+  // Guard pr. kasse: tom kasse rendres ikke (ellers tom overlay-boks). Billede
+  // tæller kun for kasse 1 + 2 (de eneste med billed-felt).
   const card1Has =
     isFilled.image(p.card_1_image) ||
     has_rich_text(p.card_1_title, p.card_1_body) ||
@@ -180,11 +175,9 @@ export function FeaturesBentoLayout({
   const card4Has =
     has_rich_text(p.card_4_title, p.card_4_body) || is_link_filled(p.card_4_link);
 
-  // Udfyldt CTA → header bliver venstre-stillet med knappen yderst til højre;
-  // ellers centreret som normalt.
+  // Udfyldt CTA → header venstre-stilles med knappen yderst til højre.
   const hasCta = is_link_filled(p.cta_link);
 
-  // Hele sektionen droppes hvis intet felt er udfyldt.
   const hasAnyContent =
     has_rich_text(p.heading, p.body) ||
     hasCta ||
@@ -206,9 +199,8 @@ export function FeaturesBentoLayout({
         imageClassName="object-cover"
         sizes="(min-width: 768px) 40vw, 100vw"
       />
-      {/* Passende overlay: tenantens LYSE brand-farve med varierende alpha —
-          stærkest i bunden hvor teksten står, så mørk on-light-tekst har
-          kontrast. Lys frem for mørk overlay: mindre dominerende over billedet. */}
+      {/* Lys brand-overlay (ikke mørk: mindre dominerende), stærkest i bunden
+          hvor teksten står → kontrast til mørk on-light-tekst. */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 bg-linear-to-t from-evi-light/90 via-evi-light/55 to-evi-light/5"
@@ -237,9 +229,8 @@ export function FeaturesBentoLayout({
     </div>
   ) : null;
 
-  // Højre kolonne — to rækker stablet: bred kasse 2 (tekst|billede) og en
-  // AutoGrid-række med kasse 3 + 4. Hver kasse guardes så tomme flader ikke
-  // rendres; kasse 3/4-rækken droppes helt hvis begge er tomme.
+  // Højre kolonne: kasse 2 over en AutoGrid-række (kasse 3 + 4). Kasse 3/4-rækken
+  // droppes helt hvis begge er tomme.
   const rightColumn = (
     <EviStack className={BENTO_GAP}>
       {card2Has && (
@@ -273,12 +264,9 @@ export function FeaturesBentoLayout({
 
       {(card3Has || card4Has) && (
         <EviAutoGrid size="duo" className={BENTO_GAP}>
-          {/* Farve-roller: kort 4 (bund-højre / bunden af mobil-stakken) er det
-              primære pop → bookender med kort 1's primær-knap i toppen (lodret
-              balance på mobil, primær spredt over bund-rækken på desktop). Kort 3
-              er sekundær TINT (20%), ikke -soft (10%): kort 3 sidder lige under
-              det neutrale kort 2, og en 10%-tint er for tæt på neutral → de to
-              ville se ens ud. */}
+          {/* Kort 4 = primær pop (bookender kort 1's primær-knap). Kort 3 =
+              sekundær TINT, ikke -soft: 10%-soft ligger for tæt på det neutrale
+              kort 2 ovenover → de ville se ens ud. */}
           {card3Has && (
             <BentoTextCard
               title={p.card_3_title}

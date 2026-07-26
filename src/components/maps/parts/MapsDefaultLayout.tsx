@@ -48,7 +48,6 @@ export function MapsDefaultLayout({
     info.some((it) => isFilled.richText(it.text));
   if (!has_rich_text(p.heading, p.body) && !hasImage && !hasBox) return null;
 
-  // Adresse → maps-links (bruger-initieret navigation, ingen tredjeparts-load).
   const addressStr = asText(p.address)
     .split("\n")
     .map((s) => s.trim())
@@ -64,8 +63,7 @@ export function MapsDefaultLayout({
 
   const boxEl = (
     <EviBox surface="Neutral">
-      {/* h-full: stakken fylder den strakte boks → mt-auto på knapperne kan
-          skubbe dem til bunden. */}
+      {/* h-full: stakken skal fylde den strakte boks så mt-auto kan virke. */}
       <EviStack gap="md" className="h-full">
         {isFilled.richText(p.box_heading) ? (
           <EviRichText
@@ -83,7 +81,6 @@ export function MapsDefaultLayout({
         ) : null}
         <EviIconList items={info} linkResolver={linkResolver} />
         {showButtons ? (
-          // mt-auto: skub knapperne til bunden af den strakte boks.
           <EviStack direction="row" wrap gap="sm" className="mt-auto pt-2">
             {isFilled.keyText(p.google_maps_label) ? (
               <EviButton asChild variant="primary" appearance="solid" size="md">
