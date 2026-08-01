@@ -26,7 +26,13 @@ export default function FooterColumnText({
   return (
     <EviStack gap="md" data-slot="footer-column" data-variant="text">
       <EviTitle field={primary.heading} linkResolver={linkResolver} />
-      <EviRichText field={primary.body} linkResolver={linkResolver} />
+      {/* Afsnits-afstand = gap-2 (8px), så flere linjer matcher links-kolonnens
+          rytme i stedet for prose'ens brede afsnits-margin. */}
+      <EviRichText
+        field={primary.body}
+        linkResolver={linkResolver}
+        className="[&_p]:my-0 [&_p+p]:mt-2"
+      />
     </EviStack>
   );
 }
