@@ -7,6 +7,7 @@ import { RADIUS_MAP } from "@/src/lib/theme/radius";
 import { TEXT_SCALE_MAP } from "@/src/lib/theme/textScale";
 import { resolveFonts } from "@/src/lib/theme/fontResolver";
 import { get_evi_context } from "@/src/lib/prismic/context";
+import { EviPaperGrain } from "@/src/components/ui/EviPaperGrain";
 
 // Favicon-felter der endnu ikke er med i prismicio-types.d.ts (auto-gen).
 // Typerne regenereres af Slice Machine på næste dev/build.
@@ -62,6 +63,7 @@ export default async function RootLayout({
   const ctx = await get_evi_context();
   const settings = ctx?.settings;
   const lang = ctx?.lang || "da-dk";
+  const grainOn = settings?.data?.paper_grain === "Til";
 
   const computedColors = compute_theme_vars({
     color_light: settings?.data?.color_light ?? null,
@@ -131,6 +133,7 @@ export default async function RootLayout({
         <main id="main" className="flex flex-1 flex-col">
           {children}
         </main>
+        {grainOn && <EviPaperGrain />}
       </body>
     </html>
   );

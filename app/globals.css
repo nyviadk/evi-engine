@@ -191,6 +191,30 @@
 }
 
 @layer components {
+  /* Papir-korn: subtil statisk tekstur-film over hele sitet (Settings-toggle).
+     Fast 64px PNG-tile frem for procedural noise, der forsvinder på hi-DPI. z-40
+     → under nav-dropdown (z-50) + native drawer/dialog (top-layer). */
+  .paper-grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    background-image: url("/grain.png");
+    background-repeat: repeat;
+    background-size: 64px 64px;
+    opacity: 0.18;
+  }
+  /* Statisk teksturs pendant til reduced-motion: slå grain fra for brugere der
+     har brug for maksimal klarhed — høj kontrast, forced-colors (Windows High
+     Contrast) og reduceret gennemsigtighed (grain er en translucent overlay). */
+  @media (prefers-contrast: more),
+    (forced-colors: active),
+    (prefers-reduced-transparency: reduce) {
+    .paper-grain {
+      display: none;
+    }
+  }
+
   .shadow-evi {
     box-shadow:
       0 4px 12px -4px color-mix(in oklch, currentColor 11%, transparent),
@@ -466,7 +490,9 @@
      i danske sammensatte ord. Max + hældning er urørt: desktop er uændret. */
 
   .evi-prose h1 {
-    font-size: calc(clamp(2rem, 5vw + 1rem, 3.815rem) * var(--heading-damp)); /* 32px → f₆ 61px max, dæmpet ved stor skala */
+    font-size: calc(
+      clamp(2rem, 5vw + 1rem, 3.815rem) * var(--heading-damp)
+    ); /* 32px → f₆ 61px max, dæmpet ved stor skala */
     line-height: 1.15;
     letter-spacing: -0.02em;
     font-weight: 700;
@@ -475,7 +501,9 @@
   }
 
   .evi-prose h2 {
-    font-size: calc(clamp(1.625rem, 3.5vw + 0.75rem, 3.052rem) * var(--heading-damp)); /* 26px → f₅ 49px max, dæmpet */
+    font-size: calc(
+      clamp(1.625rem, 3.5vw + 0.75rem, 3.052rem) * var(--heading-damp)
+    ); /* 26px → f₅ 49px max, dæmpet */
     line-height: 1.15;
     letter-spacing: -0.015em;
     font-weight: 700;
@@ -484,7 +512,9 @@
   }
 
   .evi-prose h3 {
-    font-size: calc(clamp(1.375rem, 2.5vw + 0.75rem, 2.441rem) * var(--heading-damp)); /* 22px → f₄ 39px max, dæmpet */
+    font-size: calc(
+      clamp(1.375rem, 2.5vw + 0.75rem, 2.441rem) * var(--heading-damp)
+    ); /* 22px → f₄ 39px max, dæmpet */
     line-height: 1.2;
     letter-spacing: -0.01em;
     font-weight: 700;
@@ -493,7 +523,11 @@
   }
 
   .evi-prose h4 {
-    font-size: clamp(1.25rem, 1.5vw + 0.75rem, 1.953rem); /* 20px → f₃ 31px max */
+    font-size: clamp(
+      1.25rem,
+      1.5vw + 0.75rem,
+      1.953rem
+    ); /* 20px → f₃ 31px max */
     line-height: 1.25;
     letter-spacing: 0;
     font-weight: 700;

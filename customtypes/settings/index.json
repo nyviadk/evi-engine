@@ -1,66 +1,63 @@
 {
+  "format": "custom",
   "id": "settings",
-  "label": "Indstillinger",
-  "repeatable": false,
   "json": {
     "Generelt": {
       "site_name": {
-        "type": "Text",
         "config": {
           "label": "Sidenavn",
           "placeholder": "F.eks. Jensen Frisør"
-        }
+        },
+        "type": "Text"
       },
       "force_lang_prefix": {
-        "type": "Boolean",
         "config": {
-          "label": "Tving sprog i URL? (fx /da-dk)",
           "default_value": false,
-          "placeholder_true": "Ja",
-          "placeholder_false": "Nej"
-        }
+          "label": "Tving sprog i URL? (fx /da-dk)",
+          "placeholder_false": "Nej",
+          "placeholder_true": "Ja"
+        },
+        "type": "Boolean"
       },
       "default_og_image": {
-        "type": "Image",
         "config": {
-          "label": "Standard billede (sociale medier)",
           "constraint": {
             "width": 2400,
             "height": 1260
           },
+          "label": "Standard billede (sociale medier)",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "favicon_light": {
-        "type": "Image",
         "config": {
+          "constraint": {
+            "width": 512,
+            "height": 512
+          },
           "label": "Favicon — mørkt ikon (til lyst tema)",
           "placeholder": "Mørk streg/logo — vises på browserens LYSE faneblad",
-          "constraint": {
-            "width": 512,
-            "height": 512
-          },
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "favicon_dark": {
-        "type": "Image",
         "config": {
-          "label": "Favicon — lyst ikon (til mørkt tema)",
-          "placeholder": "Lys streg/logo — vises på browserens MØRKE faneblad",
           "constraint": {
             "width": 512,
             "height": 512
           },
+          "label": "Favicon — lyst ikon (til mørkt tema)",
+          "placeholder": "Lys streg/logo — vises på browserens MØRKE faneblad",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "timezone": {
-        "type": "Select",
         "config": {
-          "label": "Tidszone",
-          "placeholder": "Kundens tidszone",
           "default_value": "Europe/Copenhagen",
+          "label": "Tidszone",
           "options": [
             "Europe/Copenhagen",
             "Europe/Oslo",
@@ -69,52 +66,52 @@
             "Europe/Berlin",
             "Europe/London",
             "UTC"
-          ]
-        }
+          ],
+          "placeholder": "Kundens tidszone"
+        },
+        "type": "Select"
       },
       "translate_brand": {
-        "type": "Boolean",
         "config": {
           "label": "Tillad oversættelse af sitenavn (fx Google Translate)",
-          "placeholder_true": "Tillad oversættelse",
-          "placeholder_false": "Bevar originalt navn"
-        }
+          "placeholder_false": "Bevar originalt navn",
+          "placeholder_true": "Tillad oversættelse"
+        },
+        "type": "Boolean"
       }
     },
     "Udseende og layout": {
       "color_light": {
-        "type": "Color",
         "config": {
           "label": "Lys farve",
           "placeholder": ""
-        }
+        },
+        "type": "Color"
       },
       "color_dark": {
-        "type": "Color",
         "config": {
           "label": "Mørk farve",
           "placeholder": ""
-        }
+        },
+        "type": "Color"
       },
       "color_primary": {
-        "type": "Color",
         "config": {
           "label": "Primær brandfarve",
           "placeholder": ""
-        }
+        },
+        "type": "Color"
       },
       "color_secondary": {
-        "type": "Color",
         "config": {
           "label": "Sekundær brandfarve",
           "placeholder": ""
-        }
+        },
+        "type": "Color"
       },
       "layout_width": {
-        "type": "Select",
         "config": {
           "label": "Layoutbredde",
-          "placeholder": "Bredden på dit hjemmesideindhold",
           "options": [
             "Klassisk (1200px)",
             "Standard (1280px)",
@@ -122,29 +119,29 @@
             "Moderne (1440px)",
             "Ekspansiv (1664px)",
             "Cinematic (1920px)"
-          ]
-        }
+          ],
+          "placeholder": "Bredden på dit hjemmesideindhold"
+        },
+        "type": "Select"
       },
       "border_radius": {
-        "type": "Select",
         "config": {
           "label": "Hjørner / radius",
-          "placeholder": "Hvor skarpe eller bløde kanterne skal være på fx kasser og billeder",
           "options": [
             "Skarpe hjørner (0px)",
             "Lille afrunding (4px)",
             "Standard (8px)",
             "Blød (16px)",
             "Pilleformet (fuld radius)"
-          ]
-        }
+          ],
+          "placeholder": "Hvor skarpe eller bløde kanterne skal være på fx kasser og billeder"
+        },
+        "type": "Select"
       },
       "font_select": {
-        "type": "Select",
         "config": {
-          "label": "Skrifttype (anbefalet - hurtig)",
-          "placeholder": "Vælg en optimeret skrifttype",
           "default_value": "System standard",
+          "label": "Skrifttype (anbefalet - hurtig)",
           "options": [
             "System standard",
             "Montserrat",
@@ -157,80 +154,95 @@
             "Inter",
             "Lato",
             "Plus Jakarta Sans"
-          ]
-        }
+          ],
+          "placeholder": "Vælg en optimeret skrifttype"
+        },
+        "type": "Select"
       },
       "custom_font_input": {
-        "type": "Text",
         "config": {
           "label": "Avanceret skrifttype (Bunny Fonts)",
           "placeholder": "Navn fra fonts.bunny.net (f.eks. \"Playfair Display\"). Dette felt overstyrer valget ovenfor."
-        }
+        },
+        "type": "Text"
       },
       "color_scheme": {
-        "type": "Select",
         "config": {
-          "label": "Browser-tema (scrollbars + formularer)",
-          "placeholder": "Hvilket tema browseren tilpasser sine egne kontroller til",
           "default_value": "Lys",
+          "label": "Browser-tema (scrollbars + formularer)",
           "options": [
             "Lys",
             "Mørk",
             "Lys & mørk (auto)"
-          ]
-        }
+          ],
+          "placeholder": "Hvilket tema browseren tilpasser sine egne kontroller til"
+        },
+        "type": "Select"
       },
       "text_scale": {
-        "type": "Select",
         "config": {
-          "label": "Tekststørrelse",
           "default_value": "Standard (16px)",
+          "label": "Tekststørrelse",
           "options": [
             "Standard (16px)",
             "Stor (18px)",
             "Ekstra stor (20px)"
           ]
-        }
+        },
+        "type": "Select"
+      },
+      "paper_grain": {
+        "config": {
+          "label": "Papir-tekstur",
+          "placeholder": "Subtil kornet overflade over hele sitet",
+          "default_value": "Fra",
+          "options": [
+            "Fra",
+            "Til"
+          ]
+        },
+        "type": "Select"
       }
     },
     "Viderestillinger": {
       "redirects": {
-        "type": "Group",
         "config": {
-          "label": "Viderestillinger",
-          "repeat": true,
           "fields": {
             "from_url": {
-              "type": "Text",
               "config": {
                 "label": "Fra URL",
                 "placeholder": "f.eks. /sommer"
-              }
+              },
+              "type": "Text"
             },
             "to_url": {
-              "type": "Text",
               "config": {
                 "label": "Til URL",
                 "placeholder": "f.eks. /tilbud"
-              }
+              },
+              "type": "Text"
             },
             "redirect_type": {
-              "type": "Select",
               "config": {
-                "label": "Hvorfor laver du dette link?",
-                "placeholder": "",
                 "default_value": "301 (siden er slettet/flyttet for altid)",
+                "label": "Hvorfor laver du dette link?",
                 "options": [
                   "301 (siden er slettet/flyttet for altid)",
                   "307 (dette er blot en midlertidig genvej)"
-                ]
-              }
+                ],
+                "placeholder": ""
+              },
+              "type": "Select"
             }
-          }
-        }
+          },
+          "label": "Viderestillinger",
+          "repeat": true
+        },
+        "type": "Group"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Indstillinger",
+  "repeatable": false,
+  "status": true
 }

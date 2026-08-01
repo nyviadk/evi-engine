@@ -689,7 +689,19 @@ interface SettingsDocumentData {
 	 * - **Tab**: Udseende og layout
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	text_scale: prismic.SelectField<"Standard (16px)" | "Stor (18px)" | "Ekstra stor (20px)", "filled">;/**
+	text_scale: prismic.SelectField<"Standard (16px)" | "Stor (18px)" | "Ekstra stor (20px)", "filled">;
+	
+	/**
+	 * Papir-tekstur field in *Indstillinger*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Subtil kornet overflade over hele sitet
+	 * - **Default Value**: Fra
+	 * - **API ID Path**: settings.paper_grain
+	 * - **Tab**: Udseende og layout
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	paper_grain: prismic.SelectField<"Fra" | "Til", "filled">;/**
 	 * Viderestillinger field in *Indstillinger*
 	 *
 	 * - **Field Type**: Group
