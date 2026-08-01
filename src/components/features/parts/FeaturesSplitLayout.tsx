@@ -70,6 +70,7 @@ export function FeaturesSplitLayout({
       field={p.image}
       backdrop={backdrop}
       color={p.backdrop_color}
+      aspectRatio="3:4"
       priority={isHero}
     />
   );

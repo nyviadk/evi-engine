@@ -3,7 +3,7 @@ import { PrismicNextImage } from "@prismicio/next";
 import { force_jpg, jpg_srcset, lqip_url } from "@/src/lib/utils/imgix";
 import { cn } from "@/src/lib/utils/cn";
 
-type AspectRatio = "landscape" | "square" | "video" | "portrait" | "auto";
+type AspectRatio = "landscape" | "square" | "video" | "portrait" | "3:4" | "auto";
 
 /**
  * Visuel ramme:
@@ -73,6 +73,7 @@ const aspectClasses: Record<AspectRatio, string> = {
   square: "aspect-square",
   video: "aspect-video",
   portrait: "aspect-9/16",
+  "3:4": "aspect-3/4",
   auto: "aspect-auto",
 };
 
@@ -82,6 +83,7 @@ const mdAspectClasses: Record<AspectRatio, string> = {
   square: "md:aspect-square",
   video: "md:aspect-video",
   portrait: "md:aspect-9/16",
+  "3:4": "md:aspect-3/4",
   auto: "md:aspect-auto",
 };
 

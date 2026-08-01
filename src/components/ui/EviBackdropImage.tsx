@@ -1,5 +1,5 @@
 import { isFilled, type ImageField } from "@prismicio/client";
-import { EviImage } from "@/src/components/ui/EviImage";
+import { EviImage, type EviImageProps } from "@/src/components/ui/EviImage";
 import { cn } from "@/src/lib/utils/cn";
 import { resolve_surface } from "@/src/lib/utils/surface";
 
@@ -19,7 +19,7 @@ const formClass: Record<Exclude<BackdropForm, "none">, string> = {
 };
 
 export type EviBackdropImageProps = {
-  /** Billede (kvadratisk constraint anbefales). Tomt → intet render. */
+  /** Billede — brug samme constraint som `aspectRatio`. Tomt → intet render. */
   field: ImageField;
   /**
    * Separat mobil-billede (art direction, R9.8). Når udfyldt vises det < 768px
@@ -38,14 +38,20 @@ export type EviBackdropImageProps = {
   color?: string;
   /** Eager-load (LCP/hero-billede). @default false */
   priority?: boolean;
+  /**
+   * Billedforhold på desktop. `mobileField` overstyrer stadig mobil til 4:3.
+   * @default "square"
+   */
+  aspectRatio?: EviImageProps["aspectRatio"];
   className?: string;
 };
 
 /**
- * Kvadratisk billede med en valgfri dekorativ form bagved (roteret flap, blob,
- * cirkel …) → giver dybde. Formen er aria-hidden og holdes INDE i boksen via
- * proportional padding (% af bredden), så intet overflower. `backdrop="none"` →
- * bare det afrundede billede. `mobileField` → 4:3 på mobil.
+ * Billede (forhold via `aspectRatio`, default kvadratisk) med en valgfri dekorativ
+ * form bagved (roteret flap, blob, cirkel …) → giver dybde. Formen er aria-hidden
+ * og holdes INDE i boksen via proportional padding (% af bredden), så intet
+ * overflower. `backdrop="none"` → bare det afrundede billede. `mobileField` → 4:3
+ * på mobil.
  */
 export function EviBackdropImage({
   field,
@@ -53,6 +59,7 @@ export function EviBackdropImage({
   backdrop = "rotated",
   color = "Sekundær",
   priority = false,
+  aspectRatio = "square",
   className,
 }: EviBackdropImageProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
@@ -63,7 +70,7 @@ export function EviBackdropImage({
     <EviImage
       field={field}
       mobileField={mobileField}
-      aspectRatio="square"
+      aspectRatio={aspectRatio}
       mobileAspectRatio={has_mobile ? "landscape" : undefined}
       variant="plain"
       imageClassName="object-cover"

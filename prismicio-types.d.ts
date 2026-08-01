@@ -1266,7 +1266,7 @@ export interface FeaturesSliceSplitPrimary {
 	 * Billede field in *Features → Split → Primary*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: Firkantet billede (1:1)
+	 * - **Placeholder**: Stående billede (3:4)
 	 * - **API ID Path**: features.split.primary.image
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */

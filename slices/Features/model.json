@@ -186,7 +186,7 @@
       "description": "Split",
       "docURL": "",
       "id": "split",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/7e4ea57a4d97755ce492e13684f992c0bdd1267c.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/7c4a3b2ec2d6946b3d0318e875e9206e818e6e1e.png?auto=compress%2Cformat",
       "name": "Split",
       "primary": {
         "heading": {
@@ -209,10 +209,10 @@
           "config": {
             "constraint": {
               "width": 1200,
-              "height": 1200
+              "height": 1600
             },
             "label": "Billede",
-            "placeholder": "Firkantet billede (1:1)",
+            "placeholder": "Stående billede (3:4)",
             "thumbnails": []
           },
           "type": "Image"
