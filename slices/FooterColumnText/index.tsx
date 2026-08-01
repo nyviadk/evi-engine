@@ -3,6 +3,7 @@ import type { SliceComponentProps } from "@prismicio/react";
 
 import type { EviFooterSliceContext } from "@/src/components/footer/types";
 import { EviRichText } from "@/src/components/typography/EviRichText";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 
@@ -24,7 +25,7 @@ export default function FooterColumnText({
 
   return (
     <EviStack gap="md" data-slot="footer-column" data-variant="text">
-      <EviRichText field={primary.heading} linkResolver={linkResolver} />
+      <EviTitle field={primary.heading} linkResolver={linkResolver} />
       <EviRichText field={primary.body} linkResolver={linkResolver} />
     </EviStack>
   );

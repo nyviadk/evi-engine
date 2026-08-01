@@ -44,7 +44,7 @@ const sizeClasses: Record<AutoGridSize, string> = {
 };
 
 const gapClasses: Record<AutoGridGap, string> = {
-  card: "gap-x-4 gap-y-8 md:gap-x-8 md:gap-y-12",
+  card: "gap-8 md:gap-12",
   compact: "gap-2",
 };
 

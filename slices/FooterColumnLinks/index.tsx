@@ -4,7 +4,7 @@ import type { SliceComponentProps } from "@prismicio/react";
 import { FooterLinkList } from "@/src/components/footer/parts/FooterLinkList";
 import type { EviFooterSliceContext } from "@/src/components/footer/types";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviRichText } from "@/src/components/typography/EviRichText";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
 
@@ -28,7 +28,7 @@ export default function FooterColumnLinks({
 
   return (
     <EviStack gap="md" data-slot="footer-column" data-variant="links">
-      <EviRichText field={primary.heading} linkResolver={linkResolver} />
+      <EviTitle field={primary.heading} linkResolver={linkResolver} />
       <FooterLinkList items={primary.links} linkResolver={linkResolver} />
     </EviStack>
   );
