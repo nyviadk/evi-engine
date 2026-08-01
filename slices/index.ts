@@ -12,6 +12,7 @@ import Highlights from "./Highlights";
 import Maps from "./Maps";
 import PhoneMockup from "./PhoneMockup";
 import Prices from "./Prices";
+import Profile from "./Profile";
 import Testimonials from "./Testimonials";
 import TextWithImages from "./TextWithImages";
 
@@ -28,6 +29,7 @@ export const components = {
 	maps: Maps,
 	phone_mockup: PhoneMockup,
 	prices: Prices,
+	profile: Profile,
 	testimonials: Testimonials,
 	text_with_images: TextWithImages
 };

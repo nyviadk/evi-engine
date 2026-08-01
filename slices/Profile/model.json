@@ -1,0 +1,84 @@
+{
+  "id": "profile",
+  "name": "Profile",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/profile/default/f95b3f3f4f35d3acd456a5a00af9dbad8fd961a4.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "portrait": {
+          "config": {
+            "constraint": {
+              "width": 800,
+              "height": 800
+            },
+            "label": "Portræt",
+            "placeholder": "Kvadratisk billede (vises rundt)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "description": {
+          "config": {
+            "label": "Beskrivelse",
+            "multi": "paragraph,strong,em,hyperlink",
+            "placeholder": "Personlig introtekst"
+          },
+          "type": "StructuredText"
+        },
+        "quote": {
+          "config": {
+            "label": "Citat",
+            "placeholder": "Kort fremhævet citat",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "signature": {
+          "config": {
+            "label": "Signatur (SVG/PNG)",
+            "placeholder": "Upload underskrift som billede",
+            "select": "media"
+          },
+          "type": "Link"
+        },
+        "signature_name": {
+          "config": {
+            "label": "Navn (til signatur-alt)",
+            "placeholder": "Bruges som alt-tekst på signaturen"
+          },
+          "type": "Text"
+        },
+        "role": {
+          "config": {
+            "label": "Rolle / titel",
+            "placeholder": "fx Grundlægger & rister",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

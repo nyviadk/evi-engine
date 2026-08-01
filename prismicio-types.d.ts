@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice
 
 /**
  * Content for Side documents
@@ -2911,6 +2911,105 @@ type PricesSliceVariation = PricesSliceDefault
 export type PricesSlice = prismic.SharedSlice<"prices", PricesSliceVariation>;
 
 /**
+ * Primary content in *Profile → Default → Primary*
+ */
+export interface ProfileSliceDefaultPrimary {
+	/**
+	 * Portræt field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Kvadratisk billede (vises rundt)
+	 * - **API ID Path**: profile.default.primary.portrait
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	portrait: prismic.ImageField<never>;
+	
+	/**
+	 * Beskrivelse field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Personlig introtekst
+	 * - **API ID Path**: profile.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	description: prismic.RichTextField;
+	
+	/**
+	 * Citat field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort fremhævet citat
+	 * - **API ID Path**: profile.default.primary.quote
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	quote: prismic.RichTextField;
+	
+	/**
+	 * Signatur (SVG/PNG) field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: Upload underskrift som billede
+	 * - **API ID Path**: profile.default.primary.signature
+	 * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+	 */
+	signature: prismic.LinkToMediaField<prismic.FieldState, never>;
+	
+	/**
+	 * Navn (til signatur-alt) field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Bruges som alt-tekst på signaturen
+	 * - **API ID Path**: profile.default.primary.signature_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	signature_name: prismic.KeyTextField;
+	
+	/**
+	 * Rolle / titel field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: fx Grundlægger & rister
+	 * - **API ID Path**: profile.default.primary.role
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	role: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: profile.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Profile Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ProfileSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ProfileSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Profile*
+ */
+type ProfileSliceVariation = ProfileSliceDefault
+
+/**
+ * Profile Shared Slice
+ *
+ * - **API ID**: `profile`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ProfileSlice = prismic.SharedSlice<"profile", ProfileSliceVariation>;
+
+/**
  * Item in *Testimonials → Default → Primary → Anmeldelser*
  */
 export interface TestimonialsSliceDefaultPrimaryTestimonialsItem {
@@ -3248,6 +3347,10 @@ declare module "@prismicio/client" {
 			PricesSliceDefaultPrimary,
 			PricesSliceVariation,
 			PricesSliceDefault,
+			ProfileSlice,
+			ProfileSliceDefaultPrimary,
+			ProfileSliceVariation,
+			ProfileSliceDefault,
 			TestimonialsSlice,
 			TestimonialsSliceDefaultPrimaryTestimonialsItem,
 			TestimonialsSliceDefaultPrimary,

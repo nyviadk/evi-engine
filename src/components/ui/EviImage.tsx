@@ -52,6 +52,11 @@ export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
    */
   rounded?: boolean;
   /**
+   * Rund avatar: tvinger square + `rounded-full` + `object-cover` (fylder cirklen)
+   * + ingen frame. Til portrætter/avatarer. @default false
+   */
+  circle?: boolean;
+  /**
    * Blødt zoom (~1.03) når en forælder med `group`-klassen hover'es. Kræver at
    * kort-wrapperen har `className="group"` (billedet klippes af containerens
    * `overflow-hidden`).
@@ -96,24 +101,31 @@ export function EviImage({
   className,
   imageClassName,
   rounded = true,
+  circle = false,
   hoverZoom = false,
   style,
   ...props
 }: EviImageProps): React.ReactElement | null {
   if (!isFilled.image(field)) return null;
 
-  // LQIP-blur kun for `plain`; `framed` bruger sin neutral-surface som placeholder.
-  const blurUrl = variant === "plain" ? lqip_url(field.url) : undefined;
+  const effectiveVariant = circle ? "plain" : variant;
 
-  const aspectClass = mobileAspectRatio
-    ? cn(aspectClasses[mobileAspectRatio], mdAspectClasses[aspectRatio])
-    : aspectClasses[aspectRatio];
+  // LQIP-blur kun for `plain`; `framed` bruger sin neutral-surface som placeholder.
+  // Cirkel dækker fladen (object-cover), så blur-bg'en er unødig der.
+  const blurUrl =
+    effectiveVariant === "plain" && !circle ? lqip_url(field.url) : undefined;
+
+  const aspectClass = circle
+    ? aspectClasses.square
+    : mobileAspectRatio
+      ? cn(aspectClasses[mobileAspectRatio], mdAspectClasses[aspectRatio])
+      : aspectClasses[aspectRatio];
 
   const containerClasses = cn(
     "relative w-full overflow-hidden",
-    rounded && "rounded-evi",
+    circle ? "rounded-full" : rounded && "rounded-evi",
     aspectClass,
-    variantClasses[variant],
+    variantClasses[effectiveVariant],
     blurUrl && "bg-cover bg-center",
     className,
   );
@@ -125,6 +137,7 @@ export function EviImage({
   // ved tekst-markering. Ingen a11y-omkostning (skærmlæsere bruger alt).
   const imgClasses = cn(
     "size-full object-contain select-none",
+    circle && "object-cover",
     hoverZoom &&
       "transition-transform duration-500 ease-out group-hover:scale-[1.03]",
     imageClassName,
@@ -142,7 +155,7 @@ export function EviImage({
     return (
       <div
         data-slot="evi-image"
-        data-variant={variant}
+        data-variant={effectiveVariant}
         className={containerClasses}
         style={containerStyle}
         {...props}
@@ -181,7 +194,7 @@ export function EviImage({
   return (
     <div
       data-slot="evi-image"
-      data-variant={variant}
+      data-variant={effectiveVariant}
       className={containerClasses}
       style={containerStyle}
       {...props}

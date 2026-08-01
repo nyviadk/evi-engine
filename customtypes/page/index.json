@@ -1,29 +1,26 @@
 {
+  "format": "page",
   "id": "page",
-  "label": "Side",
-  "repeatable": true,
   "json": {
     "Main": {
       "uid": {
-        "type": "UID",
         "config": {
           "label": "URL Sti (f.eks. om-os)"
-        }
+        },
+        "type": "UID"
       },
       "parent_page": {
-        "type": "Link",
         "config": {
-          "label": "Forældre side",
-          "select": "document",
           "customtypes": [
             "page"
           ],
-          "repeat": false
-        }
+          "label": "Forældre side",
+          "repeat": false,
+          "select": "document"
+        },
+        "type": "Link"
       },
       "slices": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
         "config": {
           "choices": {
             "hero": {
@@ -58,55 +55,61 @@
             },
             "maps": {
               "type": "SharedSlice"
+            },
+            "profile": {
+              "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
       }
     },
     "SEO & Metadata": {
       "meta_title": {
-        "type": "Text",
         "config": {
           "label": "SEO titel",
           "placeholder": "Vises i Google og i browser-fanen"
-        }
+        },
+        "type": "Text"
       },
       "meta_description": {
-        "type": "Text",
         "config": {
           "label": "SEO beskrivelse",
           "placeholder": "Den lille tekst der vises under linket i Google"
-        }
+        },
+        "type": "Text"
       },
       "meta_image": {
-        "type": "Image",
         "config": {
-          "label": "Billede (Sociale Medier)",
           "constraint": {
             "width": 2400,
             "height": 1260
           },
+          "label": "Billede (Sociale Medier)",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "noindex": {
-        "type": "Boolean",
         "config": {
-          "label": "Skjul siden fra Google (noindex)",
           "default_value": false,
-          "placeholder_true": "Skjult fra Google",
-          "placeholder_false": "Synlig i Google"
-        }
+          "label": "Skjul siden fra Google (noindex)",
+          "placeholder_false": "Synlig i Google",
+          "placeholder_true": "Skjult fra Google"
+        },
+        "type": "Boolean"
       },
       "canonical_override": {
-        "type": "Text",
         "config": {
           "label": "Canonical URL (avanceret)",
           "placeholder": "Kun hvis siden skal pege på en anden URL i Google"
-        }
+        },
+        "type": "Text"
       }
     }
   },
-  "status": true,
-  "format": "page"
+  "label": "Side",
+  "repeatable": true,
+  "status": true
 }

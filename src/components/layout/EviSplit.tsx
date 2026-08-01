@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 import { EVI_ROW_SPAN, type EviCardRows } from "@/src/components/ui/EviCard";
 import { cn } from "@/src/lib/utils/cn";
 
-type SplitPreset = "50-50" | "60-40" | "40-60" | "33-67" | "67-33";
+type SplitPreset = "50-50" | "60-40" | "40-60" | "33-67" | "67-33" | "25-75";
 type SplitAlign = "start" | "center" | "end" | "stretch";
 
 export type EviSplitProps = Omit<React.ComponentProps<"div">, "children"> & {
@@ -54,6 +54,10 @@ const presetClasses: Record<SplitPreset, { left: string; right: string }> = {
   "67-33": {
     left: "col-span-12 @3xl/section:col-span-8",
     right: "col-span-12 @3xl/section:col-span-4",
+  },
+  "25-75": {
+    left: "col-span-12 @3xl/section:col-span-3",
+    right: "col-span-12 @3xl/section:col-span-9",
   },
 };
 
