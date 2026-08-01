@@ -1770,16 +1770,6 @@ export type FeaturesSlice = prismic.SharedSlice<"features", FeaturesSliceVariati
  */
 export interface FooterColumnLinksSliceDefaultPrimary {
 	/**
-	 * Links field in *FooterColumnLinks → Default → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer_column_links.default.primary.links
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
-	
-	/**
 	 * Overskrift field in *FooterColumnLinks → Default → Primary*
 	 *
 	 * - **Field Type**: Rich Text
@@ -1788,6 +1778,16 @@ export interface FooterColumnLinksSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	heading: prismic.RichTextField;
+	
+	/**
+	 * Links field in *FooterColumnLinks → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: footer_column_links.default.primary.links
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
 }
 
 /**
@@ -1818,16 +1818,6 @@ export type FooterColumnLinksSlice = prismic.SharedSlice<"footer_column_links", 
  */
 export interface FooterColumnTextSliceDefaultPrimary {
 	/**
-	 * Indhold field in *FooterColumnText → Default → Primary*
-	 *
-	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Adresse, CVR, åbningstider osv.
-	 * - **API ID Path**: footer_column_text.default.primary.body
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
-	 */
-	body: prismic.RichTextField;
-	
-	/**
 	 * Overskrift field in *FooterColumnText → Default → Primary*
 	 *
 	 * - **Field Type**: Rich Text
@@ -1836,6 +1826,16 @@ export interface FooterColumnTextSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	heading: prismic.RichTextField;
+	
+	/**
+	 * Indhold field in *FooterColumnText → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Adresse, CVR, åbningstider osv.
+	 * - **API ID Path**: footer_column_text.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
 }
 
 /**

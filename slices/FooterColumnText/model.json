@@ -4,30 +4,30 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
+      "id": "default",
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/footer_column_text/default/6eb031bd08b1829a4ff2b50022492314bf088db6.png?auto=compress%2Cformat",
-      "version": "",
+      "name": "Default",
       "primary": {
-        "body": {
-          "type": "StructuredText",
-          "config": {
-            "label": "Indhold",
-            "placeholder": "Adresse, CVR, åbningstider osv.",
-            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-          }
-        },
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "fx Kontakt, Åbningstider, Virksomhedsinfo",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Indhold",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Adresse, CVR, åbningstider osv."
+          },
+          "type": "StructuredText"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }
