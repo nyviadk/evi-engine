@@ -3068,6 +3068,41 @@ export interface TestimonialsSliceDefaultPrimaryTestimonialsItem {
 }
 
 /**
+ * Item in *Testimonials → Carousel → Primary → Udtalelser*
+ */
+export interface TestimonialsSliceCarouselPrimaryTestimonialsItem {
+	/**
+	 * Kontekst (valgfri, fx forløb) field in *Testimonials → Carousel → Primary → Udtalelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.carousel.primary.testimonials[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Citat field in *Testimonials → Carousel → Primary → Udtalelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.carousel.primary.testimonials[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Afsender field in *Testimonials → Carousel → Primary → Udtalelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.carousel.primary.testimonials[].attribution
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	attribution: prismic.RichTextField;
+}
+
+/**
  * Primary content in *Testimonials → Default → Primary*
  */
 export interface TestimonialsSliceDefaultPrimary {
@@ -3144,9 +3179,115 @@ export interface TestimonialsSliceDefaultPrimary {
 export type TestimonialsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TestimonialsSliceDefaultPrimary>, never>;
 
 /**
+ * Primary content in *Testimonials → Carousel → Primary*
+ */
+export interface TestimonialsSliceCarouselPrimary {
+	/**
+	 * Overskrift field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.carousel.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.carousel.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: testimonials.carousel.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Ikon (fx citationstegn) field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx quote
+	 * - **API ID Path**: testimonials.carousel.primary.quote_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	quote_icon: prismic.KeyTextField;
+	
+	/**
+	 * Udtalelser field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.carousel.primary.testimonials[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	testimonials: prismic.GroupField<Simplify<TestimonialsSliceCarouselPrimaryTestimonialsItem>>;
+	
+	/**
+	 * Pil-ikon (valgfri) field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn — tom = chevron
+	 * - **API ID Path**: testimonials.carousel.primary.arrow_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	arrow_icon: prismic.KeyTextField;
+	
+	/**
+	 * Forrige-knap (skærmlæser) field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Forrige
+	 * - **API ID Path**: testimonials.carousel.primary.prev_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	prev_label: prismic.KeyTextField;
+	
+	/**
+	 * Næste-knap (skærmlæser) field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Næste
+	 * - **API ID Path**: testimonials.carousel.primary.next_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	next_label: prismic.KeyTextField;
+	
+	/**
+	 * Baggrundstema field in *Testimonials → Carousel → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: testimonials.carousel.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Carousel variation for Testimonials Slice
+ *
+ * - **API ID**: `carousel`
+ * - **Description**: Carousel
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TestimonialsSliceCarousel = prismic.SharedSliceVariation<"carousel", Simplify<TestimonialsSliceCarouselPrimary>, never>;
+
+/**
  * Slice variation for *Testimonials*
  */
-type TestimonialsSliceVariation = TestimonialsSliceDefault
+type TestimonialsSliceVariation = TestimonialsSliceDefault | TestimonialsSliceCarousel
 
 /**
  * Testimonials Shared Slice
@@ -3507,8 +3648,11 @@ declare module "@prismicio/client" {
 			TestimonialsSlice,
 			TestimonialsSliceDefaultPrimaryTestimonialsItem,
 			TestimonialsSliceDefaultPrimary,
+			TestimonialsSliceCarouselPrimaryTestimonialsItem,
+			TestimonialsSliceCarouselPrimary,
 			TestimonialsSliceVariation,
 			TestimonialsSliceDefault,
+			TestimonialsSliceCarousel,
 			TextContentSlice,
 			TextContentSliceDefaultPrimary,
 			TextContentSliceVariation,

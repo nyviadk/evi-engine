@@ -30,7 +30,7 @@ export function EviIconRow({
       data-slot="evi-icon-row"
       className={cn("@container/icon-row", className)}
     >
-      <div className="flex flex-col items-start gap-3 @[18rem]/icon-row:flex-row @[18rem]/icon-row:gap-4">
+      <div className="flex flex-col items-start gap-3 @[18rem]/icon-row:flex-row">
         <EviIconBadge name={icon} size={iconSize} />
         <div className="min-w-0">{children}</div>
       </div>

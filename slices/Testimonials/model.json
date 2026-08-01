@@ -102,6 +102,114 @@
         }
       },
       "version": ""
+    },
+    {
+      "description": "Carousel",
+      "docURL": "",
+      "id": "carousel",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/testimonials/carousel/e02fbf5e17c8b65ae3df415c31e6ee1b2329396a.png?auto=compress%2Cformat",
+      "name": "Carousel",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Overskrift-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
+        },
+        "quote_icon": {
+          "config": {
+            "label": "Ikon (fx citationstegn)",
+            "placeholder": "Iconify-navn, fx quote"
+          },
+          "type": "Text"
+        },
+        "testimonials": {
+          "config": {
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Kontekst (valgfri, fx forløb)",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "body": {
+                "config": {
+                  "label": "Citat",
+                  "single": "paragraph,strong,em,hyperlink"
+                },
+                "type": "StructuredText"
+              },
+              "attribution": {
+                "config": {
+                  "label": "Afsender",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              }
+            },
+            "label": "Udtalelser"
+          },
+          "type": "Group"
+        },
+        "arrow_icon": {
+          "config": {
+            "label": "Pil-ikon (valgfri)",
+            "placeholder": "Iconify-navn — tom = chevron"
+          },
+          "type": "Text"
+        },
+        "prev_label": {
+          "config": {
+            "label": "Forrige-knap (skærmlæser)",
+            "placeholder": "Fx Forrige"
+          },
+          "type": "Text"
+        },
+        "next_label": {
+          "config": {
+            "label": "Næste-knap (skærmlæser)",
+            "placeholder": "Fx Næste"
+          },
+          "type": "Text"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
     }
   ]
 }

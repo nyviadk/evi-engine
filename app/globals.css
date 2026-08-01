@@ -470,6 +470,15 @@
     overflow-wrap: break-word; /* Prevent long words/URLs from blowing out grid columns */
   }
 
+  /* Lead: fluid, prominent tekst til INDHOLD der ikke må være en overskrift
+     (R10 — fx et fremhævet citat). Skalerer med viewport ligesom overskrifterne;
+     trinnene er fra den eksisterende Major Third-skala (f₁ 20px → f₂ 25px), ikke
+     en ny værdi. Efter .evi-prose, så den vinder font-size på samme element. */
+  .evi-lead {
+    font-size: clamp(1.25rem, 1vw + 1rem, 1.563rem);
+    line-height: 1.4;
+  }
+
   /* Strip margins on first/last children to prevent double spacing */
   .evi-prose > :first-child {
     margin-top: 0;
@@ -630,7 +639,6 @@
     padding-left: 1rem;
     border-left: 0.625rem solid
       color-mix(in oklch, currentColor 20%, transparent);
-    font-style: italic;
   }
 
   /* ── Preformatted / Code ── */

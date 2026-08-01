@@ -27,6 +27,13 @@ const review = (
   box_color,
 });
 
+// Carousel-udtalelse: citat + afsender (navn) + kontekst (fx forløb).
+const quote = (body: string, attribution: string, context: string) => ({
+  body: line(body),
+  attribution: line(attribution),
+  title: line(context),
+});
+
 export const mock: Record<string, Content.TestimonialsSlice> = {
   default: {
     id: "mock-testimonials-default",
@@ -83,5 +90,46 @@ export const mock: Record<string, Content.TestimonialsSlice> = {
       background_theme: "Lys",
       more_label: "Læs flere",
     } as Content.TestimonialsSliceDefaultPrimary,
+  },
+  carousel: {
+    id: "mock-testimonials-carousel",
+    slice_type: "testimonials",
+    slice_label: null,
+    variation: "carousel",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: h2("Ord fra vores gæster"),
+      body: line("Rigtige mennesker, rigtig kaffe — her er nogle af dem."),
+      heading_align: "Centreret",
+      quote_icon: "quote",
+      testimonials: [
+        quote(
+          "Bedste kaffe jeg har fået — punktum.",
+          "Anders",
+          "Pensionist",
+        ),
+        quote(
+          "Jeg troede ikke, der var forskel på kaffe, før jeg smagte deres lyse ristning. Nu kører jeg gerne på tværs af byen for en frisk pose — og personalet husker altid min bestilling.",
+          "Mette",
+          "Fast gæst siden 2019",
+        ),
+        quote(
+          "Abonnementet er guld værd — friske bønner til døren hver 14. dag.",
+          "Sofie & Lars",
+          "Børnefamilie",
+        ),
+        quote("Ærlige folk, fair priser, fantastisk kaffe.", "Jonas", "Abonnent"),
+        quote(
+          "Deres brygkursus ændrede min morgenrutine fuldstændig.",
+          "Rasmus",
+          "Hjemmebrygger",
+        ),
+      ],
+      arrow_icon: "",
+      prev_label: "Forrige",
+      next_label: "Næste",
+      background_theme: "Lys",
+    } as unknown as Content.TestimonialsSliceCarouselPrimary,
   },
 };

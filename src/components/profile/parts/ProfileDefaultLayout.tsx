@@ -57,7 +57,7 @@ export function ProfileDefaultLayout({
         <EviRichText
           field={p.quote}
           linkResolver={linkResolver}
-          className="[&_p]:m-0 [&_p]:text-xl [&_p]:italic"
+          className="[&_p]:m-0 [&_p]:text-xl"
         />
       )}
       {(hasSignature || isFilled.richText(p.role)) && (
