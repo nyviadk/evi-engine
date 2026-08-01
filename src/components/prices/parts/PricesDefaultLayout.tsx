@@ -9,7 +9,7 @@ import { EviCheckList } from "@/src/components/ui/EviCheckList";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
-import { evi_box_class } from "@/src/components/ui/EviBox";
+import { box_surface } from "@/src/components/ui/EviBox";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -17,9 +17,7 @@ import {
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
-import { resolve_surface } from "@/src/lib/utils/surface";
 import { evi_card_title_class } from "@/src/lib/utils/card-text";
-import { cn } from "@/src/lib/utils/cn";
 
 export type PricesDefaultLayoutProps = {
   slice: Content.PricesSliceDefault;
@@ -78,7 +76,7 @@ export function PricesDefaultLayout({
             <EviCard
               key={i}
               rows={7}
-              className={cn(resolve_surface(cardColor), evi_box_class())}
+              className={box_surface(cardColor)}
             >
               <EviRichText
                 field={plan.title}

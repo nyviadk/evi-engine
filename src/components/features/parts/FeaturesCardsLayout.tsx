@@ -11,9 +11,8 @@ import {
 } from "@/src/lib/prismic/slices";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { cn } from "@/src/lib/utils/cn";
-import { evi_box_class } from "@/src/components/ui/EviBox";
+import { box_surface } from "@/src/components/ui/EviBox";
 import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
-import { resolve_surface } from "@/src/lib/utils/surface";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import {
   evi_card_title_class,
@@ -69,7 +68,7 @@ export function FeaturesCardsLayout({
           <EviCard
             key={i}
             rows={3}
-            className={cn(resolve_surface(cardColor), evi_box_class())}
+            className={box_surface(cardColor)}
           >
             {isFilled.keyText(card.icon) ? (
               <EviIconBadge

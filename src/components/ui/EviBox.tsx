@@ -1,5 +1,5 @@
 import { cn } from "@/src/lib/utils/cn";
-import { resolve_surface } from "@/src/lib/utils/surface";
+import { resolve_surface, NO_SURFACE } from "@/src/lib/utils/surface";
 
 type BoxSize = "card" | "compact";
 
@@ -21,6 +21,18 @@ const sizeClass: Record<BoxSize, string> = {
  */
 export function evi_box_class(size: BoxSize = "card"): string {
   return sizeClass[size];
+}
+
+/**
+ * Flade + kasse-form for et Prismic farve-label — ELLER tom streng ved "Uden
+ * farve" (ingen flade/padding/skygge, så indholdet flugter fladt frem for at være
+ * mærkeligt indrykket). Layouts med stramme box-gaps (fx features-split) skal selv
+ * øge gap'et ved "Uden farve" (via [[NO_SURFACE]]) så items stadig har luft.
+ * Brug denne frem for `cn(resolve_surface(x), evi_box_class())`.
+ */
+export function box_surface(color?: string | null, size: BoxSize = "card"): string {
+  if (color === NO_SURFACE) return "";
+  return cn(resolve_surface(color), evi_box_class(size));
 }
 
 /**
@@ -61,7 +73,7 @@ export function EviBox({
     <div
       data-slot="evi-box"
       data-size={size}
-      className={cn(resolve_surface(surface), evi_box_class(size), className)}
+      className={cn(box_surface(surface, size), className)}
       {...props}
     />
   );

@@ -18,6 +18,7 @@ import {
 } from "@/src/lib/prismic/slices";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { evi_list_text_class } from "@/src/lib/utils/card-text";
+import { NO_SURFACE } from "@/src/lib/utils/surface";
 import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesSplitLayoutProps = {
@@ -53,6 +54,9 @@ export function FeaturesSplitLayout({
   // (EviAutoGrid duo, container-query). Ved 3+ punkter bliver den lodrette stak for
   // lang; EviIconRow stakker så ikon over tekst i de smallere grid-celler.
   const twoColumn = p.feature_layout === "To kolonner";
+  // Uden boks-flade giver de stramme box-gaps (sm/compact) for lidt luft →
+  // øg gap'et, så items stadig er tydeligt adskilt (begge akser i gitteret).
+  const boxless = p.feature_color === NO_SURFACE;
 
   // a11y: DOM leder ALTID med indholdet (overskrift først → bedst for skærmlæser
   // + heading-navigation). Billed-siden (desktop) og mobil-rækkefølgen er PURT
@@ -94,11 +98,11 @@ export function FeaturesSplitLayout({
         isHero={isHero}
       />
       {twoColumn ? (
-        <EviAutoGrid size="duo" gap="compact">
+        <EviAutoGrid size="duo" gap={boxless ? "card" : "compact"}>
           {boxList}
         </EviAutoGrid>
       ) : (
-        <EviStack gap="sm">{boxList}</EviStack>
+        <EviStack gap={boxless ? "lg" : "sm"}>{boxList}</EviStack>
       )}
     </EviStack>
   );

@@ -4,113 +4,112 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
+      "id": "default",
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/prices/default/214b943167f3618648db1755fe211b7fa1f64fd6.png?auto=compress%2Cformat",
-      "version": "",
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Centreret",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "card_color": {
-          "type": "Select",
           "config": {
-            "label": "Kort-farve",
             "default_value": "Neutral",
+            "label": "Kort-farve",
             "options": [
               "Neutral",
               "Primær",
-              "Sekundær"
+              "Sekundær",
+              "Uden farve"
             ]
-          }
+          },
+          "type": "Select"
         },
         "plans": {
-          "type": "Group",
           "config": {
-            "label": "Pakker",
             "fields": {
               "title": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Pakketitel",
                   "single": "heading3,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "price": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Pris",
                   "single": "paragraph,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "caption": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Undertekst (fx pr. samtale)",
                   "single": "paragraph,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Beskrivelse",
                   "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-                }
+                },
+                "type": "StructuredText"
               },
               "included": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Inkluderet (punktliste)",
                   "multi": "list-item,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "included_icon": {
-                "type": "Text",
                 "config": {
                   "label": "Liste-ikon (tom = check)",
                   "placeholder": "fx star — tom = check"
-                }
+                },
+                "type": "Text"
               },
               "cta_link": {
-                "type": "Link",
                 "config": {
-                  "label": "Knap (valgfri)",
                   "allowTargetBlank": true,
-                  "allowText": true
-                }
+                  "allowText": true,
+                  "label": "Knap (valgfri)"
+                },
+                "type": "Link"
               }
-            }
-          }
+            },
+            "label": "Pakker"
+          },
+          "type": "Group"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -120,9 +119,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

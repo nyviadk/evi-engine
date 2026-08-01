@@ -1203,7 +1203,7 @@ export interface FeaturesSliceCardsPrimary {
 	 * - **API ID Path**: features.cards.primary.card_color
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
 	
 	/**
 	 * Baggrundstema field in *Features → Cards → Primary*
@@ -1279,7 +1279,7 @@ export interface FeaturesSliceSplitPrimary {
 	 * - **API ID Path**: features.split.primary.feature_color
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	feature_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	feature_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
 	
 	/**
 	 * Boks-layout field in *Features → Split → Primary*
@@ -2450,7 +2450,7 @@ export interface HighlightsSliceDefaultPrimary {
 	 * - **API ID Path**: highlights.default.primary.box_color
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
 	
 	/**
 	 * Lodret justering field in *Highlights → Default → Primary*
@@ -2863,7 +2863,7 @@ export interface PricesSliceDefaultPrimary {
 	 * - **API ID Path**: prices.default.primary.card_color
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
 	
 	/**
 	 * Pakker field in *Prices → Default → Primary*
@@ -3052,7 +3052,7 @@ export interface TestimonialsSliceDefaultPrimaryTestimonialsItem {
 	 * - **API ID Path**: testimonials.default.primary.testimonials[].box_color
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær", "filled">;
+	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
 }
 
 /**

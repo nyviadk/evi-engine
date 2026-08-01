@@ -12,14 +12,18 @@
 const NEUTRAL = "theme-surface-neutral";
 const PRIMARY = "theme-surface-primary";
 
+/** Select-label for "ingen boks" — ingen flade OG (via box_surface) ingen padding. */
+export const NO_SURFACE = "Uden farve";
+
 const SURFACE_MAP: Record<string, string> = {
   Neutral: NEUTRAL,
   Primær: PRIMARY,
   Sekundær: "theme-surface-secondary",
 };
 
-/** Flade-klassen for et label. Ukendt/tomt → neutral. */
+/** Flade-klassen for et label. "Uden farve" → tom. Ukendt/tomt → neutral. */
 export function resolve_surface(label?: string | null): string {
+  if (label === NO_SURFACE) return "";
   return SURFACE_MAP[label ?? "Neutral"] ?? NEUTRAL;
 }
 

@@ -4,74 +4,72 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
+      "id": "default",
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/default/b4bd4a06b8b105114f6c52895cea06b51feb3988.png?auto=compress%2Cformat",
-      "version": "",
+      "name": "Default",
       "primary": {
         "feature_1_icon": {
-          "type": "Text",
           "config": {
             "label": "Kolonne 1: ikon",
             "placeholder": "Iconify-navn, fx lucide:badge-check"
-          }
+          },
+          "type": "Text"
         },
         "feature_1_text": {
-          "type": "StructuredText",
           "config": {
             "label": "Kolonne 1: tekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "feature_2_icon": {
-          "type": "Text",
           "config": {
             "label": "Kolonne 2: ikon",
             "placeholder": "Iconify-navn, fx lucide:badge-check"
-          }
+          },
+          "type": "Text"
         },
         "feature_2_text": {
-          "type": "StructuredText",
           "config": {
             "label": "Kolonne 2: tekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "feature_3_icon": {
-          "type": "Text",
           "config": {
             "label": "Kolonne 3: ikon",
             "placeholder": "Iconify-navn, fx lucide:badge-check"
-          }
+          },
+          "type": "Text"
         },
         "feature_3_text": {
-          "type": "StructuredText",
           "config": {
             "label": "Kolonne 3: tekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "feature_4_icon": {
-          "type": "Text",
           "config": {
             "label": "Kolonne 4: ikon",
             "placeholder": "Iconify-navn, fx lucide:badge-check"
-          }
+          },
+          "type": "Text"
         },
         "feature_4_text": {
-          "type": "StructuredText",
           "config": {
             "label": "Kolonne 4: tekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -81,93 +79,94 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     },
     {
-      "id": "cards",
-      "name": "Cards",
       "description": "Cards",
       "docURL": "",
+      "id": "cards",
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/cards/d21214d538a356a4a0ca1d60751d848f5f60154d.png?auto=compress%2Cformat",
-      "version": "",
+      "name": "Cards",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "placeholder": "Kort intro under overskriften",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Centreret",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "cards": {
-          "type": "Group",
           "config": {
-            "label": "Kort",
             "fields": {
               "icon": {
-                "type": "Text",
                 "config": {
                   "label": "Ikon",
                   "placeholder": "Iconify-navn, fx lucide:brain"
-                }
+                },
+                "type": "Text"
               },
               "heading": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Overskrift",
                   "placeholder": "Kort titel",
                   "single": "heading3,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Tekst",
                   "placeholder": "Kort beskrivelse",
                   "single": "paragraph,strong,em,hyperlink"
-                }
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Kort"
+          },
+          "type": "Group"
         },
         "card_color": {
-          "type": "Select",
           "config": {
-            "label": "Kort-farve",
             "default_value": "Neutral",
+            "label": "Kort-farve",
             "options": [
               "Neutral",
               "Primær",
-              "Sekundær"
+              "Sekundær",
+              "Uden farve"
             ]
-          }
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -177,150 +176,151 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     },
     {
-      "id": "split",
-      "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/e8b9a1cd7ac0dde212cafafe471e9ee7a09f1f50.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "split",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/5d9726cae7d423767f12f331b5b5903e447d8170.png?auto=compress%2Cformat",
+      "name": "Split",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "placeholder": "Kort intro under overskriften",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "image": {
-          "type": "Image",
           "config": {
-            "label": "Billede",
-            "placeholder": "Firkantet billede (1:1)",
             "constraint": {
               "width": 1200,
               "height": 1200
             },
+            "label": "Billede",
+            "placeholder": "Firkantet billede (1:1)",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "features": {
-          "type": "Group",
           "config": {
-            "label": "Bokse",
             "fields": {
               "icon": {
-                "type": "Text",
                 "config": {
                   "label": "Ikon",
                   "placeholder": "Iconify-navn, fx lucide:check"
-                }
+                },
+                "type": "Text"
               },
               "heading": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Overskrift",
                   "placeholder": "Boks-titel",
                   "single": "heading3,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Tekst",
                   "placeholder": "Kort beskrivelse",
                   "single": "paragraph,strong,em,hyperlink"
-                }
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Bokse"
+          },
+          "type": "Group"
         },
         "feature_color": {
-          "type": "Select",
           "config": {
-            "label": "Boks-farve",
             "default_value": "Neutral",
+            "label": "Boks-farve",
             "options": [
               "Neutral",
               "Primær",
-              "Sekundær"
+              "Sekundær",
+              "Uden farve"
             ]
-          }
+          },
+          "type": "Select"
         },
         "feature_layout": {
-          "type": "Select",
           "config": {
-            "label": "Boks-layout",
             "default_value": "Enkelt kolonne",
+            "label": "Boks-layout",
             "options": [
               "Enkelt kolonne",
               "To kolonner"
             ]
-          }
+          },
+          "type": "Select"
         },
         "backdrop": {
-          "type": "Select",
           "config": {
-            "label": "Backdrop bag billede",
             "default_value": "Ingen",
+            "label": "Backdrop bag billede",
             "options": [
               "Ingen",
               "Roteret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "backdrop_color": {
-          "type": "Select",
           "config": {
-            "label": "Backdrop-farve",
             "default_value": "Sekundær",
+            "label": "Backdrop-farve",
             "options": [
               "Sekundær",
               "Primær",
               "Neutral"
             ]
-          }
+          },
+          "type": "Select"
         },
         "image_side": {
-          "type": "Select",
           "config": {
-            "label": "Billedets side (desktop)",
             "default_value": "Venstre",
+            "label": "Billedets side (desktop)",
             "options": [
               "Venstre",
               "Højre"
             ]
-          }
+          },
+          "type": "Select"
         },
         "mobile_order": {
-          "type": "Select",
           "config": {
-            "label": "Rækkefølge på mobil",
             "default_value": "Billede øverst",
+            "label": "Rækkefølge på mobil",
             "options": [
               "Billede øverst",
               "Tekst øverst"
             ]
-          }
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -330,178 +330,178 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     },
     {
-      "id": "bento",
-      "name": "Bento",
       "description": "Bento",
       "docURL": "",
+      "id": "bento",
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/bento/6387d63205453d6a046c42b413bef2ee5a2b8d44.png?auto=compress%2Cformat",
-      "version": "",
+      "name": "Bento",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "placeholder": "Kort intro under overskriften",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Centreret",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "cta_link": {
-          "type": "Link",
           "config": {
-            "label": "Overskrift: knap (fx Se alle ydelser)",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Overskrift: knap (fx Se alle ydelser)"
+          },
+          "type": "Link"
         },
         "card_1_image": {
-          "type": "Image",
           "config": {
-            "label": "Stor kasse: billede",
-            "placeholder": "Højformat-billede (4:5)",
             "constraint": {
               "width": 1200,
               "height": 1500
             },
+            "label": "Stor kasse: billede",
+            "placeholder": "Højformat-billede (4:5)",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "card_1_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Stor kasse: titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_1_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Stor kasse: tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_1_link": {
-          "type": "Link",
           "config": {
-            "label": "Stor kasse: knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Stor kasse: knap"
+          },
+          "type": "Link"
         },
         "card_2_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Bred kasse: titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_2_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Bred kasse: tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_2_link": {
-          "type": "Link",
           "config": {
-            "label": "Bred kasse: knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Bred kasse: knap"
+          },
+          "type": "Link"
         },
         "card_2_image": {
-          "type": "Image",
           "config": {
-            "label": "Bred kasse: billede",
-            "placeholder": "Firkantet billede (1:1)",
             "constraint": {
               "width": 1000,
               "height": 1000
             },
+            "label": "Bred kasse: billede",
+            "placeholder": "Firkantet billede (1:1)",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "card_3_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 3: titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_3_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 3: tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_3_link": {
-          "type": "Link",
           "config": {
-            "label": "Kasse 3: knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Kasse 3: knap"
+          },
+          "type": "Link"
         },
         "card_4_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 4: titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_4_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 4: tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "card_4_link": {
-          "type": "Link",
           "config": {
-            "label": "Kasse 4: knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Kasse 4: knap"
+          },
+          "type": "Link"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -511,142 +511,142 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     },
     {
-      "id": "icon-bento",
-      "name": "Icon Bento",
       "description": "Icon Bento",
       "docURL": "",
+      "id": "icon-bento",
       "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/icon-bento/74d4b9fa5241527b2c1fe3f5a986bd647e8a5ed0.png?auto=compress%2Cformat",
-      "version": "",
+      "name": "Icon Bento",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "placeholder": "Kort intro under overskriften",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Centreret",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "box_1_icon": {
-          "type": "Text",
           "config": {
             "label": "Kasse 1 (bred): ikon",
             "placeholder": "Iconify-navn, fx lucide:check"
-          }
+          },
+          "type": "Text"
         },
         "box_1_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 1 (bred): titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_1_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 1 (bred): tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_2_icon": {
-          "type": "Text",
           "config": {
             "label": "Kasse 2 (smal): ikon",
             "placeholder": "Iconify-navn, fx lucide:check"
-          }
+          },
+          "type": "Text"
         },
         "box_2_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 2 (smal): titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_2_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 2 (smal): tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_3_icon": {
-          "type": "Text",
           "config": {
             "label": "Kasse 3 (smal): ikon",
             "placeholder": "Iconify-navn, fx lucide:check"
-          }
+          },
+          "type": "Text"
         },
         "box_3_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 3 (smal): titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_3_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 3 (smal): tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_4_icon": {
-          "type": "Text",
           "config": {
             "label": "Kasse 4 (bred): ikon",
             "placeholder": "Iconify-navn, fx lucide:check"
-          }
+          },
+          "type": "Text"
         },
         "box_4_title": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 4 (bred): titel",
             "placeholder": "Kort titel",
             "single": "heading3,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "box_4_body": {
-          "type": "StructuredText",
           "config": {
             "label": "Kasse 4 (bred): tekst",
             "placeholder": "Kort beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -656,9 +656,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }
