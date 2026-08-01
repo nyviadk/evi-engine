@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice
 
 /**
  * Content for Side documents
@@ -3158,6 +3158,147 @@ type TestimonialsSliceVariation = TestimonialsSliceDefault
 export type TestimonialsSlice = prismic.SharedSlice<"testimonials", TestimonialsSliceVariation>;
 
 /**
+ * Primary content in *TextContent → Default → Primary*
+ */
+export interface TextContentSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: text_content.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Venstre: underoverskrift field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.left_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	left_heading: prismic.RichTextField;
+	
+	/**
+	 * Venstre: tekst field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.left_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	left_body: prismic.RichTextField;
+	
+	/**
+	 * Boks: titel field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.box_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_title: prismic.RichTextField;
+	
+	/**
+	 * Boks: tekst field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.box_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	box_body: prismic.RichTextField;
+	
+	/**
+	 * Boks-farve field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: text_content.default.primary.box_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	box_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
+	
+	/**
+	 * Højre: underoverskrift field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.right_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	right_heading: prismic.RichTextField;
+	
+	/**
+	 * Højre: tekst field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.default.primary.right_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	right_body: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *TextContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: text_content.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for TextContent Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextContentSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TextContentSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *TextContent*
+ */
+type TextContentSliceVariation = TextContentSliceDefault
+
+/**
+ * TextContent Shared Slice
+ *
+ * - **API ID**: `text_content`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextContentSlice = prismic.SharedSlice<"text_content", TextContentSliceVariation>;
+
+/**
  * Primary content in *TextWithImages → Default → Primary*
  */
 export interface TextWithImagesSliceDefaultPrimary {
@@ -3368,6 +3509,10 @@ declare module "@prismicio/client" {
 			TestimonialsSliceDefaultPrimary,
 			TestimonialsSliceVariation,
 			TestimonialsSliceDefault,
+			TextContentSlice,
+			TextContentSliceDefaultPrimary,
+			TextContentSliceVariation,
+			TextContentSliceDefault,
 			TextWithImagesSlice,
 			TextWithImagesSliceDefaultPrimary,
 			TextWithImagesSliceVariation,

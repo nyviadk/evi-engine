@@ -14,10 +14,8 @@ import { cn } from "@/src/lib/utils/cn";
 import { box_surface } from "@/src/components/ui/EviBox";
 import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import {
-  evi_card_title_class,
-  evi_card_body_class,
-} from "@/src/lib/utils/card-text";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 
 export type FeaturesCardsLayoutProps = {
   slice: Content.FeaturesSliceCards;
@@ -80,10 +78,11 @@ export function FeaturesCardsLayout({
             ) : (
               <div />
             )}
-            <EviRichText
+            <EviTitle
               field={card.heading}
               linkResolver={linkResolver}
-              className={cn("mt-4", evi_card_title_class("xl"))}
+              size="xl"
+              className="mt-4"
             />
             <EviRichText
               field={card.body}

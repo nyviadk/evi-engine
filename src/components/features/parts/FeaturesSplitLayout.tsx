@@ -80,9 +80,9 @@ export function FeaturesSplitLayout({
       size="compact"
     >
       {/* EviIconRow: ikon ved siden af på brede kort, over teksten på smalle
-          (fx en 2-kol-celle). opacity-80 dæmper brødteksten let (kun her). */}
+          (fx en 2-kol-celle). */}
       <EviIconRow icon={box.icon}>
-        <div className={cn("evi-prose", evi_list_text_class(), "[&_p]:opacity-80")}>
+        <div className={cn("evi-prose", evi_list_text_class())}>
           <EviRichText.Raw field={box.heading} linkResolver={linkResolver} />
           <EviRichText.Raw field={box.body} linkResolver={linkResolver} />
         </div>

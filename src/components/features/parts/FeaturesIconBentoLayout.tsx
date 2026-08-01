@@ -14,10 +14,8 @@ import {
 } from "@/src/lib/prismic/slices";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import {
-  evi_card_title_class,
-  evi_card_body_class,
-} from "@/src/lib/utils/card-text";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesIconBentoLayoutProps = {
@@ -30,7 +28,6 @@ export type FeaturesIconBentoLayoutProps = {
 // EviRow-grid'ets arvede gap og EviSplit's gap-y.
 const BENTO_GAP = "gap-4 md:gap-6";
 
-const BOX_TITLE = cn("evi-prose mt-4", evi_card_title_class("lg"));
 const BOX_BODY = cn("evi-prose mt-2", evi_card_body_class());
 
 // Faste farve-roller pr. position: store kasser (1, 4) neutrale, små (2, 3)
@@ -75,7 +72,12 @@ function IconBox({
         <div />
       )}
       {isFilled.richText(box.title) ? (
-        <EviRichText field={box.title} linkResolver={linkResolver} className={BOX_TITLE} />
+        <EviTitle
+          field={box.title}
+          linkResolver={linkResolver}
+          size="lg"
+          className="mt-4"
+        />
       ) : (
         <div />
       )}

@@ -77,7 +77,7 @@ function CaseMeta({
           gap="xs"
           className="border-t border-current/10 py-3 first:border-t-0"
         >
-          <dt className="text-current/60">
+          <dt className="text-current">
             <EviRichText.Raw
               field={row.cells[0]?.content}
               linkResolver={linkResolver}
@@ -147,7 +147,7 @@ function CaseCard({
             linkResolver={linkResolver}
           />
           <CaseMeta table={item.meta} linkResolver={linkResolver} />
-          {has_cta ? (
+          {has_cta && (
             <EviButton
               asChild
               variant="primary"
@@ -161,7 +161,7 @@ function CaseCard({
                 linkResolver={linkResolver}
               />
             </EviButton>
-          ) : null}
+          )}
         </EviStack>
       </div>
     </EviBox>
@@ -214,7 +214,7 @@ export function CaseStudiesDefaultLayout({
       collapsePadding={collapsePadding}
       data-slot="case-studies"
     >
-      {has_rich_text(p.heading, p.body) ? (
+      {has_rich_text(p.heading, p.body) && (
         <EviRow>
           <EviHeadingGroup
             title={p.heading}
@@ -224,7 +224,7 @@ export function CaseStudiesDefaultLayout({
             align={resolve_heading_align(p.heading_align)}
           />
         </EviRow>
-      ) : null}
+      )}
 
       {collapsible ? (
         // mt-8 matcher kort-gap'et (EviStack gap="xl") → knappen hugger ikke

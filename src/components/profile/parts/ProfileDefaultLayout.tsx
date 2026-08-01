@@ -46,23 +46,23 @@ export function ProfileDefaultLayout({
 
   const content = (
     <EviStack gap="md">
-      {isFilled.richText(p.description) ? (
+      {isFilled.richText(p.description) && (
         <EviRichText
           field={p.description}
           linkResolver={linkResolver}
           className="[&_p]:text-lg [&_p]:leading-relaxed"
         />
-      ) : null}
-      {isFilled.richText(p.quote) ? (
+      )}
+      {isFilled.richText(p.quote) && (
         <EviRichText
           field={p.quote}
           linkResolver={linkResolver}
           className="[&_p]:m-0 [&_p]:text-xl [&_p]:italic"
         />
-      ) : null}
-      {hasSignature || isFilled.richText(p.role) ? (
+      )}
+      {(hasSignature || isFilled.richText(p.role)) && (
         <div className="mt-2">
-          {isFilled.linkToMedia(p.signature) ? (
+          {isFilled.linkToMedia(p.signature) && (
             // Rå <img>: signaturen er et Link-to-media (SVG). next/image tager en
             // ImageField og optimerer ikke vektor → et alm. <img> er rigtigt.
             // eslint-disable-next-line @next/next/no-img-element
@@ -71,16 +71,16 @@ export function ProfileDefaultLayout({
               alt={p.signature_name ?? ""}
               className="h-14 w-auto"
             />
-          ) : null}
-          {isFilled.richText(p.role) ? (
+          )}
+          {isFilled.richText(p.role) && (
             <EviRichText
               field={p.role}
               linkResolver={linkResolver}
-              className="mt-2 [&_p]:m-0 [&_p]:text-sm [&_p]:opacity-70"
+              className="mt-2 [&_p]:m-0 [&_p]:text-sm"
             />
-          ) : null}
+          )}
         </div>
-      ) : null}
+      )}
     </EviStack>
   );
 

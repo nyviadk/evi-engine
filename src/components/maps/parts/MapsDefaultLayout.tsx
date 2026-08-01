@@ -15,7 +15,7 @@ import {
 } from "@/src/lib/prismic/slices";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import { evi_card_title_class } from "@/src/lib/utils/card-text";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 
 export type MapsDefaultLayoutProps = {
   slice: Content.MapsSliceDefault;
@@ -65,31 +65,31 @@ export function MapsDefaultLayout({
     <EviBox surface="Neutral">
       {/* h-full: stakken skal fylde den strakte boks så mt-auto kan virke. */}
       <EviStack gap="md" className="h-full">
-        {isFilled.richText(p.box_heading) ? (
-          <EviRichText
+        {isFilled.richText(p.box_heading) && (
+          <EviTitle
             field={p.box_heading}
             linkResolver={linkResolver}
-            className={evi_card_title_class("lg")}
+            size="lg"
           />
-        ) : null}
-        {isFilled.richText(p.address) ? (
+        )}
+        {isFilled.richText(p.address) && (
           <EviRichText
             field={p.address}
             linkResolver={linkResolver}
             className="[&_p]:m-0"
           />
-        ) : null}
+        )}
         <EviIconList items={info} linkResolver={linkResolver} />
-        {showButtons ? (
+        {showButtons && (
           <EviStack direction="row" wrap gap="sm" className="mt-auto pt-2">
-            {isFilled.keyText(p.google_maps_label) ? (
+            {isFilled.keyText(p.google_maps_label) && (
               <EviButton asChild variant="primary" appearance="solid" size="md">
                 <a href={googleUrl} target="_blank" rel="noopener noreferrer">
                   {p.google_maps_label}
                 </a>
               </EviButton>
-            ) : null}
-            {isFilled.keyText(p.apple_maps_label) ? (
+            )}
+            {isFilled.keyText(p.apple_maps_label) && (
               <EviButton
                 asChild
                 variant="primary"
@@ -100,9 +100,9 @@ export function MapsDefaultLayout({
                   {p.apple_maps_label}
                 </a>
               </EviButton>
-            ) : null}
+            )}
           </EviStack>
-        ) : null}
+        )}
       </EviStack>
     </EviBox>
   );
@@ -114,7 +114,7 @@ export function MapsDefaultLayout({
       collapsePadding={collapsePadding}
       data-slot="maps"
     >
-      {has_rich_text(p.heading, p.body) ? (
+      {has_rich_text(p.heading, p.body) && (
         <EviHeadingGroup
           title={p.heading}
           description={p.body}
@@ -122,9 +122,9 @@ export function MapsDefaultLayout({
           isHero={isHero}
           align={resolve_heading_align(p.heading_align)}
         />
-      ) : null}
+      )}
 
-      {hasImage || hasBox ? (
+      {(hasImage || hasBox) && (
         <EviSplit preset="50-50" align="stretch">
           <EviImage
             field={p.map_image}
@@ -135,7 +135,7 @@ export function MapsDefaultLayout({
           />
           {boxEl}
         </EviSplit>
-      ) : null}
+      )}
     </EviSection>
   );
 }

@@ -49,7 +49,7 @@ export function GalleryDefaultLayout({
       collapsePadding={collapsePadding}
       data-slot="gallery"
     >
-      {has_rich_text(p.heading, p.body) ? (
+      {has_rich_text(p.heading, p.body) && (
         <EviHeadingGroup
           title={p.heading}
           description={p.body}
@@ -57,9 +57,9 @@ export function GalleryDefaultLayout({
           isHero={isHero}
           align={resolve_heading_align(p.heading_align)}
         />
-      ) : null}
+      )}
 
-      {hasFeature ? (
+      {hasFeature && (
         <EviRow>
           <EviFigure
             field={p.feature_image}
@@ -72,9 +72,9 @@ export function GalleryDefaultLayout({
             priority={isHero}
           />
         </EviRow>
-      ) : null}
+      )}
 
-      {items.length > 0 ? (
+      {items.length > 0 && (
         <EviAutoGrid size="trio">
           {items.map((item, i) => (
             <EviFigure
@@ -89,7 +89,7 @@ export function GalleryDefaultLayout({
             />
           ))}
         </EviAutoGrid>
-      ) : null}
+      )}
     </EviSection>
   );
 }

@@ -86,7 +86,7 @@ export function NavGroupsDesktop({
                 {chevron}
               </span>
             )}
-            {hasDropdown ? (
+            {hasDropdown && (
               <ul className="evi-nav-dropdown">
                 {items.map((item, ii) => {
                   return (
@@ -101,7 +101,7 @@ export function NavGroupsDesktop({
                   );
                 })}
               </ul>
-            ) : null}
+            )}
           </li>
         );
       })}

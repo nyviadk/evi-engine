@@ -48,11 +48,11 @@ export function EviFigure({
       className={cn("flex flex-col gap-3", className)}
     >
       <EviImage field={field} {...imageProps} />
-      {isFilled.richText(caption) ? (
-        <figcaption className="evi-prose text-sm text-current/70 [&_p]:m-0">
+      {isFilled.richText(caption) && (
+        <figcaption className="evi-prose text-sm text-current [&_p]:m-0">
           <EviRichText.Raw field={caption} linkResolver={linkResolver} />
         </figcaption>
-      ) : null}
+      )}
     </figure>
   );
 }

@@ -1,13 +1,13 @@
 {
-  "id": "maps",
-  "name": "Maps",
+  "id": "text_content",
+  "name": "TextContent",
   "type": "SharedSlice",
   "variations": [
     {
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/maps/default/a968b3014bcbeec2886b03d1afed56c0e237c459.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_content/default/54bdf37a5a96bca8bbea4a4226d8d6a561a3c025.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -26,7 +26,7 @@
         },
         "heading_align": {
           "config": {
-            "default_value": "Venstre",
+            "default_value": "Centreret",
             "label": "Overskrift-justering",
             "options": [
               "Venstre",
@@ -35,66 +35,60 @@
           },
           "type": "Select"
         },
-        "map_image": {
+        "left_heading": {
           "config": {
-            "constraint": {
-              "width": 1200,
-              "height": 900
-            },
-            "label": "Kort-billede",
-            "thumbnails": []
-          },
-          "type": "Image"
-        },
-        "box_heading": {
-          "config": {
-            "label": "Boks-overskrift (fx Klinikkens adresse)",
+            "label": "Venstre: underoverskrift",
             "single": "heading3,strong,em"
           },
           "type": "StructuredText"
         },
-        "address": {
+        "left_body": {
           "config": {
-            "label": "Adresse",
-            "single": "paragraph,strong,em"
+            "label": "Venstre: tekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
           },
           "type": "StructuredText"
         },
-        "info_items": {
+        "box_title": {
           "config": {
-            "fields": {
-              "icon": {
-                "config": {
-                  "label": "Ikon",
-                  "placeholder": "Iconify-navn (fx car — tom = intet ikon)"
-                },
-                "type": "Text"
-              },
-              "text": {
-                "config": {
-                  "label": "Tekst",
-                  "single": "paragraph,strong,em,hyperlink"
-                },
-                "type": "StructuredText"
-              }
-            },
-            "label": "Info-punkter"
+            "label": "Boks: titel",
+            "single": "heading4,strong,em"
           },
-          "type": "Group"
+          "type": "StructuredText"
         },
-        "google_maps_label": {
+        "box_body": {
           "config": {
-            "label": "Google Maps-knaptekst",
-            "placeholder": "fx Åbn Google Maps"
+            "label": "Boks: tekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
           },
-          "type": "Text"
+          "type": "StructuredText"
         },
-        "apple_maps_label": {
+        "box_color": {
           "config": {
-            "label": "Apple Maps-knaptekst",
-            "placeholder": "fx Åbn Apple Maps"
+            "default_value": "Neutral",
+            "label": "Boks-farve",
+            "options": [
+              "Neutral",
+              "Primær",
+              "Sekundær",
+              "Uden farve"
+            ]
           },
-          "type": "Text"
+          "type": "Select"
+        },
+        "right_heading": {
+          "config": {
+            "label": "Højre: underoverskrift",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "right_body": {
+          "config": {
+            "label": "Højre: tekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          },
+          "type": "StructuredText"
         },
         "background_theme": {
           "config": {

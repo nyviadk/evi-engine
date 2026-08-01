@@ -17,7 +17,7 @@ import {
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
-import { evi_card_title_class } from "@/src/lib/utils/card-text";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 
 export type PricesDefaultLayoutProps = {
   slice: Content.PricesSliceDefault;
@@ -59,7 +59,7 @@ export function PricesDefaultLayout({
       collapsePadding={collapsePadding}
       data-slot="prices"
     >
-      {has_rich_text(p.heading, p.body) ? (
+      {has_rich_text(p.heading, p.body) && (
         <EviHeadingGroup
           title={p.heading}
           description={p.body}
@@ -67,7 +67,7 @@ export function PricesDefaultLayout({
           isHero={isHero}
           align={resolve_heading_align(p.heading_align)}
         />
-      ) : null}
+      )}
 
       <EviAutoGrid size={size}>
         {plans.map((plan, i) => {
@@ -78,10 +78,10 @@ export function PricesDefaultLayout({
               rows={7}
               className={box_surface(cardColor)}
             >
-              <EviRichText
+              <EviTitle
                 field={plan.title}
                 linkResolver={linkResolver}
-                className={evi_card_title_class("lg")}
+                size="lg"
               />
               <EviRichText
                 field={plan.price}
@@ -92,7 +92,7 @@ export function PricesDefaultLayout({
                 <EviRichText
                   field={plan.caption}
                   linkResolver={linkResolver}
-                  className="mt-1 [&_p]:m-0 [&_p]:text-sm [&_p]:opacity-70"
+                  className="mt-1 [&_p]:m-0 [&_p]:text-sm"
                 />
               ) : (
                 <div />

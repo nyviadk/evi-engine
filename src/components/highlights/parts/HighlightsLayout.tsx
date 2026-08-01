@@ -84,7 +84,7 @@ export function HighlightsLayout({
             linkResolver={linkResolver}
             className="[&>p]:max-w-prose"
           />
-          {points.length > 0 ? (
+          {points.length > 0 && (
             <EviBox surface={p.box_color}>
               <EviStack gap="lg">
                 {points.map((pt, i) => (
@@ -106,7 +106,7 @@ export function HighlightsLayout({
                 ))}
               </EviStack>
             </EviBox>
-          ) : null}
+          )}
         </EviSplit>
       </EviRow>
     </EviSection>

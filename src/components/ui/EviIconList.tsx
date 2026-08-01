@@ -36,12 +36,12 @@ export function EviIconList({
     <ul data-slot="evi-icon-list" className={cn("grid gap-3", className)}>
       {filled.map((it, i) => (
         <li key={i} className="flex items-start gap-2.5">
-          {isFilled.keyText(it.icon) ? (
+          {isFilled.keyText(it.icon) && (
             <EviIcon
               name={it.icon}
               className="mt-0.5 size-5 shrink-0 text-evi-primary"
             />
-          ) : null}
+          )}
           <div className="evi-prose text-sm [&_p]:m-0">
             <EviRichText.Raw field={it.text} linkResolver={linkResolver} />
           </div>

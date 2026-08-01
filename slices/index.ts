@@ -14,6 +14,7 @@ import PhoneMockup from "./PhoneMockup";
 import Prices from "./Prices";
 import Profile from "./Profile";
 import Testimonials from "./Testimonials";
+import TextContent from "./TextContent";
 import TextWithImages from "./TextWithImages";
 
 export const components = {
@@ -31,5 +32,6 @@ export const components = {
 	prices: Prices,
 	profile: Profile,
 	testimonials: Testimonials,
+	text_content: TextContent,
 	text_with_images: TextWithImages
 };

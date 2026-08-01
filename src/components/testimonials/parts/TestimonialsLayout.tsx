@@ -12,7 +12,7 @@ import {
 } from "@/src/lib/prismic/slices";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import { evi_card_title_class } from "@/src/lib/utils/card-text";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 import { cn } from "@/src/lib/utils/cn";
 
 export type TestimonialsLayoutProps = {
@@ -71,17 +71,15 @@ export function TestimonialsLayout({
           overflow && "max-md:hidden group-data-open/reveal:max-md:block",
         )}
       >
-        <div className={cn("evi-prose", evi_card_title_class("lg"))}>
-          <EviRichText.Raw field={t.title} linkResolver={linkResolver} />
-        </div>
+        <EviTitle field={t.title} linkResolver={linkResolver} size="lg" />
         <div className="evi-prose mt-3 [&_p]:m-0">
           <EviRichText.Raw field={t.body} linkResolver={linkResolver} />
         </div>
-        {isFilled.richText(t.attribution) ? (
-          <div className="evi-prose mt-4 [&_p]:m-0 [&_p]:text-sm [&_p]:opacity-70">
+        {isFilled.richText(t.attribution) && (
+          <div className="evi-prose mt-4 [&_p]:m-0 [&_p]:text-sm">
             <EviRichText.Raw field={t.attribution} linkResolver={linkResolver} />
           </div>
-        ) : null}
+        )}
       </EviBox>
     );
   });

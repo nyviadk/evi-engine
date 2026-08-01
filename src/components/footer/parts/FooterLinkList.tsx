@@ -50,7 +50,7 @@ export function FooterLinkList({
             <PrismicNextLink
               field={link}
               linkResolver={linkResolver}
-              className="text-sm text-current/70 no-underline hover:text-current focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="text-sm text-current no-underline hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
             />
           </li>
         );

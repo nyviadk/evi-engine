@@ -78,7 +78,7 @@ function MobileNavGroup({
             className={ROW}
           />
         ) : (
-          <span className={cn(ROW, "cursor-default opacity-60")}>
+          <span className={cn(ROW, "cursor-default")}>
             {top.label}
           </span>
         )}
@@ -107,9 +107,9 @@ function MobileNavGroup({
           <span>{top.label}</span>
           {chevron}
         </button>
-        {open ? (
+        {open && (
           <Dropdown items={items} pathname={pathname} lang={lang} id={panelId} />
-        ) : null}
+        )}
       </li>
     );
   }
@@ -134,9 +134,9 @@ function MobileNavGroup({
           {chevron}
         </button>
       </div>
-      {open ? (
+      {open && (
         <Dropdown items={items} pathname={pathname} lang={lang} id={panelId} />
-      ) : null}
+      )}
     </li>
   );
 }

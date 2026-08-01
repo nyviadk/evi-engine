@@ -58,6 +58,9 @@
             },
             "profile": {
               "type": "SharedSlice"
+            },
+            "text_content": {
+              "type": "SharedSlice"
             }
           }
         },

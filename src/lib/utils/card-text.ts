@@ -7,18 +7,21 @@ import { cn } from "@/src/lib/utils/cn";
  * kort-tekst ser ud på tværs af design-systemet.
  */
 
-export type EviCardTitleSize = "base" | "lg" | "xl";
+export type EviCardTitleSize = "base" | "lg" | "xl" | "2xl";
 
 const titleSize: Record<EviCardTitleSize, string> = {
-  base: "[&_h3]:text-base",
-  lg: "[&_h3]:text-lg",
-  xl: "[&_h3]:text-xl",
+  base: "[&_h3]:text-base [&_h4]:text-base",
+  lg: "[&_h3]:text-lg [&_h4]:text-lg",
+  xl: "[&_h3]:text-xl [&_h4]:text-xl",
+  "2xl": "[&_h3]:text-2xl [&_h4]:text-2xl",
 };
 
-/** h3-titel i et kort: nulstillet margin, semibold, tæt linjehøjde + valgt størrelse. */
+/** Kort-titel (h3 ELLER h4): nulstillet margin, semibold, tæt linjehøjde + valgt
+ *  størrelse — så en boks-titel dybere i hierarkiet ser ud som de øvrige kort. */
 export function evi_card_title_class(size: EviCardTitleSize = "lg"): string {
   return cn(
     "[&_h3]:m-0 [&_h3]:leading-snug [&_h3]:font-semibold",
+    "[&_h4]:m-0 [&_h4]:leading-snug [&_h4]:font-semibold",
     titleSize[size],
   );
 }

@@ -8,10 +8,8 @@ import { PrismicNextLink } from "@prismicio/next";
 
 import { is_link_filled } from "@/src/lib/prismic/links";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import {
-  evi_card_title_class,
-  evi_card_body_class,
-} from "@/src/lib/utils/card-text";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
@@ -39,8 +37,7 @@ export type FeaturesBentoLayoutProps = {
   context: EviPageSliceContext;
 };
 
-// Delt titel-/tekst-skala for tekst-kortene (2–4). Kasse 1 er større (feature).
-const CARD_TITLE = evi_card_title_class("lg");
+// Delt tekst-skala for tekst-kortene (2–4). Kasse 1 er større (feature).
 const CARD_BODY = evi_card_body_class();
 
 // Uniform gap på alle celle-mellemrum → ét sammenhængende gitter; overrider
@@ -84,7 +81,7 @@ function CardContent({
 }): React.ReactElement {
   return (
     <EviStack gap="sm">
-      <EviRichText field={title} linkResolver={linkResolver} className={CARD_TITLE} />
+      <EviTitle field={title} linkResolver={linkResolver} size="lg" />
       <EviRichText field={body} linkResolver={linkResolver} className={CARD_BODY} />
       <CardLink field={link} linkResolver={linkResolver} />
     </EviStack>
@@ -110,11 +107,7 @@ function BentoTextCard({
   return (
     <EviCard rows={3} className={cn(evi_box_class(), className)}>
       {isFilled.richText(title) ? (
-        <EviRichText
-          field={title}
-          linkResolver={linkResolver}
-          className={CARD_TITLE}
-        />
+        <EviTitle field={title} linkResolver={linkResolver} size="lg" />
       ) : (
         <div />
       )}
