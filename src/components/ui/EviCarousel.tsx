@@ -72,11 +72,11 @@ export function EviCarousel({
             aria-hidden={i !== active}
             inert={i !== active || undefined}
             className={cn(
-              // Sekventiel fade: udgående forsvinder straks (200ms), indgående
-              // venter (delay-200) og fader så ind → aldrig to synlige på én gang.
-              "col-start-1 row-start-1 flex flex-col justify-center transition-opacity duration-200",
+              // Sekventiel fade: udgående forsvinder straks (300ms), indgående
+              // venter (delay-300) og fader så ind → aldrig to synlige på én gang.
+              "col-start-1 row-start-1 flex flex-col justify-center transition-opacity duration-300",
               i === active
-                ? "opacity-100 delay-200"
+                ? "opacity-100 delay-300"
                 : "pointer-events-none opacity-0",
             )}
           >
