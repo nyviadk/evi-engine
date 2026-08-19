@@ -6,6 +6,7 @@ import { build_translation_url_map } from "@/src/lib/prismic/paths";
 import HeaderClassic from "@/slices/HeaderClassic";
 import type { EviHeaderSliceContext } from "@/src/components/header/types";
 import { FooterClassic } from "@/src/components/footer/FooterClassic";
+import { EviBeacon } from "@/src/components/analytics/EviBeacon";
 
 const HEADER_COMPONENTS = {
   header_classic: HeaderClassic,
@@ -139,6 +140,8 @@ export default async function Layout({
           languageUrls={language_urls}
         />
       )}
+
+      {ctx && <EviBeacon locale={ctx.lang} />}
     </>
   );
 }

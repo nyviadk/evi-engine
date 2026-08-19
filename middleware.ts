@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { get_tenant_config, type TenantConfig } from "@/src/lib/kv/tenants";
+import { record_pageview } from "@/src/lib/analytics/pageview";
+import { handle_stats_request } from "@/src/lib/analytics/dashboard";
 import {
   create_response_with_hsts,
   create_secure_url,
@@ -101,12 +103,14 @@ function redirect_home_to_root(
 
 // Lokaliserings-routing: sæt x-evi-locale/x-evi-pathname og enten rewrite (sprog
 // mangler i URL), rydder-op-redirect (default-locale uden prefix) eller passthrough.
+// Returnerer BÅDE responsen og det resolved sprog (til analytics-dimensionen),
+// så browser-forhandlet sprog logges korrekt — ikke bare gættet fra URL'en.
 function apply_locale_routing(
   tenant: TenantConfig,
   pathname: string,
   locale_from_path: string | undefined,
   request: NextRequest,
-): NextResponse {
+): { response: NextResponse; locale: string } {
   const request_headers = new Headers(request.headers);
 
   // SCENARIE: sproget mangler i URL'en (fx /kontakt).
@@ -132,24 +136,30 @@ function apply_locale_routing(
       { request: { headers: request_headers } },
     );
     response.headers.set("Vary", "Accept-Language");
-    return create_response_with_hsts(response);
+    return { response: create_response_with_hsts(response), locale: target_locale };
   }
 
   // SCENARIE: default-sproget står i URL'en men tenant vil ikke have prefix →
   // ryd op (/da-dk/kontakt → /kontakt).
   if (locale_from_path === tenant.default_locale && !tenant.force_lang_prefix) {
     const clean_path = pathname.replace(`/${locale_from_path}`, "") || "/";
-    return create_response_with_hsts(
-      NextResponse.redirect(create_secure_url(clean_path, request), 301),
-    );
+    return {
+      response: create_response_with_hsts(
+        NextResponse.redirect(create_secure_url(clean_path, request), 301),
+      ),
+      locale: locale_from_path,
+    };
   }
 
   // Ellers: URL'en er allerede korrekt (fx /en-eu/ eller force=true).
   request_headers.set("x-evi-locale", locale_from_path);
   request_headers.set("x-evi-pathname", encodeURI(pathname));
-  return create_response_with_hsts(
-    NextResponse.next({ request: { headers: request_headers } }),
-  );
+  return {
+    response: create_response_with_hsts(
+      NextResponse.next({ request: { headers: request_headers } }),
+    ),
+    locale: locale_from_path,
+  };
 }
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
@@ -168,6 +178,8 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   if (www) return www;
 
   if (hostname === "nyvia.dk") return NextResponse.next();
+  // Stats-dashboard bor på sit eget host, uden om tenant/Prismic-pipelinen.
+  if (hostname === "stats.nyvia.dk") return handle_stats_request(request);
 
   const tenant = await get_tenant_config(hostname);
   if (!tenant) return create_response_with_hsts(NextResponse.next());
@@ -192,7 +204,24 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   );
   if (home) return home;
 
-  return apply_locale_routing(tenant, pathname, locale_from_path, request);
+  const { response, locale } = apply_locale_routing(
+    tenant,
+    pathname,
+    locale_from_path,
+    request,
+  );
+  // Evi Stats: tæl den serverede visning (fire-and-forget, aldrig blokerende).
+  // path = besøgtes RIGTIGE URL (/kontakt vs /en-eu/kontakt — aldrig flettet);
+  // locale = resolved sprog som egen dimension (korrekt også for default-sprog
+  // uden prefix, hvor stien ikke afslører sproget).
+  await record_pageview(request, {
+    repo: tenant.repo,
+    hostname,
+    path: lower_pathname,
+    locale,
+    status: response.status,
+  });
+  return response;
 }
 
 export const config = {

@@ -42,6 +42,15 @@
       "id": "a7cc9863417a4eec89f384ff923e0d20",
     },
   ],
+  "analytics_engine_datasets": [
+    {
+      // Evi Stats — server-side cookieless pageview-opsamling. Skrives fra
+      // middleware via env.EVI_STATS.writeDataPoint(). Datasættet oprettes
+      // automatisk ved første deploy.
+      "binding": "EVI_STATS",
+      "dataset": "evi_stats_v1",
+    },
+  ],
   // AES-GCM master-key til at encrypt/decrypt Prismic-tokens i KV.
   // Sættes automatisk op af scripts/push-tenant.mjs — kør det for at
   // generere key + oprette Cloudflare Secrets Store + udfylde store_id.

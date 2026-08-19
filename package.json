@@ -16,6 +16,7 @@
     "evi:new-slice": "node scripts/new-slice.mjs",
     "evi:model": "node scripts/model-sync.mjs",
     "evi:login": "prismic login",
+    "evi:stats-link": "tsx scripts/stats-link.ts",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && cross-env OPEN_NEXT_DEPLOY=true wrangler deploy",
     "deploy:clean": "npx rimraf .next .open-next && opennextjs-cloudflare build && cross-env OPEN_NEXT_DEPLOY=true wrangler deploy",
