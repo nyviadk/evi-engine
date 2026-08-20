@@ -2,7 +2,8 @@
 // React/Next-side). ALLE dynamiske værdier (stier, referrers) stammer fra
 // besøgendes input → escapes altid mod XSS.
 
-import type { NameCount, StatsData } from "./query";
+import { RANGES, type NameCount, type StatsData } from "./types";
+import { render_chart, CHART_CSS, CHART_SCRIPT } from "./chart";
 
 const ESC: Record<string, string> = {
   "&": "&amp;",
@@ -48,6 +49,14 @@ function flow_section(data: StatsData): string {
   return `<section class="card"><h2>Flow — hvor de klikker videre</h2><ul>${items}</ul></section>`;
 }
 
+function range_picker(days: number): string {
+  const links = RANGES.map((r) => {
+    const active = r === days;
+    return `<a class="range${active ? " active" : ""}" href="?d=${r}"${active ? ' aria-current="true"' : ""}>${r} dage</a>`;
+  }).join("");
+  return `<nav class="ranges" aria-label="Tidsinterval">${links}</nav>`;
+}
+
 export function render_dashboard(repo: string, data: StatsData): string {
   const body = data.ok
     ? `
@@ -55,6 +64,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
         <div class="stat"><div class="num">${fmt(data.views)}</div><div class="lbl">Sidevisninger</div></div>
         <div class="stat"><div class="num">${data.visitors ? fmt(data.visitors) : "—"}</div><div class="lbl">Unikke besøgende</div></div>
       </div>
+      ${render_chart(data.timeseries, data.days)}
       <div class="grid">
         ${list("Mest besøgte sider", data.top_pages, "Ingen data endnu.")}
         ${list("Landingssider", data.entry_pages, "Ingen data endnu.")}
@@ -68,7 +78,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
 
   return shell(
     esc(repo),
-    `<header class="head"><div class="brand">Evi Stats</div><div class="meta">${esc(repo)} · seneste ${data.days} dage</div></header>
+    `<header class="head"><div class="head-l"><span class="brand">Evi Stats</span><span class="meta">${esc(repo)}</span></div>${range_picker(data.days)}</header>
      ${body}
      <footer class="foot">Cookieless statistik · ingen personoplysninger gemmes.</footer>`,
   );
@@ -82,7 +92,7 @@ export function render_message(text: string): string {
 }
 
 function shell(title: string, inner: string): string {
-  return `<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${title} · Evi Stats</title><style>${CSS}</style></head><body><main class="wrap">${inner}</main></body></html>`;
+  return `<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${title} · Evi Stats</title><style>${CSS}${CHART_CSS}</style></head><body><main class="wrap">${inner}</main><script>${CHART_SCRIPT}</script></body></html>`;
 }
 
 const CSS = `*{box-sizing:border-box}
@@ -90,7 +100,13 @@ const CSS = `*{box-sizing:border-box}
 @media(prefers-color-scheme:dark){:root{--bg:#0f1210;--sf:#181c19;--ink:#e7ece8;--mut:#9aa49e;--line:#262d29;--acc:#6fbfa6}}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:920px;margin:0 auto;padding:2rem 1.25rem 3rem}
-.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem;border-bottom:1px solid var(--line);padding-bottom:1rem;margin-bottom:1.5rem}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.75rem;border-bottom:1px solid var(--line);padding-bottom:1rem;margin-bottom:1.5rem}
+.head-l{display:flex;flex-direction:column;gap:.1rem}
+.ranges{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
+.ranges .range{padding:.32rem .7rem;font-size:.85rem;color:var(--mut);text-decoration:none;border-left:1px solid var(--line);white-space:nowrap}
+.ranges .range:first-child{border-left:none}
+.ranges .range:hover{background:var(--line)}
+.ranges .range.active,.ranges .range.active:hover{background:var(--acc);color:var(--sf)}
 .brand{font-weight:700;font-size:1.15rem;color:var(--acc)}
 .meta{color:var(--mut);font-size:.9rem}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}

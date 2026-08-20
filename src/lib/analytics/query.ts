@@ -1,4 +1,11 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import {
+  clamp_days,
+  empty_stats,
+  type DayCount,
+  type NameCount,
+  type StatsData,
+} from "./types";
 
 // Læses via SQL-API'et (HTTP), ikke en binding — sat via `wrangler secret put`.
 declare global {
@@ -8,40 +15,10 @@ declare global {
   }
 }
 
-export type NameCount = { name: string; count: number };
-export type Flow = { from: string; to: string; count: number };
-export type StatsData = {
-  ok: boolean;
-  days: number;
-  views: number;
-  visitors: number;
-  top_pages: NameCount[];
-  entry_pages: NameCount[];
-  referrers: NameCount[];
-  countries: NameCount[];
-  devices: NameCount[];
-  languages: NameCount[];
-  flow: Flow[];
-};
-
 // Bump navnet for at "nulstille": et nyt dataset starter tomt, gammel data
 // forældes (Analytics Engine kan ikke slette — kun ældes ud efter ~3 mdr.).
 const DATASET = "evi_stats_v1";
-const DAYS = 30;
-
-const EMPTY: StatsData = {
-  ok: false,
-  days: DAYS,
-  views: 0,
-  visitors: 0,
-  top_pages: [],
-  entry_pages: [],
-  referrers: [],
-  countries: [],
-  devices: [],
-  languages: [],
-  flow: [],
-};
+const DAY_MS = 86_400_000;
 
 async function run_sql(
   account_id: string,
@@ -72,19 +49,44 @@ function to_name_count(rows: Record<string, unknown>[]): NameCount[] {
   }));
 }
 
+// SQL returnerer kun dage MED data → byg en kontinuerlig serie af `days` UTC-dage
+// (ældste→nyeste) med 0 i hullerne, så x-aksen er jævn. AE's dag-grænser er UTC,
+// og nøglerne genereres via toISOString (også UTC), så de matcher.
+function build_timeseries(
+  rows: Record<string, unknown>[],
+  days: number,
+  now: number,
+): DayCount[] {
+  const by_day = new Map<string, number>();
+  for (const r of rows) {
+    const key = String(r.day ?? "").slice(0, 10);
+    if (key) by_day.set(key, Number(r.c ?? 0));
+  }
+  const out: DayCount[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const key = new Date(now - i * DAY_MS).toISOString().slice(0, 10);
+    out.push({ day: key, views: by_day.get(key) ?? 0 });
+  }
+  return out;
+}
+
 /**
  * Henter aggregeret statistik for én tenant (repo) fra Analytics Engine, kun
- * `prod`-trafik, seneste 30 dage. SUM(_sample_interval) korrigerer for evt.
+ * `prod`-trafik, over `days` dage. SUM(_sample_interval) korrigerer for evt.
  * sampling. repo er allerede HMAC-verificeret; valideres + escapes alligevel.
  */
-export async function query_stats(repo_in: string): Promise<StatsData> {
-  if (!/^[a-z0-9-]+$/.test(repo_in)) return EMPTY;
+export async function query_stats(
+  repo_in: string,
+  days_in: number,
+): Promise<StatsData> {
+  const days = clamp_days(days_in);
+  if (!/^[a-z0-9-]+$/.test(repo_in)) return empty_stats(days);
   const repo = repo_in;
 
   const cf = await getCloudflareContext({ async: true }).catch(() => null);
   const account_id = cf?.env?.EVI_STATS_ACCOUNT_ID;
   const token = cf?.env?.EVI_STATS_QUERY_TOKEN;
-  if (!account_id || !token) return EMPTY;
+  if (!account_id || !token) return empty_stats(days);
 
   const q = (sql: string): Promise<Record<string, unknown>[]> =>
     run_sql(account_id, token, sql);
@@ -94,7 +96,7 @@ export async function query_stats(repo_in: string): Promise<StatsData> {
   // perioden er ikke en rigtig kunde (kunder kender ikke dev-URL'en) → fjern den
   // fra prod-tallene. Hashen roterer dagligt, så det gælder pr. dag.
   const staging = await q(
-    `SELECT DISTINCT blob8 AS h FROM ${DATASET} WHERE index1 = '${repo}' AND blob2 = 'staging' AND blob8 != '' AND timestamp > now() - INTERVAL '${DAYS}' DAY LIMIT 1000`,
+    `SELECT DISTINCT blob8 AS h FROM ${DATASET} WHERE index1 = '${repo}' AND blob2 = 'staging' AND blob8 != '' AND timestamp > now() - INTERVAL '${days}' DAY LIMIT 1000`,
   );
   const dev_hashes = staging
     .map((r) => String(r.h ?? ""))
@@ -103,11 +105,18 @@ export async function query_stats(repo_in: string): Promise<StatsData> {
     ? ` AND blob8 NOT IN (${dev_hashes.map((h) => `'${h}'`).join(",")})`
     : "";
 
-  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${DAYS}' DAY${exclude}`;
+  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY${exclude}`;
+
+  // Top-N efter en blob-kolonne (DRY — samme form for sider/kilder/lande/…).
+  const top = (col: string, extra = ""): Promise<Record<string, unknown>[]> =>
+    q(
+      `SELECT ${col} AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base}${extra} GROUP BY ${col} ORDER BY c DESC LIMIT 15`,
+    );
 
   const [
     views,
     visitors,
+    series,
     pages,
     entries,
     refs,
@@ -116,38 +125,30 @@ export async function query_stats(repo_in: string): Promise<StatsData> {
     languages,
     flow,
   ] = await Promise.all([
-      q(`SELECT SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base}`),
-      q(
-        `SELECT count(DISTINCT blob8) AS c FROM ${DATASET} WHERE ${base} AND blob8 != ''`,
-      ),
-      q(
-        `SELECT blob3 AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} GROUP BY blob3 ORDER BY c DESC LIMIT 15`,
-      ),
-      q(
-        `SELECT blob3 AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob5 = '' GROUP BY blob3 ORDER BY c DESC LIMIT 15`,
-      ),
-      q(
-        `SELECT blob4 AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob4 != '' GROUP BY blob4 ORDER BY c DESC LIMIT 15`,
-      ),
-      q(
-        `SELECT blob6 AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob6 != '' GROUP BY blob6 ORDER BY c DESC LIMIT 15`,
-      ),
-      q(
-        `SELECT blob7 AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} GROUP BY blob7 ORDER BY c DESC`,
-      ),
-      q(
-        `SELECT blob9 AS name, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob9 != '' GROUP BY blob9 ORDER BY c DESC LIMIT 15`,
-      ),
-      q(
-        `SELECT blob5 AS \`from\`, blob3 AS \`to\`, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob5 != '' GROUP BY blob5, blob3 ORDER BY c DESC LIMIT 30`,
-      ),
-    ]);
+    q(`SELECT SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base}`),
+    q(
+      `SELECT count(DISTINCT blob8) AS c FROM ${DATASET} WHERE ${base} AND blob8 != ''`,
+    ),
+    q(
+      `SELECT toStartOfInterval(timestamp, INTERVAL '1' DAY) AS day, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} GROUP BY day ORDER BY day`,
+    ),
+    top("blob3"),
+    top("blob3", " AND blob5 = ''"),
+    top("blob4", " AND blob4 != ''"),
+    top("blob6", " AND blob6 != ''"),
+    top("blob7"),
+    top("blob9", " AND blob9 != ''"),
+    q(
+      `SELECT blob5 AS \`from\`, blob3 AS \`to\`, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob5 != '' GROUP BY blob5, blob3 ORDER BY c DESC LIMIT 30`,
+    ),
+  ]);
 
   return {
     ok: true,
-    days: DAYS,
+    days,
     views: Number(views[0]?.c ?? 0),
     visitors: Number(visitors[0]?.c ?? 0),
+    timeseries: build_timeseries(series, days, Date.now()),
     top_pages: to_name_count(pages),
     entry_pages: to_name_count(entries),
     referrers: to_name_count(refs),

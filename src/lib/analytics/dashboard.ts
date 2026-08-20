@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { verify_stats_token } from "./token";
 import { query_stats } from "./query";
+import { clamp_days } from "./types";
 import { render_dashboard, render_message } from "./render";
 
 const HTML_HEADERS = {
@@ -23,8 +24,10 @@ function page(html: string, status: number): NextResponse {
 export async function handle_stats_request(
   request: Request,
 ): Promise<NextResponse> {
-  const path = new URL(request.url).pathname;
-  const token = decodeURIComponent(path.replace(/^\/+/, "").replace(/\/+$/, ""));
+  const url = new URL(request.url);
+  const token = decodeURIComponent(
+    url.pathname.replace(/^\/+/, "").replace(/\/+$/, ""),
+  );
 
   try {
     const cf = await getCloudflareContext({ async: true });
@@ -41,7 +44,8 @@ export async function handle_stats_request(
       return page(render_message("Linket er udløbet — bed om et nyt."), 404);
     }
 
-    const data = await query_stats(verified.repo);
+    const days = clamp_days(Number(url.searchParams.get("d")));
+    const data = await query_stats(verified.repo, days);
     return page(render_dashboard(verified.repo, data), 200);
   } catch {
     return page(render_message("Kunne ikke hente statistik lige nu."), 500);
