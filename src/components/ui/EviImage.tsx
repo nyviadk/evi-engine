@@ -162,7 +162,11 @@ export function EviImage({
         style={containerStyle}
         {...props}
       >
-        <picture>
+        {/* `<picture>` er inline by default → nul højde, hvilket bryder en
+            `size-full` billed-fyld (fx full-bleed cover). block + size-full gør
+            elementet til en rigtig fuld-højde container. Uskadeligt i aspect-
+            containere (fylder bare boksen som før). */}
+        <picture className="block size-full">
           {isFilled.image(mobileField) && (
             <source
               media="(max-width: 768px)"

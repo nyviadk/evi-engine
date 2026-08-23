@@ -169,4 +169,57 @@ export const mock: Record<string, Content.HeroSlice> = {
       background_theme: "Lys",
     },
   },
+  cover: {
+    id: "mock-hero-cover",
+    slice_type: "hero",
+    slice_label: null,
+    variation: "cover",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: [
+        {
+          type: "heading1",
+          text: "Håndristet kaffe fra hjertet af Aarhus",
+          spans: [],
+          direction: "ltr",
+        },
+      ],
+      body: [
+        { type: "paragraph", text: PERSONA.tagline, spans: [], direction: "ltr" },
+      ],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      cta_link: {
+        link_type: "Web" as const,
+        url: "#",
+        text: "Se vores kaffe",
+      } as Content.HeroSliceCoverPrimary["cta_link"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      cta_link_secondary: {
+        link_type: "Web" as const,
+        url: "#",
+        text: "Besøg risteriet",
+      } as Content.HeroSliceCoverPrimary["cta_link_secondary"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      image: {
+        id: "mock-hero-cover-image",
+        url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?fit=crop&w=2400&h=1200",
+        alt: null,
+        copyright: null,
+        dimensions: { width: 2400, height: 1200 },
+        edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
+      } as Content.HeroSliceCoverPrimary["image"],
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+      image_mobile: {
+        id: "mock-hero-cover-image-mobile",
+        url: "https://images.unsplash.com/photo-1529892485617-25f63cd7b1e9?fit=crop&w=1080&h=1350",
+        alt: null,
+        copyright: null,
+        dimensions: { width: 1080, height: 1350 },
+        edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
+      } as Content.HeroSliceCoverPrimary["image_mobile"],
+      content_align: "Venstre",
+      overlay_color: "Mørk",
+    },
+  },
 };

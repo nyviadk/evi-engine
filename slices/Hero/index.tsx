@@ -37,6 +37,12 @@ export default async function Hero({
       );
       return <HeroAboutLayout slice={slice} index={index} context={context} />;
     }
+    case "cover": {
+      const { HeroCoverLayout } = await import(
+        "@/src/components/hero/parts/HeroCoverLayout"
+      );
+      return <HeroCoverLayout slice={slice} index={index} context={context} />;
+    }
     default:
       return null;
   }

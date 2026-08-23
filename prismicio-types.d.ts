@@ -2371,9 +2371,105 @@ export interface HeroSliceAboutPrimary {
 export type HeroSliceAbout = prismic.SharedSliceVariation<"about", Simplify<HeroSliceAboutPrimary>, never>;
 
 /**
+ * Primary content in *Hero → Cover → Primary*
+ */
+export interface HeroSliceCoverPrimary {
+	/**
+	 * Overskrift field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sidens primære overskrift (h1)
+	 * - **API ID Path**: hero.cover.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivende tekst under overskriften
+	 * - **API ID Path**: hero.cover.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Call-to-action field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.cover.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Sekundær knap field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero.cover.primary.cta_link_secondary
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Billede field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Bredt full-bleed billede (2:1)
+	 * - **API ID Path**: hero.cover.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Billede (mobil) field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Valgfrit mobil-crop (4:5) — ellers bruges desktop-billedet
+	 * - **API ID Path**: hero.cover.primary.image_mobile
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_mobile: prismic.ImageField<never>;
+	
+	/**
+	 * Indholds-justering field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: hero.cover.primary.content_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	content_align: prismic.SelectField<"Venstre" | "Centreret" | "Højre", "filled">;
+	
+	/**
+	 * Overlay-farve field in *Hero → Cover → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Mørk
+	 * - **API ID Path**: hero.cover.primary.overlay_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	overlay_color: prismic.SelectField<"Mørk" | "Lys" | "Primær" | "Sekundær", "filled">;
+}
+
+/**
+ * Cover variation for Hero Slice
+ *
+ * - **API ID**: `cover`
+ * - **Description**: Cover
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroSliceCover = prismic.SharedSliceVariation<"cover", Simplify<HeroSliceCoverPrimary>, never>;
+
+/**
  * Slice variation for *Hero*
  */
-type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit | HeroSliceAbout
+type HeroSliceVariation = HeroSliceCentered | HeroSliceSplit | HeroSliceAbout | HeroSliceCover
 
 /**
  * Hero Shared Slice
@@ -3832,10 +3928,12 @@ declare module "@prismicio/client" {
 			HeroSliceCenteredPrimary,
 			HeroSliceSplitPrimary,
 			HeroSliceAboutPrimary,
+			HeroSliceCoverPrimary,
 			HeroSliceVariation,
 			HeroSliceCentered,
 			HeroSliceSplit,
 			HeroSliceAbout,
+			HeroSliceCover,
 			HighlightsSlice,
 			HighlightsSliceDefaultPrimaryPointsItem,
 			HighlightsSliceDefaultPrimary,

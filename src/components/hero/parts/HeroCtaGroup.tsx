@@ -12,7 +12,7 @@ export type HeroCtaGroupProps = {
   secondary: LinkField;
   linkResolver: LinkResolverFunction;
   /** Vandret justering af knap-rækken. @default "start" */
-  align?: "start" | "center";
+  align?: "start" | "center" | "end";
 };
 
 /**
@@ -34,7 +34,7 @@ export function HeroCtaGroup({
       direction="row"
       wrap
       gap="sm"
-      justify={align === "center" ? "center" : "start"}
+      justify={align === "center" ? "center" : align === "end" ? "end" : "start"}
     >
       {has_primary && (
         <EviButton asChild variant="primary" appearance="solid" size="lg">

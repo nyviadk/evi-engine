@@ -66,7 +66,7 @@
       "description": "Split",
       "docURL": "",
       "id": "split",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/9335339d463800959a9a51247c22edee6abd7391.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/4330623269e5d948b061211a421da12b2ef1c0b7.png?auto=compress%2Cformat",
       "name": "Split",
       "primary": {
         "heading": {
@@ -289,6 +289,97 @@
               "Mørk blød",
               "Primær blød",
               "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    },
+    {
+      "description": "Cover",
+      "docURL": "",
+      "id": "cover",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/cover/dc03bf5765417aa0016e10515df7ce1220bfa74a.png?auto=compress%2Cformat",
+      "name": "Cover",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sidens primære overskrift (h1)",
+            "single": "heading1,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort beskrivende tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
+        },
+        "cta_link_secondary": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Sekundær knap"
+          },
+          "type": "Link"
+        },
+        "image": {
+          "config": {
+            "constraint": {
+              "height": 1200,
+              "width": 2400
+            },
+            "label": "Billede",
+            "placeholder": "Bredt full-bleed billede (2:1)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_mobile": {
+          "config": {
+            "constraint": {
+              "height": 1350,
+              "width": 1080
+            },
+            "label": "Billede (mobil)",
+            "placeholder": "Valgfrit mobil-crop (4:5) — ellers bruges desktop-billedet",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "content_align": {
+          "config": {
+            "default_value": "Venstre",
+            "label": "Indholds-justering",
+            "options": [
+              "Venstre",
+              "Centreret",
+              "Højre"
+            ]
+          },
+          "type": "Select"
+        },
+        "overlay_color": {
+          "config": {
+            "default_value": "Mørk",
+            "label": "Overlay-farve",
+            "options": [
+              "Mørk",
+              "Lys",
+              "Primær",
+              "Sekundær"
             ]
           },
           "type": "Select"

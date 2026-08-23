@@ -18,8 +18,9 @@ export type EviHeadingGroupProps = Omit<
   linkResolver: LinkResolverFunction;
   /** Heading-niveau-shift på title — se EviRichText. */
   isHero?: boolean;
-  /** Tekst-justering. "center" centrerer overskrift + beskrivelse. @default "start" */
-  align?: "start" | "center";
+  /** Tekst-justering. "center"/"end" er venstre på mobil (læsbarhed) og
+   *  centreres/højrestilles først fra md. @default "start" */
+  align?: "start" | "center" | "end";
 };
 
 export function EviHeadingGroup({
@@ -42,9 +43,10 @@ export function EviHeadingGroup({
         // Measure PER element: `ch` regnes på elementets egen (clamp-fluide)
         // størrelse → overskrifter ~30ch, brødtekst det læsbare ~65ch.
         "[&>h1]:max-w-[30ch] [&>h2]:max-w-[30ch] [&>h3]:max-w-[30ch] [&>p]:max-w-prose",
-        // "center" er venstre på mobil (centreret fler-linjet tekst er svær at
-        // læse på smalle skærme) og centreres først fra md og op.
+        // "center"/"end" er venstre på mobil (centreret/højrestillet fler-linjet
+        // tekst er svær at læse på smalle skærme) og skifter først fra md og op.
         align === "center" && "text-left md:text-center md:*:mx-auto",
+        align === "end" && "text-left md:text-right md:*:ml-auto",
         className,
       )}
       {...props}
