@@ -48,6 +48,8 @@ export type PageviewWrite = {
   referrer_host: string;
   from_path: string;
   country: string;
+  asn: string;
+  as_org: string;
   ip: string;
   ua: string;
 };
@@ -74,6 +76,8 @@ export async function write_pageview(
       device_of(w.ua),
       hash,
       w.locale,
+      w.asn,
+      w.as_org,
     ],
     doubles: [1],
   });
@@ -95,6 +99,8 @@ export async function record_pageview(
     const cf = await getCloudflareContext({ async: true });
     if (!cf?.env?.EVI_STATS) return;
     const country = cf.cf?.country ?? request.headers.get("cf-ipcountry") ?? "";
+    const asn = cf.cf?.asn != null ? String(cf.cf.asn) : "";
+    const as_org = cf.cf?.asOrganization ?? "";
     const { referrer_host, from_path } = parse_referrer(
       request.headers.get("referer"),
       input.hostname,
@@ -109,6 +115,8 @@ export async function record_pageview(
         referrer_host,
         from_path,
         country,
+        asn,
+        as_org,
         ip: request.headers.get("cf-connecting-ip") ?? "",
         ua: request.headers.get("user-agent") ?? "",
       },

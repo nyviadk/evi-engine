@@ -34,6 +34,8 @@ export async function handle_beacon(request: Request): Promise<Response> {
     const cf = await getCloudflareContext({ async: true });
     if (!cf?.env?.EVI_STATS) return no_content();
     const country = cf.cf?.country ?? request.headers.get("cf-ipcountry") ?? "";
+    const asn = cf.cf?.asn != null ? String(cf.cf.asn) : "";
+    const as_org = cf.cf?.asOrganization ?? "";
 
     // Soft-nav = intern navigation: ekstern referrer er tom; from_path er
     // klientens FORRIGE sti (Referer peger på den nye side, så den kan ikke bruges).
@@ -51,6 +53,8 @@ export async function handle_beacon(request: Request): Promise<Response> {
           referrer_host: "",
           from_path,
           country,
+          asn,
+          as_org,
           ip: request.headers.get("cf-connecting-ip") ?? "",
           ua,
         },

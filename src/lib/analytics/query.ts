@@ -20,6 +20,23 @@ declare global {
 const DATASET = "evi_stats_v1";
 const DAY_MS = 86_400_000;
 
+// Datacenter/cloud-ASN'er hvor næsten al trafik er bots/crawlere. Ekskluderet
+// fra prod-tal. ASN gemmes som blob10, så listen kan justeres uden re-indsamling.
+// Bemærk: fanger også ægte brugere bag cloud-VPN/-proxy på disse ASN'er;
+// forbruger-VPN som Proton (egen ASN) er IKKE med.
+const DATACENTER_ASNS = [
+  "16509", "14618", // Amazon AWS
+  "8075", // Microsoft Azure
+  "15169", "396982", // Google (Googlebot + Cloud)
+  "14061", // DigitalOcean
+  "16276", // OVH
+  "24940", // Hetzner
+  "63949", // Akamai / Linode
+  "20473", // Vultr / Choopa
+  "45102", // Alibaba Cloud
+  "31898", // Oracle Cloud
+];
+
 async function run_sql(
   account_id: string,
   token: string,
@@ -105,7 +122,8 @@ export async function query_stats(
     ? ` AND blob8 NOT IN (${dev_hashes.map((h) => `'${h}'`).join(",")})`
     : "";
 
-  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY${exclude}`;
+  const dc = ` AND blob10 NOT IN (${DATACENTER_ASNS.map((a) => `'${a}'`).join(",")})`;
+  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY${exclude}${dc}`;
 
   // Top-N efter en blob-kolonne (DRY — samme form for sider/kilder/lande/…).
   const top = (col: string, extra = ""): Promise<Record<string, unknown>[]> =>
