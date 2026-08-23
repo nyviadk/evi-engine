@@ -21,13 +21,15 @@ const D = "1447933601403-0c6688de566e"; // kaffebønner (makro)
 
 const pimg = (
   id: string,
+  w: number,
+  h: number,
 ): Content.TextWithImagesSliceCollagePrimary["image_1"] =>
   ({
     id: `mock-twi-${id}`,
-    url: `https://images.unsplash.com/photo-${id}?fit=crop&w=900&h=1200`,
+    url: `https://images.unsplash.com/photo-${id}?fit=crop&w=${w}&h=${h}`,
     alt: null,
     copyright: null,
-    dimensions: { width: 900, height: 1200 },
+    dimensions: { width: w, height: h },
     edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
   }) as unknown as Content.TextWithImagesSliceCollagePrimary["image_1"];
 
@@ -75,10 +77,10 @@ export const mock: Record<string, Content.TextWithImagesSlice> = {
         "Kig forbi og smag forskellen på kaffe, der er ristet i denne uge.",
       ),
       cta_link: webLink("Se vores bønner"),
-      image_1: pimg(A),
-      image_2: pimg(B),
-      image_3: pimg(C),
-      image_4: pimg(D),
+      image_1: pimg(A, 900, 1200),
+      image_2: pimg(B, 1200, 1200),
+      image_3: pimg(C, 1200, 1200),
+      image_4: pimg(D, 900, 1200),
       image_side: "Venstre",
       mobile_order: "Billede øverst",
       background_theme: "Lys",
@@ -97,8 +99,8 @@ export const mock: Record<string, Content.TextWithImagesSlice> = {
         "Fra farmeren vi handler direkte med, til baristaen der skænker din kop — Kaffemølle Aarhus er bygget på relationer og respekt for håndværket.",
       ),
       cta_link: webLink("Læs vores historie"),
-      image_1: pimg(B),
-      image_2: pimg(C),
+      image_1: pimg(B, 900, 1200),
+      image_2: pimg(C, 1200, 1200),
       image_side: "Højre",
       mobile_order: "Billede øverst",
       background_theme: "Lys",

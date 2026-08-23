@@ -3575,7 +3575,7 @@ export interface TextWithImagesSliceCollagePrimary {
 	 * Billede 2 field in *TextWithImages → Collage → Primary*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: Stående billede (3:4)
+	 * - **Placeholder**: Kvadratisk billede (1:1)
 	 * - **API ID Path**: text_with_images.collage.primary.image_2
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
@@ -3585,7 +3585,7 @@ export interface TextWithImagesSliceCollagePrimary {
 	 * Billede 3 field in *TextWithImages → Collage → Primary*
 	 *
 	 * - **Field Type**: Image
-	 * - **Placeholder**: Stående billede (3:4)
+	 * - **Placeholder**: Kvadratisk billede (1:1)
 	 * - **API ID Path**: text_with_images.collage.primary.image_3
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */

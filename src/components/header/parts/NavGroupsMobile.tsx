@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/src/lib/utils/cn";
+import { EviStack } from "@/src/components/layout/EviStack";
 import { is_active_path } from "@/src/components/header/parts/navActive";
 import { NavAnchor } from "@/src/components/header/parts/NavAnchor";
 import type {
@@ -28,9 +29,11 @@ function Dropdown({
 }): React.ReactElement {
   // Indrykket bag en venstre-kant, så under-links tydeligt hører under gruppen.
   return (
-    <ul
+    <EviStack
+      as="ul"
       id={id}
-      className="mt-1 ml-4 flex flex-col gap-1 border-l border-current/20 pl-4 text-base"
+      gap="xs"
+      className="mt-1 ml-4 border-l border-current/20 pl-4 text-base"
     >
       {items.map((item, ii) => {
         return (
@@ -43,7 +46,7 @@ function Dropdown({
           </li>
         );
       })}
-    </ul>
+    </EviStack>
   );
 }
 
@@ -97,16 +100,21 @@ function MobileNavGroup({
   if (top.kind === "text") {
     return (
       <li>
-        <button
+        <EviStack
+          as="button"
+          direction="row"
+          align="center"
+          justify="between"
+          gap="xs"
           type="button"
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((o) => !o)}
-          className={cn(ROW, "flex w-full cursor-pointer items-center justify-between")}
+          className={cn(ROW, "w-full cursor-pointer")}
         >
           <span>{top.label}</span>
           {chevron}
-        </button>
+        </EviStack>
         {open && (
           <Dropdown items={items} pathname={pathname} lang={lang} id={panelId} />
         )}
@@ -117,23 +125,27 @@ function MobileNavGroup({
   return (
     <li>
       {/* Kun teksten navigerer; resten af rækken + pilen er toggle-knappen. */}
-      <div className="flex items-stretch">
+      <EviStack direction="row" align="stretch" gap="xs">
         <NavAnchor
           item={top}
           active={is_active_path(top.href, pathname, lang)}
           className={ROW}
         />
-        <button
+        <EviStack
+          as="button"
+          direction="row"
+          align="center"
+          justify="end"
           type="button"
           aria-label={top.label}
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((o) => !o)}
-          className={cn(ROW, "flex flex-1 cursor-pointer items-center justify-end")}
+          className={cn(ROW, "flex-1 cursor-pointer")}
         >
           {chevron}
-        </button>
-      </div>
+        </EviStack>
+      </EviStack>
       {open && (
         <Dropdown items={items} pathname={pathname} lang={lang} id={panelId} />
       )}
@@ -154,7 +166,7 @@ export function NavGroupsMobile({
 }: NavGroupsMobileProps): React.ReactElement {
   const pathname = usePathname();
   return (
-    <ul className="flex flex-col gap-1 text-lg">
+    <EviStack as="ul" gap="xs" className="text-lg">
       {groups.map((group, gi) => {
         return (
           <MobileNavGroup
@@ -165,6 +177,6 @@ export function NavGroupsMobile({
           />
         );
       })}
-    </ul>
+    </EviStack>
   );
 }

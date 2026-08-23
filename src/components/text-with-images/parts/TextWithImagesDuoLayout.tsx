@@ -66,12 +66,15 @@ export function TextWithImagesDuoLayout({
       )}
     </EviStack>
   );
-  // To billeder side om side i forskellig højde med SAMME bundlinje (items-end):
-  // venstre lavere (kvadrat, Billede 2), højre det høje (3:4, Billede 1). Container-
-  // query-grid: 2 kolonner ned til 300px, 1 kolonne derunder. gap-4 på begge akser.
-  // Kun det høje billede er priority (LCP).
+  // Rå grid (undtagelse, jf. feedback_no_raw_layout_divs): ville normalt være
+  // EviAutoGrid size="duo", men den kan hverken dele bundlinje mellem to
+  // forskellig-høje billeder (items-end) ELLER skifte kolonne ved container-bredde
+  // (@[300px]) — begge kræves her. 2 kolonner ned til 300px, 1 derunder; SAMME
+  // bundlinje: venstre kvadrat (Billede 2) lavere, højre 3:4 (Billede 1) højere.
+  // Gap følger systemets md-breakpoint (gap-4 → md:gap-6). Kun det høje er priority.
   const imageEl = (
     <div data-slot="duo-images" className="@container/imgs">
+      {/* eslint-disable-next-line evi/no-raw-layout-classes -- se kommentar ovenfor: EviAutoGrid kan ikke items-end + container-query kolonner */}
       <div className="grid grid-cols-1 gap-4 md:gap-6 @[300px]/imgs:grid-cols-2 @[300px]/imgs:items-end">
         <EviImage
           field={p.image_2}

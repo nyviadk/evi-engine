@@ -125,6 +125,7 @@ function CaseCard({
         collapsed && "hidden group-data-open/reveal:block",
       )}
     >
+      {/* eslint-disable-next-line evi/no-raw-layout-classes -- EviSplit kan ikke subgride inde i EviBox (intet 12-kol grid at arve, se komponent-kommentaren ovenfor); EviAutoGrid dækker ikke items-start + section-breakpoint + billed-bleed */}
       <div className="grid items-start gap-6 @3xl/section:grid-cols-2 @3xl/section:gap-8">
         {/* Mobil (1-kol): billedet bløder ud til kort-toppen; desktop (2-kol):
             nulstilles til et normalt, afrundet billede i venstre kolonne. */}

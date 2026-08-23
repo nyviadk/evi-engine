@@ -142,7 +142,7 @@ export function FeaturesIconBentoLayout({
         align={resolve_heading_align(p.heading_align)}
       />
       {(topRowHas || bottomRowHas) && (
-        <EviRow className={cn("grid grid-cols-12", BENTO_GAP)}>
+        <EviRow grid className={BENTO_GAP}>
           {topRowHas && (
             <EviSplit preset="67-33" rows={3} className={BENTO_GAP}>
               <IconBox

@@ -3,6 +3,130 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import tailwind from "eslint-plugin-tailwindcss";
 
+// ─── Local rule: layout-primitiver skal være Evi-komponenter ────────────────
+// Et rå <div className="flex/grid/grid-cols/space-y"> i en slice/domain-part er
+// "at bygge et layout i hånden" — det HAR en Evi-komponent (EviStack/AutoGrid/
+// Split/Row). Se feedback_no_raw_layout_divs. Bevidst undtagelse suppresses med
+// standard `// eslint-disable-next-line evi/no-raw-layout-classes -- <hvorfor>`.
+
+// Base-utility = tokenet efter sidste `:` på bracket-dybde 0 (dropper variant-
+// præfikser som md: / @[300px]/imgs: / hover: uden at knække arbitrære []/()-værdier).
+function baseUtil(token) {
+  let depth = 0;
+  let lastColon = -1;
+  for (let i = 0; i < token.length; i++) {
+    const c = token[i];
+    if (c === "[" || c === "(") depth++;
+    else if (c === "]" || c === ")") depth = Math.max(0, depth - 1);
+    else if (c === ":" && depth === 0) lastColon = i;
+  }
+  let base = token.slice(lastColon + 1);
+  if (base.startsWith("!")) base = base.slice(1); // !important-præfiks
+  return base;
+}
+
+// Kun hand-rolled container-signaler. IKKE inline-flex (ikon-knapper) og IKKE
+// col-span-* (den normale måde at placere en Evi-komponent i sektionens 12-col-grid).
+function offendingClass(str) {
+  for (const token of str.split(/\s+/)) {
+    if (!token) continue;
+    const base = baseUtil(token);
+    if (
+      base === "flex" ||
+      base === "grid" ||
+      base.startsWith("grid-cols-") ||
+      base.startsWith("space-y-") ||
+      base.startsWith("space-x-")
+    ) {
+      return token;
+    }
+  }
+  return null;
+}
+
+// Saml alle statiske klasse-strenge ud af en className-værdi: literal, template-
+// quasis, cn()/clsx()-argumenter, arrays, clsx-objekt-nøgler, ?:/&&-grene.
+function collectStrings(node, out) {
+  if (!node) return;
+  switch (node.type) {
+    case "Literal":
+      if (typeof node.value === "string") out.push(node.value);
+      break;
+    case "TemplateLiteral":
+      for (const q of node.quasis) out.push(q.value.cooked ?? q.value.raw ?? "");
+      for (const e of node.expressions) collectStrings(e, out);
+      break;
+    case "CallExpression":
+      for (const a of node.arguments) collectStrings(a, out);
+      break;
+    case "ArrayExpression":
+      for (const el of node.elements) collectStrings(el, out);
+      break;
+    case "ObjectExpression":
+      for (const pr of node.properties) {
+        if (
+          pr.type === "Property" &&
+          !pr.computed &&
+          pr.key.type === "Literal" &&
+          typeof pr.key.value === "string"
+        ) {
+          out.push(pr.key.value);
+        }
+      }
+      break;
+    case "ConditionalExpression":
+      collectStrings(node.consequent, out);
+      collectStrings(node.alternate, out);
+      break;
+    case "LogicalExpression":
+      collectStrings(node.left, out);
+      collectStrings(node.right, out);
+      break;
+    default:
+      break;
+  }
+}
+
+const eviLayoutPlugin = {
+  rules: {
+    "no-raw-layout-classes": {
+      meta: {
+        type: "suggestion",
+        docs: {
+          description:
+            "Layout-primitiver (flex/grid/grid-cols/space-y) skal være Evi-komponenter, ikke rå divs.",
+        },
+        schema: [],
+        messages: {
+          rawLayout:
+            'Rå layout-klasse "{{token}}" → brug en Evi-komponent (flex/flex-col→EviStack, grid/grid-cols→EviAutoGrid/EviSplit, space-y→EviStack). Genbrug frem for hand-roll — se feedback_no_raw_layout_divs. Bevidst undtagelse: `// eslint-disable-next-line evi/no-raw-layout-classes -- <hvorfor>`.',
+        },
+      },
+      create(context) {
+        return {
+          JSXAttribute(node) {
+            const name = node.name && node.name.name;
+            if (name !== "className" && name !== "class") return;
+            const strings = [];
+            if (node.value?.type === "Literal") {
+              collectStrings(node.value, strings);
+            } else if (node.value?.type === "JSXExpressionContainer") {
+              collectStrings(node.value.expression, strings);
+            }
+            for (const s of strings) {
+              const token = offendingClass(s);
+              if (token) {
+                context.report({ node, messageId: "rawLayout", data: { token } });
+                return; // én rapport pr. attribut
+              }
+            }
+          },
+        };
+      },
+    },
+  },
+};
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -143,6 +267,18 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "no-console": "off",
+    },
+  },
+
+  // Slice-dispatchere + domain layout-parts: rå layout-`<div>` skal være en Evi-
+  // komponent (EviStack/AutoGrid/Split/Row). Primitiverne selv (layout/ui/
+  // typography) er UDEN for scope — de ER definitionen af flex/grid. Bevidste
+  // undtagelser: `// eslint-disable-next-line evi/no-raw-layout-classes -- <hvorfor>`.
+  {
+    files: ["slices/**/*.tsx", "src/components/**/parts/**/*.tsx"],
+    plugins: { evi: eviLayoutPlugin },
+    rules: {
+      "evi/no-raw-layout-classes": "error",
     },
   },
 

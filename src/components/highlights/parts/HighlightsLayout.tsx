@@ -70,7 +70,7 @@ export function HighlightsLayout({
     >
       {/* Egen 12-kol-grid (ikke sektionens) → EviSplit kan subgride på den, OG
           vi styrer selv gap-y, så titlen sidder tæt på brødteksten. */}
-      <EviRow className="grid grid-cols-12 gap-x-4 gap-y-6 @3xl/section:gap-x-16">
+      <EviRow grid className="gap-x-4 gap-y-6 @3xl/section:gap-x-16">
         <div className="col-span-12 @3xl/section:col-span-6">
           <EviHeadingGroup
             title={p.heading}

@@ -3,6 +3,7 @@
 import { type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { EviDrawer } from "@/src/components/ui/EviDrawer";
+import { EviStack } from "@/src/components/layout/EviStack";
 
 /**
  * Mobil hamburger-trigger + slide-in drawer til header-nav.
@@ -34,14 +35,14 @@ export function MobileNavDrawer({
         <Menu size={24} aria-hidden />
       </EviDrawer.Trigger>
       <EviDrawer.Panel aria-label={label}>
-        <div className="mb-2 flex justify-end">
+        <EviStack direction="row" justify="end" className="mb-2">
           <EviDrawer.Close
             aria-label={`Luk ${label.toLowerCase()}`}
             className="inline-flex cursor-pointer items-center justify-center rounded-evi p-2 text-current hover:bg-current/5 focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <X size={24} aria-hidden />
           </EviDrawer.Close>
-        </div>
+        </EviStack>
         {children}
       </EviDrawer.Panel>
     </EviDrawer.Provider>

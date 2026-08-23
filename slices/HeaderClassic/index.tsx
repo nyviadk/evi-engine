@@ -123,6 +123,7 @@ export default function HeaderClassic({
             <HeaderCTAButton
               link={primary.cta_link}
               linkResolver={linkResolver}
+              // eslint-disable-next-line evi/no-raw-layout-classes -- fuld-bredde CTA i drawer-footer (mt-auto); flex/justify-center centrerer knap-labelen — knap-styling, ikke et layout-container
               className="mt-auto flex w-full justify-center"
             />
           )}

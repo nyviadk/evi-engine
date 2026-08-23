@@ -184,7 +184,13 @@ export function FeaturesBentoLayout({
   // billede er iboende for "tekst-på-billede" (ingen primitiv dækker det); selve
   // tekst-kolonnen er en EviStack skubbet til bunden.
   const card1 = card1Has ? (
-    <div className="shadow-evi relative isolate flex min-h-104 overflow-hidden rounded-evi">
+    // direction="row" så tekst-kolonnen (eneste in-flow-barn) stretches til fuld
+    // korthøjde og dens justify-end kan skubbe teksten til bunden. Billede+overlay
+    // er absolut (ude af flow) → gap er uden effekt.
+    <EviStack
+      direction="row"
+      className="shadow-evi relative isolate min-h-104 overflow-hidden rounded-evi"
+    >
       <EviImage
         field={p.card_1_image}
         variant="plain"
@@ -219,7 +225,7 @@ export function FeaturesBentoLayout({
           </EviButton>
         )}
       </EviStack>
-    </div>
+    </EviStack>
   ) : null;
 
   // Højre kolonne: kasse 2 over en AutoGrid-række (kasse 3 + 4). Kasse 3/4-rækken

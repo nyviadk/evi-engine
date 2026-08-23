@@ -8,6 +8,13 @@ export type EviRowProps = React.ComponentProps<"div"> & {
   divider?: Divider;
   /** Padding on the divider side (or all sides if divider="none"). @default "none" */
   padding?: Padding;
+  /**
+   * Gør rækken til et eget 12-kol grid (i stedet for et fuld-bredde blok-slot), så
+   * en nested `EviSplit` kan subgride på DEN (ikke sektionens grid) og børn kan
+   * `col-span`'e — fx når man selv vil styre `gap-y`. Gap sættes via `className`.
+   * @default false
+   */
+  grid?: boolean;
 };
 
 const paddingTop: Record<Padding, string> = {
@@ -31,6 +38,7 @@ const paddingBottom: Record<Padding, string> = {
 export function EviRow({
   divider = "none",
   padding = "none",
+  grid = false,
   className,
   ...props
 }: EviRowProps): React.ReactElement {
@@ -40,6 +48,7 @@ export function EviRow({
       data-divider={divider}
       className={cn(
         "col-span-12",
+        grid && "grid grid-cols-12",
         divider === "top" && "border-t border-current/10",
         divider === "bottom" && "border-b border-current/10",
         divider === "top" ? paddingTop[padding] : "",

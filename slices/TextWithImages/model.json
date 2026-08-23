@@ -95,7 +95,7 @@
       "description": "Collage",
       "docURL": "",
       "id": "collage",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/collage/09f927caf0b929ec921ba731b690a762e43bed36.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/collage/20138dbf1aa597608bcabf8468f284114198ab13.png?auto=compress%2Cformat",
       "name": "Collage",
       "primary": {
         "heading": {
@@ -137,11 +137,11 @@
         "image_2": {
           "config": {
             "constraint": {
-              "height": 1600,
+              "height": 1200,
               "width": 1200
             },
             "label": "Billede 2",
-            "placeholder": "Stående billede (3:4)",
+            "placeholder": "Kvadratisk billede (1:1)",
             "thumbnails": []
           },
           "type": "Image"
@@ -149,11 +149,11 @@
         "image_3": {
           "config": {
             "constraint": {
-              "height": 1600,
+              "height": 1200,
               "width": 1200
             },
             "label": "Billede 3",
-            "placeholder": "Stående billede (3:4)",
+            "placeholder": "Kvadratisk billede (1:1)",
             "thumbnails": []
           },
           "type": "Image"
