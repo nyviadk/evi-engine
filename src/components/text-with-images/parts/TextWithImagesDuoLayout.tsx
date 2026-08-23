@@ -66,30 +66,32 @@ export function TextWithImagesDuoLayout({
       )}
     </EviStack>
   );
-  // To lige-brede billeder side om side (flex-1) i forskellig højde med SAMME
-  // bundlinje (align="end"): venstre er lavere (kvadrat, Billede 2), højre er det
-  // høje (3:4, Billede 1). EviStack på begge akser → kolonne-gap == række-gap.
+  // To billeder side om side i forskellig højde med SAMME bundlinje (items-end):
+  // venstre lavere (kvadrat, Billede 2), højre det høje (3:4, Billede 1). Container-
+  // query-grid: 2 kolonner ned til 300px, 1 kolonne derunder. gap-4 på begge akser.
   // Kun det høje billede er priority (LCP).
   const imageEl = (
-    <EviStack rowFrom="md" gap="lg" align="end">
-      <EviImage
-        field={p.image_2}
-        aspectRatio="square"
-        variant="plain"
-        imageClassName="object-cover"
-        sizes="(min-width: 768px) 23vw, 46vw"
-        className="shadow-evi flex-1"
-      />
-      <EviImage
-        field={p.image_1}
-        aspectRatio="3:4"
-        variant="plain"
-        imageClassName="object-cover"
-        sizes="(min-width: 768px) 23vw, 46vw"
-        className="shadow-evi flex-1"
-        priority={isHero}
-      />
-    </EviStack>
+    <div data-slot="duo-images" className="@container/imgs">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 @[300px]/imgs:grid-cols-2 @[300px]/imgs:items-end">
+        <EviImage
+          field={p.image_2}
+          aspectRatio="square"
+          variant="plain"
+          imageClassName="object-cover"
+          sizes="(min-width: 768px) 23vw, 46vw"
+          className="shadow-evi"
+        />
+        <EviImage
+          field={p.image_1}
+          aspectRatio="3:4"
+          variant="plain"
+          imageClassName="object-cover"
+          sizes="(min-width: 768px) 23vw, 46vw"
+          className="shadow-evi"
+          priority={isHero}
+        />
+      </div>
+    </div>
   );
 
   return (

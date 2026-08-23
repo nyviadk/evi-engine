@@ -1,6 +1,5 @@
 import { isFilled, type ImageField } from "@prismicio/client";
 
-import { EviStack } from "@/src/components/layout/EviStack";
 import { EviImage } from "@/src/components/ui/EviImage";
 
 export type StaggeredImagesProps = {
@@ -11,11 +10,14 @@ export type StaggeredImagesProps = {
 };
 
 /**
- * Forskudt billed-klynge (Collage/Duo): to kolonner hvor højre kolonne er skubbet
- * ned, så billederne "trapper". Bygget af EviStack på BEGGE akser med samme
- * `gap="lg"` → kolonne-gap == række-gap. Tomme felter springes over → 1–4 billeder
- * virker. Billederne er dekorative (ingen fokuserbare børn), så kolonne-opdelingen
- * ændrer ikke fokus/læse-rækkefølgen. Domain-part (Tailwind tilladt, R3.3).
+ * Forskudt billed-klynge (Collage/Duo): to kolonner hvor højre er skubbet ned, så
+ * billederne "trapper". Container-query-grid der beholder 2 kolonner ned til 300px
+ * og først falder til 1 kolonne derunder (EviAutoGrids kort-breakpoint @532px er
+ * for højt til smalle billeder). Gap følger systemets normale md-breakpoint
+ * (gap-4 → md:gap-6, som fx EviAutoGrid card); begge akser skifter samtidig, så
+ * kolonne-gap == række-gap ved alle bredder. EviStack kan ikke responsivt gap, så
+ * kolonnerne er flex her (domain-part, Tailwind tilladt, R3.3). Billederne er
+ * dekorative → kolonne-opdelingen ændrer ikke fokus/læse-rækkefølgen.
  */
 export function StaggeredImages({
   images,
@@ -42,15 +44,17 @@ export function StaggeredImages({
   );
 
   return (
-    <EviStack rowFrom="md" gap="lg" align="start">
-      <EviStack gap="lg" className="flex-1">
-        {left.map((f, i) => img(f, priority && i === 0))}
-      </EviStack>
-      {right.length > 0 && (
-        <EviStack gap="lg" className="flex-1 md:mt-12">
-          {right.map((f) => img(f, false))}
-        </EviStack>
-      )}
-    </EviStack>
+    <div data-slot="staggered-images" className="@container/imgs">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 @[300px]/imgs:grid-cols-2">
+        <div className="flex flex-col gap-4 md:gap-6">
+          {left.map((f, i) => img(f, priority && i === 0))}
+        </div>
+        {right.length > 0 && (
+          <div className="flex flex-col gap-4 md:gap-6 @[300px]/imgs:mt-12">
+            {right.map((f) => img(f, false))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
