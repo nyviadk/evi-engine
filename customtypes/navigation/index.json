@@ -1,49 +1,49 @@
 {
+  "format": "custom",
   "id": "navigation",
-  "label": "Navigation",
-  "repeatable": false,
   "json": {
     "Main": {
       "slices": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
         "config": {
           "choices": {
             "header_classic": {
               "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
       },
       "language_selector": {
-        "type": "Select",
         "config": {
-          "label": "Sprogvælger",
-          "placeholder": "Vises kun hvis tenant har flere sprog",
           "default_value": "Slået fra",
+          "label": "Sprogvælger",
           "options": [
             "Slået fra",
             "Slået til"
-          ]
-        }
+          ],
+          "placeholder": "Vises kun hvis tenant har flere sprog"
+        },
+        "type": "Select"
       },
       "mobile_nav_breakpoint": {
-        "type": "Select",
         "config": {
-          "label": "Mobil-menu breakpoint",
-          "placeholder": "Hvornaar nav'en vises som fuld raekke i stedet for hamburger (vaelg efter antal/laengde af links)",
           "default_value": "Standard",
+          "label": "Mobil-menu breakpoint",
           "options": [
             "Kompakt",
             "Standard",
             "Bred",
             "Meget bred",
             "Ekstra bred"
-          ]
-        }
+          ],
+          "placeholder": "Hvornaar nav'en vises som fuld raekke i stedet for hamburger (vaelg efter antal/laengde af links)"
+        },
+        "type": "Select"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Navigation",
+  "repeatable": false,
+  "status": true
 }

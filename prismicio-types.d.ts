@@ -3528,9 +3528,223 @@ export interface TextWithImagesSliceDefaultPrimary {
 export type TextWithImagesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TextWithImagesSliceDefaultPrimary>, never>;
 
 /**
+ * Primary content in *TextWithImages → Collage → Primary*
+ */
+export interface TextWithImagesSliceCollagePrimary {
+	/**
+	 * Overskrift field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort overskrift over teksten
+	 * - **API ID Path**: text_with_images.collage.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Beskrivende tekst ved siden af billederne
+	 * - **API ID Path**: text_with_images.collage.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Knap field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_with_images.collage.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Billede 1 field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Stående billede (3:4)
+	 * - **API ID Path**: text_with_images.collage.primary.image_1
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_1: prismic.ImageField<never>;
+	
+	/**
+	 * Billede 2 field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Stående billede (3:4)
+	 * - **API ID Path**: text_with_images.collage.primary.image_2
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_2: prismic.ImageField<never>;
+	
+	/**
+	 * Billede 3 field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Stående billede (3:4)
+	 * - **API ID Path**: text_with_images.collage.primary.image_3
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_3: prismic.ImageField<never>;
+	
+	/**
+	 * Billede 4 field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Stående billede (3:4)
+	 * - **API ID Path**: text_with_images.collage.primary.image_4
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_4: prismic.ImageField<never>;
+	
+	/**
+	 * Billedernes side (desktop) field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: text_with_images.collage.primary.image_side
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
+	
+	/**
+	 * Rækkefølge på mobil field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Billede øverst
+	 * - **API ID Path**: text_with_images.collage.primary.mobile_order
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
+	
+	/**
+	 * Baggrundstema field in *TextWithImages → Collage → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: text_with_images.collage.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Collage variation for TextWithImages Slice
+ *
+ * - **API ID**: `collage`
+ * - **Description**: Collage
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextWithImagesSliceCollage = prismic.SharedSliceVariation<"collage", Simplify<TextWithImagesSliceCollagePrimary>, never>;
+
+/**
+ * Primary content in *TextWithImages → To billeder → Primary*
+ */
+export interface TextWithImagesSliceDuoPrimary {
+	/**
+	 * Overskrift field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort overskrift over teksten
+	 * - **API ID Path**: text_with_images.duo.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Beskrivende tekst ved siden af billederne
+	 * - **API ID Path**: text_with_images.duo.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Knap field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_with_images.duo.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Billede 1 field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Stående billede (3:4)
+	 * - **API ID Path**: text_with_images.duo.primary.image_1
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_1: prismic.ImageField<never>;
+	
+	/**
+	 * Billede 2 field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Kvadratisk billede (1:1)
+	 * - **API ID Path**: text_with_images.duo.primary.image_2
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_2: prismic.ImageField<never>;
+	
+	/**
+	 * Billedernes side (desktop) field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Højre
+	 * - **API ID Path**: text_with_images.duo.primary.image_side
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_side: prismic.SelectField<"Venstre" | "Højre", "filled">;
+	
+	/**
+	 * Rækkefølge på mobil field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Billede øverst
+	 * - **API ID Path**: text_with_images.duo.primary.mobile_order
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	mobile_order: prismic.SelectField<"Billede øverst" | "Tekst øverst", "filled">;
+	
+	/**
+	 * Baggrundstema field in *TextWithImages → To billeder → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: text_with_images.duo.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * To billeder variation for TextWithImages Slice
+ *
+ * - **API ID**: `duo`
+ * - **Description**: To billeder
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextWithImagesSliceDuo = prismic.SharedSliceVariation<"duo", Simplify<TextWithImagesSliceDuoPrimary>, never>;
+
+/**
  * Slice variation for *TextWithImages*
  */
-type TextWithImagesSliceVariation = TextWithImagesSliceDefault
+type TextWithImagesSliceVariation = TextWithImagesSliceDefault | TextWithImagesSliceCollage | TextWithImagesSliceDuo
 
 /**
  * TextWithImages Shared Slice
@@ -3659,8 +3873,12 @@ declare module "@prismicio/client" {
 			TextContentSliceDefault,
 			TextWithImagesSlice,
 			TextWithImagesSliceDefaultPrimary,
+			TextWithImagesSliceCollagePrimary,
+			TextWithImagesSliceDuoPrimary,
 			TextWithImagesSliceVariation,
-			TextWithImagesSliceDefault
+			TextWithImagesSliceDefault,
+			TextWithImagesSliceCollage,
+			TextWithImagesSliceDuo
 		}
 	}
 }

@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/maps/default/a968b3014bcbeec2886b03d1afed56c0e237c459.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/maps/default/893b0bc22a9468da7b05eb24db35455bdb0c9538.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -38,8 +38,8 @@
         "map_image": {
           "config": {
             "constraint": {
-              "width": 1200,
-              "height": 900
+              "height": 900,
+              "width": 1200
             },
             "label": "Kort-billede",
             "thumbnails": []

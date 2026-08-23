@@ -7,14 +7,14 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/profile/default/f95b3f3f4f35d3acd456a5a00af9dbad8fd961a4.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/profile/default/52b64d2089cd6011d32e0e64d2eade7af88c3c6e.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "portrait": {
           "config": {
             "constraint": {
-              "width": 800,
-              "height": 800
+              "height": 800,
+              "width": 800
             },
             "label": "Portræt",
             "placeholder": "Kvadratisk billede (vises rundt)",

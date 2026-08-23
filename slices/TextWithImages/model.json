@@ -4,80 +4,78 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/default/7d71b6e7115dd0fb49711c3a438c17bc3e7885f5.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/default/5e97280dcc4d53cf0e59047e5e4d8aa96ac0b49a.png?auto=compress%2Cformat",
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Kort overskrift over teksten",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
-            "placeholder": "Beskrivende tekst ved siden af billedet",
-            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-          }
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Beskrivende tekst ved siden af billedet"
+          },
+          "type": "StructuredText"
         },
         "image": {
-          "type": "Image",
           "config": {
+            "constraint": {
+              "height": 900,
+              "width": 1200
+            },
             "label": "Billede",
             "placeholder": "Liggende billede (4:3)",
-            "constraint": {
-              "width": 1200,
-              "height": 900
-            },
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "image_display": {
-          "type": "Select",
           "config": {
-            "label": "Billedvisning",
-            "placeholder": "Med ramme (paspartout) eller kant-til-kant",
             "default_value": "Rammet",
+            "label": "Billedvisning",
             "options": [
               "Rammet",
               "Kant-til-kant"
-            ]
-          }
+            ],
+            "placeholder": "Med ramme (paspartout) eller kant-til-kant"
+          },
+          "type": "Select"
         },
         "image_side": {
-          "type": "Select",
           "config": {
-            "label": "Billedets side (desktop)",
             "default_value": "Venstre",
+            "label": "Billedets side (desktop)",
             "options": [
               "Venstre",
               "Højre"
             ]
-          }
+          },
+          "type": "Select"
         },
         "mobile_order": {
-          "type": "Select",
           "config": {
-            "label": "Rækkefølge på mobil",
             "default_value": "Billede øverst",
+            "label": "Rækkefølge på mobil",
             "options": [
               "Billede øverst",
               "Tekst øverst"
             ]
-          }
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -87,9 +85,227 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
+    },
+    {
+      "description": "Collage",
+      "docURL": "",
+      "id": "collage",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/collage/09f927caf0b929ec921ba731b690a762e43bed36.png?auto=compress%2Cformat",
+      "name": "Collage",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Kort overskrift over teksten",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Beskrivende tekst ved siden af billederne"
+          },
+          "type": "StructuredText"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Knap"
+          },
+          "type": "Link"
+        },
+        "image_1": {
+          "config": {
+            "constraint": {
+              "height": 1600,
+              "width": 1200
+            },
+            "label": "Billede 1",
+            "placeholder": "Stående billede (3:4)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_2": {
+          "config": {
+            "constraint": {
+              "height": 1600,
+              "width": 1200
+            },
+            "label": "Billede 2",
+            "placeholder": "Stående billede (3:4)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_3": {
+          "config": {
+            "constraint": {
+              "height": 1600,
+              "width": 1200
+            },
+            "label": "Billede 3",
+            "placeholder": "Stående billede (3:4)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_4": {
+          "config": {
+            "constraint": {
+              "height": 1600,
+              "width": 1200
+            },
+            "label": "Billede 4",
+            "placeholder": "Stående billede (3:4)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_side": {
+          "config": {
+            "default_value": "Venstre",
+            "label": "Billedernes side (desktop)",
+            "options": [
+              "Venstre",
+              "Højre"
+            ]
+          },
+          "type": "Select"
+        },
+        "mobile_order": {
+          "config": {
+            "default_value": "Billede øverst",
+            "label": "Rækkefølge på mobil",
+            "options": [
+              "Billede øverst",
+              "Tekst øverst"
+            ]
+          },
+          "type": "Select"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    },
+    {
+      "description": "To billeder",
+      "docURL": "",
+      "id": "duo",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_with_images/duo/cb733f1a5ba9db31f72128973240bf6b498eaa35.png?auto=compress%2Cformat",
+      "name": "To billeder",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Kort overskrift over teksten",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Beskrivende tekst ved siden af billederne"
+          },
+          "type": "StructuredText"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Knap"
+          },
+          "type": "Link"
+        },
+        "image_1": {
+          "config": {
+            "constraint": {
+              "height": 1600,
+              "width": 1200
+            },
+            "label": "Billede 1",
+            "placeholder": "Stående billede (3:4)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_2": {
+          "config": {
+            "constraint": {
+              "height": 1200,
+              "width": 1200
+            },
+            "label": "Billede 2",
+            "placeholder": "Kvadratisk billede (1:1)",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "image_side": {
+          "config": {
+            "default_value": "Højre",
+            "label": "Billedernes side (desktop)",
+            "options": [
+              "Venstre",
+              "Højre"
+            ]
+          },
+          "type": "Select"
+        },
+        "mobile_order": {
+          "config": {
+            "default_value": "Billede øverst",
+            "label": "Rækkefølge på mobil",
+            "options": [
+              "Billede øverst",
+              "Tekst øverst"
+            ]
+          },
+          "type": "Select"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
     }
   ]
 }

@@ -4,102 +4,100 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/case_studies/default/9c72bbea3bdb92fd2a97b9c41ff43b7851694ef3.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/case_studies/default/1bd582bc1343f050b5d112783bd91aa3988a72eb.png?auto=compress%2Cformat",
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sektionens overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
-            "placeholder": "Kort intro under overskriften",
-            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-          }
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Kort intro under overskriften"
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Venstre",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "cases": {
-          "type": "Group",
           "config": {
-            "label": "Cases",
             "fields": {
               "image": {
-                "type": "Image",
                 "config": {
+                  "constraint": {
+                    "height": 900,
+                    "width": 1200
+                  },
                   "label": "Billede",
                   "placeholder": "Liggende billede (4:3)",
-                  "constraint": {
-                    "width": 1200,
-                    "height": 900
-                  },
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "title": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Titel",
                   "placeholder": "Casens titel",
                   "single": "heading3,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "description": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Beskrivelse",
-                  "placeholder": "Kort beskrivelse af casen",
-                  "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-                }
+                  "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+                  "placeholder": "Kort beskrivelse af casen"
+                },
+                "type": "StructuredText"
               },
               "meta": {
-                "type": "Table",
                 "config": {
                   "label": "2 kolonner: label + værdi"
-                }
+                },
+                "type": "Table"
               },
               "cta_link": {
-                "type": "Link",
                 "config": {
-                  "label": "Læs mere-link",
                   "allowTargetBlank": true,
-                  "allowText": true
-                }
+                  "allowText": true,
+                  "label": "Læs mere-link"
+                },
+                "type": "Link"
               }
-            }
-          }
+            },
+            "label": "Cases"
+          },
+          "type": "Group"
         },
         "more_label": {
-          "type": "Text",
           "config": {
             "label": "Læs alle-tekst",
             "placeholder": "Fx Læs alle"
-          }
+          },
+          "type": "Text"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -109,9 +107,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

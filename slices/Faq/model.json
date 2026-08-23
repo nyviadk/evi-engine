@@ -4,73 +4,71 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/faq/default/c6b05b55ea815fb2fd97aa2131f7a090b7986b22.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/faq/default/f700b57e6ca95971cd694f37b3945f906f185a73.png?auto=compress%2Cformat",
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Centreret",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "cta_link": {
-          "type": "Link",
           "config": {
-            "label": "Overskrift: knap (valgfri)",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Overskrift: knap (valgfri)"
+          },
+          "type": "Link"
         },
         "items": {
-          "type": "Group",
           "config": {
-            "label": "Spørgsmål",
             "fields": {
               "question": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Spørgsmål",
                   "single": "heading3,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "answer": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Svar",
                   "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-                }
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Spørgsmål"
+          },
+          "type": "Group"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -80,9 +78,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

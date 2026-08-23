@@ -1,34 +1,29 @@
 {
-  "id": "footer",
-  "label": "Footer",
-  "repeatable": false,
-  "status": true,
   "format": "custom",
+  "id": "footer",
   "json": {
     "Main": {
       "logo": {
-        "type": "Image",
         "config": {
+          "constraint": {
+            "height": 48,
+            "width": null
+          },
           "label": "Logo",
           "placeholder": "Valgfri — 48px høj, fri bredde. Tom = sitenavn som tekst",
-          "constraint": {
-            "width": null,
-            "height": 48
-          },
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "info_text": {
-        "type": "StructuredText",
         "config": {
           "label": "Virksomhedstekst",
-          "placeholder": "Kort tekst under logo (fx tagline eller mission)",
-          "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-        }
+          "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+          "placeholder": "Kort tekst under logo (fx tagline eller mission)"
+        },
+        "type": "StructuredText"
       },
       "columns": {
-        "type": "Slices",
-        "fieldset": "Kolonner",
         "config": {
           "choices": {
             "footer_column_links": {
@@ -38,44 +33,44 @@
               "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Kolonner",
+        "type": "Slices"
       },
       "copyright": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Copyright-navn",
           "placeholder": "fx Firmanavn — © og år tilføjes automatisk",
-          "single": "paragraph,strong,em,hyperlink",
-          "allowTargetBlank": true
-        }
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
       },
       "legal_links": {
-        "type": "Link",
         "config": {
-          "label": "Juridiske links",
           "allowTargetBlank": true,
           "allowText": true,
+          "label": "Juridiske links",
           "repeat": true
-        }
+        },
+        "type": "Link"
       },
       "language_selector": {
-        "type": "Select",
         "config": {
-          "label": "Sprogvælger",
-          "placeholder": "Vises kun hvis tenant har flere sprog",
           "default_value": "Slået fra",
+          "label": "Sprogvælger",
           "options": [
             "Slået fra",
             "Slået til"
-          ]
-        }
+          ],
+          "placeholder": "Vises kun hvis tenant har flere sprog"
+        },
+        "type": "Select"
       },
       "background_theme": {
-        "type": "Select",
         "config": {
-          "label": "Baggrundstema",
-          "placeholder": "Baggrundstema for hele footeren",
           "default_value": "Lys",
+          "label": "Baggrundstema",
           "options": [
             "Lys",
             "Mørk",
@@ -84,9 +79,14 @@
             "Mørk blød",
             "Primær blød",
             "Sekundær blød"
-          ]
-        }
+          ],
+          "placeholder": "Baggrundstema for hele footeren"
+        },
+        "type": "Select"
       }
     }
-  }
+  },
+  "label": "Footer",
+  "repeatable": false,
+  "status": true
 }

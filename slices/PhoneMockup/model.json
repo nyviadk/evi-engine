@@ -4,51 +4,49 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "masked",
-      "name": "Masked",
       "description": "Masked",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/phone_mockup/masked/fe091a2a7d94935bec7f766be596d37a8ea051f8.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "masked",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/phone_mockup/masked/0ae6866c500f2113198a9a332fd90e7d7848ffd0.png?auto=compress%2Cformat",
+      "name": "Masked",
       "primary": {
         "screenshot_left": {
-          "type": "Image",
           "config": {
-            "label": "Venstre telefon",
             "constraint": {
-              "width": 1080,
-              "height": 2220
+              "height": 2220,
+              "width": 1080
             },
+            "label": "Venstre telefon",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "screenshot_center": {
-          "type": "Image",
           "config": {
-            "label": "Midterste telefon",
             "constraint": {
-              "width": 1080,
-              "height": 2220
+              "height": 2220,
+              "width": 1080
             },
+            "label": "Midterste telefon",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "screenshot_right": {
-          "type": "Image",
           "config": {
-            "label": "Højre telefon",
             "constraint": {
-              "width": 1080,
-              "height": 2220
+              "height": 2220,
+              "width": 1080
             },
+            "label": "Højre telefon",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "box_background": {
-          "type": "Select",
           "config": {
-            "label": "Boks-baggrund",
             "default_value": "Neutral",
+            "label": "Boks-baggrund",
             "options": [
               "Neutral",
               "Lys",
@@ -57,24 +55,24 @@
               "Sekundær tint",
               "Ingen"
             ]
-          }
+          },
+          "type": "Select"
         },
         "box_fill": {
-          "type": "Select",
           "config": {
-            "label": "Boks-fill",
             "default_value": "Gradient",
+            "label": "Boks-fill",
             "options": [
               "Gradient",
               "Solid"
             ]
-          }
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -84,9 +82,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

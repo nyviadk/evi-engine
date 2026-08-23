@@ -4,87 +4,85 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/gallery/default/d7dc2029c5a1f341c8b5fd2ecc7a1a5894e0f737.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/gallery/default/4aa829acce619f3072beb3fe76ac753326981937.png?auto=compress%2Cformat",
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "heading_align": {
-          "type": "Select",
           "config": {
-            "label": "Overskrift-justering",
             "default_value": "Venstre",
+            "label": "Overskrift-justering",
             "options": [
               "Venstre",
               "Centreret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "feature_image": {
-          "type": "Image",
           "config": {
-            "label": "Feature-billede (16:9)",
             "constraint": {
-              "width": 1600,
-              "height": 900
+              "height": 900,
+              "width": 1600
             },
+            "label": "Feature-billede (16:9)",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "feature_caption": {
-          "type": "StructuredText",
           "config": {
             "label": "Feature-beskrivelse",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "items": {
-          "type": "Group",
           "config": {
-            "label": "Galleri-billeder",
             "fields": {
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Billede",
                   "constraint": {
-                    "width": 1200,
-                    "height": 900
+                    "height": 900,
+                    "width": 1200
                   },
+                  "label": "Billede",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "caption": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Beskrivelse (valgfri)",
                   "single": "paragraph,strong,em,hyperlink"
-                }
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Galleri-billeder"
+          },
+          "type": "Group"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -94,9 +92,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

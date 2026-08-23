@@ -7,7 +7,7 @@ export type EviAutoGridProps = React.ComponentProps<"div"> & {
   /**
    * Afstand mellem celler. "card" — luftig, responsiv kort-gap (default).
    * "compact" — stram og ens på begge akser (gap-2, som EviStack gap="sm"), til
-   * tætte lister hvor gitteret skal have samme rytme som en enkelt-kolonne-stak.
+   * tætte lister/bokse hvor gitteret skal have samme rytme som en enkelt-kolonne-stak.
    */
   gap?: AutoGridGap;
   /**

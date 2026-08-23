@@ -1,84 +1,78 @@
 {
+  "format": "custom",
   "id": "business",
-  "label": "Business",
-  "repeatable": false,
   "json": {
     "Stamdata": {
       "schema_type": {
-        "type": "Select",
         "config": {
           "label": "Virksomhedstype",
-          "placeholder": "Vælg type...",
           "options": [
             "Organization",
             "LocalBusiness",
             "Person",
             "Corporation"
-          ]
-        }
+          ],
+          "placeholder": "Vælg type..."
+        },
+        "type": "Select"
       },
       "legal_name": {
-        "type": "Text",
         "config": {
           "label": "Juridisk navn",
           "placeholder": "Skal matche evt. CVR"
-        }
+        },
+        "type": "Text"
       },
       "alternate_name": {
-        "type": "Text",
         "config": {
           "label": "Alternativt navn",
           "placeholder": "F.eks. forkortelse"
-        }
+        },
+        "type": "Text"
       },
       "vat_id": {
-        "type": "Text",
         "config": {
           "label": "CVR Nummer",
           "placeholder": "F.eks. 12345678"
-        }
+        },
+        "type": "Text"
       },
       "brand_logo": {
-        "type": "Image",
         "config": {
           "label": "Logo (Min. 112x112px, hvid bg)",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "description": {
-        "type": "Text",
         "config": {
           "label": "Kort beskrivelse",
           "placeholder": "En ultrakort, faktuel beskrivelse af virksomheden..."
-        }
+        },
+        "type": "Text"
       }
     },
     "Kontakt & social": {
       "contact_email": {
-        "type": "Text",
         "config": {
           "label": "Global email",
           "placeholder": "F.eks. kontakt@virksomhed.dk"
-        }
+        },
+        "type": "Text"
       },
       "global_telephone": {
-        "type": "Text",
         "config": {
           "label": "Global telefon",
           "placeholder": "F.eks. +45 12 34 56 78"
-        }
+        },
+        "type": "Text"
       },
       "social_profiles": {
-        "type": "Group",
         "config": {
-          "label": "Sociale profiler (sameAs)",
-          "repeat": true,
           "fields": {
             "platform": {
-              "type": "Select",
               "config": {
                 "label": "Platform",
-                "placeholder": "Vælg medie...",
                 "options": [
                   "LinkedIn",
                   "Facebook",
@@ -86,54 +80,60 @@
                   "YouTube",
                   "X",
                   "Wikipedia"
-                ]
-              }
+                ],
+                "placeholder": "Vælg medie..."
+              },
+              "type": "Select"
             },
             "profile_url": {
-              "type": "Text",
               "config": {
                 "label": "Profil URL",
                 "placeholder": "https://linkedin.com/company/dit-brand"
-              }
+              },
+              "type": "Text"
             }
-          }
-        }
+          },
+          "label": "Sociale profiler (sameAs)",
+          "repeat": true
+        },
+        "type": "Group"
       }
     },
     "Avanceret SEO": {
       "schema_mode": {
-        "type": "Select",
         "config": {
-          "label": "Schema mode (Kill Switch)",
-          "placeholder": "",
           "default_value": "Auto (Virksomhed + Brødkrummer)",
+          "label": "Schema mode (Kill Switch)",
           "options": [
             "Auto (Virksomhed + Brødkrummer)",
             "Kun brødkrummer",
             "Deaktiver alt (kun Custom JSON)"
-          ]
-        }
+          ],
+          "placeholder": ""
+        },
+        "type": "Select"
       },
       "custom_schema_json": {
-        "type": "Text",
         "config": {
           "label": "Custom JSON-LD (Power User)",
           "placeholder": "Indsæt valid JSON-LD kode her. Brug kun hvis du ved, hvad du laver!"
-        }
+        },
+        "type": "Text"
       },
       "faq_schema": {
-        "type": "Select",
         "config": {
-          "label": "FAQ-schema (Bing + AI-svarmaskiner)",
           "default_value": "Ja",
+          "label": "FAQ-schema (Bing + AI-svarmaskiner)",
           "options": [
             "Ja",
             "Nej"
           ]
-        }
+        },
+        "type": "Select"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Business",
+  "repeatable": false,
+  "status": true
 }

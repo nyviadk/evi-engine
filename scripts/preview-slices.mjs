@@ -46,18 +46,32 @@ const SLICES_DIR = "slices";
 const args = process.argv.slice(2);
 const FORCE = args.includes("--force") || args.includes("-f");
 
-// Extract --slice / -s targets (can repeat)
+// Extract --slice / -s targets (can repeat). Vi sporer hvilke args der er
+// "forbrugt", så ukendte argumenter (fx en BAR slice-id uden -s) fejler i stedet
+// for at blive stille ignoreret — ellers ville `--force <bar id>` regenerere ALT.
 const SLICE_TARGETS = new Set();
+const consumed = new Set();
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === "--slice" || args[i] === "-s") {
+  if (args[i] === "--force" || args[i] === "-f") {
+    consumed.add(i);
+  } else if (args[i] === "--slice" || args[i] === "-s") {
     const next = args[i + 1];
     if (!next || next.startsWith("-")) {
       console.error(`✗ Missing value after ${args[i]}`);
       process.exit(1);
     }
     SLICE_TARGETS.add(next);
+    consumed.add(i);
+    consumed.add(i + 1);
     i++;
   }
+}
+const leftover = args.filter((_, i) => !consumed.has(i));
+if (leftover.length > 0) {
+  console.error(
+    `✗ Ukendte argumenter: ${leftover.join(" ")}\n  Target en slice med --slice <id> / -s <id> — ikke en bar slice-id (den ignoreres og --force ville regenerere ALT).`,
+  );
+  process.exit(1);
 }
 const TARGET_MODE = SLICE_TARGETS.size > 0;
 

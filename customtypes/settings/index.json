@@ -22,8 +22,8 @@
       "default_og_image": {
         "config": {
           "constraint": {
-            "width": 2400,
-            "height": 1260
+            "height": 1260,
+            "width": 2400
           },
           "label": "Standard billede (sociale medier)",
           "thumbnails": []
@@ -33,8 +33,8 @@
       "favicon_light": {
         "config": {
           "constraint": {
-            "width": 512,
-            "height": 512
+            "height": 512,
+            "width": 512
           },
           "label": "Favicon — mørkt ikon (til lyst tema)",
           "placeholder": "Mørk streg/logo — vises på browserens LYSE faneblad",
@@ -45,8 +45,8 @@
       "favicon_dark": {
         "config": {
           "constraint": {
-            "width": 512,
-            "height": 512
+            "height": 512,
+            "width": 512
           },
           "label": "Favicon — lyst ikon (til mørkt tema)",
           "placeholder": "Lys streg/logo — vises på browserens MØRKE faneblad",
@@ -193,13 +193,13 @@
       },
       "paper_grain": {
         "config": {
-          "label": "Papir-tekstur",
-          "placeholder": "Subtil kornet overflade over hele sitet",
           "default_value": "Fra",
+          "label": "Papir-tekstur",
           "options": [
             "Fra",
             "Til"
-          ]
+          ],
+          "placeholder": "Subtil kornet overflade over hele sitet"
         },
         "type": "Select"
       }

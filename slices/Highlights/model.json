@@ -4,85 +4,83 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/highlights/default/9c1870fdf2049f8f7fefe39cf0a3a144fc609384.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/highlights/default/745dab206373fcee96e7e7bc4c00324f096b1d0c.png?auto=compress%2Cformat",
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "single": "heading2,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-          }
+          },
+          "type": "StructuredText"
         },
         "points": {
-          "type": "Group",
           "config": {
-            "label": "Punkter",
             "fields": {
               "icon": {
-                "type": "Text",
                 "config": {
                   "label": "Ikon"
-                }
+                },
+                "type": "Text"
               },
               "title": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Titel",
                   "single": "heading3,strong,em"
-                }
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
                   "label": "Tekst",
                   "single": "paragraph,strong,em,hyperlink"
-                }
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Punkter"
+          },
+          "type": "Group"
         },
         "box_color": {
-          "type": "Select",
           "config": {
-            "label": "Boks-farve",
             "default_value": "Neutral",
+            "label": "Boks-farve",
             "options": [
               "Neutral",
               "Primær",
               "Sekundær",
               "Uden farve"
             ]
-          }
+          },
+          "type": "Select"
         },
         "content_align": {
-          "type": "Select",
           "config": {
-            "label": "Lodret justering",
-            "placeholder": "Hvordan tekst og boks flugter ved forskellig højde",
             "default_value": "Centreret",
+            "label": "Lodret justering",
             "options": [
               "Centreret",
               "Øverst"
-            ]
-          }
+            ],
+            "placeholder": "Hvordan tekst og boks flugter ved forskellig højde"
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -92,9 +90,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

@@ -1,55 +1,55 @@
 {
   "id": "header_classic",
-  "type": "SharedSlice",
   "name": "HeaderClassic",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/header_classic/default/45cee471aa8b175167b0f8c13a1c87b90725c14c.png?auto=compress%2Cformat",
       "docURL": "",
-      "version": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/header_classic/default/a05e68ec5b4ee6ae1d7265a4b5fede77413e5f59.png?auto=compress%2Cformat",
+      "name": "Default",
       "primary": {
         "logo": {
-          "type": "Image",
           "config": {
+            "constraint": {
+              "height": 60,
+              "width": null
+            },
             "label": "Logo",
             "placeholder": "Valgfri — 60px høj, fri bredde. Tom = sitenavn som tekst",
-            "constraint": {
-              "width": null,
-              "height": 60
-            },
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "cta_link": {
-          "type": "Link",
           "config": {
-            "label": "Call-to-action",
-            "placeholder": "Valgfri — hvis tom vises ingen knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Call-to-action",
+            "placeholder": "Valgfri — hvis tom vises ingen knap"
+          },
+          "type": "Link"
         },
         "nav_groups": {
-          "type": "Group",
           "config": {
-            "label": "Menupunkter",
             "fields": {
               "links": {
-                "type": "Link",
                 "config": {
-                  "label": "Links",
                   "allowTargetBlank": true,
                   "allowText": true,
+                  "label": "Links",
                   "repeat": true
-                }
+                },
+                "type": "Link"
               }
-            }
-          }
+            },
+            "label": "Menupunkter"
+          },
+          "type": "Group"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

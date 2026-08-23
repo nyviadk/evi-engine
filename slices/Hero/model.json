@@ -4,51 +4,48 @@
   "type": "SharedSlice",
   "variations": [
     {
-      "id": "centered",
-      "name": "Centered",
       "description": "Centered",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/ca963d16120f6243f9821f165ea426c99a0f1e93.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "centered",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/8832d389b9601a979d568a51d077b4cc8040c6d3.png?auto=compress%2Cformat",
+      "name": "Centered",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sidens primære overskrift (h1)",
             "single": "heading1,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Beskrivelse",
             "placeholder": "Kort beskrivende tekst under overskriften",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "cta_link": {
-          "type": "Link",
           "config": {
-            "label": "Call-to-action",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
         },
         "cta_link_secondary": {
-          "type": "Link",
           "config": {
-            "label": "Sekundær knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Sekundær knap"
+          },
+          "type": "Link"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
-            "placeholder": "Baggrundstema for sektionen",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -57,119 +54,119 @@
               "Mørk blød",
               "Primær blød",
               "Sekundær blød"
-            ]
-          }
+            ],
+            "placeholder": "Baggrundstema for sektionen"
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     },
     {
-      "id": "split",
-      "name": "Split",
       "description": "Split",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/57c83791dcb37e168662687fc40866822e0fcc1c.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "split",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/9335339d463800959a9a51247c22edee6abd7391.png?auto=compress%2Cformat",
+      "name": "Split",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "placeholder": "Sidens primære overskrift (h1)",
             "single": "heading1,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Beskrivelse",
             "placeholder": "Kort tekst under overskriften",
             "single": "paragraph,strong,em,hyperlink"
-          }
+          },
+          "type": "StructuredText"
         },
         "cta_link": {
-          "type": "Link",
           "config": {
-            "label": "Call-to-action",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
         },
         "cta_link_secondary": {
-          "type": "Link",
           "config": {
-            "label": "Sekundær knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Sekundær knap"
+          },
+          "type": "Link"
         },
         "tag_icon": {
-          "type": "Text",
           "config": {
             "label": "Tag: ikon",
             "placeholder": "Iconify-navn, fx ph:coffee"
-          }
+          },
+          "type": "Text"
         },
         "tag_text": {
-          "type": "StructuredText",
           "config": {
             "label": "Tag: tekst",
             "placeholder": "Kort label, fx Ristet i Aarhus siden 2018",
             "single": "paragraph,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "image": {
-          "type": "Image",
           "config": {
-            "label": "Billede",
             "constraint": {
-              "width": 1200,
-              "height": 1200
+              "height": 1200,
+              "width": 1200
             },
+            "label": "Billede",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "image_mobile": {
-          "type": "Image",
           "config": {
+            "constraint": {
+              "height": 900,
+              "width": 1200
+            },
             "label": "Billede (mobil)",
             "placeholder": "Valgfrit mobil-crop (4:3) — ellers bruges desktop-billedet",
-            "constraint": {
-              "width": 1200,
-              "height": 900
-            },
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "backdrop": {
-          "type": "Select",
           "config": {
-            "label": "Backdrop bag billede",
-            "placeholder": "Blød baggrundsfarve bag billedet",
             "default_value": "Roteret",
+            "label": "Backdrop bag billede",
             "options": [
               "Ingen",
               "Roteret"
-            ]
-          }
+            ],
+            "placeholder": "Blød baggrundsfarve bag billedet"
+          },
+          "type": "Select"
         },
         "backdrop_color": {
-          "type": "Select",
           "config": {
-            "label": "Backdrop-farve",
             "default_value": "Sekundær",
+            "label": "Backdrop-farve",
             "options": [
               "Sekundær",
               "Primær",
               "Neutral"
             ]
-          }
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
-            "placeholder": "Baggrundstema for sektionen",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -178,111 +175,112 @@
               "Mørk blød",
               "Primær blød",
               "Sekundær blød"
-            ]
-          }
+            ],
+            "placeholder": "Baggrundstema for sektionen"
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     },
     {
-      "id": "about",
-      "name": "About",
       "description": "About",
       "docURL": "",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/4e9c0d19d8561812001d2e1a809f4ffaf007a9bc.png?auto=compress%2Cformat",
-      "version": "",
+      "id": "about",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/07b7dcbd0b905f612c682cba7475f4daed192eee.png?auto=compress%2Cformat",
+      "name": "About",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
             "label": "Overskrift",
             "single": "heading1,strong,em"
-          }
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
             "label": "Brødtekst",
             "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
-          }
+          },
+          "type": "StructuredText"
         },
         "cta_link": {
-          "type": "Link",
           "config": {
-            "label": "Call-to-action",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
         },
         "cta_link_secondary": {
-          "type": "Link",
           "config": {
-            "label": "Sekundær knap",
             "allowTargetBlank": true,
-            "allowText": true
-          }
+            "allowText": true,
+            "label": "Sekundær knap"
+          },
+          "type": "Link"
         },
         "image": {
-          "type": "Image",
           "config": {
+            "constraint": {
+              "height": 1000,
+              "width": 1000
+            },
             "label": "Billede",
             "placeholder": "Firkantet billede (1:1)",
-            "constraint": {
-              "width": 1000,
-              "height": 1000
-            },
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "backdrop": {
-          "type": "Select",
           "config": {
-            "label": "Backdrop bag billede",
             "default_value": "Roteret",
+            "label": "Backdrop bag billede",
             "options": [
               "Ingen",
               "Roteret"
             ]
-          }
+          },
+          "type": "Select"
         },
         "backdrop_color": {
-          "type": "Select",
           "config": {
-            "label": "Backdrop-farve",
             "default_value": "Sekundær",
+            "label": "Backdrop-farve",
             "options": [
               "Sekundær",
               "Primær",
               "Neutral"
             ]
-          }
+          },
+          "type": "Select"
         },
         "image_side": {
-          "type": "Select",
           "config": {
-            "label": "Billedets side (desktop)",
             "default_value": "Venstre",
+            "label": "Billedets side (desktop)",
             "options": [
               "Venstre",
               "Højre"
             ]
-          }
+          },
+          "type": "Select"
         },
         "mobile_order": {
-          "type": "Select",
           "config": {
-            "label": "Rækkefølge på mobil",
             "default_value": "Billede øverst",
+            "label": "Rækkefølge på mobil",
             "options": [
               "Billede øverst",
               "Tekst øverst"
             ]
-          }
+          },
+          "type": "Select"
         },
         "background_theme": {
-          "type": "Select",
           "config": {
-            "label": "Baggrundstema",
             "default_value": "Lys",
+            "label": "Baggrundstema",
             "options": [
               "Lys",
               "Mørk",
@@ -292,9 +290,11 @@
               "Primær blød",
               "Sekundær blød"
             ]
-          }
+          },
+          "type": "Select"
         }
-      }
+      },
+      "version": ""
     }
   ]
 }

@@ -27,5 +27,5 @@ export const h4 = (text: string): RichTextField => [
   { type: "heading4", text, spans: [], direction: "ltr" },
 ];
 
-export const webLink = (text: string): LinkField =>
-  ({ link_type: "Web", url: "#", text }) as unknown as LinkField;
+export const webLink = <T extends LinkField = LinkField>(text: string): T =>
+  ({ link_type: "Web", url: "#", text }) as unknown as T;

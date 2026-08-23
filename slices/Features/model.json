@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/default/81fb1123dcf5e3f8fd768b442acaeb1aebb51569.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/default/686d505000e23586d203e2c63b43ee27e89ac105.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "feature_1_icon": {
@@ -89,7 +89,7 @@
       "description": "Cards",
       "docURL": "",
       "id": "cards",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/cards/2134dc7bb174d1752d4d475b5d437944171b4d06.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/cards/2f30bf5387865aa52a4cc5ce88dfcaa350c801d8.png?auto=compress%2Cformat",
       "name": "Cards",
       "primary": {
         "heading": {
@@ -208,8 +208,8 @@
         "image": {
           "config": {
             "constraint": {
-              "width": 1200,
-              "height": 1600
+              "height": 1600,
+              "width": 1200
             },
             "label": "Billede",
             "placeholder": "Stående billede (3:4)",
@@ -340,7 +340,7 @@
       "description": "Bento",
       "docURL": "",
       "id": "bento",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/bento/cf0ed89254db9821c6ffa24b817a2ac78517fd98.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/bento/9944bb5ea71f6b6daa92383cc16290ec71db3f83.png?auto=compress%2Cformat",
       "name": "Bento",
       "primary": {
         "heading": {
@@ -381,8 +381,8 @@
         "card_1_image": {
           "config": {
             "constraint": {
-              "width": 1200,
-              "height": 1500
+              "height": 1500,
+              "width": 1200
             },
             "label": "Stor kasse: billede",
             "placeholder": "Højformat-billede (4:5)",
@@ -441,8 +441,8 @@
         "card_2_image": {
           "config": {
             "constraint": {
-              "width": 1000,
-              "height": 1000
+              "height": 1000,
+              "width": 1000
             },
             "label": "Bred kasse: billede",
             "placeholder": "Firkantet billede (1:1)",
