@@ -78,8 +78,16 @@ export function TextWithImagesCollageLayout({
   );
   // Masonry cap'er til 2 spalter; `cluster`-basis så en smal split-pane får 2
   // spalter (19rem-standarden ville falde til 1). Kun 1. billede er priority (LCP).
+  // `direction:rtl` når klyngen er til venstre → spejler spalte-rækkefølgen, så
+  // alternerende (zig-zag) collage-sektioner reflekterer hinanden frem for at
+  // gentage samme klynge. Vender KUN multicol-kolonnerne (billeder = intet
+  // tekst-flow); rent visuelt.
   const imageEl = (
-    <EviMasonry maxColumns={2} basis="cluster">
+    <EviMasonry
+      maxColumns={2}
+      basis="cluster"
+      className={imageLeftOnDesktop ? "[direction:rtl]" : undefined}
+    >
       {filledImages.map((it, i) => (
         <EviImage
           key={it.field.url}
