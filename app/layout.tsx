@@ -127,7 +127,7 @@ export default async function RootLayout({
             tastaturbrugere tab'er hertil. WCAG 2.4.1 Level A. */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-evi focus:bg-evi-primary focus:px-4 focus:py-2 focus:text-evi-text-on-primary z-999"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-999 focus:rounded-evi focus:bg-evi-primary focus:px-4 focus:py-2 focus:text-evi-text-on-primary"
         >
           {system_copy(lang).skipToContent}
         </a>
