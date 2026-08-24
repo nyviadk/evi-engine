@@ -469,7 +469,7 @@ All computed in CSS. Zero runtime JS.
 
 [src/lib/theme/fonts.ts:13-18](src/lib/theme/fonts.ts#L13-L18) — full comment block documents the trade-off. Without `preload: false`, Next's preload scanner silently downloads _every_ registered font on _every_ cold visit — browsers ignore CSS rules when deciding what to preload, so it sees all 9 `next/font/google` imports and fetches all 9. `preload: false` + `display: swap` loads fonts on-demand via CSS.
 
-Live design system playground — driven by [src/components/EviTestBench.tsx](src/components/EviTestBench.tsx). Every theme × component combo, with a live color-picker showing contrast math in real time.
+Live "try your colors" bar — [src/components/demo/EviColorTryBar.tsx](src/components/demo/EviColorTryBar.tsx), shown only on the demo/showcase host (evi.nyvia.dk) + local dev. Sets the computed theme vars on `<body>` so visitors preview the whole site in their own brand colors in real time.
 
 ---
 

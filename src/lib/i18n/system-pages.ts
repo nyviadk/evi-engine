@@ -11,6 +11,8 @@ export type SystemPageCopy = {
   errorTitle: string;
   errorBody: string;
   retry: string;
+  /** Skip-link (WCAG 2.4.1) i root-layout'et — engine-chrome, oversættes her. */
+  skipToContent: string;
 };
 
 const EN: SystemPageCopy = {
@@ -20,6 +22,7 @@ const EN: SystemPageCopy = {
   errorTitle: "Something went wrong",
   errorBody: "An unexpected error occurred. Please try again shortly.",
   retry: "Try again",
+  skipToContent: "Skip to content",
 };
 
 const COPY: Record<string, SystemPageCopy> = {
@@ -31,6 +34,7 @@ const COPY: Record<string, SystemPageCopy> = {
     errorTitle: "Noget gik galt",
     errorBody: "Der opstod en uventet fejl. Prøv igen om lidt.",
     retry: "Prøv igen",
+    skipToContent: "Spring til indhold",
   },
 };
 

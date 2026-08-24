@@ -8,6 +8,7 @@ import { TEXT_SCALE_MAP } from "@/src/lib/theme/textScale";
 import { resolveFonts } from "@/src/lib/theme/fontResolver";
 import { get_evi_context } from "@/src/lib/prismic/context";
 import { EviPaperGrain } from "@/src/components/ui/EviPaperGrain";
+import { system_copy } from "@/src/lib/i18n/system-pages";
 
 // Favicon-felter der endnu ikke er med i prismicio-types.d.ts (auto-gen).
 // Typerne regenereres af Slice Machine på næste dev/build.
@@ -128,7 +129,7 @@ export default async function RootLayout({
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-evi focus:bg-evi-primary focus:px-4 focus:py-2 focus:text-evi-text-on-primary"
         >
-          Spring til indhold
+          {system_copy(lang).skipToContent}
         </a>
         <main id="main" className="flex flex-1 flex-col">
           {children}

@@ -56,6 +56,7 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 - Knap-pil (`arrow`) KUN på `appearance="text"`-links — aldrig på solid/outline (`feedback_button_arrow_convention`).
 - Fast antal = N navngivne felter, aldrig repeatable (`feedback_no_repeatable_for_fixed_count`).
 - Next 16-billeder: `loading="eager"` (ikke `priority`), altid `sizes` på fill (`project_next16_image_eager_loading`).
+- **Lint/typecheck via lokal binær, IKKE `npx`** — ad-hoc `npx eslint`/`npx tsc` tilføjer ~60-70s overhead/kald i denne sandbox (eslint 70s→3.4s, tsc >120s→63s). Kør `./node_modules/.bin/eslint <files>` + `./node_modules/.bin/tsc --noEmit`. tsc tager reelt ~60s → giv >90s timeout. Diagnosticér timeouts (CPU var 2%), gæt ikke (`project_tooling_local_bin_not_npx`).
 
 ## ALDRIG (bruger-only / destruktivt)
 - Deploy (`deploy:clean` / opennext deploy) eller `evi:sync-slices` — **brugeren kører dem**.

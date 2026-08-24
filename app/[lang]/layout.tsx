@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { SliceZone } from "@prismicio/react";
-import { EviTestBench } from "@/src/components/EviTestBench";
+import { EviColorTryBar } from "@/src/components/demo/EviColorTryBar";
+import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
 import { build_translation_url_map } from "@/src/lib/prismic/paths";
 import HeaderClassic from "@/slices/HeaderClassic";
@@ -106,15 +107,29 @@ export default async function Layout({
       }
     : null;
 
-  // EviTestBench er kun til intern pre-launch-test — vis den kun på vores egen
-  // test-host + lokal dev, aldrig på kunde-domæner. ctx.hostname er valideret;
-  // host-header er fallback på localhost hvor der ingen tenant er.
+  // "Se med dine farver"-bjælken vises kun på vores demo/showcase-host + lokal
+  // dev, aldrig på kunde-domæner. ctx.hostname er valideret; host-header er
+  // fallback på localhost hvor der ingen tenant er.
   const host = ctx?.hostname ?? h.get("host") ?? "";
-  const show_test_bench =
+  const show_color_bar =
     host === "evi.nyvia.dk" || host.startsWith("localhost");
+
+  // Sitets faktiske brandfarver → bjælkens baseline (server-props, så et enkelt
+  // farve-skift ikke nulstiller de øvrige). Samme kilde som <html>'s tema-vars.
+  const s = ctx?.settings?.data;
+  const brandColors = {
+    light: (s?.color_light as string) || DEFAULTS_COLORS.color_light,
+    dark: (s?.color_dark as string) || DEFAULTS_COLORS.color_dark,
+    primary: (s?.color_primary as string) || DEFAULTS_COLORS.color_primary,
+    secondary: (s?.color_secondary as string) || DEFAULTS_COLORS.color_secondary,
+  };
 
   return (
     <>
+      {show_color_bar && (
+        <EviColorTryBar initial={brandColors} lang={ctx?.lang ?? "da-dk"} />
+      )}
+
       {header_context && (
         <SliceZone
           slices={header_slices}
@@ -124,7 +139,6 @@ export default async function Layout({
       )}
 
       <div className="flex-1">{children}</div>
-      {show_test_bench && <EviTestBench />}
 
       {ctx?.footer && (
         <FooterClassic
