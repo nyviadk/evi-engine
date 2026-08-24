@@ -5,6 +5,11 @@
   --color-evi-dark: var(--color-dark);
   --color-evi-primary: var(--color-primary);
   --color-evi-secondary: var(--color-secondary);
+  /* Tema-adaptivt brand-accent, kontrast-sikret (4.5:1) PR. tema — genbrug af
+     knappernes ink-token: primær på lyse temaer, kontrast-farve på solide
+     brand/mørke temaer. Brug `text-evi-accent` på IKONER/accenter, ALDRIG
+     `text-evi-primary` (= primær-på-primær når sektionen selv er primær). */
+  --color-evi-accent: var(--btn-primary-ink);
   --color-evi-text-on-light: var(--text-on-light);
   --color-evi-text-on-dark: var(--text-on-dark);
   --color-evi-text-on-primary: var(--text-on-primary);
@@ -173,6 +178,7 @@
     --btn-secondary-ink-on-dark: var(--text-on-dark);
     --btn-secondary-ink-on-primary: var(--text-on-primary);
     --btn-secondary-ink-on-secondary: var(--text-on-secondary);
+    --btn-primary-ink: var(--btn-primary-ink-on-light);
   }
 
   body {

@@ -39,7 +39,7 @@ export function EviIconList({
           {isFilled.keyText(it.icon) && (
             <EviIcon
               name={it.icon}
-              className="mt-0.5 size-5 shrink-0 text-evi-primary"
+              className="mt-0.5 size-5 shrink-0 text-evi-accent"
             />
           )}
           <div className="evi-prose text-sm [&_p]:m-0">

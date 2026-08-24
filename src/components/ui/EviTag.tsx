@@ -51,7 +51,7 @@ export function EviTag({
       )}
     >
       {isFilled.keyText(icon) && (
-        <EviIcon name={icon} className="size-4 text-evi-primary" />
+        <EviIcon name={icon} className="size-4 text-evi-accent" />
       )}
       <EviRichText.Raw field={text} linkResolver={linkResolver} />
     </div>

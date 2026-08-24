@@ -58,8 +58,9 @@ export function EviIconBadge({
   const { box, icon, numBox, numText } = sizeClass[size];
   const surfaceClass =
     tone === "surface" ? resolve_surface_contrast(on) : "bg-evi-secondary";
+  // tone="surface": tema-adaptivt accent (kontrast-sikret pr. tema)
   const fgColor =
-    tone === "surface" ? "text-evi-primary" : "text-evi-text-on-secondary";
+    tone === "surface" ? "text-evi-accent" : "text-evi-text-on-secondary";
 
   return (
     <span
@@ -75,7 +76,13 @@ export function EviIconBadge({
     >
       {isNumber ? (
         // tabular-nums → cifre har samme bredde, så 01/02/03 flugter på tværs.
-        <span className={cn("font-semibold leading-none tabular-nums", numText, fgColor)}>
+        <span
+          className={cn(
+            "font-semibold leading-none tabular-nums",
+            numText,
+            fgColor,
+          )}
+        >
           {value}
         </span>
       ) : (
