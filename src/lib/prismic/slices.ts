@@ -2,12 +2,25 @@ import type { LinkResolverFunction } from "@prismicio/client";
 import { resolve_section_theme } from "@/src/lib/prismic/section-theme";
 
 export type SliceWithPrimary = {
+  slice_type?: string;
+  variation?: string;
   primary?: {
     background_theme?: string;
     backgroundSectionImage?: { url?: string | null };
     [key: string]: unknown;
   };
 };
+
+/**
+ * Full-bleed billed-sektion = intet fladt tema-farve. Nabo-sektioner må ALDRIG
+ * kollapse deres padding ind mod den (ellers rører de billedet). Dækker både
+ * `backgroundSectionImage`-slices OG cover-hero'en (som bruger `image`-feltet).
+ */
+function is_bg_image_slice(slice: SliceWithPrimary | undefined): boolean {
+  if (!slice) return false;
+  if (slice.primary?.backgroundSectionImage?.url) return true;
+  return slice.slice_type === "hero" && slice.variation === "cover";
+}
 
 /**
  * Antal top-slices hvis billeder loades eagerly (above-the-fold, undgår
@@ -68,7 +81,7 @@ export function compute_slice_contexts(
 ): SliceContext[] {
   return slices.map((slice, index) => {
     const theme = resolve_section_theme(slice.primary?.background_theme);
-    const hasImage = Boolean(slice.primary?.backgroundSectionImage?.url);
+    const hasImage = is_bg_image_slice(slice);
 
     if (index === 0)
       return {
@@ -80,7 +93,7 @@ export function compute_slice_contexts(
 
     const prev = slices[index - 1];
     const prevTheme = resolve_section_theme(prev?.primary?.background_theme);
-    const prevHasImage = Boolean(prev?.primary?.backgroundSectionImage?.url);
+    const prevHasImage = is_bg_image_slice(prev);
 
     const sameType = theme_type(theme) === theme_type(prevTheme);
     const sameVisual =

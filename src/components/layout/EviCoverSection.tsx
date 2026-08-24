@@ -75,14 +75,17 @@ export function EviCoverSection({
         o.theme,
         // items-end: indholdet ankres i bunden, hvor bund-gradienten er stærkest
         // (bedst kontrast) og billedet er frit foroven — klassisk full-bleed-hero.
-        "relative isolate flex min-h-[clamp(28rem,80svh,48rem)] w-full items-end overflow-hidden",
+        "relative isolate flex min-h-[clamp(28rem,80svh,45rem)] w-full items-end overflow-hidden",
         className,
       )}
       {...props}
     >
       {/* Billed-laget fylder ALTID hele sektionen: `*:size-full` tvinger barnet
           (EviImage-containeren) til fuld højde+bredde, uanset dets props. */}
-      <div data-slot="cover-image" className="absolute inset-0 -z-10 *:size-full">
+      <div
+        data-slot="cover-image"
+        className="absolute inset-0 -z-10 *:size-full"
+      >
         {image}
       </div>
       <div aria-hidden className={cn("absolute inset-0", o.scrim)} />
