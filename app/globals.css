@@ -126,7 +126,7 @@
     --color-light: #fafafa;
     --color-dark: #302031;
     --color-primary: #0c6170;
-    --color-secondary: #4d3b4d;
+    --color-secondary: #7a6a63;
 
     /* Tekstskala (Prismic text_scale → app/layout.tsx). Ganges på html
        font-size, så alt rem-baseret skalerer proportionelt. 1 = uændret. */

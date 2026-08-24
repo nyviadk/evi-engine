@@ -2,13 +2,18 @@ export const DEFAULTS_COLORS = {
   color_light: "#FAFAFA",
   color_dark: "#302031",
   color_primary: "#0C6170",
-  color_secondary: "#4d3b4d",
+  color_secondary: "#7A6A63",
 };
 
 function hex_to_rgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "");
   const full =
-    h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+    h.length === 3
+      ? h
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : h;
   return [
     parseInt(full.slice(0, 2), 16),
     parseInt(full.slice(2, 4), 16),
@@ -104,11 +109,17 @@ export function compute_theme_vars(colors: {
   // Link/ink contrast — 4.5:1 threshold: vælg primary hvis den passer,
   // ellers fald tilbage til sektionens egen text-farve.
   const link_on_light =
-    contrast_ratio(luminance(...hex_to_rgb(primary)), luminance(...hex_to_rgb(light))) >= 4.5
+    contrast_ratio(
+      luminance(...hex_to_rgb(primary)),
+      luminance(...hex_to_rgb(light)),
+    ) >= 4.5
       ? primary
       : text_on_light;
   const link_on_dark =
-    contrast_ratio(luminance(...hex_to_rgb(primary)), luminance(...hex_to_rgb(dark))) >= 4.5
+    contrast_ratio(
+      luminance(...hex_to_rgb(primary)),
+      luminance(...hex_to_rgb(dark)),
+    ) >= 4.5
       ? primary
       : text_on_dark;
 
