@@ -7,6 +7,8 @@ import pLimit from "p-limit";
 import chalk from "chalk";
 import ora from "ora";
 import type { TenantConfig, TenantMetadata } from "@/src/lib/kv/tenants";
+import { models_for_repo, owner_prefix } from "../src/lib/prismic/slice-routing";
+import { SLICE_PREFIXES } from "./slice-prefixes";
 
 // Tenants hentes live fra Cloudflare KV via wrangler CLI.
 // Ingen lokal mock — kør 'wrangler login' hvis du ikke allerede er autentificeret.
@@ -151,6 +153,16 @@ function fetch_tenants_from_kv(target_repos: string[] | null): TenantRow[] {
   }
 
   return tenants;
+}
+
+function read_dev_repo(): string {
+  const config = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), "prismic.config.json"), "utf-8"),
+  );
+  if (!config.repositoryName) {
+    throw new Error("repositoryName mangler i prismic.config.json");
+  }
+  return config.repositoryName;
 }
 
 /**
@@ -310,6 +322,7 @@ async function main() {
     ? options.target.split(",").map((s: string) => s.trim())
     : null;
 
+  const dev_repo = read_dev_repo();
   const tenants = fetch_tenants_from_kv(target_repos);
 
   if (tenants.length === 0) {
@@ -328,9 +341,20 @@ async function main() {
   console.log(chalk.gray(`Database kilde: Cloudflare KV (TENANTS, remote)`));
   console.log(
     chalk.gray(
-      `Fundet lokalt: ${localSlices.length} slices og ${localTypes.length} custom types.\n`,
+      `Fundet lokalt: ${localSlices.length} slices og ${localTypes.length} custom types.`,
     ),
   );
+  for (const [prefix, repo] of Object.entries(SLICE_PREFIXES)) {
+    const owned = localSlices
+      .filter((slice) => owner_prefix(slice.id, SLICE_PREFIXES) === prefix)
+      .map((slice) => slice.id);
+    console.log(
+      chalk.gray(
+        `${prefix}* går kun til ${repo} og ${dev_repo}: ${owned.join(", ") || "ingen endnu"}`,
+      ),
+    );
+  }
+  console.log();
 
   const limit = pLimit(MAX_CONCURRENCY);
 
@@ -342,7 +366,12 @@ async function main() {
           tenant.prismic_write_api_token,
         );
         const client = new PrismicSyncClient(tenant.repo, plaintext_token);
-        await client.sync(localSlices, localTypes, !!options.dryRun);
+        const models = models_for_repo(
+          tenant.repo,
+          { slices: localSlices, custom_types: localTypes },
+          { prefixes: SLICE_PREFIXES, dev_repo },
+        );
+        await client.sync(models.slices, models.custom_types, !!options.dryRun);
         return { hostname: tenant.hostname, repo: tenant.repo, success: true };
       } catch (error: any) {
         return {
