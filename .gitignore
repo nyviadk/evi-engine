@@ -53,3 +53,6 @@ next-env.d.ts
 
 .dev.vars
 .fallow/
+
+# Personlige Claude Code-indstillinger (tilladelser, auto-mode)
+.claude/settings.local.json

@@ -1,6 +1,11 @@
 {
   "permissions": {
     "allow": [
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(./node_modules/.bin/tsc --noEmit *)",
+      "Bash(shasum *)",
+      "mcp__claude_ai_ClickUp__clickup_get_task",
+      "mcp__claude_ai_ClickUp__clickup_get_task_comments",
       "Bash(node scripts/check-prismic-guards.mjs)",
       "Bash(echo \"---exit:$?---\")",
       "Bash(echo \"---eslint-exit:$?---\")",
