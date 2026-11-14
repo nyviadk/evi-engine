@@ -1173,7 +1173,7 @@
      Kun det Tailwind ikke kan: chevron-rotation + højde-animation på
      det native content-lag. `interpolate-size` tillader animation til/fra
      auto; browsere uden ::details-content-support åbner øjeblikkeligt
-     (stadig funktionelt). Global reduced-motion-reset slår animationen fra.
+     (stadig funktionelt).
      ═══════════════════════════════════════════════════════ */
   [data-slot="evi-accordion-item"] {
     interpolate-size: allow-keywords;
@@ -1193,6 +1193,14 @@
   }
   [data-slot="evi-accordion-item"][open]::details-content {
     block-size: auto;
+  }
+  /* Den globale reduced-motion-reset (*, *::before, *::after) rammer ikke
+     pseudo-elementet ::details-content. Selektoren kan ikke tilføjes dér:
+     browsere uden support ville så ugyldiggøre hele reset-reglen. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="evi-accordion-item"]::details-content {
+      transition: none;
+    }
   }
 }
 

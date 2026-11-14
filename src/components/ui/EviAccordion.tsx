@@ -6,8 +6,8 @@ import { EviAccordionSummary } from "@/src/components/ui/EviAccordionSummary";
  * EviAccordion — liste af native `<details>`-disclosures (tastatur + skærmlæser
  * gratis, samme filosofi som EviDrawer's native `<dialog>`). Åben/luk animeres via
  * `::details-content` i globals.css (progressivt: browsere uden support åbner/lukker
- * øjeblikkeligt — stadig fuldt funktionelt), og den globale `prefers-reduced-motion`-
- * reset slår animationen fra. Toggle er 100% native/ingen JS; kun `<summary>` bærer
+ * øjeblikkeligt — stadig fuldt funktionelt), og en egen `prefers-reduced-motion`-
+ * regel slår animationen fra. Toggle er 100% native/ingen JS; kun `<summary>` bærer
  * en lille klient-handler ([[EviAccordionSummary]]) der undgår dobbeltklik-markering.
  *
  * @example
