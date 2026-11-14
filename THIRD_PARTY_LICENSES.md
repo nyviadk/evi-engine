@@ -1,4 +1,4 @@
-# Third-Party Icon Licenses
+# Third-Party Licenses (ikoner og fonte)
 
 Evi Engine bruger [Iconify](https://iconify.design) til at rendere ikoner fra
 en curated whitelist af pack'e. Alle er commercial-safe med permissive
@@ -54,3 +54,21 @@ der tillader:
 Kravet er at LICENSE-teksten inkluderes i "substantial portions" af den
 distribuerede software — hvilket denne fil + `node_modules/@iconify-*/*/LICENSE`
 opfylder.
+
+## Selv-hostede fonte
+
+Fontene ligger i `public/fonts/<font>/` som variable woff2 (subsets latin +
+latin-ext) hentet fra [Fontsource](https://fontsource.org), med den fulde
+licenstekst i `OFL.txt` ved siden af filerne. De serveres fra tenantens eget
+domæne, så besøgende ikke kontakter en tredjepart. Se
+`src/lib/theme/fontResolver.ts` for registret.
+
+### Comfortaa
+- **Licens:** SIL Open Font License 1.1 (Reserved Font Name "Comfortaa")
+- **Copyright:** The Comfortaa Project Authors, 2011
+- **Kilde:** https://github.com/alexeiva/comfortaa
+
+### Plus Jakarta Sans
+- **Licens:** SIL Open Font License 1.1
+- **Copyright:** The Plus Jakarta Sans Project Authors, 2020
+- **Kilde:** https://github.com/tokotype/PlusJakartaSans

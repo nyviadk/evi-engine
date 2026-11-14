@@ -141,30 +141,15 @@
       "font_select": {
         "config": {
           "default_value": "System standard",
-          "label": "Skrifttype (anbefalet - hurtig)",
+          "label": "Skrifttype",
           "options": [
             "System standard",
-            "Montserrat",
-            "Rethink Sans",
             "Comfortaa",
-            "Poppins",
-            "Abel",
-            "Roboto",
-            "Open Sans",
-            "Inter",
-            "Lato",
             "Plus Jakarta Sans"
           ],
-          "placeholder": "Vælg en optimeret skrifttype"
+          "placeholder": "Vælg en skrifttype"
         },
         "type": "Select"
-      },
-      "custom_font_input": {
-        "config": {
-          "label": "Avanceret skrifttype (Bunny Fonts)",
-          "placeholder": "Navn fra fonts.bunny.net (f.eks. \"Playfair Display\"). Dette felt overstyrer valget ovenfor."
-        },
-        "type": "Text"
       },
       "color_scheme": {
         "config": {

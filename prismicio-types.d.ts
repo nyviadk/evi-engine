@@ -645,27 +645,16 @@ interface SettingsDocumentData {
 	border_radius: prismic.SelectField<"Skarpe hjørner (0px)" | "Lille afrunding (4px)" | "Standard (8px)" | "Blød (16px)" | "Pilleformet (fuld radius)">;
 	
 	/**
-	 * Skrifttype (anbefalet - hurtig) field in *Indstillinger*
+	 * Skrifttype field in *Indstillinger*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Vælg en optimeret skrifttype
+	 * - **Placeholder**: Vælg en skrifttype
 	 * - **Default Value**: System standard
 	 * - **API ID Path**: settings.font_select
 	 * - **Tab**: Udseende og layout
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	font_select: prismic.SelectField<"System standard" | "Montserrat" | "Rethink Sans" | "Comfortaa" | "Poppins" | "Abel" | "Roboto" | "Open Sans" | "Inter" | "Lato" | "Plus Jakarta Sans", "filled">;
-	
-	/**
-	 * Avanceret skrifttype (Bunny Fonts) field in *Indstillinger*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Navn fra fonts.bunny.net (f.eks. "Playfair Display"). Dette felt overstyrer valget ovenfor.
-	 * - **API ID Path**: settings.custom_font_input
-	 * - **Tab**: Udseende og layout
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	custom_font_input: prismic.KeyTextField;
+	font_select: prismic.SelectField<"System standard" | "Comfortaa" | "Plus Jakarta Sans", "filled">;
 	
 	/**
 	 * Browser-tema (scrollbars + formularer) field in *Indstillinger*

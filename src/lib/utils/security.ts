@@ -41,9 +41,9 @@ export function create_response_with_hsts(response: NextResponse): NextResponse 
     [
       "default-src 'self'",
       `script-src 'self' 'unsafe-inline'${script_src_dev} https://static.cdn.prismic.io https://*.prismic.io`,
-      "style-src 'self' 'unsafe-inline' https://fonts.bunny.net",
+      "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
-      "font-src 'self' data: https://fonts.bunny.net",
+      "font-src 'self' data:",
       "connect-src 'self' https://*.prismic.io https://*.cdn.prismic.io",
       "frame-src 'self' https://*.prismic.io",
       "frame-ancestors 'self' https://*.prismic.io",

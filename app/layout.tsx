@@ -78,7 +78,6 @@ export default async function RootLayout({
   const textScale = TEXT_SCALE_MAP[settings?.data?.text_scale as string];
 
   const fonts = resolveFonts({
-    custom_font_input: settings?.data?.custom_font_input as string,
     font_select: settings?.data?.font_select as string,
   });
 
@@ -105,21 +104,20 @@ export default async function RootLayout({
   };
 
   return (
-    <html
-      lang={lang}
-      className={fonts.htmlClass || undefined}
-      style={themeStyle}
-    >
+    <html lang={lang} style={themeStyle}>
       <head>
-        {fonts.bunny && (
-          <>
-            <link
-              rel="preconnect"
-              href="https://fonts.bunny.net"
-              crossOrigin="anonymous"
-            />
-            <link rel="stylesheet" href={fonts.bunny.stylesheet} />
-          </>
+        {fonts.preloadHref && (
+          <link
+            rel="preload"
+            href={fonts.preloadHref}
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+        )}
+        {fonts.fontFaceCss && (
+          // Indholdet kommer fra SELF_HOSTED_FONTS (kode), aldrig fra Prismic-tekst.
+          <style dangerouslySetInnerHTML={{ __html: fonts.fontFaceCss }} />
         )}
       </head>
       <body className="antialiased">
