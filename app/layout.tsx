@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { preload } from "react-dom";
 
 import { compute_theme_vars, DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { WIDTH_MAP } from "@/src/lib/theme/width";
@@ -80,6 +81,15 @@ export default async function RootLayout({
   const fonts = resolveFonts({
     font_select: settings?.data?.font_select as string,
   });
+  // preload() i stedet for et <link>-element: React hoister selv preload-links,
+  // så et element i <head> endte med at stå der to gange.
+  if (fonts.preloadHref) {
+    preload(fonts.preloadHref, {
+      as: "font",
+      type: "font/woff2",
+      crossOrigin: "anonymous",
+    });
+  }
 
   // Browser-tema: styrer scrollbars + native form-kontroller (select, date-picker).
   // Tenant kan vælge "Lys" | "Mørk" | "Lys & mørk (auto)" i Prismic; default "Lys".
@@ -106,15 +116,6 @@ export default async function RootLayout({
   return (
     <html lang={lang} style={themeStyle}>
       <head>
-        {fonts.preloadHref && (
-          <link
-            rel="preload"
-            href={fonts.preloadHref}
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-        )}
         {fonts.fontFaceCss && (
           // Indholdet kommer fra SELF_HOSTED_FONTS (kode), aldrig fra Prismic-tekst.
           <style dangerouslySetInnerHTML={{ __html: fonts.fontFaceCss }} />
