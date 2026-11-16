@@ -9,7 +9,6 @@ import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviBrandText } from "@/src/components/typography/EviBrandText";
-import { is_link_filled } from "@/src/lib/prismic/links";
 
 export type LogoItem = {
   logo: ImageField;
@@ -83,7 +82,8 @@ function Logo({
     <EviBrandText text={item.name ?? ""} translate="no" className="text-base" />
   );
 
-  if (!is_link_filled(item.link)) {
+  // Ikke is_link_filled: logo-linket har ingen tekst (intet allowText).
+  if (!isFilled.link(item.link)) {
     return <span className={MUTED}>{visual}</span>;
   }
 

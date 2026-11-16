@@ -3,7 +3,7 @@
 
 import type { Content, ImageField, LinkField } from "@prismicio/client";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
-import { h3, webLink } from "@/src/lib/preview/mockFields";
+import { h3 } from "@/src/lib/preview/mockFields";
 
 export const context: EviPageSliceContext = {
   linkResolver: () => "/",
@@ -14,6 +14,9 @@ export const context: EviPageSliceContext = {
 export const previewWrapperClassName = "block w-full";
 
 const NO_LINK: LinkField = { link_type: "Any" };
+// Uden tekst som i Prismic (webLink() sætter tekst og skjulte, at logoerne
+// ikke blev links).
+const WEB_LINK: LinkField = { link_type: "Web", url: "#" };
 
 // Fiktive, selvtegnede logoer i public/preview/logos/ (ingen licens- eller
 // varemærkespørgsmål). Preview-routen gør "/…"-stierne absolutte.
@@ -26,7 +29,7 @@ const logo = (name: string, file: string, width: number, linked = false) => {
     dimensions: { width, height: 40 },
     edit: { x: 0, y: 0, zoom: 1, background: "transparent" },
   };
-  return { logo: image, name, link: linked ? webLink(name) : NO_LINK };
+  return { logo: image, name, link: linked ? WEB_LINK : NO_LINK };
 };
 
 const BONNEHUSET = logo("Bønnehuset", "bonnehuset", 168, true);
