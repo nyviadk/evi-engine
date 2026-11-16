@@ -282,6 +282,27 @@ const eslintConfig = defineConfig([
     },
   },
 
+  // Evi og Planio holdes adskilt: core må ikke importere Planio-kode. Planio
+  // (planio_-slices + src/components/planio/) må gerne bruge core.
+  {
+    files: ["**/*.{ts,tsx,js,mjs}"],
+    ignores: ["src/components/planio/**", "slices/Planio*/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/src/components/planio/**", "**/components/planio/**"],
+              message:
+                "Core må ikke importere Planio-kode. Kun planio_-slices og src/components/planio/ må.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   globalIgnores([
     ".next/**",
     ".open-next/**",
