@@ -35,6 +35,10 @@ export type PlanioEnergyBarProps = {
  * Appens energibjælke: fyldt → brugt → fri (stiplet). Brugt og fri følger
  * tekstfarven, så bjælken virker på både lyse kort og mørke sektioner.
  * Dekorativ; tallet står altid i teksten ved siden af.
+ *
+ * Felterne skifter farve uden overgang: i farvevælgeren skifter farven ved hver
+ * musebevægelse, og en fade fik bjælken til at halte efter. Skal den fade
+ * (demoens batteri), gives felterne en overgang via className.
  */
 export function PlanioEnergyBar({
   filled,
@@ -49,7 +53,7 @@ export function PlanioEnergyBar({
         <span
           key={i}
           className={cn(
-            "flex-1 transition-colors duration-250",
+            "flex-1",
             sizeClass[size],
             i < filled && "bg-evi-primary",
             i >= filled && i < filled + used && "bg-current/15",

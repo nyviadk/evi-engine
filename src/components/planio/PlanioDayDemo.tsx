@@ -196,6 +196,7 @@ export function PlanioDemoBattery(): React.ReactElement {
       filled={full}
       used={Math.max(energy_segments(start) - full, 0)}
       size="lg"
+      className="*:transition-colors *:duration-250"
     />
   );
 }
