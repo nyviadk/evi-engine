@@ -1,0 +1,363 @@
+{
+  "id": "planio_customize",
+  "name": "PlanioCustomize",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_customize/default/456adce4287979f99cf8f3227535c5ffd1ff003e.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Fx Gør appen til din",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Mørk",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        },
+        "colors_title": {
+          "config": {
+            "label": "Farver: overskrift",
+            "placeholder": "Fx Helt dine egne farver",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "colors_body": {
+          "config": {
+            "label": "Farver: tekst",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "colors_primary": {
+          "config": {
+            "label": "Farver: primær ved start",
+            "placeholder": "Farverne man ser først, gerne ikke et tema"
+          },
+          "type": "Color"
+        },
+        "colors_background": {
+          "config": {
+            "label": "Farver: baggrund ved start"
+          },
+          "type": "Color"
+        },
+        "colors_text": {
+          "config": {
+            "label": "Farver: tekst ved start"
+          },
+          "type": "Color"
+        },
+        "preview_day": {
+          "config": {
+            "label": "Onsdag: dag",
+            "placeholder": "Fx Onsdag",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "preview_left": {
+          "config": {
+            "label": "Onsdag: energi",
+            "placeholder": "Fx 40% tilbage",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "preview_energy": {
+          "config": {
+            "label": "Onsdag: energi i %",
+            "max": 100,
+            "min": 0,
+            "placeholder": "Fylder bjælken, fx 40",
+            "step": 10
+          },
+          "type": "Number"
+        },
+        "preview_items": {
+          "config": {
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Aftale",
+                  "placeholder": "Fx Holdmøde",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "color": {
+                "config": {
+                  "label": "Farve",
+                  "placeholder": "Tom = den valgte primærfarve"
+                },
+                "type": "Color"
+              }
+            },
+            "label": "Onsdag: aftaler"
+          },
+          "type": "Group"
+        },
+        "picker_legend": {
+          "config": {
+            "label": "Vælger: spørgsmål",
+            "placeholder": "Til skærmlæsere, fx Hvilken farve vil du ændre?"
+          },
+          "type": "Text"
+        },
+        "picker_primary": {
+          "config": {
+            "label": "Vælger: primær",
+            "placeholder": "Fx Primære"
+          },
+          "type": "Text"
+        },
+        "picker_background": {
+          "config": {
+            "label": "Vælger: baggrund",
+            "placeholder": "Fx Baggrund"
+          },
+          "type": "Text"
+        },
+        "picker_text": {
+          "config": {
+            "label": "Vælger: tekst",
+            "placeholder": "Fx Tekst"
+          },
+          "type": "Text"
+        },
+        "picker_area": {
+          "config": {
+            "label": "Vælger: farvefelt",
+            "placeholder": "Til skærmlæsere, fx Mætning og lysstyrke"
+          },
+          "type": "Text"
+        },
+        "picker_hue": {
+          "config": {
+            "label": "Vælger: farvetone",
+            "placeholder": "Til skærmlæsere, fx Farvetone"
+          },
+          "type": "Text"
+        },
+        "picker_hex": {
+          "config": {
+            "label": "Vælger: farvekode",
+            "placeholder": "Til skærmlæsere, fx Farvekode"
+          },
+          "type": "Text"
+        },
+        "picker_swap": {
+          "config": {
+            "label": "Vælger: lys/mørk-knap",
+            "placeholder": "Fx Lys / mørk"
+          },
+          "type": "Text"
+        },
+        "presets_label": {
+          "config": {
+            "label": "Temaer: tekst",
+            "placeholder": "Fx Eller start fra et tema",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "presets": {
+          "config": {
+            "fields": {
+              "name": {
+                "config": {
+                  "label": "Navn",
+                  "placeholder": "Læses op af skærmlæsere, fx Afslappet"
+                },
+                "type": "Text"
+              },
+              "primary": {
+                "config": {
+                  "label": "Primær"
+                },
+                "type": "Color"
+              },
+              "background": {
+                "config": {
+                  "label": "Baggrund"
+                },
+                "type": "Color"
+              },
+              "text": {
+                "config": {
+                  "label": "Tekst"
+                },
+                "type": "Color"
+              }
+            },
+            "label": "Temaer"
+          },
+          "type": "Group"
+        },
+        "energy_title": {
+          "config": {
+            "label": "Energi: overskrift",
+            "placeholder": "Fx Energien, som du tænker den",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "energy_body": {
+          "config": {
+            "label": "Energi: tekst",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "energy_level": {
+          "config": {
+            "label": "Energi: fyldte felter",
+            "max": 5,
+            "min": 0,
+            "placeholder": "Ud af 5, fx 4",
+            "step": 1
+          },
+          "type": "Number"
+        },
+        "unit_percent": {
+          "config": {
+            "label": "Energi: procent",
+            "placeholder": "Fx Procent",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "unit_percent_value": {
+          "config": {
+            "label": "Energi: procent-værdi",
+            "placeholder": "Fx 40%"
+          },
+          "type": "Text"
+        },
+        "unit_spoons": {
+          "config": {
+            "label": "Energi: skeer",
+            "placeholder": "Fx Skeer",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "unit_spoons_value": {
+          "config": {
+            "label": "Energi: skeer-værdi",
+            "placeholder": "Fx 4"
+          },
+          "type": "Text"
+        },
+        "unit_bolts": {
+          "config": {
+            "label": "Energi: lyn",
+            "placeholder": "Fx Lyn",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "unit_bolts_value": {
+          "config": {
+            "label": "Energi: lyn-værdi",
+            "placeholder": "Fx 4"
+          },
+          "type": "Text"
+        },
+        "unit_number": {
+          "config": {
+            "label": "Energi: tal",
+            "placeholder": "Fx Tal",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "unit_number_value": {
+          "config": {
+            "label": "Energi: tal-værdi",
+            "placeholder": "Fx 4"
+          },
+          "type": "Text"
+        },
+        "days_label": {
+          "config": {
+            "label": "Dage: skærmlæsertekst",
+            "placeholder": "Beskriv kortet for dem, der ikke kan se det"
+          },
+          "type": "Text"
+        },
+        "days_settings": {
+          "config": {
+            "fields": {
+              "label": {
+                "config": {
+                  "label": "Indstilling",
+                  "placeholder": "Fx Ugens første dag",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "value": {
+                "config": {
+                  "label": "Værdi",
+                  "placeholder": "Fx Mandag. Tom = kun kontakten",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "swatch": {
+                "config": {
+                  "label": "Farvering",
+                  "placeholder": "Valgfri ring foran værdien, fx rød"
+                },
+                "type": "Color"
+              },
+              "toggle": {
+                "config": {
+                  "default_value": false,
+                  "label": "Vis som kontakt",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, en tændt kontakt"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Dage: indstillinger"
+          },
+          "type": "Group"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

@@ -24,32 +24,36 @@ export type PlanioEnergyBarProps = {
   filled: number;
   /** Brugte (grå) felter efter de fyldte. @default 0 */
   used?: number;
+  /** Antal felter i alt. @default 10 */
+  count?: number;
   /** "sm" = mini i kort, "md" = appskærmen, "lg" = demoens batteri. @default "md" */
   size?: BarSize;
   className?: string;
 };
 
 /**
- * Appens energibjælke: 10 felter, fyldt → brugt → fri (stiplet). Dekorativ;
- * tallet står altid i teksten ved siden af.
+ * Appens energibjælke: fyldt → brugt → fri (stiplet). Brugt og fri følger
+ * tekstfarven, så bjælken virker på både lyse kort og mørke sektioner.
+ * Dekorativ; tallet står altid i teksten ved siden af.
  */
 export function PlanioEnergyBar({
   filled,
   used = 0,
+  count = PLANIO_ENERGY_SEGMENTS,
   size = "md",
   className,
 }: PlanioEnergyBarProps): React.ReactElement {
   return (
     <EviStack direction="row" gap="xs" aria-hidden className={className}>
-      {Array.from({ length: PLANIO_ENERGY_SEGMENTS }, (_, i) => (
+      {Array.from({ length: count }, (_, i) => (
         <span
           key={i}
           className={cn(
             "flex-1 transition-colors duration-250",
             sizeClass[size],
             i < filled && "bg-evi-primary",
-            i >= filled && i < filled + used && "bg-evi-dark/15",
-            i >= filled + used && "border border-dashed border-evi-dark/30",
+            i >= filled && i < filled + used && "bg-current/15",
+            i >= filled + used && "border border-dashed border-current/30",
           )}
         />
       ))}

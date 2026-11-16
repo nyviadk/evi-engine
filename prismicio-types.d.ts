@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice
 
 /**
  * Content for Side documents
@@ -3200,6 +3200,501 @@ type PhoneMockupSliceVariation = PhoneMockupSliceMasked
 export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
 /**
+ * Item in *PlanioCustomize → Default → Primary → Onsdag: aftaler*
+ */
+export interface PlanioCustomizeSliceDefaultPrimaryPreviewItemsItem {
+	/**
+	 * Aftale field in *PlanioCustomize → Default → Primary → Onsdag: aftaler*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Holdmøde
+	 * - **API ID Path**: planio_customize.default.primary.preview_items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Farve field in *PlanioCustomize → Default → Primary → Onsdag: aftaler*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Tom = den valgte primærfarve
+	 * - **API ID Path**: planio_customize.default.primary.preview_items[].color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	color: prismic.ColorField;
+}
+
+/**
+ * Item in *PlanioCustomize → Default → Primary → Temaer*
+ */
+export interface PlanioCustomizeSliceDefaultPrimaryPresetsItem {
+	/**
+	 * Navn field in *PlanioCustomize → Default → Primary → Temaer*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Læses op af skærmlæsere, fx Afslappet
+	 * - **API ID Path**: planio_customize.default.primary.presets[].name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Primær field in *PlanioCustomize → Default → Primary → Temaer*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.presets[].primary
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	primary: prismic.ColorField;
+	
+	/**
+	 * Baggrund field in *PlanioCustomize → Default → Primary → Temaer*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.presets[].background
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background: prismic.ColorField;
+	
+	/**
+	 * Tekst field in *PlanioCustomize → Default → Primary → Temaer*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.presets[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	text: prismic.ColorField;
+}
+
+/**
+ * Item in *PlanioCustomize → Default → Primary → Dage: indstillinger*
+ */
+export interface PlanioCustomizeSliceDefaultPrimaryDaysSettingsItem {
+	/**
+	 * Indstilling field in *PlanioCustomize → Default → Primary → Dage: indstillinger*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Ugens første dag
+	 * - **API ID Path**: planio_customize.default.primary.days_settings[].label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	label: prismic.RichTextField;
+	
+	/**
+	 * Værdi field in *PlanioCustomize → Default → Primary → Dage: indstillinger*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Mandag. Tom = kun kontakten
+	 * - **API ID Path**: planio_customize.default.primary.days_settings[].value
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	value: prismic.RichTextField;
+	
+	/**
+	 * Farvering field in *PlanioCustomize → Default → Primary → Dage: indstillinger*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Valgfri ring foran værdien, fx rød
+	 * - **API ID Path**: planio_customize.default.primary.days_settings[].swatch
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	swatch: prismic.ColorField;
+	
+	/**
+	 * Vis som kontakt field in *PlanioCustomize → Default → Primary → Dage: indstillinger*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: planio_customize.default.primary.days_settings[].toggle
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	toggle: prismic.BooleanField;
+}
+
+/**
+ * Primary content in *PlanioCustomize → Default → Primary*
+ */
+export interface PlanioCustomizeSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Gør appen til din
+	 * - **API ID Path**: planio_customize.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: planio_customize.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Mørk
+	 * - **API ID Path**: planio_customize.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	
+	/**
+	 * Farver: overskrift field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Helt dine egne farver
+	 * - **API ID Path**: planio_customize.default.primary.colors_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	colors_title: prismic.RichTextField;
+	
+	/**
+	 * Farver: tekst field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: planio_customize.default.primary.colors_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	colors_body: prismic.RichTextField;
+	
+	/**
+	 * Farver: primær ved start field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: Farverne man ser først, gerne ikke et tema
+	 * - **API ID Path**: planio_customize.default.primary.colors_primary
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	colors_primary: prismic.ColorField;
+	
+	/**
+	 * Farver: baggrund ved start field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.colors_background
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	colors_background: prismic.ColorField;
+	
+	/**
+	 * Farver: tekst ved start field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.colors_text
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	colors_text: prismic.ColorField;
+	
+	/**
+	 * Onsdag: dag field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Onsdag
+	 * - **API ID Path**: planio_customize.default.primary.preview_day
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	preview_day: prismic.RichTextField;
+	
+	/**
+	 * Onsdag: energi field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx 40% tilbage
+	 * - **API ID Path**: planio_customize.default.primary.preview_left
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	preview_left: prismic.RichTextField;
+	
+	/**
+	 * Onsdag: energi i % field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Fylder bjælken, fx 40
+	 * - **API ID Path**: planio_customize.default.primary.preview_energy
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	preview_energy: prismic.NumberField;
+	
+	/**
+	 * Onsdag: aftaler field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.preview_items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	preview_items: prismic.GroupField<Simplify<PlanioCustomizeSliceDefaultPrimaryPreviewItemsItem>>;
+	
+	/**
+	 * Vælger: spørgsmål field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Til skærmlæsere, fx Hvilken farve vil du ændre?
+	 * - **API ID Path**: planio_customize.default.primary.picker_legend
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_legend: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: primær field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Primære
+	 * - **API ID Path**: planio_customize.default.primary.picker_primary
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_primary: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: baggrund field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Baggrund
+	 * - **API ID Path**: planio_customize.default.primary.picker_background
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_background: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: tekst field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Tekst
+	 * - **API ID Path**: planio_customize.default.primary.picker_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_text: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: farvefelt field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Til skærmlæsere, fx Mætning og lysstyrke
+	 * - **API ID Path**: planio_customize.default.primary.picker_area
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_area: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: farvetone field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Til skærmlæsere, fx Farvetone
+	 * - **API ID Path**: planio_customize.default.primary.picker_hue
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_hue: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: farvekode field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Til skærmlæsere, fx Farvekode
+	 * - **API ID Path**: planio_customize.default.primary.picker_hex
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_hex: prismic.KeyTextField;
+	
+	/**
+	 * Vælger: lys/mørk-knap field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Lys / mørk
+	 * - **API ID Path**: planio_customize.default.primary.picker_swap
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	picker_swap: prismic.KeyTextField;
+	
+	/**
+	 * Temaer: tekst field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Eller start fra et tema
+	 * - **API ID Path**: planio_customize.default.primary.presets_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	presets_label: prismic.RichTextField;
+	
+	/**
+	 * Temaer field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.presets[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	presets: prismic.GroupField<Simplify<PlanioCustomizeSliceDefaultPrimaryPresetsItem>>;
+	
+	/**
+	 * Energi: overskrift field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Energien, som du tænker den
+	 * - **API ID Path**: planio_customize.default.primary.energy_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	energy_title: prismic.RichTextField;
+	
+	/**
+	 * Energi: tekst field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: planio_customize.default.primary.energy_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	energy_body: prismic.RichTextField;
+	
+	/**
+	 * Energi: fyldte felter field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Ud af 5, fx 4
+	 * - **API ID Path**: planio_customize.default.primary.energy_level
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	energy_level: prismic.NumberField;
+	
+	/**
+	 * Energi: procent field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Procent
+	 * - **API ID Path**: planio_customize.default.primary.unit_percent
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	unit_percent: prismic.RichTextField;
+	
+	/**
+	 * Energi: procent-værdi field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 40%
+	 * - **API ID Path**: planio_customize.default.primary.unit_percent_value
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	unit_percent_value: prismic.KeyTextField;
+	
+	/**
+	 * Energi: skeer field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Skeer
+	 * - **API ID Path**: planio_customize.default.primary.unit_spoons
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	unit_spoons: prismic.RichTextField;
+	
+	/**
+	 * Energi: skeer-værdi field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 4
+	 * - **API ID Path**: planio_customize.default.primary.unit_spoons_value
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	unit_spoons_value: prismic.KeyTextField;
+	
+	/**
+	 * Energi: lyn field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Lyn
+	 * - **API ID Path**: planio_customize.default.primary.unit_bolts
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	unit_bolts: prismic.RichTextField;
+	
+	/**
+	 * Energi: lyn-værdi field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 4
+	 * - **API ID Path**: planio_customize.default.primary.unit_bolts_value
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	unit_bolts_value: prismic.KeyTextField;
+	
+	/**
+	 * Energi: tal field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Tal
+	 * - **API ID Path**: planio_customize.default.primary.unit_number
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	unit_number: prismic.RichTextField;
+	
+	/**
+	 * Energi: tal-værdi field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 4
+	 * - **API ID Path**: planio_customize.default.primary.unit_number_value
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	unit_number_value: prismic.KeyTextField;
+	
+	/**
+	 * Dage: skærmlæsertekst field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Beskriv kortet for dem, der ikke kan se det
+	 * - **API ID Path**: planio_customize.default.primary.days_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	days_label: prismic.KeyTextField;
+	
+	/**
+	 * Dage: indstillinger field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_customize.default.primary.days_settings[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	days_settings: prismic.GroupField<Simplify<PlanioCustomizeSliceDefaultPrimaryDaysSettingsItem>>;
+}
+
+/**
+ * Default variation for PlanioCustomize Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioCustomizeSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PlanioCustomizeSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PlanioCustomize*
+ */
+type PlanioCustomizeSliceVariation = PlanioCustomizeSliceDefault
+
+/**
+ * PlanioCustomize Shared Slice
+ *
+ * - **API ID**: `planio_customize`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioCustomizeSlice = prismic.SharedSlice<"planio_customize", PlanioCustomizeSliceVariation>;
+
+/**
  * Item in *PlanioDay → Default → Primary → Energi: svar*
  */
 export interface PlanioDaySliceDefaultPrimaryCheckAnswersItem {
@@ -5357,6 +5852,13 @@ declare module "@prismicio/client" {
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
 			PhoneMockupSliceMasked,
+			PlanioCustomizeSlice,
+			PlanioCustomizeSliceDefaultPrimaryPreviewItemsItem,
+			PlanioCustomizeSliceDefaultPrimaryPresetsItem,
+			PlanioCustomizeSliceDefaultPrimaryDaysSettingsItem,
+			PlanioCustomizeSliceDefaultPrimary,
+			PlanioCustomizeSliceVariation,
+			PlanioCustomizeSliceDefault,
 			PlanioDaySlice,
 			PlanioDaySliceDefaultPrimaryCheckAnswersItem,
 			PlanioDaySliceDefaultPrimaryPlanTodayItemsItem,
