@@ -61,6 +61,9 @@
             },
             "text_content": {
               "type": "SharedSlice"
+            },
+            "logos": {
+              "type": "SharedSlice"
             }
           }
         },

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 40" width="196" height="40">
+  <circle cx="18" cy="20" r="12" fill="none" stroke="#2F4F3A" stroke-width="3"/>
+  <circle cx="18" cy="20" r="4" fill="#2F4F3A"/>
+  <path d="M18 8v6M18 26v6M6 20h6M24 20h6" stroke="#2F4F3A" stroke-width="3" stroke-linecap="round"/>
+  <text x="38" y="26" font-family="Helvetica Neue, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#2F4F3A">KVÆRNVÆRKET</text>
+</svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 40" width="168" height="40">
+  <ellipse cx="17" cy="20" rx="10" ry="15" transform="rotate(-25 17 20)" fill="#6B3F24"/>
+  <path d="M11 9c8 7 4 15 12 22" stroke="#F3E3D3" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <text x="36" y="27" font-family="Helvetica Neue, Arial, sans-serif" font-size="19" font-weight="700" fill="#3B2416">Bønnehuset</text>
+</svg>

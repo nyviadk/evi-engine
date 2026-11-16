@@ -1,0 +1,255 @@
+{
+  "id": "logos",
+  "name": "Logos",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/logos/default/c37181914d546ad64ea4a27e14cc57d2be9d8963.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Valgfri — fx Kendt fra eller Vores partnere",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Valgfri kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Overskrift-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
+        },
+        "logos": {
+          "config": {
+            "fields": {
+              "logo": {
+                "config": {
+                  "label": "Logo",
+                  "placeholder": "SVG eller PNG med gennemsigtig baggrund"
+                },
+                "type": "Image"
+              },
+              "name": {
+                "config": {
+                  "label": "Firmanavn",
+                  "placeholder": "Bruges som alt-tekst og vises hvis logo mangler"
+                },
+                "type": "Text"
+              },
+              "link": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "Link (valgfrit)"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Logoer"
+          },
+          "type": "Group"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ],
+            "placeholder": "Baggrundstema for sektionen"
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    },
+    {
+      "description": "Grouped",
+      "docURL": "",
+      "id": "grouped",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/logos/grouped/9e289b8b7c64f120dfd80d06571882463c9ed9db.png?auto=compress%2Cformat",
+      "name": "Grouped",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Valgfri — fx Støttet og rådgivet af",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Valgfri kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Overskrift-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
+        },
+        "group_1_title": {
+          "config": {
+            "label": "Gruppe 1: titel",
+            "placeholder": "Fx Leverandører eller Støttet af",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "group_1_logos": {
+          "config": {
+            "fields": {
+              "logo": {
+                "config": {
+                  "label": "Logo",
+                  "placeholder": "SVG eller PNG med gennemsigtig baggrund"
+                },
+                "type": "Image"
+              },
+              "name": {
+                "config": {
+                  "label": "Firmanavn",
+                  "placeholder": "Bruges som alt-tekst og vises hvis logo mangler"
+                },
+                "type": "Text"
+              },
+              "link": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "Link (valgfrit)"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Gruppe 1: logoer"
+          },
+          "type": "Group"
+        },
+        "group_2_title": {
+          "config": {
+            "label": "Gruppe 2: titel",
+            "placeholder": "Fx Leverandører eller Støttet af",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "group_2_logos": {
+          "config": {
+            "fields": {
+              "logo": {
+                "config": {
+                  "label": "Logo",
+                  "placeholder": "SVG eller PNG med gennemsigtig baggrund"
+                },
+                "type": "Image"
+              },
+              "name": {
+                "config": {
+                  "label": "Firmanavn",
+                  "placeholder": "Bruges som alt-tekst og vises hvis logo mangler"
+                },
+                "type": "Text"
+              },
+              "link": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "Link (valgfrit)"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Gruppe 2: logoer"
+          },
+          "type": "Group"
+        },
+        "group_3_title": {
+          "config": {
+            "label": "Gruppe 3: titel",
+            "placeholder": "Fx Leverandører eller Støttet af",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "group_3_logos": {
+          "config": {
+            "fields": {
+              "logo": {
+                "config": {
+                  "label": "Logo",
+                  "placeholder": "SVG eller PNG med gennemsigtig baggrund"
+                },
+                "type": "Image"
+              },
+              "name": {
+                "config": {
+                  "label": "Firmanavn",
+                  "placeholder": "Bruges som alt-tekst og vises hvis logo mangler"
+                },
+                "type": "Text"
+              },
+              "link": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "Link (valgfrit)"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Gruppe 3: logoer"
+          },
+          "type": "Group"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ],
+            "placeholder": "Baggrundstema for sektionen"
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

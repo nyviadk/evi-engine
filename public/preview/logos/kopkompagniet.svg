@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 40" width="190" height="40">
+  <path d="M5 15h20v8a10 10 0 0 1-20 0z" fill="#8A5A3C"/>
+  <path d="M25 17h3a4 4 0 0 1 0 8h-3" fill="none" stroke="#8A5A3C" stroke-width="2.5"/>
+  <path d="M10 4c0 3 3 3 3 7M17 4c0 3 3 3 3 7" stroke="#8A5A3C" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <text x="38" y="27" font-family="Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="700" fill="#4A2F1F">Kopkompagniet</text>
+</svg>

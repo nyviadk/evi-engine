@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 40" width="168" height="40">
+  <rect x="9" y="4" width="12" height="20" rx="6" fill="#1E1E1E"/>
+  <path d="M5 18a10 10 0 0 0 20 0M15 28v6M10 34h10" stroke="#1E1E1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <text x="34" y="27" font-family="Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="800" fill="#1E1E1E">Sort &amp; Stærk</text>
+</svg>

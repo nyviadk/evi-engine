@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice
 
 /**
  * Content for Side documents
@@ -2596,6 +2596,342 @@ type HighlightsSliceVariation = HighlightsSliceDefault
 export type HighlightsSlice = prismic.SharedSlice<"highlights", HighlightsSliceVariation>;
 
 /**
+ * Item in *Logos → Default → Primary → Logoer*
+ */
+export interface LogosSliceDefaultPrimaryLogosItem {
+	/**
+	 * Logo field in *Logos → Default → Primary → Logoer*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: SVG eller PNG med gennemsigtig baggrund
+	 * - **API ID Path**: logos.default.primary.logos[].logo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	logo: prismic.ImageField<never>;
+	
+	/**
+	 * Firmanavn field in *Logos → Default → Primary → Logoer*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Bruges som alt-tekst og vises hvis logo mangler
+	 * - **API ID Path**: logos.default.primary.logos[].name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Link (valgfrit) field in *Logos → Default → Primary → Logoer*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.default.primary.logos[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Item in *Logos → Grouped → Primary → Gruppe 1: logoer*
+ */
+export interface LogosSliceGroupedPrimaryGroup1LogosItem {
+	/**
+	 * Logo field in *Logos → Grouped → Primary → Gruppe 1: logoer*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: SVG eller PNG med gennemsigtig baggrund
+	 * - **API ID Path**: logos.grouped.primary.group_1_logos[].logo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	logo: prismic.ImageField<never>;
+	
+	/**
+	 * Firmanavn field in *Logos → Grouped → Primary → Gruppe 1: logoer*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Bruges som alt-tekst og vises hvis logo mangler
+	 * - **API ID Path**: logos.grouped.primary.group_1_logos[].name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Link (valgfrit) field in *Logos → Grouped → Primary → Gruppe 1: logoer*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.grouped.primary.group_1_logos[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Item in *Logos → Grouped → Primary → Gruppe 2: logoer*
+ */
+export interface LogosSliceGroupedPrimaryGroup2LogosItem {
+	/**
+	 * Logo field in *Logos → Grouped → Primary → Gruppe 2: logoer*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: SVG eller PNG med gennemsigtig baggrund
+	 * - **API ID Path**: logos.grouped.primary.group_2_logos[].logo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	logo: prismic.ImageField<never>;
+	
+	/**
+	 * Firmanavn field in *Logos → Grouped → Primary → Gruppe 2: logoer*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Bruges som alt-tekst og vises hvis logo mangler
+	 * - **API ID Path**: logos.grouped.primary.group_2_logos[].name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Link (valgfrit) field in *Logos → Grouped → Primary → Gruppe 2: logoer*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.grouped.primary.group_2_logos[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Item in *Logos → Grouped → Primary → Gruppe 3: logoer*
+ */
+export interface LogosSliceGroupedPrimaryGroup3LogosItem {
+	/**
+	 * Logo field in *Logos → Grouped → Primary → Gruppe 3: logoer*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: SVG eller PNG med gennemsigtig baggrund
+	 * - **API ID Path**: logos.grouped.primary.group_3_logos[].logo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	logo: prismic.ImageField<never>;
+	
+	/**
+	 * Firmanavn field in *Logos → Grouped → Primary → Gruppe 3: logoer*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Bruges som alt-tekst og vises hvis logo mangler
+	 * - **API ID Path**: logos.grouped.primary.group_3_logos[].name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Link (valgfrit) field in *Logos → Grouped → Primary → Gruppe 3: logoer*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.grouped.primary.group_3_logos[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Primary content in *Logos → Default → Primary*
+ */
+export interface LogosSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Logos → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri — fx Kendt fra eller Vores partnere
+	 * - **API ID Path**: logos.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Logos → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri kort tekst under overskriften
+	 * - **API ID Path**: logos.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Logos → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: logos.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Logoer field in *Logos → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.default.primary.logos[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	logos: prismic.GroupField<Simplify<LogosSliceDefaultPrimaryLogosItem>>;
+	
+	/**
+	 * Baggrundstema field in *Logos → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: logos.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Logos Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LogosSliceDefault = prismic.SharedSliceVariation<"default", Simplify<LogosSliceDefaultPrimary>, never>;
+
+/**
+ * Primary content in *Logos → Grouped → Primary*
+ */
+export interface LogosSliceGroupedPrimary {
+	/**
+	 * Overskrift field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri — fx Støttet og rådgivet af
+	 * - **API ID Path**: logos.grouped.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri kort tekst under overskriften
+	 * - **API ID Path**: logos.grouped.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: logos.grouped.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Gruppe 1: titel field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Leverandører eller Støttet af
+	 * - **API ID Path**: logos.grouped.primary.group_1_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	group_1_title: prismic.RichTextField;
+	
+	/**
+	 * Gruppe 1: logoer field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.grouped.primary.group_1_logos[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	group_1_logos: prismic.GroupField<Simplify<LogosSliceGroupedPrimaryGroup1LogosItem>>;
+	
+	/**
+	 * Gruppe 2: titel field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Leverandører eller Støttet af
+	 * - **API ID Path**: logos.grouped.primary.group_2_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	group_2_title: prismic.RichTextField;
+	
+	/**
+	 * Gruppe 2: logoer field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.grouped.primary.group_2_logos[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	group_2_logos: prismic.GroupField<Simplify<LogosSliceGroupedPrimaryGroup2LogosItem>>;
+	
+	/**
+	 * Gruppe 3: titel field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Leverandører eller Støttet af
+	 * - **API ID Path**: logos.grouped.primary.group_3_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	group_3_title: prismic.RichTextField;
+	
+	/**
+	 * Gruppe 3: logoer field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: logos.grouped.primary.group_3_logos[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	group_3_logos: prismic.GroupField<Simplify<LogosSliceGroupedPrimaryGroup3LogosItem>>;
+	
+	/**
+	 * Baggrundstema field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: logos.grouped.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Grouped variation for Logos Slice
+ *
+ * - **API ID**: `grouped`
+ * - **Description**: Grouped
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LogosSliceGrouped = prismic.SharedSliceVariation<"grouped", Simplify<LogosSliceGroupedPrimary>, never>;
+
+/**
+ * Slice variation for *Logos*
+ */
+type LogosSliceVariation = LogosSliceDefault | LogosSliceGrouped
+
+/**
+ * Logos Shared Slice
+ *
+ * - **API ID**: `logos`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LogosSlice = prismic.SharedSlice<"logos", LogosSliceVariation>;
+
+/**
  * Item in *Maps → Default → Primary → Info-punkter*
  */
 export interface MapsSliceDefaultPrimaryInfoItemsItem {
@@ -3928,6 +4264,16 @@ declare module "@prismicio/client" {
 			HighlightsSliceDefaultPrimary,
 			HighlightsSliceVariation,
 			HighlightsSliceDefault,
+			LogosSlice,
+			LogosSliceDefaultPrimaryLogosItem,
+			LogosSliceDefaultPrimary,
+			LogosSliceGroupedPrimaryGroup1LogosItem,
+			LogosSliceGroupedPrimaryGroup2LogosItem,
+			LogosSliceGroupedPrimaryGroup3LogosItem,
+			LogosSliceGroupedPrimary,
+			LogosSliceVariation,
+			LogosSliceDefault,
+			LogosSliceGrouped,
 			MapsSlice,
 			MapsSliceDefaultPrimaryInfoItemsItem,
 			MapsSliceDefaultPrimary,
