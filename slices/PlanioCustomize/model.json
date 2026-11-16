@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_customize/default/456adce4287979f99cf8f3227535c5ffd1ff003e.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_customize/default/da2d97e49a3bfd119d4221bc289b9f74f645ef3d.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -99,6 +99,16 @@
             "max": 100,
             "min": 0,
             "placeholder": "Fylder bjælken, fx 40",
+            "step": 10
+          },
+          "type": "Number"
+        },
+        "preview_energy_used": {
+          "config": {
+            "label": "Onsdag: brugt energi i %",
+            "max": 100,
+            "min": 0,
+            "placeholder": "Grå felter efter de fyldte, fx 10",
             "step": 10
           },
           "type": "Number"

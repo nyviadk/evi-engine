@@ -59,6 +59,7 @@ export const mock: Record<string, Content.PlanioCustomizeSlice> = {
       preview_day: line("Onsdag"),
       preview_left: line("40% tilbage"),
       preview_energy: 40,
+      preview_energy_used: 10,
       preview_items: [
         { title: line("Holdmøde"), color: null },
         { title: line("Frokost med Sara"), color: "#F2A65A" },

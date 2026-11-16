@@ -56,6 +56,9 @@ export function start_palette(p: Primary): PlanioPalette | null {
 function Preview({ p, linkResolver }: { p: Primary; linkResolver: LinkResolverFunction }): React.ReactElement {
   const items = (p.preview_items ?? []).filter((item) => isFilled.richText(item.title));
   const filled = isFilled.number(p.preview_energy) ? energy_segments(p.preview_energy) : 0;
+  const used = isFilled.number(p.preview_energy_used)
+    ? Math.min(energy_segments(p.preview_energy_used), PLANIO_ENERGY_SEGMENTS - filled)
+    : 0;
 
   return (
     <EviStack gap="sm">
@@ -66,7 +69,7 @@ function Preview({ p, linkResolver }: { p: Primary; linkResolver: LinkResolverFu
         <EviRichText.Raw field={p.preview_left} linkResolver={linkResolver} />
       </div>
       {isFilled.number(p.preview_energy) && (
-        <PlanioEnergyBar filled={filled} used={PLANIO_ENERGY_SEGMENTS - filled} size="sm" />
+        <PlanioEnergyBar filled={filled} used={used} size="sm" />
       )}
       {items.map((item, i) => (
         <EviStack

@@ -3431,6 +3431,16 @@ export interface PlanioCustomizeSliceDefaultPrimary {
 	preview_energy: prismic.NumberField;
 	
 	/**
+	 * Onsdag: brugt energi i % field in *PlanioCustomize → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Grå felter efter de fyldte, fx 10
+	 * - **API ID Path**: planio_customize.default.primary.preview_energy_used
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	preview_energy_used: prismic.NumberField;
+	
+	/**
 	 * Onsdag: aftaler field in *PlanioCustomize → Default → Primary*
 	 *
 	 * - **Field Type**: Group
