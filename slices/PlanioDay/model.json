@@ -1,0 +1,636 @@
+{
+  "id": "planio_day",
+  "name": "PlanioDay",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_day/default/b18bc96bd717f7fe9dcec93e8bfcc390429b6ab8.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sæt det vigtigste med fed, fx anden halvdel",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "check_time": {
+          "config": {
+            "label": "Energi: tidspunkt",
+            "placeholder": "Fx 07.15"
+          },
+          "type": "Text"
+        },
+        "check_title": {
+          "config": {
+            "label": "Energi: overskrift",
+            "placeholder": "Fx Dagens energi",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "check_body": {
+          "config": {
+            "label": "Energi: tekst",
+            "placeholder": "Hvad sker der på dette tidspunkt",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "check_label": {
+          "config": {
+            "label": "Energi: skærmlæsertekst",
+            "placeholder": "Beskriv kortet for dem, der ikke kan se det"
+          },
+          "type": "Text"
+        },
+        "check_card_title": {
+          "config": {
+            "label": "Energi: kortets titel",
+            "placeholder": "Fx PlanioCheck",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "check_answers": {
+          "config": {
+            "fields": {
+              "question": {
+                "config": {
+                  "label": "Spørgsmål",
+                  "placeholder": "Fx Kroppen",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "answer": {
+                "config": {
+                  "label": "Svar",
+                  "placeholder": "Fx Godt tilpas",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              }
+            },
+            "label": "Energi: svar"
+          },
+          "type": "Group"
+        },
+        "check_result": {
+          "config": {
+            "label": "Energi: forslag",
+            "placeholder": "Fx Foreslået 50%",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "check_energy": {
+          "config": {
+            "label": "Energi: forslag i %",
+            "max": 100,
+            "min": 0,
+            "placeholder": "Fylder bjælken, fx 50",
+            "step": 10
+          },
+          "type": "Number"
+        },
+        "check_says": {
+          "config": {
+            "label": "Energi: appens svar",
+            "placeholder": "Fx Koncentrationen er kort i dag.",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_time": {
+          "config": {
+            "label": "Plan: tidspunkt",
+            "placeholder": "Fx 07.30"
+          },
+          "type": "Text"
+        },
+        "plan_title": {
+          "config": {
+            "label": "Plan: overskrift",
+            "placeholder": "Fx Planlæg dagen",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_body": {
+          "config": {
+            "label": "Plan: tekst",
+            "placeholder": "Opfordr til at prøve demoen",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "plan_start": {
+          "config": {
+            "label": "Plan: dagens energi i %",
+            "max": 100,
+            "min": 0,
+            "placeholder": "Demoens startpunkt, fx 50",
+            "step": 10
+          },
+          "type": "Number"
+        },
+        "plan_energy_label": {
+          "config": {
+            "label": "Plan: tekst ved energi",
+            "placeholder": "Fx Dagens energi",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_planned_label": {
+          "config": {
+            "label": "Plan: tekst ved planlagt",
+            "placeholder": "Fx Planlagt",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_left_label": {
+          "config": {
+            "label": "Plan: tekst ved tilbage",
+            "placeholder": "Fx Tilbage",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_status_start": {
+          "config": {
+            "label": "Plan: status uden valg",
+            "placeholder": "{procent} bliver til tallet, fx Du starter på {procent}."
+          },
+          "type": "Text"
+        },
+        "plan_status_balance": {
+          "config": {
+            "label": "Plan: status i balance",
+            "placeholder": "Fx Din energi er i balance på {procent}."
+          },
+          "type": "Text"
+        },
+        "plan_status_over": {
+          "config": {
+            "label": "Plan: status over start",
+            "placeholder": "Fx Du står på {procent}, mere end ventet."
+          },
+          "type": "Text"
+        },
+        "plan_status_zero": {
+          "config": {
+            "label": "Plan: status når det går op",
+            "placeholder": "Fx Din dag går præcis op."
+          },
+          "type": "Text"
+        },
+        "plan_status_short": {
+          "config": {
+            "label": "Plan: status ved underskud",
+            "placeholder": "Fx Du mangler {procent} for at være i balance."
+          },
+          "type": "Text"
+        },
+        "plan_today_label": {
+          "config": {
+            "label": "Plan: i dag",
+            "placeholder": "Dagen med fed, fx Onsdag i dag",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_today_items": {
+          "config": {
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Begivenhed",
+                  "placeholder": "Fx Holdmøde"
+                },
+                "type": "Text"
+              },
+              "time": {
+                "config": {
+                  "label": "Tid",
+                  "placeholder": "Fx 09.30–10.30"
+                },
+                "type": "Text"
+              },
+              "energy": {
+                "config": {
+                  "label": "Energi i %",
+                  "max": 100,
+                  "min": -100,
+                  "placeholder": "Minus tager, plus giver, fx -20",
+                  "step": 10
+                },
+                "type": "Number"
+              },
+              "checked": {
+                "config": {
+                  "default_value": true,
+                  "label": "Valgt fra start",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, afkrydset"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Plan: begivenheder i dag"
+          },
+          "type": "Group"
+        },
+        "plan_tomorrow_label": {
+          "config": {
+            "label": "Plan: i morgen",
+            "placeholder": "Dagen med fed, fx Torsdag tæller i morgen",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_tomorrow_items": {
+          "config": {
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Begivenhed",
+                  "placeholder": "Fx Fødselsdag hos mor"
+                },
+                "type": "Text"
+              },
+              "time": {
+                "config": {
+                  "label": "Tid",
+                  "placeholder": "Fx 18.00–21.00"
+                },
+                "type": "Text"
+              },
+              "energy": {
+                "config": {
+                  "label": "Energi i %",
+                  "max": 100,
+                  "min": -100,
+                  "placeholder": "Minus tager, plus giver, fx -40",
+                  "step": 10
+                },
+                "type": "Number"
+              },
+              "checked": {
+                "config": {
+                  "default_value": true,
+                  "label": "Valgt fra start",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, afkrydset"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Plan: begivenheder i morgen"
+          },
+          "type": "Group"
+        },
+        "plan_note_badge": {
+          "config": {
+            "label": "Plan: mærke over noten",
+            "placeholder": "Fx Fremtidig funktion. Tomt = intet mærke",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_note": {
+          "config": {
+            "label": "Plan: note ved lav energi",
+            "placeholder": "Vises, når i morgen er valgt og energien er lav",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_time": {
+          "config": {
+            "label": "Dialog: tidspunkt",
+            "placeholder": "Fx 09.15"
+          },
+          "type": "Text"
+        },
+        "dialog_title": {
+          "config": {
+            "label": "Dialog: overskrift",
+            "placeholder": "Fx Før holdmødet",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_body": {
+          "config": {
+            "label": "Dialog: tekst",
+            "placeholder": "Hvad sker der på dette tidspunkt",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_label": {
+          "config": {
+            "label": "Dialog: skærmlæsertekst",
+            "placeholder": "Beskriv kortet for dem, der ikke kan se det"
+          },
+          "type": "Text"
+        },
+        "dialog_badge": {
+          "config": {
+            "label": "Dialog: mærke",
+            "placeholder": "Fx Fremtidig funktion. Tomt = intet mærke",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_card_title": {
+          "config": {
+            "label": "Dialog: kortets titel",
+            "placeholder": "Fx Mit dialogkort",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_card_note": {
+          "config": {
+            "label": "Dialog: tekst under titlen",
+            "placeholder": "Fx Delt med holdet",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_source_label": {
+          "config": {
+            "label": "Dialog: kilde",
+            "placeholder": "Fx Fra PlanioCheck",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_source_text": {
+          "config": {
+            "label": "Dialog: kildens tekst",
+            "placeholder": "Fx Koncentrationen er kort i dag.",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_helps_label": {
+          "config": {
+            "label": "Dialog: tekst over mærker",
+            "placeholder": "Fx Det hjælper mig",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "dialog_helps": {
+          "config": {
+            "fields": {
+              "text": {
+                "config": {
+                  "label": "Mærke",
+                  "placeholder": "Fx Én ting ad gangen",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              }
+            },
+            "label": "Dialog: det hjælper"
+          },
+          "type": "Group"
+        },
+        "reflect_time": {
+          "config": {
+            "label": "Refleksion: tidspunkt",
+            "placeholder": "Fx 10.45"
+          },
+          "type": "Text"
+        },
+        "reflect_title": {
+          "config": {
+            "label": "Refleksion: overskrift",
+            "placeholder": "Fx Hvordan gik det?",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_body": {
+          "config": {
+            "label": "Refleksion: tekst",
+            "placeholder": "Hvad sker der på dette tidspunkt",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_label": {
+          "config": {
+            "label": "Refleksion: skærmlæsertekst",
+            "placeholder": "Beskriv kortet for dem, der ikke kan se det"
+          },
+          "type": "Text"
+        },
+        "reflect_card_label": {
+          "config": {
+            "label": "Refleksion: lille label",
+            "placeholder": "Fx Holdmøde · planlagt -20%",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_question": {
+          "config": {
+            "label": "Refleksion: spørgsmål",
+            "placeholder": "Fx Hvordan havde du det bagefter?",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_drains_label": {
+          "config": {
+            "label": "Refleksion: label for tog",
+            "placeholder": "Fx Tog på kræfterne",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_drains": {
+          "config": {
+            "fields": {
+              "text": {
+                "config": {
+                  "label": "Mærke",
+                  "placeholder": "Fx For mange indtryk",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "selected": {
+                "config": {
+                  "default_value": false,
+                  "label": "Valgt",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, valgt"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Refleksion: tog på kræfterne"
+          },
+          "type": "Group"
+        },
+        "reflect_gives_label": {
+          "config": {
+            "label": "Refleksion: label for gav",
+            "placeholder": "Fx Gjorde godt",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_gives": {
+          "config": {
+            "fields": {
+              "text": {
+                "config": {
+                  "label": "Mærke",
+                  "placeholder": "Fx Rolig og tilpas",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "selected": {
+                "config": {
+                  "default_value": false,
+                  "label": "Valgt",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, valgt"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Refleksion: gjorde godt"
+          },
+          "type": "Group"
+        },
+        "reflect_result": {
+          "config": {
+            "label": "Refleksion: appens forslag",
+            "placeholder": "Fx Forslag: tager mere energi",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_note_badge": {
+          "config": {
+            "label": "Refleksion: mærke over note",
+            "placeholder": "Fx Fremtidig funktion. Tomt = intet mærke",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "reflect_note": {
+          "config": {
+            "label": "Refleksion: note",
+            "placeholder": "Fx Holdet tog over, da jeg mistede tråden.",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "remind_time": {
+          "config": {
+            "label": "Påmindelser: tidspunkt",
+            "placeholder": "Fx 14.20"
+          },
+          "type": "Text"
+        },
+        "remind_title": {
+          "config": {
+            "label": "Påmindelser: overskrift",
+            "placeholder": "Fx Check-in: Krop",
+            "single": "heading3,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "remind_body": {
+          "config": {
+            "label": "Påmindelser: tekst",
+            "placeholder": "Hvad sker der på dette tidspunkt",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "remind_label": {
+          "config": {
+            "label": "Påmindelser: skærmlæsertekst",
+            "placeholder": "Beskriv kortet for dem, der ikke kan se det"
+          },
+          "type": "Text"
+        },
+        "remind_card_title": {
+          "config": {
+            "label": "Påmindelser: kortets titel",
+            "placeholder": "Fx Faste påmindelser",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "remind_items": {
+          "config": {
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Påmindelse",
+                  "placeholder": "Fx Vitaminpiller",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "schedule": {
+                "config": {
+                  "label": "Hvornår",
+                  "placeholder": "Fx Hver dag · 08.00",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "now": {
+                "config": {
+                  "default_value": false,
+                  "label": "Fremhævet som nu",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, med mærket"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Påmindelser: liste"
+          },
+          "type": "Group"
+        },
+        "remind_now_label": {
+          "config": {
+            "label": "Påmindelser: mærke for nu",
+            "placeholder": "Fx nu",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

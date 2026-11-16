@@ -5,7 +5,6 @@ import {
   type TableField,
 } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
-import type { RichTextComponents } from "@prismicio/react";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
@@ -35,12 +34,6 @@ type CaseItem = Content.CaseStudiesSliceDefaultPrimaryCasesItem;
 
 // Cases synlige før "læs alle"-knappen (både mobil + desktop). Resten foldes ud.
 const CASE_VISIBLE = 2;
-
-// Meta-celler renderes gennem EviRichText (bevarer fed/kursiv/links), men uden
-// paragraph-wrapper → ren inline-tekst i <dt>/<dd> i stedet for et nested <p>.
-const INLINE_META: RichTextComponents = {
-  paragraph: ({ children }) => <>{children}</>,
-};
 
 /**
  * Meta-tabel → semantisk definition-liste (label · værdi). Vi læser feltets rå
@@ -78,17 +71,15 @@ function CaseMeta({
           className="border-t border-current/10 py-3 first:border-t-0"
         >
           <dt className="text-current">
-            <EviRichText.Raw
+            <EviRichText.Inline
               field={row.cells[0]?.content}
               linkResolver={linkResolver}
-              extraComponents={INLINE_META}
             />
           </dt>
           <dd className="min-w-0 font-medium wrap-anywhere @3xl/section:text-right">
-            <EviRichText.Raw
+            <EviRichText.Inline
               field={row.cells[1]?.content}
               linkResolver={linkResolver}
-              extraComponents={INLINE_META}
             />
           </dd>
         </EviStack>

@@ -90,6 +90,29 @@ function Raw({
   );
 }
 
+const INLINE_PARAGRAPH: RichTextComponents = {
+  paragraph: ({ children }) => <>{children}</>,
+};
+
+/**
+ * Som `Raw`, men afsnit renderes uden `<p>` → til tekst i elementer der kun må
+ * have inline-indhold (`<dt>`, `<legend>`, `<label>`, `<span>`). Kun til
+ * single-felter: flere afsnit ville flyde sammen.
+ */
+function Inline({
+  field,
+  linkResolver,
+  extraComponents,
+}: EviRichTextRawProps): React.ReactElement | null {
+  return (
+    <Raw
+      field={field}
+      linkResolver={linkResolver}
+      extraComponents={{ ...INLINE_PARAGRAPH, ...extraComponents }}
+    />
+  );
+}
+
 function Root({
   field,
   linkResolver,
@@ -116,4 +139,4 @@ function Root({
   );
 }
 
-export const EviRichText = Object.assign(Root, { Raw });
+export const EviRichText = Object.assign(Root, { Raw, Inline });

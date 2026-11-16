@@ -12,6 +12,7 @@ import Highlights from "./Highlights";
 import Logos from "./Logos";
 import Maps from "./Maps";
 import PhoneMockup from "./PhoneMockup";
+import PlanioDay from "./PlanioDay";
 import PlanioHero from "./PlanioHero";
 import Prices from "./Prices";
 import Profile from "./Profile";
@@ -32,6 +33,7 @@ export const components = {
 	logos: Logos,
 	maps: Maps,
 	phone_mockup: PhoneMockup,
+	planio_day: PlanioDay,
 	planio_hero: PlanioHero,
 	prices: Prices,
 	profile: Profile,

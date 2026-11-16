@@ -67,6 +67,9 @@
             },
             "planio_hero": {
               "type": "SharedSlice"
+            },
+            "planio_day": {
+              "type": "SharedSlice"
             }
           }
         },

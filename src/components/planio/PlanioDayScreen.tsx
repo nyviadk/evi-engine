@@ -10,9 +10,11 @@ import { CircleCheck } from "lucide-react";
 
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
+import {
+  PLANIO_ENERGY_SEGMENTS,
+  PlanioEnergyBar,
+} from "@/src/components/planio/PlanioEnergyBar";
 import { cn } from "@/src/lib/utils/cn";
-
-const SEGMENTS = 10;
 
 export type PlanioDayItem = {
   time: KeyTextField;
@@ -55,8 +57,8 @@ export function PlanioDayScreen({
   items,
   linkResolver,
 }: PlanioDayScreenProps): React.ReactElement {
-  const left = segment_count(energyLeft, SEGMENTS);
-  const used = segment_count(energyUsed, SEGMENTS - left);
+  const left = segment_count(energyLeft, PLANIO_ENERGY_SEGMENTS);
+  const used = segment_count(energyUsed, PLANIO_ENERGY_SEGMENTS - left);
 
   return (
     <div className="theme-light relative size-full px-4.5 pt-12">
@@ -79,19 +81,7 @@ export function PlanioDayScreen({
           <div className="text-[11px] font-bold">
             <EviRichText.Raw field={energy} linkResolver={linkResolver} />
           </div>
-          <EviStack direction="row" gap="xs">
-            {Array.from({ length: SEGMENTS }, (_, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "h-3.5 flex-1 rounded-sm",
-                  i < left && "bg-evi-primary",
-                  i >= left && i < left + used && "bg-evi-dark/15",
-                  i >= left + used && "border border-dashed border-evi-dark/30",
-                )}
-              />
-            ))}
-          </EviStack>
+          <PlanioEnergyBar filled={left} used={used} />
         </EviStack>
 
         <ul>

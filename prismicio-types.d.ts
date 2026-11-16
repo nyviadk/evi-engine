@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice
 
 /**
  * Content for Side documents
@@ -3200,6 +3200,854 @@ type PhoneMockupSliceVariation = PhoneMockupSliceMasked
 export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
 /**
+ * Item in *PlanioDay → Default → Primary → Energi: svar*
+ */
+export interface PlanioDaySliceDefaultPrimaryCheckAnswersItem {
+	/**
+	 * Spørgsmål field in *PlanioDay → Default → Primary → Energi: svar*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Kroppen
+	 * - **API ID Path**: planio_day.default.primary.check_answers[].question
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	question: prismic.RichTextField;
+	
+	/**
+	 * Svar field in *PlanioDay → Default → Primary → Energi: svar*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Godt tilpas
+	 * - **API ID Path**: planio_day.default.primary.check_answers[].answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	answer: prismic.RichTextField;
+}
+
+/**
+ * Item in *PlanioDay → Default → Primary → Plan: begivenheder i dag*
+ */
+export interface PlanioDaySliceDefaultPrimaryPlanTodayItemsItem {
+	/**
+	 * Begivenhed field in *PlanioDay → Default → Primary → Plan: begivenheder i dag*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Holdmøde
+	 * - **API ID Path**: planio_day.default.primary.plan_today_items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Tid field in *PlanioDay → Default → Primary → Plan: begivenheder i dag*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 09.30–10.30
+	 * - **API ID Path**: planio_day.default.primary.plan_today_items[].time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	time: prismic.KeyTextField;
+	
+	/**
+	 * Energi i % field in *PlanioDay → Default → Primary → Plan: begivenheder i dag*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Minus tager, plus giver, fx -20
+	 * - **API ID Path**: planio_day.default.primary.plan_today_items[].energy
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	energy: prismic.NumberField;
+	
+	/**
+	 * Valgt fra start field in *PlanioDay → Default → Primary → Plan: begivenheder i dag*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: planio_day.default.primary.plan_today_items[].checked
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	checked: prismic.BooleanField;
+}
+
+/**
+ * Item in *PlanioDay → Default → Primary → Plan: begivenheder i morgen*
+ */
+export interface PlanioDaySliceDefaultPrimaryPlanTomorrowItemsItem {
+	/**
+	 * Begivenhed field in *PlanioDay → Default → Primary → Plan: begivenheder i morgen*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Fødselsdag hos mor
+	 * - **API ID Path**: planio_day.default.primary.plan_tomorrow_items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Tid field in *PlanioDay → Default → Primary → Plan: begivenheder i morgen*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 18.00–21.00
+	 * - **API ID Path**: planio_day.default.primary.plan_tomorrow_items[].time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	time: prismic.KeyTextField;
+	
+	/**
+	 * Energi i % field in *PlanioDay → Default → Primary → Plan: begivenheder i morgen*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Minus tager, plus giver, fx -40
+	 * - **API ID Path**: planio_day.default.primary.plan_tomorrow_items[].energy
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	energy: prismic.NumberField;
+	
+	/**
+	 * Valgt fra start field in *PlanioDay → Default → Primary → Plan: begivenheder i morgen*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: planio_day.default.primary.plan_tomorrow_items[].checked
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	checked: prismic.BooleanField;
+}
+
+/**
+ * Item in *PlanioDay → Default → Primary → Dialog: det hjælper*
+ */
+export interface PlanioDaySliceDefaultPrimaryDialogHelpsItem {
+	/**
+	 * Mærke field in *PlanioDay → Default → Primary → Dialog: det hjælper*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Én ting ad gangen
+	 * - **API ID Path**: planio_day.default.primary.dialog_helps[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	text: prismic.RichTextField;
+}
+
+/**
+ * Item in *PlanioDay → Default → Primary → Refleksion: tog på kræfterne*
+ */
+export interface PlanioDaySliceDefaultPrimaryReflectDrainsItem {
+	/**
+	 * Mærke field in *PlanioDay → Default → Primary → Refleksion: tog på kræfterne*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx For mange indtryk
+	 * - **API ID Path**: planio_day.default.primary.reflect_drains[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	text: prismic.RichTextField;
+	
+	/**
+	 * Valgt field in *PlanioDay → Default → Primary → Refleksion: tog på kræfterne*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: planio_day.default.primary.reflect_drains[].selected
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	selected: prismic.BooleanField;
+}
+
+/**
+ * Item in *PlanioDay → Default → Primary → Refleksion: gjorde godt*
+ */
+export interface PlanioDaySliceDefaultPrimaryReflectGivesItem {
+	/**
+	 * Mærke field in *PlanioDay → Default → Primary → Refleksion: gjorde godt*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Rolig og tilpas
+	 * - **API ID Path**: planio_day.default.primary.reflect_gives[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	text: prismic.RichTextField;
+	
+	/**
+	 * Valgt field in *PlanioDay → Default → Primary → Refleksion: gjorde godt*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: planio_day.default.primary.reflect_gives[].selected
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	selected: prismic.BooleanField;
+}
+
+/**
+ * Item in *PlanioDay → Default → Primary → Påmindelser: liste*
+ */
+export interface PlanioDaySliceDefaultPrimaryRemindItemsItem {
+	/**
+	 * Påmindelse field in *PlanioDay → Default → Primary → Påmindelser: liste*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Vitaminpiller
+	 * - **API ID Path**: planio_day.default.primary.remind_items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Hvornår field in *PlanioDay → Default → Primary → Påmindelser: liste*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Hver dag · 08.00
+	 * - **API ID Path**: planio_day.default.primary.remind_items[].schedule
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	schedule: prismic.RichTextField;
+	
+	/**
+	 * Fremhævet som nu field in *PlanioDay → Default → Primary → Påmindelser: liste*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: planio_day.default.primary.remind_items[].now
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	now: prismic.BooleanField;
+}
+
+/**
+ * Primary content in *PlanioDay → Default → Primary*
+ */
+export interface PlanioDaySliceDefaultPrimary {
+	/**
+	 * Overskrift field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sæt det vigtigste med fed, fx anden halvdel
+	 * - **API ID Path**: planio_day.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: planio_day.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Energi: tidspunkt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 07.15
+	 * - **API ID Path**: planio_day.default.primary.check_time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	check_time: prismic.KeyTextField;
+	
+	/**
+	 * Energi: overskrift field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Dagens energi
+	 * - **API ID Path**: planio_day.default.primary.check_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	check_title: prismic.RichTextField;
+	
+	/**
+	 * Energi: tekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Hvad sker der på dette tidspunkt
+	 * - **API ID Path**: planio_day.default.primary.check_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	check_body: prismic.RichTextField;
+	
+	/**
+	 * Energi: skærmlæsertekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Beskriv kortet for dem, der ikke kan se det
+	 * - **API ID Path**: planio_day.default.primary.check_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	check_label: prismic.KeyTextField;
+	
+	/**
+	 * Energi: kortets titel field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx PlanioCheck
+	 * - **API ID Path**: planio_day.default.primary.check_card_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	check_card_title: prismic.RichTextField;
+	
+	/**
+	 * Energi: svar field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.check_answers[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	check_answers: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryCheckAnswersItem>>;
+	
+	/**
+	 * Energi: forslag field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Foreslået 50%
+	 * - **API ID Path**: planio_day.default.primary.check_result
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	check_result: prismic.RichTextField;
+	
+	/**
+	 * Energi: forslag i % field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Fylder bjælken, fx 50
+	 * - **API ID Path**: planio_day.default.primary.check_energy
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	check_energy: prismic.NumberField;
+	
+	/**
+	 * Energi: appens svar field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Koncentrationen er kort i dag.
+	 * - **API ID Path**: planio_day.default.primary.check_says
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	check_says: prismic.RichTextField;
+	
+	/**
+	 * Plan: tidspunkt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 07.30
+	 * - **API ID Path**: planio_day.default.primary.plan_time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_time: prismic.KeyTextField;
+	
+	/**
+	 * Plan: overskrift field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Planlæg dagen
+	 * - **API ID Path**: planio_day.default.primary.plan_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_title: prismic.RichTextField;
+	
+	/**
+	 * Plan: tekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Opfordr til at prøve demoen
+	 * - **API ID Path**: planio_day.default.primary.plan_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_body: prismic.RichTextField;
+	
+	/**
+	 * Plan: dagens energi i % field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Demoens startpunkt, fx 50
+	 * - **API ID Path**: planio_day.default.primary.plan_start
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	plan_start: prismic.NumberField;
+	
+	/**
+	 * Plan: tekst ved energi field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Dagens energi
+	 * - **API ID Path**: planio_day.default.primary.plan_energy_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_energy_label: prismic.RichTextField;
+	
+	/**
+	 * Plan: tekst ved planlagt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Planlagt
+	 * - **API ID Path**: planio_day.default.primary.plan_planned_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_planned_label: prismic.RichTextField;
+	
+	/**
+	 * Plan: tekst ved tilbage field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Tilbage
+	 * - **API ID Path**: planio_day.default.primary.plan_left_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_left_label: prismic.RichTextField;
+	
+	/**
+	 * Plan: status uden valg field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: {procent} bliver til tallet, fx Du starter på {procent}.
+	 * - **API ID Path**: planio_day.default.primary.plan_status_start
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_status_start: prismic.KeyTextField;
+	
+	/**
+	 * Plan: status i balance field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Din energi er i balance på {procent}.
+	 * - **API ID Path**: planio_day.default.primary.plan_status_balance
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_status_balance: prismic.KeyTextField;
+	
+	/**
+	 * Plan: status over start field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Du står på {procent}, mere end ventet.
+	 * - **API ID Path**: planio_day.default.primary.plan_status_over
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_status_over: prismic.KeyTextField;
+	
+	/**
+	 * Plan: status når det går op field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Din dag går præcis op.
+	 * - **API ID Path**: planio_day.default.primary.plan_status_zero
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_status_zero: prismic.KeyTextField;
+	
+	/**
+	 * Plan: status ved underskud field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx Du mangler {procent} for at være i balance.
+	 * - **API ID Path**: planio_day.default.primary.plan_status_short
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_status_short: prismic.KeyTextField;
+	
+	/**
+	 * Plan: i dag field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Dagen med fed, fx Onsdag i dag
+	 * - **API ID Path**: planio_day.default.primary.plan_today_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_today_label: prismic.RichTextField;
+	
+	/**
+	 * Plan: begivenheder i dag field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.plan_today_items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	plan_today_items: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryPlanTodayItemsItem>>;
+	
+	/**
+	 * Plan: i morgen field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Dagen med fed, fx Torsdag tæller i morgen
+	 * - **API ID Path**: planio_day.default.primary.plan_tomorrow_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_tomorrow_label: prismic.RichTextField;
+	
+	/**
+	 * Plan: begivenheder i morgen field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.plan_tomorrow_items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	plan_tomorrow_items: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryPlanTomorrowItemsItem>>;
+	
+	/**
+	 * Plan: mærke over noten field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Fremtidig funktion. Tomt = intet mærke
+	 * - **API ID Path**: planio_day.default.primary.plan_note_badge
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_note_badge: prismic.RichTextField;
+	
+	/**
+	 * Plan: note ved lav energi field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Vises, når i morgen er valgt og energien er lav
+	 * - **API ID Path**: planio_day.default.primary.plan_note
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_note: prismic.RichTextField;
+	
+	/**
+	 * Dialog: tidspunkt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 09.15
+	 * - **API ID Path**: planio_day.default.primary.dialog_time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	dialog_time: prismic.KeyTextField;
+	
+	/**
+	 * Dialog: overskrift field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Før holdmødet
+	 * - **API ID Path**: planio_day.default.primary.dialog_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_title: prismic.RichTextField;
+	
+	/**
+	 * Dialog: tekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Hvad sker der på dette tidspunkt
+	 * - **API ID Path**: planio_day.default.primary.dialog_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_body: prismic.RichTextField;
+	
+	/**
+	 * Dialog: skærmlæsertekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Beskriv kortet for dem, der ikke kan se det
+	 * - **API ID Path**: planio_day.default.primary.dialog_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	dialog_label: prismic.KeyTextField;
+	
+	/**
+	 * Dialog: mærke field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Fremtidig funktion. Tomt = intet mærke
+	 * - **API ID Path**: planio_day.default.primary.dialog_badge
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_badge: prismic.RichTextField;
+	
+	/**
+	 * Dialog: kortets titel field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Mit dialogkort
+	 * - **API ID Path**: planio_day.default.primary.dialog_card_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_card_title: prismic.RichTextField;
+	
+	/**
+	 * Dialog: tekst under titlen field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Delt med holdet
+	 * - **API ID Path**: planio_day.default.primary.dialog_card_note
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_card_note: prismic.RichTextField;
+	
+	/**
+	 * Dialog: kilde field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Fra PlanioCheck
+	 * - **API ID Path**: planio_day.default.primary.dialog_source_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_source_label: prismic.RichTextField;
+	
+	/**
+	 * Dialog: kildens tekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Koncentrationen er kort i dag.
+	 * - **API ID Path**: planio_day.default.primary.dialog_source_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_source_text: prismic.RichTextField;
+	
+	/**
+	 * Dialog: tekst over mærker field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Det hjælper mig
+	 * - **API ID Path**: planio_day.default.primary.dialog_helps_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	dialog_helps_label: prismic.RichTextField;
+	
+	/**
+	 * Dialog: det hjælper field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.dialog_helps[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	dialog_helps: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryDialogHelpsItem>>;
+	
+	/**
+	 * Refleksion: tidspunkt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 10.45
+	 * - **API ID Path**: planio_day.default.primary.reflect_time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	reflect_time: prismic.KeyTextField;
+	
+	/**
+	 * Refleksion: overskrift field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Hvordan gik det?
+	 * - **API ID Path**: planio_day.default.primary.reflect_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_title: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: tekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Hvad sker der på dette tidspunkt
+	 * - **API ID Path**: planio_day.default.primary.reflect_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_body: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: skærmlæsertekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Beskriv kortet for dem, der ikke kan se det
+	 * - **API ID Path**: planio_day.default.primary.reflect_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	reflect_label: prismic.KeyTextField;
+	
+	/**
+	 * Refleksion: lille label field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Holdmøde · planlagt -20%
+	 * - **API ID Path**: planio_day.default.primary.reflect_card_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_card_label: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: spørgsmål field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Hvordan havde du det bagefter?
+	 * - **API ID Path**: planio_day.default.primary.reflect_question
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_question: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: label for tog field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Tog på kræfterne
+	 * - **API ID Path**: planio_day.default.primary.reflect_drains_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_drains_label: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: tog på kræfterne field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.reflect_drains[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	reflect_drains: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryReflectDrainsItem>>;
+	
+	/**
+	 * Refleksion: label for gav field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Gjorde godt
+	 * - **API ID Path**: planio_day.default.primary.reflect_gives_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_gives_label: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: gjorde godt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.reflect_gives[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	reflect_gives: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryReflectGivesItem>>;
+	
+	/**
+	 * Refleksion: appens forslag field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Forslag: tager mere energi
+	 * - **API ID Path**: planio_day.default.primary.reflect_result
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_result: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: mærke over note field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Fremtidig funktion. Tomt = intet mærke
+	 * - **API ID Path**: planio_day.default.primary.reflect_note_badge
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_note_badge: prismic.RichTextField;
+	
+	/**
+	 * Refleksion: note field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Holdet tog over, da jeg mistede tråden.
+	 * - **API ID Path**: planio_day.default.primary.reflect_note
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	reflect_note: prismic.RichTextField;
+	
+	/**
+	 * Påmindelser: tidspunkt field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 14.20
+	 * - **API ID Path**: planio_day.default.primary.remind_time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	remind_time: prismic.KeyTextField;
+	
+	/**
+	 * Påmindelser: overskrift field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Check-in: Krop
+	 * - **API ID Path**: planio_day.default.primary.remind_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	remind_title: prismic.RichTextField;
+	
+	/**
+	 * Påmindelser: tekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Hvad sker der på dette tidspunkt
+	 * - **API ID Path**: planio_day.default.primary.remind_body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	remind_body: prismic.RichTextField;
+	
+	/**
+	 * Påmindelser: skærmlæsertekst field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Beskriv kortet for dem, der ikke kan se det
+	 * - **API ID Path**: planio_day.default.primary.remind_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	remind_label: prismic.KeyTextField;
+	
+	/**
+	 * Påmindelser: kortets titel field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Faste påmindelser
+	 * - **API ID Path**: planio_day.default.primary.remind_card_title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	remind_card_title: prismic.RichTextField;
+	
+	/**
+	 * Påmindelser: liste field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_day.default.primary.remind_items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	remind_items: prismic.GroupField<Simplify<PlanioDaySliceDefaultPrimaryRemindItemsItem>>;
+	
+	/**
+	 * Påmindelser: mærke for nu field in *PlanioDay → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx nu
+	 * - **API ID Path**: planio_day.default.primary.remind_now_label
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	remind_now_label: prismic.RichTextField;
+}
+
+/**
+ * Default variation for PlanioDay Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioDaySliceDefault = prismic.SharedSliceVariation<"default", Simplify<PlanioDaySliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PlanioDay*
+ */
+type PlanioDaySliceVariation = PlanioDaySliceDefault
+
+/**
+ * PlanioDay Shared Slice
+ *
+ * - **API ID**: `planio_day`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioDaySlice = prismic.SharedSlice<"planio_day", PlanioDaySliceVariation>;
+
+/**
  * Item in *PlanioHero → Default → Primary → Telefon: aftaler*
  */
 export interface PlanioHeroSliceDefaultPrimaryPlanItemsItem {
@@ -4509,6 +5357,17 @@ declare module "@prismicio/client" {
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
 			PhoneMockupSliceMasked,
+			PlanioDaySlice,
+			PlanioDaySliceDefaultPrimaryCheckAnswersItem,
+			PlanioDaySliceDefaultPrimaryPlanTodayItemsItem,
+			PlanioDaySliceDefaultPrimaryPlanTomorrowItemsItem,
+			PlanioDaySliceDefaultPrimaryDialogHelpsItem,
+			PlanioDaySliceDefaultPrimaryReflectDrainsItem,
+			PlanioDaySliceDefaultPrimaryReflectGivesItem,
+			PlanioDaySliceDefaultPrimaryRemindItemsItem,
+			PlanioDaySliceDefaultPrimary,
+			PlanioDaySliceVariation,
+			PlanioDaySliceDefault,
 			PlanioHeroSlice,
 			PlanioHeroSliceDefaultPrimaryPlanItemsItem,
 			PlanioHeroSliceDefaultPrimary,
