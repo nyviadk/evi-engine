@@ -9,15 +9,15 @@ export function prevent_double_click_select(event: React.MouseEvent): void {
 }
 
 /**
- * onClick på en `<label>`: har man lige trukket for at markere teksten (for at
- * kopiere), skal klikket ikke også krydse af. Chrome sender et klik efter
- * træk-markering, Safari gør ikke. Klik på selve feltet (også mellemrum på
- * tastaturet, hvor klikket kommer fra feltet) røres ikke.
+ * onClick på en `<label>` eller `<summary>`: har man lige trukket for at
+ * markere teksten (for at kopiere), skal klikket ikke også krydse af eller
+ * åbne/lukke. Tastaturklik (`detail === 0`) og klik på selve feltet røres
+ * ikke, så en gammel markering aldrig blokerer Enter/mellemrum.
  */
 export function ignore_click_after_text_select(
   event: React.MouseEvent<HTMLElement>,
 ): void {
-  if (event.target instanceof HTMLInputElement) return;
+  if (event.detail === 0 || event.target instanceof HTMLInputElement) return;
   const selection = window.getSelection();
   if (
     selection &&
