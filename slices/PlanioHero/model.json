@@ -1,0 +1,154 @@
+{
+  "id": "planio_hero",
+  "name": "PlanioHero",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_hero/default/eeb52fa6f565c3ce41588eb9dccdc84810ecfed5.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sidens primære overskrift (h1)",
+            "single": "heading1,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
+        },
+        "cta_link_secondary": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Sekundær knap"
+          },
+          "type": "Link"
+        },
+        "note": {
+          "config": {
+            "label": "Note under knapperne",
+            "placeholder": "Fx Gratis · Ingen reklamer · Dansk og engelsk",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "plan_label": {
+          "config": {
+            "label": "Telefon: beskrivelse",
+            "placeholder": "Læses op af skærmlæsere, fx Onsdagens plan i appen"
+          },
+          "type": "Text"
+        },
+        "plan_initials": {
+          "config": {
+            "label": "Telefon: initialer",
+            "placeholder": "To bogstaver i profilringen, fx OT"
+          },
+          "type": "Text"
+        },
+        "plan_day": {
+          "config": {
+            "label": "Telefon: dag",
+            "placeholder": "Fx Onsdag",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_date": {
+          "config": {
+            "label": "Telefon: dato",
+            "placeholder": "Fx 14. oktober · Uge 42",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_energy": {
+          "config": {
+            "label": "Telefon: energi",
+            "placeholder": "Fx 40% tilbage",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "plan_energy_left": {
+          "config": {
+            "label": "Telefon: fyldte energifelter",
+            "max": 10,
+            "min": 0,
+            "placeholder": "Ud af 10, fx 4",
+            "step": 1
+          },
+          "type": "Number"
+        },
+        "plan_energy_used": {
+          "config": {
+            "label": "Telefon: brugte energifelter",
+            "max": 10,
+            "min": 0,
+            "placeholder": "Grå felter efter de fyldte, fx 1",
+            "step": 1
+          },
+          "type": "Number"
+        },
+        "plan_items": {
+          "config": {
+            "fields": {
+              "time": {
+                "config": {
+                  "label": "Tidspunkt",
+                  "placeholder": "Fx 09.30"
+                },
+                "type": "Text"
+              },
+              "title": {
+                "config": {
+                  "label": "Aftale",
+                  "placeholder": "Fx Holdmøde",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "change": {
+                "config": {
+                  "label": "Energi",
+                  "placeholder": "Fx -20% eller +10%"
+                },
+                "type": "Text"
+              },
+              "done": {
+                "config": {
+                  "default_value": false,
+                  "label": "Udført",
+                  "placeholder_false": "Nej",
+                  "placeholder_true": "Ja, streget over"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Telefon: aftaler"
+          },
+          "type": "Group"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

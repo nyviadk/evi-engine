@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice
 
 /**
  * Content for Side documents
@@ -3200,6 +3200,210 @@ type PhoneMockupSliceVariation = PhoneMockupSliceMasked
 export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
 /**
+ * Item in *PlanioHero → Default → Primary → Telefon: aftaler*
+ */
+export interface PlanioHeroSliceDefaultPrimaryPlanItemsItem {
+	/**
+	 * Tidspunkt field in *PlanioHero → Default → Primary → Telefon: aftaler*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx 09.30
+	 * - **API ID Path**: planio_hero.default.primary.plan_items[].time
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	time: prismic.KeyTextField;
+	
+	/**
+	 * Aftale field in *PlanioHero → Default → Primary → Telefon: aftaler*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Holdmøde
+	 * - **API ID Path**: planio_hero.default.primary.plan_items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Energi field in *PlanioHero → Default → Primary → Telefon: aftaler*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Fx -20% eller +10%
+	 * - **API ID Path**: planio_hero.default.primary.plan_items[].change
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	change: prismic.KeyTextField;
+	
+	/**
+	 * Udført field in *PlanioHero → Default → Primary → Telefon: aftaler*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: planio_hero.default.primary.plan_items[].done
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	done: prismic.BooleanField;
+}
+
+/**
+ * Primary content in *PlanioHero → Default → Primary*
+ */
+export interface PlanioHeroSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sidens primære overskrift (h1)
+	 * - **API ID Path**: planio_hero.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: planio_hero.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Call-to-action field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_hero.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Sekundær knap field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_hero.default.primary.cta_link_secondary
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Note under knapperne field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Gratis · Ingen reklamer · Dansk og engelsk
+	 * - **API ID Path**: planio_hero.default.primary.note
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	note: prismic.RichTextField;
+	
+	/**
+	 * Telefon: beskrivelse field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Læses op af skærmlæsere, fx Onsdagens plan i appen
+	 * - **API ID Path**: planio_hero.default.primary.plan_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_label: prismic.KeyTextField;
+	
+	/**
+	 * Telefon: initialer field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: To bogstaver i profilringen, fx OT
+	 * - **API ID Path**: planio_hero.default.primary.plan_initials
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	plan_initials: prismic.KeyTextField;
+	
+	/**
+	 * Telefon: dag field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Onsdag
+	 * - **API ID Path**: planio_hero.default.primary.plan_day
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_day: prismic.RichTextField;
+	
+	/**
+	 * Telefon: dato field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx 14. oktober · Uge 42
+	 * - **API ID Path**: planio_hero.default.primary.plan_date
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_date: prismic.RichTextField;
+	
+	/**
+	 * Telefon: energi field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx 40% tilbage
+	 * - **API ID Path**: planio_hero.default.primary.plan_energy
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	plan_energy: prismic.RichTextField;
+	
+	/**
+	 * Telefon: fyldte energifelter field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Ud af 10, fx 4
+	 * - **API ID Path**: planio_hero.default.primary.plan_energy_left
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	plan_energy_left: prismic.NumberField;
+	
+	/**
+	 * Telefon: brugte energifelter field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Grå felter efter de fyldte, fx 1
+	 * - **API ID Path**: planio_hero.default.primary.plan_energy_used
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	plan_energy_used: prismic.NumberField;
+	
+	/**
+	 * Telefon: aftaler field in *PlanioHero → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_hero.default.primary.plan_items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	plan_items: prismic.GroupField<Simplify<PlanioHeroSliceDefaultPrimaryPlanItemsItem>>;
+}
+
+/**
+ * Default variation for PlanioHero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioHeroSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PlanioHeroSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PlanioHero*
+ */
+type PlanioHeroSliceVariation = PlanioHeroSliceDefault
+
+/**
+ * PlanioHero Shared Slice
+ *
+ * - **API ID**: `planio_hero`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioHeroSlice = prismic.SharedSlice<"planio_hero", PlanioHeroSliceVariation>;
+
+/**
  * Item in *Prices → Default → Primary → Pakker*
  */
 export interface PricesSliceDefaultPrimaryPlansItem {
@@ -4305,6 +4509,11 @@ declare module "@prismicio/client" {
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
 			PhoneMockupSliceMasked,
+			PlanioHeroSlice,
+			PlanioHeroSliceDefaultPrimaryPlanItemsItem,
+			PlanioHeroSliceDefaultPrimary,
+			PlanioHeroSliceVariation,
+			PlanioHeroSliceDefault,
 			PricesSlice,
 			PricesSliceDefaultPrimaryPlansItem,
 			PricesSliceDefaultPrimary,

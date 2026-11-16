@@ -64,6 +64,9 @@
             },
             "logos": {
               "type": "SharedSlice"
+            },
+            "planio_hero": {
+              "type": "SharedSlice"
             }
           }
         },
