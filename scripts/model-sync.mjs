@@ -6,10 +6,11 @@
 // Brug:   npm run evi:model
 
 import { execSync } from "node:child_process";
+import { with_agent_flags } from "./prismic/agent-flags.mjs";
 
 function run(cmd) {
   console.log(`\n$ ${cmd}`);
-  execSync(cmd, { stdio: "inherit" });
+  execSync(with_agent_flags(cmd), { stdio: "inherit" });
 }
 
 console.log("→ Synkroniserer Prismic-model (push → pull → gen types)…");

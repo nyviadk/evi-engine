@@ -31,6 +31,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 import net from "node:net";
 import fs from "node:fs";
 import path from "node:path";
+import { with_agent_flags } from "./prismic/agent-flags.mjs";
 
 // ─── Config ───────────────────────────────────────────────────────────
 
@@ -81,13 +82,17 @@ function verify_prismic_repo() {
   console.log("→ Verifying Prismic CLI repo…");
   let status;
   try {
-    status = execSync("npx prismic status", { encoding: "utf-8" });
+    status = execSync(with_agent_flags("npx prismic status"), {
+      encoding: "utf-8",
+    });
   } catch {
     // Login udløber → status fejler. Log ind (åbner browser) og prøv igen,
     // samme fallback som evi:model. Auth persisterer bagefter.
     console.log("  ⚠ Ikke logget ind — kører prismic login og prøver igen…");
-    execSync("npx prismic login", { stdio: "inherit" });
-    status = execSync("npx prismic status", { encoding: "utf-8" });
+    execSync(with_agent_flags("npx prismic login"), { stdio: "inherit" });
+    status = execSync(with_agent_flags("npx prismic status"), {
+      encoding: "utf-8",
+    });
   }
   const match = status.match(/Repository:\s*(\S+)/);
   if (!match) {
@@ -177,17 +182,18 @@ async function probe_status(url, timeout_ms) {
   }
 }
 
-// Dræb hele process-træet. På Windows er proc.pid `npm`-wrapperen; `.kill()`
-// efterlader `next`-barnet som zombie → taskkill /T tager hele træet.
+// Dræb hele process-træet. proc.pid er kun shell/npm-wrapperen; `.kill()`
+// efterlader `next`-barnet som zombie, der holder porten. Windows: taskkill /T.
+// Ellers er serveren startet i egen procesgruppe (detached) → dræb gruppen.
 function kill_tree(proc) {
-  if (process.platform === "win32") {
-    try {
+  try {
+    if (process.platform === "win32") {
       execSync(`taskkill /PID ${proc.pid} /T /F`, { stdio: "ignore" });
-    } catch {
-      /* allerede væk */
+    } else {
+      process.kill(-proc.pid, "SIGTERM");
     }
-  } else {
-    proc.kill();
+  } catch {
+    /* allerede væk */
   }
 }
 
@@ -224,6 +230,7 @@ async function ensure_dev_server(probe_path) {
   const proc = spawn("npm", ["run", "dev", "--", "--port", String(port)], {
     stdio: ["ignore", "pipe", "pipe"],
     shell: true,
+    detached: process.platform !== "win32",
   });
 
   // Fang exit + log, så en tidlig crash ikke bliver til 180s tavs polling.
@@ -293,7 +300,9 @@ async function screenshot_and_upload(browser, slice) {
     console.log(`  ✓ Screenshot → ${screenshot_path}`);
 
     execSync(
-      `npx prismic slice edit-variation ${variation.id} --from-slice ${slice_id} --screenshot ./${screenshot_path.replace(/\\/g, "/")}`,
+      with_agent_flags(
+        `npx prismic slice edit-variation ${variation.id} --from-slice ${slice_id} --screenshot ./${screenshot_path.replace(/\\/g, "/")}`,
+      ),
       { stdio: "inherit" },
     );
     processed++;
@@ -337,24 +346,29 @@ async function main() {
   const probe_path = `/slice-preview/${first.slice_id}/${first_variation}`;
   const dev_proc = await ensure_dev_server(probe_path);
 
-  const browser = await chromium.launch({ headless: true });
+  let browser;
   let total_processed = 0;
   let total_skipped = 0;
 
+  // launch inde i try: fejler den (fx manglende Playwright-browser), skal
+  // dev-serveren stadig dræbes.
   try {
+    browser = await chromium.launch({ headless: true });
     for (const slice of slices) {
       const { processed, skipped } = await screenshot_and_upload(browser, slice);
       total_processed += processed;
       total_skipped += skipped;
     }
   } finally {
-    await browser.close();
+    await browser?.close();
     if (dev_proc) kill_tree(dev_proc);
   }
 
   if (total_processed > 0) {
     console.log("\n→ Pushing updated slice models to Prismic cloud…");
-    execSync("npx prismic push --force", { stdio: "inherit" });
+    execSync(with_agent_flags("npx prismic push --force"), {
+      stdio: "inherit",
+    });
     console.log("  ✓ Pushed to evi-engine cloud");
   } else {
     console.log("\n→ Nothing to push (all variations skipped)");

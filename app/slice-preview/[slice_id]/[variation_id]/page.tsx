@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 /**
@@ -17,6 +18,25 @@ import { notFound } from "next/navigation";
  * text-evi-text-on-light) — NOT slice styling. Documented exception to R3
  * for dev-tooling only; the route returns 404 outside `next dev`.
  */
+
+// Mocks må pege på lokale filer i public/ (fx "/preview/logos/x.svg"), men
+// imgix-loaderen i PrismicNextImage kalder new URL(src) og kræver absolutte URL'er.
+function absolutize_local_urls(value: unknown, origin: string): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item) => absolutize_local_urls(item, origin));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [
+        key,
+        key === "url" && typeof item === "string" && item.startsWith("/")
+          ? `${origin}${item}`
+          : absolutize_local_urls(item, origin),
+      ]),
+    );
+  }
+  return value;
+}
 
 function snake_to_pascal(snake: string): string {
   return snake
@@ -63,6 +83,9 @@ export default async function SlicePreviewPage({
   }
 
   if (!slice) notFound();
+
+  const host = (await headers()).get("host") ?? "localhost:3000";
+  slice = absolutize_local_urls(slice, `http://${host}`);
 
   return (
     <div
