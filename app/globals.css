@@ -48,8 +48,12 @@
   /* `rounded-full` betyder "cirkel/pille" — men squircle-reset'et ovenfor
      rendrer den som en superellipse, så cirkler ser masede ud (ikon-badges,
      EviTag-piller). Opt ud, så formen matcher intentionen. Klasse-selector
-     slår `*` i samme layer. Samme grund som EviPhoneMockup's opt-out nedenfor. */
-  .rounded-full {
+     slår `*` i samme layer. Samme grund som EviPhoneMockup's opt-out nedenfor.
+     `before:`/`after:rounded-full` står i elementets class, men former
+     pseudo-elementet, så de kræver en attribut-selector. */
+  .rounded-full,
+  [class*="before:rounded-full"]::before,
+  [class*="after:rounded-full"]::after {
     corner-shape: round;
   }
 
