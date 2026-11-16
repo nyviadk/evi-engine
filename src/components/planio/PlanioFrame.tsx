@@ -11,8 +11,9 @@ export type PlanioFrameProps = Omit<React.ComponentProps<"div">, "aria-label"> &
 };
 
 /**
- * Lys primær-scene om et app-kort. Samme padding-skala som EviImage
- * `framed`, men i `theme-primary-soft` som designet.
+ * Lys primær-scene om et app-kort i `theme-primary-soft` som designet.
+ * Padding som EviImage `framed`, men p-3 på mobil: skinne, ramme og kort
+ * lægger hver deres luft ind, og ved 280px var kortet ellers kun 168px bredt.
  */
 export function PlanioFrame({
   label,
@@ -27,7 +28,7 @@ export function PlanioFrame({
       role={described ? "img" : undefined}
       aria-label={described ? label : undefined}
       className={cn(
-        "theme-primary-soft flex flex-col items-center justify-center rounded-evi p-4 sm:p-6 md:p-8",
+        "theme-primary-soft flex flex-col items-center justify-center rounded-evi p-3 sm:p-6 md:p-8",
         className,
       )}
       {...props}

@@ -1,22 +1,24 @@
 #!/usr/bin/env node
 // Responsivitets-tjek af en slice via dev-only preview-routen, før den
-// afleveres: screenshots af hver variation ved fire bredder i Chromium og
-// WebKit (Safaris motor), vandret overflow og synligt tastaturfokus på første
-// link. Genbruger en kørende `npm run dev` eller starter selv en
-// (scripts/dev-server.mjs); --url peger et bestemt sted hen.
+// afleveres: screenshots af hver variation ved fem bredder i Chromium og
+// WebKit (Safaris motor), vandret overflow, tekst der stikker ud af sin kasse
+// og synligt tastaturfokus på første link. Genbruger en kørende `npm run dev`
+// eller starter selv en (scripts/dev-server.mjs); --url peger et bestemt sted hen.
 //
 // Brug:   npm run evi:check-responsive -- -s <slice_id> [--url <dev-url>] [--browser chromium|webkit]
 //
 // Screenshots lægges i <tmp>/evi-responsive/<slice_id>/ og skal ses igennem;
-// overflow > 0 eller usynligt/navnløst fokus giver exit-kode 1.
+// overflow > 0, tekst ud af sin kasse eller usynligt/navnløst fokus giver exit-kode 1.
 
 import { chromium, webkit } from "playwright";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { ensure_dev_server, stop_dev_server } from "./dev-server.mjs";
+import { find_text_spills } from "./page-checks.mjs";
 
-const WIDTHS = [375, 768, 1024, 1440];
+// 280: smalle telefoner og zoomet tekst; dér klemmes indlejrede kasser først.
+const WIDTHS = [280, 375, 768, 1024, 1440];
 const BROWSERS = { chromium, webkit };
 
 const args = process.argv.slice(2);
@@ -70,13 +72,15 @@ async function check_widths(browser, browser_name) {
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth - window.innerWidth,
       );
+      const spills = await page.evaluate(find_text_spills);
       const file = path.join(out, `${browser_name}-${variation}-${width}.png`);
       await page.locator('[data-testid="preview-target"]').screenshot({ path: file });
-      const ok = overflow <= 0;
+      const ok = overflow <= 0 && spills.length === 0;
       if (!ok) failed = true;
       console.log(
-        `${ok ? "✓" : "✗"} ${browser_name} ${variation} @${width}px  overflow ${Math.max(overflow, 0)}px  → ${file}`,
+        `${ok ? "✓" : "✗"} ${browser_name} ${variation} @${width}px  overflow ${Math.max(overflow, 0)}px${spills.length ? `, ${spills.length} tekster ud af deres kasse` : ""}  → ${file}`,
       );
+      for (const spill of spills) console.log(`    ${spill}`);
       await page.close();
     }
   }

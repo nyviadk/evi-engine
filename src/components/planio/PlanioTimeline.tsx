@@ -135,7 +135,10 @@ function Title({
   if (!isFilled.richText(title)) return null;
 
   return (
-    <div data-slot="planio-timeline-title" className={evi_card_title_class("2xl")}>
+    <div
+      data-slot="planio-timeline-title"
+      className={cn(evi_card_title_class("xl"), "sm:[&_h3]:text-2xl")}
+    >
       <EviRichText.Raw
         field={title}
         linkResolver={linkResolver}

@@ -2,7 +2,6 @@
 
 import { createContext, use, useState } from "react";
 
-import { EviStack } from "@/src/components/layout/EviStack";
 import {
   PlanioEnergyBar,
   energy_segments,
@@ -114,7 +113,8 @@ export function PlanioDemo({
 
 /**
  * Tal + batteri. Sticky på mobil, så man ser energien, mens man krydser af;
- * de negative marginer lader baggrunden gå ud til PlanioFrame-kanten.
+ * de negative marginer (= PlanioFrames padding) lader baggrunden gå ud til
+ * kanten. Container, så tallene kan blive mindre, når måleren er smal.
  */
 export function PlanioDemoMeter({
   children,
@@ -124,7 +124,7 @@ export function PlanioDemoMeter({
   return (
     <div
       data-slot="planio-demo-meter"
-      className="sticky top-0 z-10 -mx-4 flex flex-col gap-4 bg-(--theme-bg) px-4 py-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
+      className="@container/meter sticky top-0 z-10 -mx-3 flex flex-col gap-4 bg-(--theme-bg) p-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
     >
       {children}
     </div>
@@ -136,10 +136,12 @@ export function PlanioDemoStats({
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
+  // Rå grid frem for EviStack: mellemrummet skal skrumpe med måleren, og
+  // EviStacks gap er fast. ps-0: globals.css rykker lister i lister ind.
   return (
-    <EviStack as="dl" direction="row" gap="sm" aria-live="polite" className="ps-0">
+    <dl aria-live="polite" className="grid grid-cols-3 gap-1 ps-0 @2xs/meter:gap-2">
       {children}
-    </EviStack>
+    </dl>
   );
 }
 
@@ -166,12 +168,16 @@ export function PlanioDemoStat({
     <div
       aria-atomic
       className={cn(
-        "flex min-w-0 flex-1 flex-col gap-0.5 rounded-evi px-3 py-2.5",
+        "flex min-w-0 flex-col gap-0.5 rounded-evi px-2 py-2 @2xs/meter:px-3 @2xs/meter:py-2.5",
         kind === "left" ? "theme-primary" : "theme-light",
       )}
     >
-      <dt className="text-xs leading-snug font-semibold">{label}</dt>
-      <dd className="text-xl leading-snug font-bold tabular-nums">{value}</dd>
+      <dt className="text-xs leading-snug font-semibold wrap-break-word hyphens-auto">
+        {label}
+      </dt>
+      <dd className="text-sm leading-snug font-bold tabular-nums @3xs/meter:text-base @2xs/meter:text-xl">
+        {value}
+      </dd>
     </div>
   );
 }
@@ -188,7 +194,10 @@ export function PlanioDemoBattery(): React.ReactElement {
   );
 }
 
-/** Listen af dage. Mellem to dage en stiplet streg. */
+/**
+ * Listen af dage. Mellem to dage en stiplet streg. Container, så rækkerne kan
+ * lægge procenten under titlen, når listen er smal.
+ */
 export function PlanioDemoList({
   children,
 }: {
@@ -197,7 +206,7 @@ export function PlanioDemoList({
   return (
     <div
       data-slot="planio-demo-list"
-      className="theme-light min-w-0 rounded-evi px-4 py-2 sm:px-6 sm:py-3 @3xl/section:col-start-2 @3xl/section:row-span-2 @3xl/section:row-start-1 [&>fieldset+fieldset]:mt-1.5 [&>fieldset+fieldset]:border-t [&>fieldset+fieldset]:border-dashed [&>fieldset+fieldset]:border-current/25 [&>fieldset+fieldset]:pt-1"
+      className="theme-light @container/list min-w-0 rounded-evi px-3 py-2 sm:px-6 sm:py-3 @3xl/section:col-start-2 @3xl/section:row-span-2 @3xl/section:row-start-1 [&>fieldset+fieldset]:mt-1.5 [&>fieldset+fieldset]:border-t [&>fieldset+fieldset]:border-dashed [&>fieldset+fieldset]:border-current/25 [&>fieldset+fieldset]:pt-1"
     >
       {children}
     </div>
@@ -238,25 +247,32 @@ export function PlanioDemoItem({
 }: PlanioDemoItemProps): React.ReactElement {
   const { isChecked, toggle } = useDemo();
 
+  // Smal liste: tid og procent deler linjen under titlen og folder, når der
+  // ikke er plads, så titlen får hele bredden. Fra @xs/list bliver linjen
+  // `contents`, og procenten står i sin egen kolonne til højre (designet).
   return (
-    <label className="flex min-h-12 cursor-pointer items-center gap-3.5 border-b border-current/10 last:border-b-0 @3xl/section:min-h-15">
+    <label className="grid min-h-12 cursor-pointer grid-cols-[auto_1fr] items-center gap-x-3 border-b border-current/10 py-1.5 last:border-b-0 @xs/list:grid-cols-[auto_1fr_auto] @xs/list:gap-x-3.5 @3xl/section:min-h-15">
       <input
         type="checkbox"
-        className="size-5 shrink-0"
+        className="row-span-2 size-5"
         checked={isChecked(eventKey)}
         onChange={() => toggle(eventKey)}
       />
-      <span className="flex min-w-0 flex-1 flex-col gap-px">
-        <span className="font-bold">{title}</span>
-        {time && <span className="text-xs font-semibold">{time}</span>}
-      </span>
-      <span
-        className={cn(
-          "shrink-0 text-sm font-bold tabular-nums",
-          energy > 0 && "theme-surface-primary rounded-full px-2.5 py-0.5",
+      <span className="min-w-0 font-bold wrap-break-word hyphens-auto">{title}</span>
+      <span className="col-start-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 @xs/list:contents">
+        {time && (
+          <span className="text-xs font-semibold whitespace-nowrap @xs/list:col-start-2 @xs/list:row-start-2">
+            {time}
+          </span>
         )}
-      >
-        {format_change(energy)}
+        <span
+          className={cn(
+            "text-sm font-bold whitespace-nowrap tabular-nums @xs/list:col-start-3 @xs/list:row-span-2 @xs/list:row-start-1 @xs/list:justify-self-end",
+            energy > 0 && "theme-surface-primary rounded-full px-2.5 py-0.5",
+          )}
+        >
+          {format_change(energy)}
+        </span>
       </span>
     </label>
   );

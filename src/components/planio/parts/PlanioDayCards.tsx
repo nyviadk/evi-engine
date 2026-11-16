@@ -76,17 +76,20 @@ export function PlanioCheckCard({
         // ps-0: globals.css rykker lister i lister ind, og kortet står i tidslinjens <ol>.
         <dl className="ps-0 text-sm">
           {answers.map((answer, i) => (
+            // wrap: er der ikke plads ved siden af spørgsmålet, lægger svaret
+            // sig på linjen under (højrestillet) i stedet for at klemmes.
             <EviStack
               key={i}
               direction="row"
+              wrap
               justify="between"
-              gap="md"
-              className="border-b border-current/10 py-2.5 last:border-b-0"
+              gap="sm"
+              className="border-b border-current/10 py-2.5 wrap-break-word hyphens-auto last:border-b-0"
             >
-              <dt className="font-semibold">
+              <dt className="min-w-0 font-semibold">
                 <EviRichText.Inline field={answer.question} linkResolver={linkResolver} />
               </dt>
-              <dd className="text-right font-bold">
+              <dd className="ml-auto min-w-0 text-right font-bold">
                 <EviRichText.Inline field={answer.answer} linkResolver={linkResolver} />
               </dd>
             </EviStack>
@@ -222,23 +225,27 @@ export function PlanioReminderCard({
               as="li"
               direction="row"
               align="center"
-              gap="md"
+              gap="sm"
               className="border-t border-current/10 py-3 last:pb-0"
             >
               <EviIconBadge name="lucide:bell" tone={item.now ? "solid" : "surface"} />
-              <div className="min-w-0 flex-1">
-                <div className="font-bold">
-                  <EviRichText.Raw field={item.title} linkResolver={linkResolver} />
-                </div>
+              <div className="min-w-0 flex-1 wrap-break-word hyphens-auto">
+                {/* "nu" står til højre for titlen og ryger under den, når der
+                    ikke er plads, frem for at tage en kolonne fra teksten. */}
+                <EviStack direction="row" wrap justify="between" align="center" gap="xs">
+                  <div className="min-w-0 text-sm font-bold sm:text-base">
+                    <EviRichText.Raw field={item.title} linkResolver={linkResolver} />
+                  </div>
+                  {item.now && isFilled.richText(p.remind_now_label) && (
+                    <span className="theme-dark rounded-full px-2.5 py-0.5 text-xs font-bold">
+                      <EviRichText.Inline field={p.remind_now_label} linkResolver={linkResolver} />
+                    </span>
+                  )}
+                </EviStack>
                 <div className="text-xs font-semibold">
                   <EviRichText.Raw field={item.schedule} linkResolver={linkResolver} />
                 </div>
               </div>
-              {item.now && isFilled.richText(p.remind_now_label) && (
-                <span className="theme-dark shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold">
-                  <EviRichText.Inline field={p.remind_now_label} linkResolver={linkResolver} />
-                </span>
-              )}
             </EviStack>
           ))}
         </ul>

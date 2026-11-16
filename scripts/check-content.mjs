@@ -2,20 +2,23 @@
 // Indholdstjek af en rigtig side, før indhold afleveres: den publicerede side
 // eller et Prismic-preview-link (linket sætter preview-cookien, så releasen
 // vises). Screenshots ved flere bredder i Chromium og WebKit, vandret overflow,
-// billeder der ikke loader, links/knapper uden navn og overskriftsrækkefølgen.
+// tekst der stikker ud af sin kasse, billeder der ikke loader, links/knapper
+// uden navn og overskriftsrækkefølgen.
 //
 // Brug:   npm run evi:check-content -- --url <side eller preview-link> [--widths 375,1440] [--browser chromium|webkit]
 //
 // Screenshots lægges i <tmp>/evi-content/<host>/ og skal ses igennem. Overflow,
-// brudte billeder eller navnløse links giver exit-kode 1; spring i
-// overskriftsniveauer og flere h1 er advarsler.
+// tekst ud af sin kasse, brudte billeder eller navnløse links giver exit-kode 1;
+// spring i overskriftsniveauer og flere h1 er advarsler.
 
 import { chromium, webkit } from "playwright";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { find_text_spills } from "./page-checks.mjs";
 
-const DEFAULT_WIDTHS = [375, 768, 1024, 1280, 1440];
+// 280: smalle telefoner og zoomet tekst; dér klemmes indlejrede kasser først.
+const DEFAULT_WIDTHS = [280, 375, 768, 1024, 1280, 1440];
 const BROWSERS = { chromium, webkit };
 
 const args = process.argv.slice(2);
@@ -111,10 +114,12 @@ async function check_browser(engine, browser_name) {
       await page.goto(page_url, { waitUntil: "networkidle", timeout: 120_000 });
       await load_lazy(page);
       report = await page.evaluate(inspect);
+      const spills = await page.evaluate(find_text_spills);
       const file = path.join(out, `${browser_name}-${width}.png`);
       await page.screenshot({ path: file, fullPage: true });
       const problems = [
         report.overflow > 0 && `overflow ${report.overflow}px`,
+        spills.length > 0 && `${spills.length} tekster ud af deres kasse`,
         report.broken.length > 0 && `${report.broken.length} brudte billeder`,
         report.unnamed.length > 0 && `${report.unnamed.length} links/knapper uden navn`,
       ].filter(Boolean);
@@ -122,6 +127,7 @@ async function check_browser(engine, browser_name) {
       console.log(
         `${problems.length ? "✗" : "✓"} ${browser_name} @${width}px  ${problems.join(", ") || "ok"}  → ${file}`,
       );
+      for (const spill of spills) console.log(`    ${spill}`);
       for (const src of report.broken) console.log(`    brudt billede: ${src}`);
       for (const html of report.unnamed) console.log(`    uden navn: ${html}`);
     }
