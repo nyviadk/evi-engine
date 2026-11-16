@@ -3,11 +3,16 @@ import { PrismicNextImage } from "@prismicio/next";
 import { cn } from "@/src/lib/utils/cn";
 import { lqip_url } from "@/src/lib/utils/imgix";
 
+/** Skærmen er enten et app-screenshot eller eget indhold (fx en HTML-bygget app-skærm). */
+type EviPhoneMockupScreen =
+  | { field: ImageField; children?: never }
+  | { field?: never; children: React.ReactNode };
+
 export type EviPhoneMockupProps = Omit<
   React.ComponentProps<"div">,
   "children"
-> & {
-  field: ImageField;
+> &
+  EviPhoneMockupScreen & {
   /**
    * Eager-load billedet (above-the-fold) via loading="eager", så rammen ikke
    * flasher tom før billedet loader. Next 16: `priority` er deprecated, og
@@ -34,14 +39,16 @@ export type EviPhoneMockupProps = Omit<
  */
 export function EviPhoneMockup({
   field,
+  children,
   className,
   eager = false,
   preload = false,
   ...rest
 }: EviPhoneMockupProps): React.ReactElement | null {
-  if (!isFilled.image(field)) return null;
+  const image = field && isFilled.image(field) ? field : null;
+  if (!image && children == null) return null;
 
-  const blurUrl = lqip_url(field.url);
+  const blurUrl = image ? lqip_url(image.url) : null;
 
   return (
     <div
@@ -87,19 +94,23 @@ export function EviPhoneMockup({
         className="relative isolate size-full overflow-hidden rounded-[calc(var(--frame-r)-var(--frame-p))] border border-evi-light/10 bg-evi-dark bg-cover bg-center"
         style={blurUrl ? { backgroundImage: `url("${blurUrl}")` } : undefined}
       >
-        <PrismicNextImage
-          field={field}
-          fill
-          // Uden sizes antager Next 100vw og henter et kæmpe billede. Mockup
-          // er max ~360px (capped) og ~75vw på mobil → hent en lille variant.
-          sizes="(min-width: 430px) 360px, 75vw"
-          // preload (LCP) og loading må ikke kombineres → vælg én.
-          {...(preload
-            ? { preload: true }
-            : { loading: (eager ? "eager" : "lazy") as "eager" | "lazy" })}
-          className="object-cover select-none"
-          fallbackAlt=""
-        />
+        {image ? (
+          <PrismicNextImage
+            field={image}
+            fill
+            // Uden sizes antager Next 100vw og henter et kæmpe billede. Mockup
+            // er max ~360px (capped) og ~75vw på mobil → hent en lille variant.
+            sizes="(min-width: 430px) 360px, 75vw"
+            // preload (LCP) og loading må ikke kombineres → vælg én.
+            {...(preload
+              ? { preload: true }
+              : { loading: (eager ? "eager" : "lazy") as "eager" | "lazy" })}
+            className="object-cover select-none"
+            fallbackAlt=""
+          />
+        ) : (
+          children
+        )}
       </div>
     </div>
   );
