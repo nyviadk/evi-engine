@@ -2,6 +2,7 @@
 
 import { createContext, use, useState } from "react";
 
+import { EviStack } from "@/src/components/layout/EviStack";
 import {
   PlanioEnergyBar,
   energy_segments,
@@ -114,7 +115,7 @@ export function PlanioDemo({
 /**
  * Tal + batteri. Sticky på mobil, så man ser energien, mens man krydser af;
  * de negative marginer (= PlanioFrames padding) lader baggrunden gå ud til
- * kanten. Container, så tallene kan blive mindre, når måleren er smal.
+ * kanten.
  */
 export function PlanioDemoMeter({
   children,
@@ -124,7 +125,7 @@ export function PlanioDemoMeter({
   return (
     <div
       data-slot="planio-demo-meter"
-      className="@container/meter sticky top-0 z-10 -mx-3 flex flex-col gap-4 bg-(--theme-bg) p-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
+      className="sticky top-0 z-10 -mx-3 flex flex-col gap-4 bg-(--theme-bg) p-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
     >
       {children}
     </div>
@@ -136,12 +137,13 @@ export function PlanioDemoStats({
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
-  // Rå grid frem for EviStack: mellemrummet skal skrumpe med måleren, og
-  // EviStacks gap er fast. ps-0: globals.css rykker lister i lister ind.
+  // wrap + basis-20 pr. tal: tre lige brede på én række, når der er plads;
+  // ellers folder "Tilbage" ned i fuld bredde. ps-0: globals.css rykker
+  // lister i lister ind.
   return (
-    <dl aria-live="polite" className="grid grid-cols-3 gap-1 ps-0 @2xs/meter:gap-2">
+    <EviStack as="dl" direction="row" wrap gap="sm" aria-live="polite" className="ps-0">
       {children}
-    </dl>
+    </EviStack>
   );
 }
 
@@ -168,14 +170,14 @@ export function PlanioDemoStat({
     <div
       aria-atomic
       className={cn(
-        "flex min-w-0 flex-col gap-0.5 rounded-evi px-2 py-2 @2xs/meter:px-3 @2xs/meter:py-2.5",
+        "flex min-w-0 grow basis-20 flex-col gap-0.5 rounded-evi px-3 py-2.5",
         kind === "left" ? "theme-primary" : "theme-light",
       )}
     >
       <dt className="text-xs leading-snug font-semibold wrap-break-word hyphens-auto">
         {label}
       </dt>
-      <dd className="text-sm leading-snug font-bold tabular-nums @3xs/meter:text-base @2xs/meter:text-xl">
+      <dd className="text-xl leading-snug font-bold tabular-nums">
         {value}
       </dd>
     </div>
