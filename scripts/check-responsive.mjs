@@ -2,9 +2,10 @@
 // Responsivitets-tjek af en slice via dev-only preview-routen, før den
 // afleveres: screenshots af hver variation ved fire bredder i Chromium og
 // WebKit (Safaris motor), vandret overflow og synligt tastaturfokus på første
-// link. Kræver en kørende `npm run dev`.
+// link. Genbruger en kørende `npm run dev` eller starter selv en
+// (scripts/dev-server.mjs); --url peger et bestemt sted hen.
 //
-// Brug:   npm run evi:check-responsive -- -s <slice_id> [--url http://localhost:3000] [--browser chromium|webkit]
+// Brug:   npm run evi:check-responsive -- -s <slice_id> [--url <dev-url>] [--browser chromium|webkit]
 //
 // Screenshots lægges i <tmp>/evi-responsive/<slice_id>/ og skal ses igennem;
 // overflow > 0 eller usynligt/navnløst fokus giver exit-kode 1.
@@ -13,6 +14,7 @@ import { chromium, webkit } from "playwright";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { ensure_dev_server, stop_dev_server } from "./dev-server.mjs";
 
 const WIDTHS = [375, 768, 1024, 1440];
 const BROWSERS = { chromium, webkit };
@@ -24,11 +26,8 @@ const arg = (...names) => {
 };
 const slice_id = arg("-s", "--slice");
 const only_browser = arg("--browser");
-const base = (
-  arg("--url") ??
-  process.env.PREVIEW_DEV_URL ??
-  "http://localhost:3000"
-).replace(/\/+$/, "");
+const url_arg = arg("--url")?.replace(/\/+$/, "");
+let base = "";
 
 if (!slice_id) {
   console.error("✗ Angiv slicen: npm run evi:check-responsive -- -s <slice_id>");
@@ -59,7 +58,11 @@ async function check_widths(browser, browser_name) {
   let failed = false;
   for (const variation of variations) {
     for (const width of WIDTHS) {
-      const page = await browser.newPage({ viewport: { width, height: 900 } });
+      // reducedMotion: skærmbilledet viser slut-tilstanden, ikke midt i en indtoning.
+      const page = await browser.newPage({
+        viewport: { width, height: 900 },
+        reducedMotion: "reduce",
+      });
       await page.goto(`${base}/slice-preview/${slice_id}/${variation}`, {
         waitUntil: "networkidle",
         timeout: 120_000,
@@ -85,7 +88,10 @@ async function check_widths(browser, browser_name) {
 async function check_focus(browser) {
   let failed = false;
   for (const variation of variations) {
-    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    const page = await browser.newPage({
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "reduce",
+    });
     await page.goto(`${base}/slice-preview/${slice_id}/${variation}`, {
       waitUntil: "networkidle",
     });
@@ -123,27 +129,38 @@ async function check_focus(browser) {
 }
 
 async function main() {
-  const probe = await fetch(`${base}/slice-preview/${slice_id}/${variations[0]}`).catch(
-    () => null,
-  );
-  if (!probe?.ok) {
-    throw new Error(
-      `Preview svarer ikke på ${base} (status ${probe?.status ?? "ingen forbindelse"}). Kør \`npm run dev\` først, eller sæt --url.`,
-    );
+  const probe_path = `/slice-preview/${slice_id}/${variations[0]}`;
+  let dev_proc = null;
+  if (url_arg) {
+    base = url_arg;
+    const probe = await fetch(`${base}${probe_path}`).catch(() => null);
+    if (!probe?.ok) {
+      throw new Error(
+        `Preview svarer ikke på ${base} (status ${probe?.status ?? "ingen forbindelse"}).`,
+      );
+    }
+  } else {
+    const server = await ensure_dev_server(probe_path);
+    base = server.url;
+    dev_proc = server.proc;
   }
 
   let failed = false;
-  for (const [browser_name, engine] of Object.entries(BROWSERS)) {
-    if (only_browser && only_browser !== browser_name) continue;
-    const browser = await engine.launch();
-    try {
-      if (await check_widths(browser, browser_name)) failed = true;
-      if (browser_name === "chromium" && (await check_focus(browser))) {
-        failed = true;
+  try {
+    for (const [browser_name, engine] of Object.entries(BROWSERS)) {
+      if (only_browser && only_browser !== browser_name) continue;
+      const browser = await engine.launch();
+      try {
+        if (await check_widths(browser, browser_name)) failed = true;
+        if (browser_name === "chromium" && (await check_focus(browser))) {
+          failed = true;
+        }
+      } finally {
+        await browser.close();
       }
-    } finally {
-      await browser.close();
     }
+  } finally {
+    if (dev_proc) stop_dev_server(dev_proc);
   }
   if (failed) process.exitCode = 1;
 }

@@ -26,18 +26,17 @@
 //   4. Manual: `npm run evi:sync-slices -- --all` to propagate to tenants
 
 import { chromium } from "playwright";
-import { spawn, execSync } from "node:child_process";
-import { setTimeout as sleep } from "node:timers/promises";
-import net from "node:net";
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { with_agent_flags } from "./prismic/agent-flags.mjs";
+import { ensure_dev_server, stop_dev_server } from "./dev-server.mjs";
 
 // ─── Config ───────────────────────────────────────────────────────────
 
 const EXPECTED_REPO = "evi-engine";
-// Sættes af ensure_dev_server() til en fri port som OS'et selv tildeler —
-// aldrig hardcodet/gættet, fordi brugeren kører mange projekter samtidig.
+// Sættes ud fra ensure_dev_server() (scripts/dev-server.mjs) — aldrig
+// hardcodet/gættet, fordi brugeren kører mange projekter samtidig.
 let DEV_URL = "";
 const VIEWPORT = { width: 1920, height: 1080 };
 const SLICES_DIR = "slices";
@@ -136,137 +135,15 @@ function discover_slices() {
   return discovered;
 }
 
-// ─── Find / start dev-server til preview ──────────────────────────────
-//
-// Next 16 tillader kun ÉN dev-server pr. projekt-mappe og skriver dens adresse
-// i .next/dev/lock — så vi GÆTTER aldrig porten (brugeren kører mange projekter
-// på skiftende porte). Kører der allerede en (typisk brugerens egen `npm run
-// dev`) → vi genbruger den; ellers starter vi en frisk på en fri port og dræber
-// HELE træet bagefter. Override med PREVIEW_DEV_URL for at pege et bestemt sted.
-
-const DEV_LOCK = path.join(".next", "dev", "lock");
-
-// Læs den kørende dev-servers adresse fra Next's lock-fil (findes kun mens en
-// server kører for dette repo). Returnerer {appUrl, pid} eller null.
-function read_dev_lock() {
-  try {
-    const raw = fs.readFileSync(DEV_LOCK, "utf-8");
-    const { appUrl, pid } = JSON.parse(raw);
-    return appUrl ? { appUrl: appUrl.replace(/\/+$/, ""), pid } : null;
-  } catch {
-    return null; // ingen lock = ingen kørende server
-  }
-}
-
-// Bind port 0 → OS giver en garanteret fri port; luk igen og brug nummeret.
-function get_free_port() {
-  return new Promise((resolve, reject) => {
-    const srv = net.createServer();
-    srv.once("error", reject);
-    srv.listen(0, "127.0.0.1", () => {
-      const { port } = srv.address();
-      srv.close(() => resolve(port));
-    });
-  });
-}
-
-async function probe_status(url, timeout_ms) {
-  try {
-    const res = await fetch(url, {
-      redirect: "manual",
-      signal: AbortSignal.timeout(timeout_ms),
-    });
-    return res.status;
-  } catch {
-    return null; // connection refused / timeout / kompilering i gang
-  }
-}
-
-// Dræb hele process-træet. proc.pid er kun shell/npm-wrapperen; `.kill()`
-// efterlader `next`-barnet som zombie, der holder porten. Windows: taskkill /T.
-// Ellers er serveren startet i egen procesgruppe (detached) → dræb gruppen.
-function kill_tree(proc) {
-  try {
-    if (process.platform === "win32") {
-      execSync(`taskkill /PID ${proc.pid} /T /F`, { stdio: "ignore" });
-    } else {
-      process.kill(-proc.pid, "SIGTERM");
-    }
-  } catch {
-    /* allerede væk */
-  }
-}
-
-async function ensure_dev_server(probe_path) {
-  if (process.env.PREVIEW_DEV_URL) {
-    DEV_URL = process.env.PREVIEW_DEV_URL.replace(/\/+$/, "");
-    console.log(`→ Bruger PREVIEW_DEV_URL: ${DEV_URL}`);
-    return null;
-  }
-
-  // 1. Genbrug en allerede kørende dev-server (adressen står i lock-filen).
-  //    Generøs timeout: første hit på ruten trigger en kold kompilering.
-  const running = read_dev_lock();
-  if (running) {
-    const status = await probe_status(`${running.appUrl}${probe_path}`, 90_000);
-    if (status !== null) {
-      DEV_URL = running.appUrl;
-      console.log(
-        `→ Genbruger kørende dev-server: ${DEV_URL} (pid ${running.pid})` +
-          (status === 200 ? "" : ` ⚠ ruten gav ${status}`),
-      );
-      return null; // ikke vores at dræbe
-    }
-    console.log(
-      `  ⚠ Lock peger på ${running.appUrl}, men den svarer ikke — starter frisk.`,
-    );
-  }
-
-  // 2. Ingen kørende server → start en frisk på en fri port.
-  const port = await get_free_port();
-  DEV_URL = `http://localhost:${port}`;
-  console.log(`→ Starter dedikeret \`next dev\` på ${DEV_URL}…`);
-
-  const proc = spawn("npm", ["run", "dev", "--", "--port", String(port)], {
-    stdio: ["ignore", "pipe", "pipe"],
-    shell: true,
-    detached: process.platform !== "win32",
-  });
-
-  // Fang exit + log, så en tidlig crash ikke bliver til 180s tavs polling.
-  let exit_code = null;
-  proc.on("exit", (code) => (exit_code = code ?? 0));
-  let log = "";
-  const capture = (buf) => (log += String(buf));
-  proc.stdout.on("data", capture);
-  proc.stderr.on("data", capture);
-
-  // Poll den rute vi faktisk skal screenshotte (warmer også kompileringen).
-  console.log("  … venter på klar (første kompilering kan tage et minut)…");
-  const target_url = `${DEV_URL}${probe_path}`;
-  const deadline = Date.now() + 180_000;
-  while (Date.now() < deadline) {
-    if (exit_code !== null) {
-      throw new Error(
-        `Dev-server døde (exit ${exit_code}) før den blev klar:\n${log.slice(-1000)}`,
-      );
-    }
-    if ((await probe_status(target_url, 30_000)) === 200) {
-      console.log("  ✓ Dev-server klar.");
-      return proc;
-    }
-    await sleep(1500);
-  }
-  throw new Error(
-    `Dev-server på ${DEV_URL} blev ikke klar inden for 180s. Sidste log:\n${log.slice(-1000)}`,
-  );
-}
-
 // ─── Screenshot + upload per slice/variation ──────────────────────────
 
 async function screenshot_and_upload(browser, slice) {
   const { slice_id, folder, variations } = slice;
-  const context = await browser.newContext({ viewport: VIEWPORT });
+  // reducedMotion: skærmbilledet viser slut-tilstanden, ikke midt i en indtoning.
+  const context = await browser.newContext({
+    viewport: VIEWPORT,
+    reducedMotion: "reduce",
+  });
   const page = await context.newPage();
 
   let processed = 0;
@@ -344,7 +221,8 @@ async function main() {
   const first = slices[0];
   const first_variation = first.variations[0]?.id ?? "default";
   const probe_path = `/slice-preview/${first.slice_id}/${first_variation}`;
-  const dev_proc = await ensure_dev_server(probe_path);
+  const { url, proc: dev_proc } = await ensure_dev_server(probe_path);
+  DEV_URL = url;
 
   let browser;
   let total_processed = 0;
@@ -361,7 +239,7 @@ async function main() {
     }
   } finally {
     await browser?.close();
-    if (dev_proc) kill_tree(dev_proc);
+    if (dev_proc) stop_dev_server(dev_proc);
   }
 
   if (total_processed > 0) {
