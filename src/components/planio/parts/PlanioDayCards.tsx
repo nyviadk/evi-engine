@@ -86,10 +86,10 @@ export function PlanioCheckCard({
               gap="sm"
               className="border-b border-current/10 py-2.5 wrap-break-word hyphens-auto last:border-b-0"
             >
-              <dt className="min-w-0 font-semibold">
+              <dt className="min-w-0 font-semibold text-pretty">
                 <EviRichText.Inline field={answer.question} linkResolver={linkResolver} />
               </dt>
-              <dd className="ml-auto min-w-0 text-right font-bold">
+              <dd className="ml-auto min-w-0 text-right font-bold text-pretty">
                 <EviRichText.Inline field={answer.answer} linkResolver={linkResolver} />
               </dd>
             </EviStack>
