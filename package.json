@@ -22,7 +22,7 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && cross-env OPEN_NEXT_DEPLOY=true wrangler deploy",
     "deploy:clean": "npx rimraf .next .open-next && opennextjs-cloudflare build && cross-env OPEN_NEXT_DEPLOY=true wrangler deploy",
-    "deploy:all": "npm run evi:sync-slices -- --all && npm run deploy:clean",
+    "deploy:all": "npm run deploy:clean && npm run evi:sync-slices -- --all",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || exit 0"
