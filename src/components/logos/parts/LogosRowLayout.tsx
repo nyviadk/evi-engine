@@ -54,6 +54,7 @@ export function LogosRowLayout({
         linkResolver={linkResolver}
         isHero={isHero}
         align={align}
+        className={p.hide_heading ? "sr-only" : undefined}
       />
       <EviRow>
         <LogoList

@@ -2771,6 +2771,17 @@ export interface LogosSliceDefaultPrimary {
 	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
 	
 	/**
+	 * Skjul overskrift og tekst field in *Logos → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: logos.default.primary.hide_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	hide_heading: prismic.BooleanField;
+	
+	/**
 	 * Logoer field in *Logos → Default → Primary*
 	 *
 	 * - **Field Type**: Group
@@ -2835,6 +2846,17 @@ export interface LogosSliceGroupedPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Skjul overskrift og tekst field in *Logos → Grouped → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: logos.grouped.primary.hide_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	hide_heading: prismic.BooleanField;
 	
 	/**
 	 * Gruppe 1: titel field in *Logos → Grouped → Primary*

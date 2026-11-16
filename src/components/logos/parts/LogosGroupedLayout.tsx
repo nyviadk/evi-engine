@@ -67,6 +67,7 @@ export function LogosGroupedLayout({
         linkResolver={linkResolver}
         isHero={isHero}
         align={align}
+        className={p.hide_heading ? "sr-only" : undefined}
       />
       <EviRow>
         {/* Stakket indtil sektionen er bred nok til tre grupper side om side:

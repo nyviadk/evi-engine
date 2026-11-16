@@ -53,6 +53,7 @@ export const mock: Record<string, Content.LogosSlice> = {
       heading: [],
       body: [],
       heading_align: "Centreret",
+      hide_heading: false,
       logos: [
         BONNEHUSET,
         MAELKEBAREN,
@@ -75,6 +76,7 @@ export const mock: Record<string, Content.LogosSlice> = {
       heading: [],
       body: [],
       heading_align: "Centreret",
+      hide_heading: false,
       group_1_title: h3("Leverandører"),
       group_1_logos: [BONNEHUSET, MAELKEBAREN, KVAERNVAERKET],
       group_2_title: h3("Samarbejdspartnere"),

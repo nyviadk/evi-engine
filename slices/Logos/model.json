@@ -37,6 +37,15 @@
           },
           "type": "Select"
         },
+        "hide_heading": {
+          "config": {
+            "default_value": false,
+            "label": "Skjul overskrift og tekst",
+            "placeholder_false": "Nej, vis dem",
+            "placeholder_true": "Ja, kun til skærmlæsere"
+          },
+          "type": "Boolean"
+        },
         "logos": {
           "config": {
             "fields": {
@@ -119,6 +128,15 @@
             ]
           },
           "type": "Select"
+        },
+        "hide_heading": {
+          "config": {
+            "default_value": false,
+            "label": "Skjul overskrift og tekst",
+            "placeholder_false": "Nej, vis dem",
+            "placeholder_true": "Ja, kun til skærmlæsere"
+          },
+          "type": "Boolean"
         },
         "group_1_title": {
           "config": {
