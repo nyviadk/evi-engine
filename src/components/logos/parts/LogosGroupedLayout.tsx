@@ -69,16 +69,16 @@ export function LogosGroupedLayout({
         align={align}
       />
       <EviRow>
-        {/* Stakket indtil sektionen er bred nok til tre grupper side om side
-            (ved md blev hver gruppe så smal, at logoerne stod ét pr. linje).
-            Stregerne sættes ved samme breakpoint, så de aldrig står foran en
-            gruppe på en ny linje. */}
+        {/* Stakket indtil sektionen er bred nok til tre grupper side om side:
+            med 8 rigtige logoer var 1024px for trangt (titler og logoer brød
+            om). Stregerne sættes ved samme breakpoint, så de aldrig står foran
+            en gruppe på en ny linje. */}
         <EviStack
-          rowFrom="@3xl/section"
+          rowFrom="@6xl/section"
           align="start"
           justify={align}
           gap="xl"
-          className="@3xl/section:*:not-first:border-l @3xl/section:*:not-first:border-current/10 @3xl/section:*:not-first:pl-8"
+          className="@6xl/section:*:not-first:border-l @6xl/section:*:not-first:border-current/10 @6xl/section:*:not-first:pl-8"
         >
           {groups.map((group) => (
             <EviStack

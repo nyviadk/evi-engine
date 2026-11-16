@@ -4,8 +4,11 @@ type Gap = "xs" | "sm" | "md" | "lg" | "xl";
 type Direction = "row" | "col";
 type Align = "start" | "center" | "end" | "stretch" | "baseline";
 type Justify = "start" | "center" | "end" | "between" | "around" | "evenly";
-/** Breakpoint hvor stakken skifter fra col (stakket) til row. */
-type RowFrom = "md" | "@3xl/section";
+/**
+ * Breakpoint hvor stakken skifter fra col (stakket) til row. "@6xl/section" er
+ * til rækker, der kun har plads på brede sektioner (fx tre logo-grupper).
+ */
+type RowFrom = "md" | "@3xl/section" | "@6xl/section";
 
 export type EviStackProps<T extends React.ElementType = "div"> = {
   /** Underlying element. @default "div" — use "ul" / "ol" / "nav" for semantic lists. */
@@ -73,6 +76,7 @@ const justifyClasses: Record<Justify, string> = {
 const rowFromClasses: Record<RowFrom, string> = {
   md: "flex-col md:flex-row",
   "@3xl/section": "flex-col @3xl/section:flex-row",
+  "@6xl/section": "flex-col @6xl/section:flex-row",
 };
 const rowFromAlignClasses: Record<RowFrom, Record<Align, string>> = {
   md: {
@@ -88,6 +92,13 @@ const rowFromAlignClasses: Record<RowFrom, Record<Align, string>> = {
     end: "@3xl/section:items-end",
     stretch: "@3xl/section:items-stretch",
     baseline: "@3xl/section:items-baseline",
+  },
+  "@6xl/section": {
+    start: "@6xl/section:items-start",
+    center: "@6xl/section:items-center",
+    end: "@6xl/section:items-end",
+    stretch: "@6xl/section:items-stretch",
+    baseline: "@6xl/section:items-baseline",
   },
 };
 const rowFromJustifyClasses: Record<RowFrom, Record<Justify, string>> = {
@@ -106,6 +117,14 @@ const rowFromJustifyClasses: Record<RowFrom, Record<Justify, string>> = {
     between: "@3xl/section:justify-between",
     around: "@3xl/section:justify-around",
     evenly: "@3xl/section:justify-evenly",
+  },
+  "@6xl/section": {
+    start: "@6xl/section:justify-start",
+    center: "@6xl/section:justify-center",
+    end: "@6xl/section:justify-end",
+    between: "@6xl/section:justify-between",
+    around: "@6xl/section:justify-around",
+    evenly: "@6xl/section:justify-evenly",
   },
 };
 
