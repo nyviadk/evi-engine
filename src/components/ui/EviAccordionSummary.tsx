@@ -1,9 +1,10 @@
 "use client";
 
+import { prevent_double_click_select } from "@/src/lib/utils/selection";
+
 /**
  * `<summary>` som klient-komponent KUN for at neutralisere browserens
- * dobbeltklik-ordmarkering (flimrer ved åbn/luk). `preventDefault` kun ved
- * `detail > 1`, så single-klik + træk-markering bevares; toggle sker på `click`
+ * dobbeltklik-ordmarkering (flimrer ved åbn/luk). Toggle sker på `click`
  * → uberørt. Ren progressiv enhancement (native uden JS).
  */
 export function EviAccordionSummary({
@@ -13,9 +14,7 @@ export function EviAccordionSummary({
 }: React.ComponentProps<"summary">): React.ReactElement {
   return (
     <summary
-      onMouseDown={(e) => {
-        if (e.detail > 1) e.preventDefault();
-      }}
+      onMouseDown={prevent_double_click_select}
       className={className}
       {...props}
     >

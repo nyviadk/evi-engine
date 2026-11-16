@@ -8,6 +8,10 @@ import {
   energy_segments,
 } from "@/src/components/planio/PlanioEnergyBar";
 import { cn } from "@/src/lib/utils/cn";
+import {
+  ignore_click_after_text_select,
+  prevent_double_click_select,
+} from "@/src/lib/utils/selection";
 
 const MINUS = "−";
 // Lav energi = højst 30%, samme bånd som appens "En træt dag".
@@ -253,7 +257,11 @@ export function PlanioDemoItem({
   // ikke er plads, så titlen får hele bredden. Fra @xs/list bliver linjen
   // `contents`, og procenten står i sin egen kolonne til højre (designet).
   return (
-    <label className="grid min-h-12 cursor-pointer grid-cols-[auto_1fr] items-center gap-x-3 border-b border-current/10 py-1.5 last:border-b-0 @xs/list:grid-cols-[auto_1fr_auto] @xs/list:gap-x-3.5 @3xl/section:min-h-15">
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events -- styrer kun tekstmarkering med musen; tastaturet skifter feltet direkte
+    <label
+      onMouseDown={prevent_double_click_select}
+      onClick={ignore_click_after_text_select}
+      className="grid min-h-12 cursor-pointer grid-cols-[auto_1fr] items-center gap-x-3 border-b border-current/10 py-1.5 last:border-b-0 @xs/list:grid-cols-[auto_1fr_auto] @xs/list:gap-x-3.5 @3xl/section:min-h-15">
       <input
         type="checkbox"
         className="row-span-2 size-5"
