@@ -1,6 +1,8 @@
 {
   "permissions": {
     "allow": [
+      "Bash(npm run evi:check-*)",
+      "Bash(npm run check:prismic-guards)",
       "Bash(./node_modules/.bin/tsc --noEmit)",
       "Bash(./node_modules/.bin/tsc --noEmit *)",
       "Bash(shasum *)",
