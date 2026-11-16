@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "evi:sync-slices": "tsx scripts/sync-slices.ts",
     "evi:preview-slices": "node scripts/preview-slices.mjs",
+    "evi:check-responsive": "node scripts/check-responsive.mjs",
     "evi:new-slice": "node scripts/new-slice.mjs",
     "evi:model": "node scripts/model-sync.mjs",
     "evi:login": "prismic login",

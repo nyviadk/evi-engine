@@ -118,6 +118,8 @@ export function LogoList({
       align="center"
       justify={justify}
       gap="xl"
+      // Tættere lodret afstand, så ombrudte logo-rækker ikke ser spredte ud.
+      className="gap-y-4"
       data-slot="logo-list"
     >
       {items.map((item, i) => (
