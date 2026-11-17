@@ -5,7 +5,6 @@ import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
-import { EviStack } from "@/src/components/layout/EviStack";
 import { EviAccordion, EviAccordionItem } from "@/src/components/ui/EviAccordion";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviRichText } from "@/src/components/typography/EviRichText";
@@ -15,6 +14,7 @@ import {
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
+import { cn } from "@/src/lib/utils/cn";
 
 export type FaqAccordionLayoutProps = {
   slice: Content.FaqSliceDefault;
@@ -23,11 +23,12 @@ export type FaqAccordionLayoutProps = {
 };
 
 /**
- * FAQ-variation "default": centreret sektion-header, en enkelt kolonne af native
- * `<details>`-accordions med blød åben/luk-animation, og en valgfri CTA centreret
- * i BUNDEN (fallback efter spørgsmålene, fx "Kontakt os" — hører logisk efter man
- * har skimmet spørgsmålene, modsat bentos browse-CTA i headeren). Domain-part
- * (Tailwind tilladt, R3.3).
+ * FAQ-variation "default": sektion-header, en enkelt kolonne af native
+ * `<details>`-accordions med blød åben/luk-animation, og en valgfri CTA i BUNDEN
+ * (fallback efter spørgsmålene, fx "Kontakt os" — hører logisk efter man har
+ * skimmet spørgsmålene, modsat bentos browse-CTA i headeren). Header og CTA er
+ * venstrestillet på mobil som listen og følger `heading_align` fra md.
+ * Domain-part (Tailwind tilladt, R3.3).
  */
 export function FaqAccordionLayout({
   slice,
@@ -47,6 +48,7 @@ export function FaqAccordionLayout({
   );
 
   const has_header = has_rich_text(p.heading, p.body);
+  const align = resolve_heading_align(p.heading_align);
   const has_cta = is_link_filled(p.cta_link);
   if (!has_header && !has_cta && items.length === 0) return null;
 
@@ -62,7 +64,9 @@ export function FaqAccordionLayout({
         description={p.body}
         linkResolver={linkResolver}
         isHero={isHero}
-        align={resolve_heading_align(p.heading_align)}
+        align={align}
+        // Listen fylder bredden på mobil og er venstrestillet; overskriften følger den.
+        mobileAlign="start"
       />
       {items.length > 0 && (
         <EviRow>
@@ -89,12 +93,11 @@ export function FaqAccordionLayout({
         </EviRow>
       )}
       {has_cta && (
-        <EviRow>
-          <EviStack align="center">
-            <EviButton asChild variant="primary" appearance="solid">
-              <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
-            </EviButton>
-          </EviStack>
+        // Knappen er inline og følger overskriftens justering via tekst-justeringen.
+        <EviRow className={cn(align === "center" && "md:text-center")}>
+          <EviButton asChild variant="primary" appearance="solid">
+            <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
+          </EviButton>
         </EviRow>
       )}
     </EviSection>
