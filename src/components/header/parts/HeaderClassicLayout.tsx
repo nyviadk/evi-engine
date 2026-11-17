@@ -1,4 +1,4 @@
-import { isFilled, type LinkField } from "@prismicio/client";
+import type { LinkField } from "@prismicio/client";
 
 import { EviHeaderInner } from "@/src/components/chrome/EviHeaderInner";
 import { EviHeaderShell } from "@/src/components/chrome/EviHeaderShell";
@@ -13,6 +13,7 @@ import {
 import { NavGroupsDesktop } from "@/src/components/header/parts/NavGroupsDesktop";
 import { NavGroupsMobile } from "@/src/components/header/parts/NavGroupsMobile";
 import type { EviHeaderSliceContext } from "@/src/components/header/types";
+import { is_link_filled } from "@/src/lib/prismic/links";
 
 // navigation.mobile_nav_breakpoint (Prismic-label) → container-bredde hvor
 // nav'en folder fra hamburger til inline række. Værdien injiceres server-side
@@ -71,15 +72,18 @@ export function HeaderClassicLayout({
 
   const navBreakpoint = NAV_BREAKPOINT[mobileNavBreakpoint ?? ""] ?? "48rem";
   const navGroups = resolve_nav_groups(primary.nav_groups, linkResolver);
+  const has_menu = navGroups.length > 0;
+  const has_cta = is_link_filled(primary.cta_link);
 
   // Centreret nav-landmark, kun desktop. Display-toggle via .evi-nav-desktop
   // (EviHeaderShells injicerede container-query) — named class bærer display, så
   // der ikke opstår layer-konflikt med Tailwinds display-utility (jf. globals H).
-  const centerNav = (
+  // Uden menupunkter intet landmark, ellers hører skærmlæsere en tom menu.
+  const centerNav = has_menu ? (
     <nav aria-label="Hovedmenu" className="evi-nav-desktop">
       <NavGroupsDesktop groups={navGroups} lang={lang} />
     </nav>
-  );
+  ) : undefined;
 
   // Højre zone: sprog + CTA på desktop, kompakt sprog + hamburger-drawer på mobil
   // (kun én cluster synlig ad gangen via .evi-nav-desktop/.evi-nav-mobile).
@@ -94,7 +98,7 @@ export function HeaderClassicLayout({
             className="shrink-0"
           />
         )}
-        {isFilled.link(primary.cta_link) && (
+        {has_cta && (
           <HeaderCTAButton link={primary.cta_link} linkResolver={linkResolver} />
         )}
       </div>
@@ -109,19 +113,23 @@ export function HeaderClassicLayout({
             className="shrink-0"
           />
         )}
-        <MobileNavDrawer>
-          <EviStack as="nav" aria-label="Hovedmenu" gap="xs">
-            <NavGroupsMobile groups={navGroups} lang={lang} />
-          </EviStack>
-          {isFilled.link(primary.cta_link) && (
-            <HeaderCTAButton
-              link={primary.cta_link}
-              linkResolver={linkResolver}
-              // eslint-disable-next-line evi/no-raw-layout-classes -- fuld-bredde CTA i drawer-footer (mt-auto); flex/justify-center centrerer knap-labelen — knap-styling, ikke et layout-container
-              className="mt-auto flex w-full justify-center"
-            />
-          )}
-        </MobileNavDrawer>
+        {(has_menu || has_cta) && (
+          <MobileNavDrawer>
+            {has_menu && (
+              <EviStack as="nav" aria-label="Hovedmenu" gap="xs">
+                <NavGroupsMobile groups={navGroups} lang={lang} />
+              </EviStack>
+            )}
+            {has_cta && (
+              <HeaderCTAButton
+                link={primary.cta_link}
+                linkResolver={linkResolver}
+                // eslint-disable-next-line evi/no-raw-layout-classes -- fuld-bredde CTA i drawer-footer (mt-auto); flex/justify-center centrerer knap-labelen — knap-styling, ikke et layout-container
+                className="mt-auto flex w-full justify-center"
+              />
+            )}
+          </MobileNavDrawer>
+        )}
       </div>
     </>
   );
