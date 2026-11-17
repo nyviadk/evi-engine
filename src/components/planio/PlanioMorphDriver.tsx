@@ -14,7 +14,7 @@ const SCROLL_DRIVEN_CSS = `
     animation: planio-morph linear both;
     animation-duration: auto;
     animation-timeline: scroll(root);
-    animation-range: 0px var(--planio-morph-range, 100svh);
+    animation-range: 0px var(--planio-morph-range, 150svh);
   }
   @media (prefers-reduced-motion: reduce) {
     header:has([data-slot="planio-morph-driver"]) {
@@ -23,11 +23,15 @@ const SCROLL_DRIVEN_CSS = `
   }
 }`;
 
+// 1,5: ved 1 sluttede skiftet for brat lige som heroen forsvandt (brugeren,
+// 2026-11-17). Skal matche fallbacken (150svh) i SCROLL_DRIVEN_CSS.
+const PACE = 1.5;
+
 /**
- * Driver logo-forvandlingen i headeren: sætter `--morph` på `<header>` 1:1 med
- * scrollen, fra 0 øverst til 1, når sidens første sektion er scrollet helt ind
- * under headeren, dog højst én skærm (på fx vilkårssiden er første sektion hele
- * dokumentet). Halvt scrollet er halvt forvandlet; med reduceret bevægelse
+ * Driver logo-forvandlingen i headeren: sætter `--morph` på `<header>` med
+ * scrollen, fra 0 øverst til 1 efter PACE × afstanden, til sidens første
+ * sektion er scrollet ind under headeren (dog højst én skærm, på fx vilkårs-
+ * siden er første sektion hele dokumentet). Lineært; med reduceret bevægelse
  * skiftes der i midten. Lægger også headerens højde i `--planio-header-h` og
  * scroll-padding, så sticky elementer og ankre lander under headeren.
  */
@@ -76,7 +80,7 @@ export function PlanioMorphDriver(): React.ReactElement {
       const section_end = section
         ? section.getBoundingClientRect().bottom + window.scrollY - header_h
         : screen;
-      range = Math.max(1, Math.min(section_end, screen));
+      range = Math.max(1, Math.min(section_end, screen) * PACE);
       header.style.setProperty("--planio-morph-range", `${range}px`);
       root.style.setProperty("--planio-header-h", `${header_h}px`);
       root.style.scrollPaddingTop = `${header_h}px`;
