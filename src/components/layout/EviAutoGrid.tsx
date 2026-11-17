@@ -2,8 +2,14 @@ import { cn } from "@/src/lib/utils/cn";
 
 type AutoGridSize = "sm" | "md" | "lg" | "duo" | "trio" | "quad" | "fluid";
 type AutoGridGap = "card" | "compact";
+type AutoGridElement = "div" | "ul" | "ol";
 
 export type EviAutoGridProps = React.ComponentProps<"div"> & {
+  /**
+   * Gitterets element. "ul"/"ol" til lister (børnene skal så være `<li>`, fx
+   * EviStack as="li"), så skærmlæsere hører en liste med N punkter. @default "div"
+   */
+  as?: AutoGridElement;
   /**
    * Afstand mellem celler. "card" — luftig, responsiv kort-gap (default).
    * "compact" — stram og ens på begge akser (gap-2, som EviStack gap="sm"), til
@@ -49,24 +55,26 @@ const gapClasses: Record<AutoGridGap, string> = {
 };
 
 export function EviAutoGrid({
+  as = "div",
   size,
   gap = "card",
   className,
   children,
   ...props
 }: EviAutoGridProps): React.ReactElement {
+  const Grid = as as React.ElementType;
   return (
     <div
       data-slot="evi-autogrid"
       data-size={size}
       className="@container/grid col-span-12"
     >
-      <div
+      <Grid
         className={cn("grid", gapClasses[gap], sizeClasses[size], className)}
         {...props}
       >
         {children}
-      </div>
+      </Grid>
     </div>
   );
 }

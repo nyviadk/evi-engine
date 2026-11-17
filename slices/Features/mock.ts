@@ -213,4 +213,28 @@ export const mock: Record<string, Content.FeaturesSlice> = {
       background_theme: "Lys",
     },
   },
+  "icon-list": {
+    id: "mock-features-icon-list",
+    slice_type: "features",
+    slice_label: null,
+    variation: "icon-list",
+    version: "scaffold",
+    items: [],
+    primary: {
+      heading: h2("Små ting, der gør en forskel"),
+      body: line("Det, der gør din kaffe lidt lettere, uden at gøre det besværligt."),
+      items: [
+        { icon: "flame", text: line("Friskristet hver uge") },
+        { icon: "truck", text: line("Fri fragt over 300 kr.") },
+        { icon: "repeat", text: line("Abonnement på bønner") },
+        { icon: "coffee", text: line("Malet til din kande") },
+        { icon: "store", text: line("Klik og hent i butikken") },
+        { icon: "gift", text: line("Gavekort til kaffeelskere") },
+        { icon: "recycle", text: line("Genopfyldning af posen") },
+        { icon: "graduation-cap", text: line("Kaffekurser og smagninger") },
+      ],
+      heading_align: "Venstre",
+      background_theme: "Lys",
+    },
+  },
 };

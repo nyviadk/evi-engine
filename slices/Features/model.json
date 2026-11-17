@@ -661,6 +661,82 @@
         }
       },
       "version": ""
+    },
+    {
+      "description": "Icon List",
+      "docURL": "",
+      "id": "icon-list",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/icon-list/220d6fbc38b04cb758334c9c5851115993171d72.png?auto=compress%2Cformat",
+      "name": "Icon List",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sektionens overskrift",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "placeholder": "Kort intro under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Overskrift-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
+        },
+        "items": {
+          "config": {
+            "fields": {
+              "icon": {
+                "config": {
+                  "label": "Ikon",
+                  "placeholder": "Iconify-navn, fx lucide:brain"
+                },
+                "type": "Text"
+              },
+              "text": {
+                "config": {
+                  "label": "Tekst",
+                  "placeholder": "Kort punkt, fx en fordel",
+                  "single": "paragraph,strong,em,hyperlink"
+                },
+                "type": "StructuredText"
+              }
+            },
+            "label": "Punkter"
+          },
+          "type": "Group"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
     }
   ]
 }

@@ -1046,6 +1046,31 @@ export interface FeaturesSliceSplitPrimaryFeaturesItem {
 }
 
 /**
+ * Item in *Features → Icon List → Primary → Punkter*
+ */
+export interface FeaturesSliceIconListPrimaryItemsItem {
+	/**
+	 * Ikon field in *Features → Icon List → Primary → Punkter*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx lucide:brain
+	 * - **API ID Path**: features.icon-list.primary.items[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	icon: prismic.KeyTextField;
+	
+	/**
+	 * Tekst field in *Features → Icon List → Primary → Punkter*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort punkt, fx en fordel
+	 * - **API ID Path**: features.icon-list.primary.items[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	text: prismic.RichTextField;
+}
+
+/**
  * Primary content in *Features → Default → Primary*
  */
 export interface FeaturesSliceDefaultPrimary {
@@ -1741,9 +1766,75 @@ export interface FeaturesSliceIconBentoPrimary {
 export type FeaturesSliceIconBento = prismic.SharedSliceVariation<"icon-bento", Simplify<FeaturesSliceIconBentoPrimary>, never>;
 
 /**
+ * Primary content in *Features → Icon List → Primary*
+ */
+export interface FeaturesSliceIconListPrimary {
+	/**
+	 * Overskrift field in *Features → Icon List → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sektionens overskrift
+	 * - **API ID Path**: features.icon-list.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Features → Icon List → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: features.icon-list.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Features → Icon List → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: features.icon-list.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Punkter field in *Features → Icon List → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.icon-list.primary.items[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	items: prismic.GroupField<Simplify<FeaturesSliceIconListPrimaryItemsItem>>;
+	
+	/**
+	 * Baggrundstema field in *Features → Icon List → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: features.icon-list.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Icon List variation for Features Slice
+ *
+ * - **API ID**: `icon-list`
+ * - **Description**: Icon List
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeaturesSliceIconList = prismic.SharedSliceVariation<"icon-list", Simplify<FeaturesSliceIconListPrimary>, never>;
+
+/**
  * Slice variation for *Features*
  */
-type FeaturesSliceVariation = FeaturesSliceDefault | FeaturesSliceCards | FeaturesSliceSplit | FeaturesSliceBento | FeaturesSliceIconBento
+type FeaturesSliceVariation = FeaturesSliceDefault | FeaturesSliceCards | FeaturesSliceSplit | FeaturesSliceBento | FeaturesSliceIconBento | FeaturesSliceIconList
 
 /**
  * Features Shared Slice
@@ -5804,12 +5895,15 @@ declare module "@prismicio/client" {
 			FeaturesSliceSplitPrimary,
 			FeaturesSliceBentoPrimary,
 			FeaturesSliceIconBentoPrimary,
+			FeaturesSliceIconListPrimaryItemsItem,
+			FeaturesSliceIconListPrimary,
 			FeaturesSliceVariation,
 			FeaturesSliceDefault,
 			FeaturesSliceCards,
 			FeaturesSliceSplit,
 			FeaturesSliceBento,
 			FeaturesSliceIconBento,
+			FeaturesSliceIconList,
 			FooterColumnLinksSlice,
 			FooterColumnLinksSliceDefaultPrimary,
 			FooterColumnLinksSliceVariation,

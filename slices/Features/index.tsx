@@ -6,6 +6,7 @@ import { FeaturesCardsLayout } from "@/src/components/features/parts/FeaturesCar
 import { FeaturesSplitLayout } from "@/src/components/features/parts/FeaturesSplitLayout";
 import { FeaturesBentoLayout } from "@/src/components/features/parts/FeaturesBentoLayout";
 import { FeaturesIconBentoLayout } from "@/src/components/features/parts/FeaturesIconBentoLayout";
+import { FeaturesIconListLayout } from "@/src/components/features/parts/FeaturesIconListLayout";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 /**
@@ -13,7 +14,8 @@ import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
  * hver variation = én layout-part i features/parts/. "default" = trust-bar
  * (ikon+tekst-kolonner), "cards" = overskrift + repeatable kort-grid, "split" =
  * billede + vertikal boks-liste, "bento" = 4-kasse bento-gitter (billeder),
- * "icon-bento" = asymmetrisk 2×2 bento med ikon-kasser.
+ * "icon-bento" = asymmetrisk 2×2 bento med ikon-kasser, "icon-list" = liste af
+ * korte ikon-punkter i op til 4 kolonner.
  */
 export default function Features({
   slice,
@@ -43,6 +45,10 @@ export default function Features({
     case "icon-bento":
       return (
         <FeaturesIconBentoLayout slice={slice} index={index} context={context} />
+      );
+    case "icon-list":
+      return (
+        <FeaturesIconListLayout slice={slice} index={index} context={context} />
       );
     default:
       return null;
