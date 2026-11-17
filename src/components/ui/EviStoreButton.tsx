@@ -1,5 +1,5 @@
 import type { LinkField, LinkResolverFunction } from "@prismicio/client";
-import { PrismicNextLink } from "@prismicio/next";
+import { EviLink } from "@/src/components/ui/EviLink";
 
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviButton } from "@/src/components/ui/EviButton";
@@ -57,7 +57,7 @@ export function EviStoreButton({
   if (!store) {
     return (
       <EviButton asChild variant={variant} appearance={appearance} size="lg">
-        <PrismicNextLink field={field} linkResolver={linkResolver} />
+        <EviLink field={field} linkResolver={linkResolver} />
       </EviButton>
     );
   }
@@ -73,7 +73,7 @@ export function EviStoreButton({
       size="sm"
       className="min-h-11 py-1.5"
     >
-      <PrismicNextLink field={field} linkResolver={linkResolver} aria-label={text}>
+      <EviLink field={field} linkResolver={linkResolver} aria-label={text}>
         <EviIcon name={store.icon} className="size-6" />
         <span className="flex flex-col text-left leading-tight">
           {lead && <span className="text-[11px] font-semibold">{lead}</span>}
@@ -81,7 +81,7 @@ export function EviStoreButton({
             {ends_with_name ? store.name : text}
           </span>
         </span>
-      </PrismicNextLink>
+      </EviLink>
     </EviButton>
   );
 }

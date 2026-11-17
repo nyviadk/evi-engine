@@ -1,5 +1,5 @@
 import { PrismicRichText, type RichTextComponents } from "@prismicio/react";
-import { PrismicNextLink } from "@prismicio/next";
+import { EviLink } from "@/src/components/ui/EviLink";
 import {
   type LinkResolverFunction,
   type RichTextField,
@@ -16,7 +16,7 @@ import { cn } from "@/src/lib/utils/cn";
  *   Bruges når en parent (fx EviHeadingGroup) allerede har `.evi-prose`-class
  *   og du ikke vil have et ekstra DOM-niveau.
  *
- * Hyperlinks routes automatisk gennem PrismicNextLink med linkResolver.
+ * Hyperlinks routes automatisk gennem EviLink med linkResolver (eksterne i ny fane).
  * isHero shifter h1 ↔ h2 så slice-defaults kan matche faktisk brug uden
  * at content-editoren skal vide om heading-niveauer.
  */
@@ -80,9 +80,9 @@ function Raw({
       components={{
         ...headingOverrides,
         hyperlink: ({ node, children }) => (
-          <PrismicNextLink field={node.data} linkResolver={linkResolver}>
+          <EviLink field={node.data} linkResolver={linkResolver}>
             {children}
-          </PrismicNextLink>
+          </EviLink>
         ),
         ...extraComponents,
       }}

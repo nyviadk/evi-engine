@@ -1,4 +1,4 @@
-import { PrismicNextLink } from "@prismicio/next";
+import { EviLink } from "@/src/components/ui/EviLink";
 import {
   type LinkField,
   type LinkResolverFunction,
@@ -47,7 +47,7 @@ export function FooterLinkList({
         if (!is_link_filled(link)) return null;
         return (
           <li key={i}>
-            <PrismicNextLink
+            <EviLink
               field={link}
               linkResolver={linkResolver}
               className="text-sm text-current no-underline hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"

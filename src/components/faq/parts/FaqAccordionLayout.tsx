@@ -1,5 +1,5 @@
 import { type Content } from "@prismicio/client";
-import { PrismicNextLink } from "@prismicio/next";
+import { EviLink } from "@/src/components/ui/EviLink";
 
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
@@ -92,7 +92,7 @@ export function FaqAccordionLayout({
         <EviRow>
           <EviStack align="center">
             <EviButton asChild variant="primary" appearance="solid">
-              <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
+              <EviLink field={p.cta_link} linkResolver={linkResolver} />
             </EviButton>
           </EviStack>
         </EviRow>

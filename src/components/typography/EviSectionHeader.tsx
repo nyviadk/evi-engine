@@ -4,7 +4,7 @@ import {
   type LinkField,
   type LinkResolverFunction,
 } from "@prismicio/client";
-import { PrismicNextLink } from "@prismicio/next";
+import { EviLink } from "@/src/components/ui/EviLink";
 
 import { is_link_filled } from "@/src/lib/prismic/links";
 import { EviStack } from "@/src/components/layout/EviStack";
@@ -73,7 +73,7 @@ export function EviSectionHeader({
           appearance="outline"
           className="shrink-0"
         >
-          <PrismicNextLink field={ctaLink} linkResolver={linkResolver} />
+          <EviLink field={ctaLink} linkResolver={linkResolver} />
         </EviButton>
       </EviStack>
     );

@@ -20,11 +20,11 @@ export type EviButtonProps = React.ComponentProps<"button"> & {
   arrow?: boolean;
   /**
    * Render child'en som rod-element og komponer button-styling + props på det
-   * (fx style et `<PrismicNextLink>` som knap uden duplikeret markup).
+   * (fx style et `<EviLink>` som knap uden duplikeret markup).
    *
    * @example
    * <EviButton asChild variant="primary">
-   *   <PrismicNextLink field={cta_link} />
+   *   <EviLink field={cta_link} />
    * </EviButton>
    *
    * @default false

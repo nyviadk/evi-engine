@@ -1,5 +1,5 @@
 import { isFilled, type Content } from "@prismicio/client";
-import { PrismicNextLink } from "@prismicio/next";
+import { EviLink } from "@/src/components/ui/EviLink";
 
 import { EviMasonry } from "@/src/components/layout/EviMasonry";
 import { EviSection } from "@/src/components/layout/EviSection";
@@ -71,7 +71,7 @@ export function TextWithImagesCollageLayout({
       />
       {has_cta && (
         <EviButton asChild variant="primary" appearance="solid" size="lg">
-          <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
+          <EviLink field={p.cta_link} linkResolver={linkResolver} />
         </EviButton>
       )}
     </EviStack>

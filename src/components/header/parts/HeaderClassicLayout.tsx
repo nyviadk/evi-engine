@@ -49,7 +49,7 @@ export type HeaderClassicLayoutProps = {
  *  - MobileNavDrawer  → hamburger + slide-in drawer on narrow container
  *  - NavList          → menu links (via Prismic)
  *  - LanguageSelector → optional <select> dropdown, ALWAYS visible (også mobil)
- *  - HeaderCTAButton  → optional EviButton (asChild PrismicNextLink)
+ *  - HeaderCTAButton  → optional EviButton (asChild EviLink)
  *
  * Nav renderes to steder: inline på desktop, i draweren på mobil (kun én
  * synlig ad gangen). Bortset fra responsiv synlighed er alt Evi-komposition.
