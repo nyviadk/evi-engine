@@ -22,9 +22,6 @@ type Params = Promise<{ lang: string; uid?: string[] }>;
 export default async function Page(props: {
   params: Params;
 }): Promise<ReactElement> {
-  // KOBLING: layout.tsx udleder SAMME (uid, lang) fra x-evi-pathname i stedet
-  // for route-params. Hold de to udledninger i sync — det er dét der lader
-  // get_evi_page's React.cache dedup'e på tværs af layout + page (ét fetch).
   const { lang, uid } = await props.params;
   const prismic_uid = uid?.[uid.length - 1] ?? "home";
 

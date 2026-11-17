@@ -1,17 +1,22 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 import { cn } from "@/src/lib/utils/cn";
 import type { TenantConfig } from "@/src/lib/kv/tenants";
+import {
+  page_languages,
+  type LanguageMap,
+} from "@/src/lib/prismic/language-map";
 
 export type LanguageSelectorProps = {
   locales: TenantConfig["locales"];
   currentLang: string;
   /**
-   * Pre-computed URL for each locale. Values come from Prismic's
-   * alternate_languages via resolve_page_url — so different-UID translations
-   * (kontakt ↔ contact) land correctly. Layout constructs the map.
+   * Hele sitets sprogversioner (build_language_map), så forskellige UID'er pr.
+   * sprog (kontakt ↔ contact) lander rigtigt. Den aktuelle side slås op her.
    */
-  languageUrls: Record<string, string>;
+  languages: LanguageMap;
   /**
    * "full" = native sprognavn + pil (desktop). "compact" = kun sprogkode (fx
    * "DA"), ingen pil — mindst mulig på mobil ved siden af hamburgeren.
@@ -22,10 +27,11 @@ export type LanguageSelectorProps = {
 };
 
 /**
- * Native <select> dropdown for switching tenant locale. Server sends the URL
- * for each locale via `languageUrls`; onChange navigates to the chosen
- * language's version of the current page (or that language's home if the
- * current page has no translation).
+ * Native <select> dropdown for switching tenant locale. Viser kun de sprog,
+ * den aktuelle side findes på, og intet, når det er færre end to. Siden slås
+ * op på browserens sti: headeren og footeren bor i layoutet, som bliver stående
+ * ved klient-navigation, så URL'er beregnet på serveren ville høre til den side,
+ * man startede på. onChange går til siden på det valgte sprog.
  *
  * Native <select> gives us keyboard navigation, mobile-native pickers, and
  * ARIA out of the box. Client component because onChange navigates.
@@ -41,23 +47,25 @@ export type LanguageSelectorProps = {
  * Intl.DisplayNames med locale som display-sprog. Dansk returnerer lowercase →
  * vi kapitaliserer første bogstav.
  *
- * Renders nothing when the tenant only has one locale.
  */
 export function LanguageSelector({
   locales,
   currentLang,
-  languageUrls,
+  languages,
   variant = "full",
   className,
 }: LanguageSelectorProps): React.ReactElement | null {
-  if (locales.length < 2) return null;
+  const pathname = usePathname();
+  const urls = page_languages(languages, pathname, currentLang);
+  const available = locales.filter((locale) => urls[locale]);
+  if (available.length < 2) return null;
 
   const compact = variant === "compact";
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const target_locale = event.target.value;
     if (target_locale === currentLang) return;
-    const href = languageUrls[target_locale];
+    const href = urls[target_locale];
     if (href) window.location.href = href;
   };
 
@@ -77,7 +85,7 @@ export function LanguageSelector({
           "[&>option]:bg-white [&>option]:text-neutral-900",
         )}
       >
-        {locales.map((locale) => {
+        {available.map((locale) => {
           const language_code = locale.split("-")[0] ?? locale;
           let label = language_code.toUpperCase();
           if (!compact) {

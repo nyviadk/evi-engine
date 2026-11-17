@@ -1,5 +1,6 @@
 import type { LinkResolverFunction } from "@prismicio/client";
 import type { EviContext } from "@/src/lib/prismic/context";
+import type { LanguageMap } from "@/src/lib/prismic/language-map";
 
 /**
  * Context passed by <SliceZone> to every header slice component. Every future
@@ -28,11 +29,6 @@ export type EviHeaderSliceContext = {
    * bred"); header-slicen mapper til et data-nav-bp-nøgle. undefined → Standard.
    */
   mobileNavBreakpoint?: string;
-  /**
-   * Precomputed URL for each tenant locale, correctly using each language's
-   * own UID from Prismic alternate_languages. E.g. { "da-dk": "/da-dk/kontakt",
-   * "en-eu": "/en-eu/contact" }. Locales without a translation fall back to
-   * the language home ("/" for default without prefix, "/{locale}" otherwise).
-   */
-  languageUrls: Record<string, string>;
+  /** Hele sitets sprogversioner pr. side; sprogvælgeren slår den aktuelle side op. */
+  languages: LanguageMap;
 };

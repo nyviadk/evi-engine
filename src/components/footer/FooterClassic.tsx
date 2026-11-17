@@ -12,6 +12,7 @@ import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import type { EviContext } from "@/src/lib/prismic/context";
+import type { LanguageMap } from "@/src/lib/prismic/language-map";
 import { resolve_section_theme } from "@/src/lib/prismic/section-theme";
 import type { EviFooterSliceContext } from "@/src/components/footer/types";
 import FooterColumnLinks from "@/slices/FooterColumnLinks";
@@ -32,7 +33,7 @@ export type FooterClassicProps = {
   homeHref: string;
   allowBrandTranslation: boolean;
   languageSelectorEnabled: boolean;
-  languageUrls: Record<string, string>;
+  languages: LanguageMap;
 };
 
 /**
@@ -58,7 +59,7 @@ export function FooterClassic({
   homeHref,
   allowBrandTranslation,
   languageSelectorEnabled,
-  languageUrls,
+  languages,
 }: FooterClassicProps): React.ReactElement {
   const has_columns = (footer.data.columns ?? []).length > 0;
   const has_copyright = isFilled.richText(footer.data.copyright);
@@ -130,7 +131,7 @@ export function FooterClassic({
               <LanguageSelector
                 locales={tenant.locales}
                 currentLang={lang}
-                languageUrls={languageUrls}
+                languages={languages}
               />
             )}
             {has_legal_links && (

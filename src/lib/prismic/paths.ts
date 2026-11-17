@@ -3,6 +3,7 @@ import {
   type LinkResolverFunction,
   type PrismicDocument,
 } from "@prismicio/client";
+import type { LanguageMap } from "@/src/lib/prismic/language-map";
 
 // Kun de felter resolve_page_url faktisk bruger.
 // TenantConfig opfylder dette (strukturel typing), men klient-kode
@@ -147,7 +148,7 @@ export function resolve_page_url(
  * Bruges af:
  *  - app/sitemap.ts — sitemap-alternates per side-gruppe
  *  - app/[lang]/[[...uid]]/page.tsx generateMetadata — hreflang links
- *  - app/[lang]/layout.tsx — LanguageSelector URLs
+ *  - build_language_map — sprogvælgeren
  */
 export function build_translation_url_map(
   translations: readonly {
@@ -167,6 +168,37 @@ export function build_translation_url_map(
     }
   }
   return urls;
+}
+
+/**
+ * Hele sitets sprogversioner: hver side-URL peger på URL'en på hvert sprog,
+ * siden findes på (fra alternate_languages). Sprogvælgeren slår den aktuelle
+ * side op heri i browseren, så den også passer efter klient-navigation.
+ */
+export function build_language_map(
+  docs: readonly {
+    id: string;
+    uid?: string | null;
+    lang: string;
+    alternate_languages: readonly {
+      id?: string | null;
+      uid?: string | null;
+      lang?: string | null;
+    }[];
+  }[],
+  tree: Map<string, string[]>,
+  config: PathConfig,
+): LanguageMap {
+  const map: LanguageMap = {};
+  for (const doc of docs) {
+    const urls = build_translation_url_map(
+      [doc, ...doc.alternate_languages],
+      tree,
+      config,
+    );
+    for (const path of Object.values(urls)) map[path] = urls;
+  }
+  return map;
 }
 
 /**

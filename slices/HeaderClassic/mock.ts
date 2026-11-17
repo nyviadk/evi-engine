@@ -34,7 +34,7 @@ export const context: EviHeaderSliceContext = {
   homeHref: "/",
   currentPathname: "/",
   languageSelectorEnabled: false,
-  languageUrls: {},
+  languages: {},
 };
 
 // Et menupunkt: url = "#" → rigtigt link; url = null → rent tekst-top (fx

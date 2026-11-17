@@ -67,7 +67,7 @@ export function HeaderClassicLayout({
     lang,
     languageSelectorEnabled,
     mobileNavBreakpoint,
-    languageUrls,
+    languages,
   } = context;
 
   const navBreakpoint = NAV_BREAKPOINT[mobileNavBreakpoint ?? ""] ?? "48rem";
@@ -94,7 +94,7 @@ export function HeaderClassicLayout({
           <LanguageSelector
             locales={tenant.locales}
             currentLang={lang}
-            languageUrls={languageUrls}
+            languages={languages}
             className="shrink-0"
           />
         )}
@@ -109,7 +109,7 @@ export function HeaderClassicLayout({
             variant="compact"
             locales={tenant.locales}
             currentLang={lang}
-            languageUrls={languageUrls}
+            languages={languages}
             className="shrink-0"
           />
         )}

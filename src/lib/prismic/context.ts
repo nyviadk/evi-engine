@@ -5,6 +5,7 @@ import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
 import {
   build_breadcrumb_trails,
+  build_language_map,
   build_tree_from_docs,
   create_link_resolver,
 } from "@/src/lib/prismic/paths";
@@ -56,7 +57,8 @@ export const get_evi_tenant = cache(async () => {
 /**
  * Sti-træ + breadcrumb-trails for ALLE sider, bygget fra ÉT fetch (parent_page +
  * meta_title). `tree` driver URL-opløsning; `trails` bærer rigtige sidetitler
- * til breadcrumbs. Sitemap bygger sit eget tree fra sin egen fetch (C5).
+ * til breadcrumbs; `languages` er hver sides sprogversioner til sprogvælgeren.
+ * Sitemap bygger sit eget tree fra sin egen fetch (C5).
  */
 export const get_evi_tree = cache(async () => {
   const base = await get_evi_tenant();
@@ -65,9 +67,11 @@ export const get_evi_tree = cache(async () => {
     lang: "*",
     fetch: ["page.parent_page", "page.meta_title"],
   });
+  const tree = build_tree_from_docs(docs);
   return {
-    tree: build_tree_from_docs(docs),
+    tree,
     trails: build_breadcrumb_trails(docs),
+    languages: build_language_map(docs, tree, base.tenant),
   };
 });
 
@@ -138,7 +142,7 @@ export const get_evi_context = cache(async () => {
   // treeData kan kun være null hvis tenant manglede — men base er allerede
   // tjekket. Vi narrower derfor strengt før vi bygger link_resolver.
   if (!treeData) return null;
-  const { tree, trails } = treeData;
+  const { tree, trails, languages } = treeData;
 
   // Navigation og footer fetches i den ønskede locale først; falder tilbage
   // til default_locale hvis oversættelsen ikke findes — så editoren ikke
@@ -166,6 +170,7 @@ export const get_evi_context = cache(async () => {
     ...base,
     tree,
     breadcrumbTrails: trails,
+    languages,
     link_resolver,
     settings,
     business,

@@ -2,47 +2,11 @@ import { headers } from "next/headers";
 import { SliceZone } from "@prismicio/react";
 import { EviColorTryBar } from "@/src/components/demo/EviColorTryBar";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
-import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
-import { build_translation_url_map } from "@/src/lib/prismic/paths";
+import { get_evi_context } from "@/src/lib/prismic/context";
 import { components } from "@/slices";
 import type { EviHeaderSliceContext } from "@/src/components/header/types";
 import { FooterClassic } from "@/src/components/footer/FooterClassic";
 import { EviBeacon } from "@/src/components/analytics/EviBeacon";
-
-/**
- * Compute the canonical URL for each tenant locale using Prismic's
- * `alternate_languages`. Different languages have different UIDs (e.g.
- * `kontakt` vs `contact`) — string manipulation of the pathname would land
- * on the wrong URL. build_translation_url_map handles that via each
- * translated document's own id + lang.
- *
- * Locales missing a translation fall back to language home so the selector
- * always renders a working link — behavior specific to the LanguageSelector
- * (sitemap and hreflang metadata deliberately omit locales without
- * translation).
- */
-function build_language_urls(
-  page: Awaited<ReturnType<typeof get_evi_page>>,
-  ctx: NonNullable<Awaited<ReturnType<typeof get_evi_context>>>,
-): Record<string, string> {
-  const translations = page
-    ? [
-        { id: page.id, uid: page.uid, lang: ctx.lang },
-        ...page.alternate_languages,
-      ]
-    : [];
-  const urls = build_translation_url_map(translations, ctx.tree, ctx.tenant);
-
-  for (const locale of ctx.tenant.locales) {
-    if (!urls[locale]) {
-      const is_default_without_prefix =
-        locale === ctx.tenant.default_locale && !ctx.tenant.force_lang_prefix;
-      urls[locale] = is_default_without_prefix ? "/" : `/${locale}`;
-    }
-  }
-
-  return urls;
-}
 
 export default async function Layout({
   children,
@@ -54,21 +18,6 @@ export default async function Layout({
   // x-evi-pathname set by middleware, encoded to survive HTTP ASCII rules.
   const raw_pathname = h.get("x-evi-pathname");
   const current_pathname = raw_pathname ? decodeURI(raw_pathname) : "/";
-
-  // Parse the current page's Prismic UID from the pathname so we can look up
-  // its alternate_languages. Path shape: /<locale>/<...uid_segments>. Root
-  // /<locale> maps to Prismic UID "home" (matches page.tsx convention).
-  //
-  // KOBLING: page.tsx udleder SAMME (uid, lang) fra route-params i stedet for
-  // x-evi-pathname. De to udledninger SKAL give samme værdi — det er dét der
-  // gør React.cache-dedup'et af get_evi_page under (ingen ekstra Prismic-
-  // round-trip) holdbart. Ændrer du udledningen ét sted, ret det andet, ellers
-  // genindføres et tavst duplikat-fetch (ingen test fanger det).
-  const path_segments = current_pathname.split("/").filter(Boolean);
-  const uid_segments = path_segments.slice(1);
-  const prismic_uid = uid_segments[uid_segments.length - 1] || "home";
-
-  const page = ctx ? await get_evi_page(prismic_uid, ctx.lang) : null;
 
   const header_slices = ctx?.navigation?.data?.slices ?? [];
   const header_language_selector_enabled =
@@ -85,9 +34,6 @@ export default async function Layout({
         ? `/${ctx.lang}`
         : "/";
 
-  // Én gang for både header og footer — samme URL-map bruges begge steder.
-  const language_urls = ctx ? build_language_urls(page, ctx) : {};
-
   const header_context: EviHeaderSliceContext | null = ctx
     ? {
         linkResolver: ctx.link_resolver,
@@ -99,7 +45,7 @@ export default async function Layout({
         currentPathname: current_pathname,
         languageSelectorEnabled: header_language_selector_enabled,
         mobileNavBreakpoint: ctx.navigation?.data?.mobile_nav_breakpoint,
-        languageUrls: language_urls,
+        languages: ctx.languages,
       }
     : null;
 
@@ -150,7 +96,7 @@ export default async function Layout({
           homeHref={home_href}
           allowBrandTranslation={ctx.settings?.data?.translate_brand === true}
           languageSelectorEnabled={footer_language_selector_enabled}
-          languageUrls={language_urls}
+          languages={ctx.languages}
         />
       )}
 
