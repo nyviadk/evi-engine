@@ -1,12 +1,10 @@
 import { type Content } from "@prismicio/client";
 
-import { EviSection } from "@/src/components/layout/EviSection";
-import { EviRow } from "@/src/components/layout/EviRow";
-import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import {
   LogoList,
   filled_logos,
 } from "@/src/components/logos/parts/LogoList";
+import { LogosSection } from "@/src/components/logos/parts/LogosSection";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import {
   resolve_slice_context,
@@ -29,10 +27,7 @@ export function LogosRowLayout({
   context,
 }: LogosRowLayoutProps): React.ReactElement | null {
   const { linkResolver } = context;
-  const { theme, isHero, collapsePadding, eagerImages } = resolve_slice_context(
-    context,
-    index,
-  );
+  const slice_context = resolve_slice_context(context, index);
   const p = slice.primary;
 
   // En overskrift uden logoer giver ingen mening for et logo-bånd.
@@ -42,28 +37,18 @@ export function LogosRowLayout({
   const align = resolve_heading_align(p.heading_align);
 
   return (
-    <EviSection
-      theme={theme}
-      hero={isHero}
-      collapsePadding={collapsePadding}
-      data-slot="logos"
+    <LogosSection
+      p={p}
+      sliceContext={slice_context}
+      align={align}
+      linkResolver={linkResolver}
     >
-      <EviHeadingGroup
-        title={p.heading}
-        description={p.body}
+      <LogoList
+        items={logos}
         linkResolver={linkResolver}
-        isHero={isHero}
-        align={align}
-        className={p.hide_heading ? "sr-only" : undefined}
+        justify={align}
+        eager={slice_context.eagerImages}
       />
-      <EviRow>
-        <LogoList
-          items={logos}
-          linkResolver={linkResolver}
-          justify={align}
-          eager={eagerImages}
-        />
-      </EviRow>
-    </EviSection>
+    </LogosSection>
   );
 }

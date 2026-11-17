@@ -1,14 +1,12 @@
 import { isFilled, type Content } from "@prismicio/client";
 
-import { EviSection } from "@/src/components/layout/EviSection";
-import { EviRow } from "@/src/components/layout/EviRow";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import {
   LogoList,
   filled_logos,
 } from "@/src/components/logos/parts/LogoList";
+import { LogosSection } from "@/src/components/logos/parts/LogosSection";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import {
   resolve_slice_context,
@@ -43,10 +41,7 @@ export function LogosGroupedLayout({
   context,
 }: LogosGroupedLayoutProps): React.ReactElement | null {
   const { linkResolver } = context;
-  const { theme, isHero, collapsePadding, eagerImages } = resolve_slice_context(
-    context,
-    index,
-  );
+  const slice_context = resolve_slice_context(context, index);
   const p = slice.primary;
 
   const groups = get_groups(p);
@@ -55,56 +50,46 @@ export function LogosGroupedLayout({
   const align = resolve_heading_align(p.heading_align);
 
   return (
-    <EviSection
-      theme={theme}
-      hero={isHero}
-      collapsePadding={collapsePadding}
-      data-slot="logos"
+    <LogosSection
+      p={p}
+      sliceContext={slice_context}
+      align={align}
+      linkResolver={linkResolver}
     >
-      <EviHeadingGroup
-        title={p.heading}
-        description={p.body}
-        linkResolver={linkResolver}
-        isHero={isHero}
-        align={align}
-        className={p.hide_heading ? "sr-only" : undefined}
-      />
-      <EviRow>
-        {/* Stakket indtil sektionen er bred nok til tre grupper side om side:
-            med 8 rigtige logoer var 1024px for trangt (titler og logoer brød
-            om). Stregerne sættes ved samme breakpoint, så de aldrig står foran
-            en gruppe på en ny linje. */}
-        <EviStack
-          rowFrom="@6xl/section"
-          align="start"
-          justify={align}
-          gap="xl"
-          className="@6xl/section:*:not-first:border-l @6xl/section:*:not-first:border-current/10 @6xl/section:*:not-first:pl-8"
-        >
-          {groups.map((group) => (
-            <EviStack
-              key={group.key}
-              align={align}
-              gap="sm"
-              data-slot="logo-group"
-            >
-              {isFilled.richText(group.title) && (
-                <EviRichText
-                  field={group.title}
-                  linkResolver={linkResolver}
-                  className="[&_h3]:m-0 [&_h3]:text-sm [&_h3]:font-semibold"
-                />
-              )}
-              <LogoList
-                items={group.logos}
+      {/* Stakket indtil sektionen er bred nok til tre grupper side om side:
+          med 8 rigtige logoer var 1024px for trangt (titler og logoer brød
+          om). Stregerne sættes ved samme breakpoint, så de aldrig står foran
+          en gruppe på en ny linje. */}
+      <EviStack
+        rowFrom="@6xl/section"
+        align="start"
+        justify={align}
+        gap="xl"
+        className="@6xl/section:*:not-first:border-l @6xl/section:*:not-first:border-current/10 @6xl/section:*:not-first:pl-8"
+      >
+        {groups.map((group) => (
+          <EviStack
+            key={group.key}
+            align={align}
+            gap="sm"
+            data-slot="logo-group"
+          >
+            {isFilled.richText(group.title) && (
+              <EviRichText
+                field={group.title}
                 linkResolver={linkResolver}
-                justify={align}
-                eager={eagerImages}
+                className="[&_h3]:m-0 [&_h3]:text-sm [&_h3]:font-semibold"
               />
-            </EviStack>
-          ))}
-        </EviStack>
-      </EviRow>
-    </EviSection>
+            )}
+            <LogoList
+              items={group.logos}
+              linkResolver={linkResolver}
+              justify={align}
+              eager={slice_context.eagerImages}
+            />
+          </EviStack>
+        ))}
+      </EviStack>
+    </LogosSection>
   );
 }
