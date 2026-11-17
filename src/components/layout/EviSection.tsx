@@ -14,6 +14,9 @@ export type EviSectionProps = React.ComponentProps<"section"> & {
   /** Tving normal (fuld) top-padding selvom hero — fx centered hero der ser
    *  for tæt på nav'en ud med den reducerede hero-hug. @default false */
   fullTopPadding?: boolean;
+  /** Mindre top-padding — når sektionen ikke er sit eget bånd, fx en lys footer
+   *  under en farvet sektion, hvor farveskiftet adskiller. @default false */
+  compactTop?: boolean;
   /** Mindre bund-padding — til page-end-bånd (footer), hvor bunden er sidekant-
    *  margin, ikke adskillelse til en næste sektion. @default false */
   compactBottom?: boolean;
@@ -26,20 +29,23 @@ export function EviSection({
   collapsePadding = false,
   collapseGapY = false,
   fullTopPadding = false,
+  compactTop = false,
   compactBottom = false,
   className,
   children,
   ...props
 }: EviSectionProps): React.ReactElement {
   // Normale sektioner er symmetriske (top = bund). Hero hugger nav'en (lille
-  // top), da nav'en selv adskiller; compactBottom giver bevidst mindre bund til
-  // page-end-bånd (footer).
+  // top), da nav'en selv adskiller; compactTop/compactBottom giver bevidst
+  // mindre luft, hvor farveskiftet eller sidekanten adskiller (footer).
   const pb = compactBottom ? "pb-10 md:pb-14" : "pb-24 md:pb-32";
   const pt = collapsePadding
     ? "pt-0"
-    : hero && !fullTopPadding
-      ? "pt-8 md:pt-12"
-      : "pt-24 md:pt-32";
+    : compactTop
+      ? "pt-10 md:pt-14"
+      : hero && !fullTopPadding
+        ? "pt-8 md:pt-12"
+        : "pt-24 md:pt-32";
 
   // collapseGapY matcher gap-y til gap-x → sammenhængende "gitter"-look (fx 3-kol grid).
   const gapY = collapseGapY ? "gap-y-4 md:gap-y-16" : "gap-y-12 md:gap-y-16";
