@@ -77,13 +77,34 @@ export function resolve_slice_context(
   return page_context.sliceContexts?.[index] ?? {};
 }
 
+/**
+ * Samme flade og intet billede imellem → `next` dropper sin top-padding, så
+ * naboerne ikke får dobbelt luft.
+ */
+function joins_previous(
+  prev: SliceWithPrimary | undefined,
+  next: SliceWithPrimary,
+  colors?: EviColors,
+): boolean {
+  if (!prev || is_bg_image_slice(prev) || is_bg_image_slice(next)) return false;
+
+  const theme = resolve_section_theme(next.primary?.background_theme);
+  const prevTheme = resolve_section_theme(prev.primary?.background_theme);
+  if (theme_type(theme) !== theme_type(prevTheme)) return false;
+
+  return (
+    theme === prevTheme ||
+    (colors != null &&
+      resolve_bg(theme, colors) === resolve_bg(prevTheme, colors))
+  );
+}
+
 export function compute_slice_contexts(
   slices: SliceWithPrimary[],
   colors?: EviColors,
 ): SliceContext[] {
   return slices.map((slice, index) => {
     const theme = resolve_section_theme(slice.primary?.background_theme);
-    const hasImage = is_bg_image_slice(slice);
 
     if (index === 0)
       return {
@@ -93,22 +114,27 @@ export function compute_slice_contexts(
         eagerImages: true,
       };
 
-    const prev = slices[index - 1];
-    const prevTheme = resolve_section_theme(prev?.primary?.background_theme);
-    const prevHasImage = is_bg_image_slice(prev);
-
-    const sameType = theme_type(theme) === theme_type(prevTheme);
-    const sameVisual =
-      sameType &&
-      (theme === prevTheme ||
-        (colors != null &&
-          resolve_bg(theme, colors) === resolve_bg(prevTheme, colors)));
-
     return {
       theme,
-      collapsePadding: sameVisual && !hasImage && !prevHasImage,
+      collapsePadding: joins_previous(slices[index - 1], slice, colors),
       isHero: false,
       eagerImages: index < EAGER_ABOVE_FOLD_SLICES,
     };
   });
+}
+
+/**
+ * Footeren er sidens næste bånd: ender siden i footerens flade, falder
+ * footerens top væk efter samme regel som mellem slices.
+ */
+export function joins_footer(
+  slices: SliceWithPrimary[],
+  footerTheme: string | null | undefined,
+  colors?: EviColors,
+): boolean {
+  return joins_previous(
+    slices.at(-1),
+    { primary: { background_theme: footerTheme ?? undefined } },
+    colors,
+  );
 }

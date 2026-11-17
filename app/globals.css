@@ -1208,6 +1208,13 @@
   }
 }
 
+/* ── Footer i forlængelse af sidens sidste flade ──
+   Siden sætter data-joins-footer (joins_footer, samme regel som
+   collapsePadding mellem slices): sektionens bund adskiller allerede. */
+:root:has([data-joins-footer]) [data-slot="evi-footer"] {
+  padding-top: 0;
+}
+
 /* ── EviPhoneMockup: opt out af squircle-reset ──
    Global reset sætter corner-shape: squircle på alle elementer, hvilket
    rendrer border-radius som superellipse. For iPhone-mockup skal hjørner

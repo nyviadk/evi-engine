@@ -10,7 +10,7 @@ import {
   resolve_page_url,
 } from "@/src/lib/prismic/paths";
 import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
-import { compute_slice_contexts } from "@/src/lib/prismic/slices";
+import { compute_slice_contexts, joins_footer } from "@/src/lib/prismic/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
 import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
@@ -65,6 +65,9 @@ export default async function Page(props: {
       settings?.data?.color_secondary || DEFAULTS_COLORS.color_secondary,
   };
   const sliceContexts = compute_slice_contexts(page.data.slices, colors);
+  const joinsFooter =
+    ctx.footer != null &&
+    joins_footer(page.data.slices, ctx.footer.data.background_theme, colors);
 
   // JSON-LD Schema
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
@@ -109,18 +112,22 @@ export default async function Page(props: {
           }}
         />
       )}
-      <SliceZone
-        slices={page.data.slices}
-        components={components}
-        context={{
-          linkResolver: link_resolver,
-          sliceContexts,
-          lastPublished: local_date(
-            page.last_publication_date,
-            settings?.data?.timezone || "Europe/Copenhagen",
-          ),
-        }}
-      />
+      {/* Footeren ligger i layoutet, som ikke renderes igen ved klient-
+          navigation; derfor et attribut her, som globals.css læser. */}
+      <div data-slot="evi-page" data-joins-footer={joinsFooter || undefined}>
+        <SliceZone
+          slices={page.data.slices}
+          components={components}
+          context={{
+            linkResolver: link_resolver,
+            sliceContexts,
+            lastPublished: local_date(
+              page.last_publication_date,
+              settings?.data?.timezone || "Europe/Copenhagen",
+            ),
+          }}
+        />
+      </div>
     </>
   );
 }

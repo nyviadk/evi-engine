@@ -72,9 +72,6 @@ export function FooterClassic({
     has_copyright || has_legal_links || has_language_selector;
 
   const section_theme = resolve_section_theme(footer.data.background_theme);
-  // Lys footer = sidens egen flade, ikke et bånd: farveskiftet over den
-  // adskiller, så fuld top bliver et hul. Farvet footer beholder båndets top.
-  const is_light = section_theme === "light";
 
   const slice_context: EviFooterSliceContext = { linkResolver };
 
@@ -82,8 +79,7 @@ export function FooterClassic({
     <EviSection
       as="footer"
       theme={section_theme}
-      compactTop={is_light}
-      compactBottom
+      compact
       data-slot="evi-footer"
       data-variant="classic"
     >

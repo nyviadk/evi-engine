@@ -14,12 +14,10 @@ export type EviSectionProps = React.ComponentProps<"section"> & {
   /** Tving normal (fuld) top-padding selvom hero — fx centered hero der ser
    *  for tæt på nav'en ud med den reducerede hero-hug. @default false */
   fullTopPadding?: boolean;
-  /** Mindre top-padding — når sektionen ikke er sit eget bånd, fx en lys footer
-   *  under en farvet sektion, hvor farveskiftet adskiller. @default false */
-  compactTop?: boolean;
-  /** Mindre bund-padding — til page-end-bånd (footer), hvor bunden er sidekant-
-   *  margin, ikke adskillelse til en næste sektion. @default false */
-  compactBottom?: boolean;
+  /** Mindre top og bund — til page-end-båndet (footer): toppen adskilles af
+   *  farveskiftet (eller kollapser ved samme flade), bunden er sidekant-margin.
+   *  @default false */
+  compact?: boolean;
 };
 
 export function EviSection({
@@ -29,19 +27,18 @@ export function EviSection({
   collapsePadding = false,
   collapseGapY = false,
   fullTopPadding = false,
-  compactTop = false,
-  compactBottom = false,
+  compact = false,
   className,
   children,
   ...props
 }: EviSectionProps): React.ReactElement {
   // Normale sektioner er symmetriske (top = bund). Hero hugger nav'en (lille
-  // top), da nav'en selv adskiller; compactTop/compactBottom giver bevidst
-  // mindre luft, hvor farveskiftet eller sidekanten adskiller (footer).
-  const pb = compactBottom ? "pb-10 md:pb-14" : "pb-24 md:pb-32";
+  // top), da nav'en selv adskiller; compact er page-end-båndet (footer), også
+  // symmetrisk, men på det lille trin.
+  const pb = compact ? "pb-10 md:pb-14" : "pb-24 md:pb-32";
   const pt = collapsePadding
     ? "pt-0"
-    : compactTop
+    : compact
       ? "pt-10 md:pt-14"
       : hero && !fullTopPadding
         ? "pt-8 md:pt-12"
