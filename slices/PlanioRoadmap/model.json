@@ -1,0 +1,90 @@
+{
+  "id": "planio_roadmap",
+  "name": "PlanioRoadmap",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_roadmap/default/6e0cf8e30e064c25db14c07becb163b456f1795b.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Fx Det her er kun begyndelsen",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "steps": {
+          "config": {
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Titel",
+                  "placeholder": "Fx Energi i flere lag",
+                  "single": "heading3,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "body": {
+                "config": {
+                  "label": "Tekst",
+                  "placeholder": "Kort beskrivelse af trinnet",
+                  "single": "paragraph,strong,em,hyperlink"
+                },
+                "type": "StructuredText"
+              },
+              "tag": {
+                "config": {
+                  "label": "Mærkat",
+                  "placeholder": "Fx I dag eller Senere",
+                  "single": "paragraph,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "current": {
+                "config": {
+                  "default_value": false,
+                  "label": "Findes i appen i dag",
+                  "placeholder_false": "Nej, kommer senere",
+                  "placeholder_true": "Ja, fyldt stjerne"
+                },
+                "type": "Boolean"
+              }
+            },
+            "label": "Trin"
+          },
+          "type": "Group"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Mørk",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

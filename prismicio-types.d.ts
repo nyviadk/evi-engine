@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice
 
 /**
  * Content for Side documents
@@ -4848,6 +4848,121 @@ type PlanioHeroSliceVariation = PlanioHeroSliceDefault
 export type PlanioHeroSlice = prismic.SharedSlice<"planio_hero", PlanioHeroSliceVariation>;
 
 /**
+ * Item in *PlanioRoadmap → Default → Primary → Trin*
+ */
+export interface PlanioRoadmapSliceDefaultPrimaryStepsItem {
+	/**
+	 * Titel field in *PlanioRoadmap → Default → Primary → Trin*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Energi i flere lag
+	 * - **API ID Path**: planio_roadmap.default.primary.steps[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *PlanioRoadmap → Default → Primary → Trin*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort beskrivelse af trinnet
+	 * - **API ID Path**: planio_roadmap.default.primary.steps[].body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Mærkat field in *PlanioRoadmap → Default → Primary → Trin*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx I dag eller Senere
+	 * - **API ID Path**: planio_roadmap.default.primary.steps[].tag
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	tag: prismic.RichTextField;
+	
+	/**
+	 * Findes i appen i dag field in *PlanioRoadmap → Default → Primary → Trin*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: planio_roadmap.default.primary.steps[].current
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	current: prismic.BooleanField;
+}
+
+/**
+ * Primary content in *PlanioRoadmap → Default → Primary*
+ */
+export interface PlanioRoadmapSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *PlanioRoadmap → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Fx Det her er kun begyndelsen
+	 * - **API ID Path**: planio_roadmap.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *PlanioRoadmap → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort tekst under overskriften
+	 * - **API ID Path**: planio_roadmap.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Trin field in *PlanioRoadmap → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_roadmap.default.primary.steps[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	steps: prismic.GroupField<Simplify<PlanioRoadmapSliceDefaultPrimaryStepsItem>>;
+	
+	/**
+	 * Baggrundstema field in *PlanioRoadmap → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Mørk
+	 * - **API ID Path**: planio_roadmap.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for PlanioRoadmap Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioRoadmapSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PlanioRoadmapSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PlanioRoadmap*
+ */
+type PlanioRoadmapSliceVariation = PlanioRoadmapSliceDefault
+
+/**
+ * PlanioRoadmap Shared Slice
+ *
+ * - **API ID**: `planio_roadmap`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioRoadmapSlice = prismic.SharedSlice<"planio_roadmap", PlanioRoadmapSliceVariation>;
+
+/**
  * Item in *Prices → Default → Primary → Pakker*
  */
 export interface PricesSliceDefaultPrimaryPlansItem {
@@ -5979,6 +6094,11 @@ declare module "@prismicio/client" {
 			PlanioHeroSliceDefaultPrimary,
 			PlanioHeroSliceVariation,
 			PlanioHeroSliceDefault,
+			PlanioRoadmapSlice,
+			PlanioRoadmapSliceDefaultPrimaryStepsItem,
+			PlanioRoadmapSliceDefaultPrimary,
+			PlanioRoadmapSliceVariation,
+			PlanioRoadmapSliceDefault,
 			PricesSlice,
 			PricesSliceDefaultPrimaryPlansItem,
 			PricesSliceDefaultPrimary,

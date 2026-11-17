@@ -73,6 +73,9 @@
             },
             "planio_customize": {
               "type": "SharedSlice"
+            },
+            "planio_roadmap": {
+              "type": "SharedSlice"
             }
           }
         },
