@@ -5,10 +5,9 @@ import {
   type RichTextField,
 } from "@prismicio/client";
 
-import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
+import { PlanioHeader } from "@/src/components/planio/PlanioHeader";
 import { PlanioStar } from "@/src/components/planio/PlanioStar";
-import { has_rich_text } from "@/src/lib/prismic/fields";
 import { evi_card_title_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 
@@ -45,46 +44,32 @@ export type PlanioTimelineHeaderProps = {
   isHero?: boolean;
 };
 
-/** Overskrift med stjernen på skinnen + brødtekst i lead-størrelse. */
+/** PlanioHeader med stjernen på skinnen og let vægt, så fed tekst står frem. */
 function Header({
   title,
   description,
   linkResolver,
   isHero,
 }: PlanioTimelineHeaderProps): React.ReactElement | null {
-  if (!has_rich_text(title, description)) return null;
-  const Heading = isHero ? "h1" : "h2";
-
   return (
-    <EviStack as="hgroup" gap="lg">
-      <EviRichText
-        field={title}
-        linkResolver={linkResolver}
-        isHero={isHero}
-        className="[&_h1]:max-w-[30ch] [&_h1]:font-light [&_h2]:max-w-[30ch] [&_h2]:font-light"
-        extraComponents={{
-          heading2: ({ children }) => (
-            <Heading className="relative">
-              <span
-                aria-hidden
-                className={cn(
-                  MARKER,
-                  "flex size-9.5 items-center justify-center rounded-full bg-(--theme-bg)",
-                )}
-              >
-                <PlanioStar className="size-6.5 text-evi-primary" />
-              </span>
-              {children}
-            </Heading>
-          ),
-        }}
-      />
-      <EviRichText
-        field={description}
-        linkResolver={linkResolver}
-        className="evi-lead max-w-prose"
-      />
-    </EviStack>
+    <PlanioHeader
+      title={title}
+      description={description}
+      linkResolver={linkResolver}
+      isHero={isHero}
+      className="[&_h1]:font-light [&_h2]:font-light"
+      marker={
+        <span
+          aria-hidden
+          className={cn(
+            MARKER,
+            "flex size-9.5 items-center justify-center rounded-full bg-(--theme-bg)",
+          )}
+        >
+          <PlanioStar className="size-6.5 text-evi-primary" />
+        </span>
+      }
+    />
   );
 }
 
