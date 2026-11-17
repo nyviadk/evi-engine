@@ -15,6 +15,7 @@
     "evi:preview-slices": "node scripts/preview-slices.mjs",
     "evi:check-responsive": "node scripts/check-responsive.mjs",
     "evi:check-content": "node scripts/check-content.mjs",
+    "evi:check-classes": "node scripts/check-classes.mjs",
     "evi:new-slice": "node scripts/new-slice.mjs",
     "evi:model": "node scripts/model-sync.mjs",
     "evi:login": "prismic login",

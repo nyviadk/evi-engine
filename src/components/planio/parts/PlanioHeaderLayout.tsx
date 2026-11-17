@@ -35,7 +35,7 @@ export function PlanioHeaderLayout({
       primary={slice.primary}
       context={context}
       theme="dark"
-      className="sticky top-0 z-20 border-[color:color-mix(in_oklab,currentColor_calc(var(--morph)*10%),transparent)] [--morph:0]"
+      className="sticky top-0 z-20 border-[color-mix(in_oklab,currentColor_calc(var(--morph)*10%),transparent)] [--morph:0]"
     />
   );
 }

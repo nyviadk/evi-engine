@@ -129,7 +129,7 @@ export function PlanioDemoMeter({
   return (
     <div
       data-slot="planio-demo-meter"
-      className="sticky top-[var(--planio-header-h,0px)] z-10 -mx-3 flex flex-col gap-4 bg-(--theme-bg) p-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
+      className="sticky top-(--planio-header-h,0px) z-10 -mx-3 flex flex-col gap-4 bg-(--theme-bg) p-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
     >
       {children}
     </div>
