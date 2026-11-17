@@ -32,14 +32,21 @@ export function PlanioLogo({
     className: PART,
     style: partStyle?.[name],
   });
-  const line = {
-    "data-part": "line",
-    pathLength: 1,
-    fill: "none",
-    strokeLinecap: "round" as const,
-    strokeWidth: 2,
-    className: "stroke-current",
-    style: partStyle?.line,
+  // --len = stregens egen længde (målt), så en tegne-animation kan bruge den.
+  // Ikke pathLength: Safari regner den forkert med dash, og stregen står færdig.
+  const line = (len: number) => {
+    const style: React.CSSProperties & { "--len": number } = {
+      "--len": len,
+      ...partStyle?.line,
+    };
+    return {
+      "data-part": "line",
+      fill: "none",
+      strokeLinecap: "round" as const,
+      strokeWidth: 2,
+      className: "stroke-current",
+      style,
+    };
   };
 
   return (
@@ -65,10 +72,10 @@ export function PlanioLogo({
           <g {...part("shape")}>
             <path d="M99.288,285l7.288,4.2v8.41l-7.288,4.2L92,297.614V289.2Z" transform="translate(-9.007 -93.888)" strokeWidth={2} className={SHAPE} />
           </g>
-          <path d="M120.54,123.767q-21.3-25.79-35.04-8.97" transform="translate(-6.151 -16.106)" {...line} />
-          <path d="M252,112.934q15.7-25.79,36.161-29.434" transform="translate(-79.389 -5.272)" {...line} />
-          <path d="M129.108,272Q113.41,293.3,105,287.7" transform="translate(-14.718 -88.176)" {...line} />
-          <path d="M252,272q15.7,26.911,36.161,26.07" transform="translate(-79.389 -88.176)" {...line} />
+          <path d="M120.54,123.767q-21.3-25.79-35.04-8.97" transform="translate(-6.151 -16.106)" {...line(42.9)} />
+          <path d="M252,112.934q15.7-25.79,36.161-29.434" transform="translate(-79.389 -5.272)" {...line(48.1)} />
+          <path d="M129.108,272Q113.41,293.3,105,287.7" transform="translate(-14.718 -88.176)" {...line(31.2)} />
+          <path d="M252,272q15.7,26.911,36.161,26.07" transform="translate(-79.389 -88.176)" {...line(47)} />
           <g {...part("body")}>
             <rect width="67.277" height="98.588" rx="16" transform="translate(109.861 94.206)" className="fill-evi-primary" />
           </g>

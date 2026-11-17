@@ -57,8 +57,8 @@ const LOGO: Partial<Record<PlanioLogoPart, MorphStyle>> = {
   },
   line: {
     "--r": "clamp(0, (var(--morph) - .6) / .25, 1)",
-    strokeDasharray: 1,
-    strokeDashoffset: "calc(1 - var(--r))",
+    strokeDasharray: "var(--len)",
+    strokeDashoffset: "calc(var(--len) * (1 - var(--r)))",
   },
   shape: { ...stage(0.8, 0.2), transform: "scale(var(--t))" },
 };
