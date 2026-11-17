@@ -4,14 +4,10 @@ import { EviColorTryBar } from "@/src/components/demo/EviColorTryBar";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
 import { build_translation_url_map } from "@/src/lib/prismic/paths";
-import HeaderClassic from "@/slices/HeaderClassic";
+import { components } from "@/slices";
 import type { EviHeaderSliceContext } from "@/src/components/header/types";
 import { FooterClassic } from "@/src/components/footer/FooterClassic";
 import { EviBeacon } from "@/src/components/analytics/EviBeacon";
-
-const HEADER_COMPONENTS = {
-  header_classic: HeaderClassic,
-};
 
 /**
  * Compute the canonical URL for each tenant locale using Prismic's
@@ -131,9 +127,12 @@ export default async function Layout({
       )}
 
       {header_context && (
+        // Hele registret: navigation-typen bestemmer pr. repo, hvilke header-
+        // slices zonen må have, så en ny variant (også planio_) virker uden
+        // at layoutet kender den.
         <SliceZone
           slices={header_slices}
-          components={HEADER_COMPONENTS}
+          components={components}
           context={header_context}
         />
       )}

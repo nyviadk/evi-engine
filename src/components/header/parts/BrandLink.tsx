@@ -5,7 +5,7 @@ import { cn } from "@/src/lib/utils/cn";
 
 export type BrandLinkProps = {
   /** Optional logo image from the header slice. Falls back to siteName text if empty. */
-  logo: ImageField;
+  logo?: ImageField;
   /** From settings.site_name — used as text fallback. */
   siteName: string | null | undefined;
   /** Absolute fallback if both logo and siteName are empty. */
@@ -25,7 +25,20 @@ export type BrandLinkProps = {
    */
   imageHeightClass?: string;
   className?: string;
+  /**
+   * Eget brand-mærke i stedet for logo/sitenavn, fx en animation. Linket får
+   * da sitenavnet som navn, så mærket selv kan være aria-hidden.
+   */
+  children?: React.ReactNode;
 };
+
+/** Brandets navn: sitenavnet, ellers hostnavnet. */
+export function brand_text(
+  siteName: string | null | undefined,
+  hostname: string,
+): string {
+  return (isFilled.keyText(siteName) ? siteName : null) || hostname;
+}
 
 export function BrandLink({
   logo,
@@ -35,11 +48,12 @@ export function BrandLink({
   allowTranslation,
   imageHeightClass = "h-15",
   className,
+  children,
 }: BrandLinkProps): React.ReactElement {
-  const brand_text =
-    (isFilled.keyText(siteName) ? siteName : null) || hostname;
+  const name = brand_text(siteName, hostname);
   const translate_attr = allowTranslation ? undefined : "no";
   const has_logo = isFilled.image(logo);
+  const has_mark = children != null;
 
   return (
     <a
@@ -51,9 +65,11 @@ export function BrandLink({
         "evi-nav-brand inline-flex w-fit items-center rounded-evi text-current no-underline hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2",
         className,
       )}
-      aria-label={has_logo ? brand_text : undefined}
+      aria-label={has_mark || has_logo ? name : undefined}
     >
-      {has_logo ? (
+      {has_mark ? (
+        children
+      ) : has_logo ? (
         <PrismicNextImage
           field={logo}
           className={cn("w-auto object-contain", imageHeightClass)}
@@ -62,7 +78,7 @@ export function BrandLink({
           fetchPriority="high"
         />
       ) : (
-        <EviBrandText text={brand_text} translate={translate_attr} />
+        <EviBrandText text={name} translate={translate_attr} />
       )}
     </a>
   );

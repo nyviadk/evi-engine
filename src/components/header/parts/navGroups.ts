@@ -22,7 +22,8 @@ export type NavText = { kind: "text"; label: string };
 /** Én menu-gruppe: `top` = det synlige menupunkt, `items` = dropdown-links (evt. tom). */
 export type NavGroup = { top: NavLink | NavText; items: NavLink[] };
 
-type GroupItem = { links: Repeatable<LinkField> };
+/** Én `nav_groups`-række i en header-slice. */
+export type NavGroupItem = { links: Repeatable<LinkField> };
 
 /**
  * Server-side: resolver hver Prismic-gruppe til serialiserbare punkter.
@@ -31,7 +32,7 @@ type GroupItem = { links: Repeatable<LinkField> };
  * Dropdown-punkter uden URL (kun tekst) giver ingen destination → springes over.
  */
 export function resolve_nav_groups(
-  groups: readonly GroupItem[] | undefined,
+  groups: readonly NavGroupItem[] | undefined,
   linkResolver: LinkResolverFunction,
 ): NavGroup[] {
   const result: NavGroup[] = [];
