@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { isFilled } from "@prismicio/client";
 import { preload } from "react-dom";
 
 import { compute_theme_vars, DEFAULTS_COLORS } from "@/src/lib/theme/colors";
@@ -11,21 +12,11 @@ import { get_evi_context } from "@/src/lib/prismic/context";
 import { EviPaperGrain } from "@/src/components/ui/EviPaperGrain";
 import { system_copy } from "@/src/lib/i18n/system-pages";
 
-// Favicon-felter der endnu ikke er med i prismicio-types.d.ts (auto-gen).
-// Typerne regenereres af Slice Machine på næste dev/build.
-type SettingsWithIcons = {
-  favicon_light?: { url?: string | null } | null;
-  favicon_dark?: { url?: string | null } | null;
-};
-
 export async function generateMetadata(): Promise<Metadata> {
   const ctx = await get_evi_context();
-  const d = ctx?.settings?.data as
-    | (NonNullable<NonNullable<typeof ctx>["settings"]>["data"] &
-        SettingsWithIcons)
-    | undefined;
-  const light = d?.favicon_light?.url || null;
-  const dark = d?.favicon_dark?.url || null;
+  const d = ctx?.settings?.data;
+  const light = isFilled.image(d?.favicon_light) ? d.favicon_light.url : null;
+  const dark = isFilled.image(d?.favicon_dark) ? d.favicon_dark.url : null;
 
   // Begge uploadet → browseren vælger via prefers-color-scheme.
   if (light && dark) {
@@ -42,8 +33,9 @@ export async function generateMetadata(): Promise<Metadata> {
   if (light || dark) {
     return { icons: { icon: [{ url: (light || dark) as string }] } };
   }
-  // Ingen uploadet → Next serverer app/favicon.ico via filkonventionen.
-  return {};
+  // Ingen uploadet → Evis eget ikon. Det ligger i public/, ikke app/: Next sætter
+  // altid app/favicon.ico i <head>, så det ville konkurrere med sitets eget ikon.
+  return { icons: { icon: [{ url: "/favicon.ico" }] } };
 }
 
 export async function generateViewport(): Promise<Viewport> {

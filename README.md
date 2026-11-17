@@ -438,7 +438,7 @@ Stops the "Untitled | MySite" anti-pattern without overruling editors who want e
 Three Prismic `settings` fields drive browser-level chrome on top of the theme colors:
 
 - **`color_scheme`** — `"Lys" | "Mørk" | "Lys & mørk (auto)"`. Maps to the CSS `color-scheme` property on `<html>` in [app/layout.tsx](app/layout.tsx), which controls how the browser renders scrollbars and native form-controls (`<select>`, date-picker). Default `"Lys"`.
-- **`favicon_light` / `favicon_dark`** — separate favicons per `prefers-color-scheme`. `generateMetadata` in [app/layout.tsx](app/layout.tsx) emits two `<link rel="icon">` tags with `media` attributes when both are provided. With only one uploaded, it serves unconditionally. With none, Next falls back to `app/favicon.ico`.
+- **`favicon_light` / `favicon_dark`** — separate favicons per `prefers-color-scheme`. `generateMetadata` in [app/layout.tsx](app/layout.tsx) emits two `<link rel="icon">` tags with `media` attributes when both are provided. With only one uploaded, it serves unconditionally. With none, it links Evi's default `public/favicon.ico`. The default lives in `public/`, not `app/`, because Next always adds `app/favicon.ico` to `<head>`, and it would compete with the tenant's own icon.
 - **`translate_brand`** — `boolean`. When `false` (default), the brand-name in [src/components/EviNavigation.tsx](src/components/EviNavigation.tsx) gets `translate="no"` to prevent Google Translate (and similar) from mangling proper nouns. Tenants can opt in if their brand actually should be translated.
 
 ### Button safety variables
