@@ -106,7 +106,7 @@ export function PlanioCustomizeColors({
   return (
     <PlanioColors start={start} presets={presets_of(p)}>
       <EviStack direction="row" wrap gap="lg">
-        <PlanioColorsPreview className="grow basis-44 @lg/tile:max-w-64">
+        <PlanioColorsPreview className="grow basis-44 @lg/frame:max-w-64">
           <Preview p={p} linkResolver={linkResolver} />
         </PlanioColorsPreview>
         <EviStack gap="sm" className="grow basis-52">

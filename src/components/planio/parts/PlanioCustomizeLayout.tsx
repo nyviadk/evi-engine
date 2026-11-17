@@ -13,7 +13,7 @@ import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviTitle } from "@/src/components/typography/EviTitle";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { PlanioHeader } from "@/src/components/planio/PlanioHeader";
-import { PlanioTile } from "@/src/components/planio/PlanioTile";
+import { PlanioFrame } from "@/src/components/planio/PlanioFrame";
 import {
   PlanioCustomizeColors,
   start_palette,
@@ -99,9 +99,9 @@ export function PlanioCustomizeLayout({
         <EviSplit preset="60-40" rows={2}>
           <Tile
             frame={
-              <PlanioTile>
+              <PlanioFrame tone="neutral">
                 <PlanioCustomizeColors p={p} linkResolver={linkResolver} />
-              </PlanioTile>
+              </PlanioFrame>
             }
             title={p.colors_title}
             body={p.colors_body}
@@ -109,9 +109,9 @@ export function PlanioCustomizeLayout({
           />
           <Tile
             frame={
-              <PlanioTile aria-hidden>
+              <PlanioFrame tone="neutral" aria-hidden>
                 <PlanioEnergyUnits p={p} linkResolver={linkResolver} />
-              </PlanioTile>
+              </PlanioFrame>
             }
             title={p.energy_title}
             body={p.energy_body}
@@ -122,9 +122,9 @@ export function PlanioCustomizeLayout({
       {has_days && (
         <EviRow>
           <figure>
-            <PlanioTile aria-hidden>
+            <PlanioFrame tone="neutral" aria-hidden>
               <PlanioDaySettings p={p} linkResolver={linkResolver} />
-            </PlanioTile>
+            </PlanioFrame>
             {isFilled.keyText(p.days_label) && (
               <figcaption className="sr-only">{p.days_label}</figcaption>
             )}

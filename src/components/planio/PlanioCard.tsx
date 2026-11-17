@@ -17,7 +17,7 @@ type TextProps = {
   className?: string;
 };
 
-/** Lyst app-kort (EviBox compact-form) på en PlanioFrame. */
+/** Lyst app-kort (EviBox compact-form), centreret på en PlanioFrame. */
 function Root({
   className,
   ...props
@@ -26,7 +26,7 @@ function Root({
     <div
       data-slot="planio-card"
       className={cn(
-        "theme-light flex w-full max-w-100 flex-col gap-4",
+        "theme-light mx-auto flex w-full max-w-100 flex-col gap-4",
         evi_box_class("compact"),
         className,
       )}
