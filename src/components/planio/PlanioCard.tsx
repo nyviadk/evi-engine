@@ -5,7 +5,7 @@ import {
 } from "@prismicio/client";
 import { Check } from "lucide-react";
 
-import { EviStack } from "@/src/components/layout/EviStack";
+import { EviStack, type EviStackProps } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { evi_box_class } from "@/src/components/ui/EviBox";
 import { PlanioStar } from "@/src/components/planio/PlanioStar";
@@ -17,19 +17,17 @@ type TextProps = {
   className?: string;
 };
 
-/** Lyst app-kort (EviBox compact-form), centreret på en PlanioFrame. */
+/** Lyst app-kort (EviBox compact-form), centreret i sin EviBox-ramme. */
 function Root({
   className,
+  gap = "md",
   ...props
-}: React.ComponentProps<"div">): React.ReactElement {
+}: React.ComponentProps<"div"> & Pick<EviStackProps, "gap">): React.ReactElement {
   return (
-    <div
+    <EviStack
       data-slot="planio-card"
-      className={cn(
-        "theme-light mx-auto flex w-full max-w-100 flex-col gap-4",
-        evi_box_class("compact"),
-        className,
-      )}
+      gap={gap}
+      className={cn("theme-light mx-auto w-full max-w-100", evi_box_class("compact"), className)}
       {...props}
     />
   );
@@ -77,15 +75,16 @@ function FutureBadge({
 }: TextProps): React.ReactElement | null {
   if (!isFilled.richText(field)) return null;
   return (
-    <span
-      className={cn(
-        "inline-flex w-fit items-center gap-1.5 text-xs font-bold tracking-wider uppercase",
-        className,
-      )}
+    <EviStack
+      as="span"
+      direction="row"
+      align="center"
+      gap="xs"
+      className={cn("w-fit text-xs font-bold tracking-wider uppercase", className)}
     >
       <PlanioStar variant="outline" className="size-3" />
       <EviRichText.Inline field={field} linkResolver={linkResolver} />
-    </span>
+    </EviStack>
   );
 }
 

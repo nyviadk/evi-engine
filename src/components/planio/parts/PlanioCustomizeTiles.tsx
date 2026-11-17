@@ -65,22 +65,17 @@ export function PlanioEnergyUnits({ p, linkResolver }: TileProps): React.ReactEl
   return (
     <ul>
       {rows.map((row, i) => (
-        // Smal flise: navnet står altid på sin egen linje og grafik + tal
-        // under, så alle rækker ser ens ud (ellers foldede kun de lange navne).
+        // Navnet over grafik + tal i alle rækker, så de ser ens ud i en smal flise.
         <EviStack
           key={i}
           as="li"
-          direction="row"
-          wrap
-          align="center"
-          justify="between"
-          gap="sm"
-          className="min-h-13 border-t border-current/12 py-2 first:border-t-0"
+          gap="xs"
+          className="border-t border-current/10 py-2 first:border-t-0"
         >
-          <div className="min-w-0 basis-full text-sm font-semibold @2xs/frame:basis-auto">
+          <div className="min-w-0 text-sm font-semibold">
             <EviRichText.Raw field={row.name} linkResolver={linkResolver} />
           </div>
-          <EviStack direction="row" align="center" gap="md" className="ml-auto">
+          <EviStack direction="row" align="center" justify="between" gap="md">
             <div className="w-26">{row.visual}</div>
             <div className="min-w-14 text-right text-lg font-bold whitespace-nowrap tabular-nums">
               {isFilled.keyText(row.value) ? row.value : null}

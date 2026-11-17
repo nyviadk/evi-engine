@@ -86,7 +86,7 @@ export function PlanioHeroSection({
         {horizon && (
           <div
             aria-hidden
-            className="absolute top-0 left-1/2 w-75 origin-top -translate-x-1/2 scale-(--horizon-scale)"
+            className="absolute top-0 left-1/2 origin-top -translate-x-1/2 scale-(--horizon-scale) [--evi-phone-w:18.75rem]"
           >
             {/* motion-reduce:delay-0: den globale reduced-motion-regel nulstiller
                 kun varigheden, så uden den ville indholdet poppe ind forsinket. */}

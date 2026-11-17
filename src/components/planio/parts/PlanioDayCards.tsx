@@ -126,7 +126,7 @@ export function PlanioDialogCard({
   linkResolver,
 }: PlanioDayCardProps): React.ReactElement {
   return (
-    <PlanioCard className="gap-3">
+    <PlanioCard>
       <PlanioCard.FutureBadge field={p.dialog_badge} linkResolver={linkResolver} />
       {has_rich_text(p.dialog_card_title, p.dialog_card_note) && (
         <EviStack gap="xs">
@@ -211,12 +211,8 @@ export function PlanioReminderCard({
   );
 
   return (
-    <PlanioCard className="gap-0">
-      <PlanioCard.Label
-        field={p.remind_card_title}
-        linkResolver={linkResolver}
-        className="pb-2.5"
-      />
+    <PlanioCard gap="sm">
+      <PlanioCard.Label field={p.remind_card_title} linkResolver={linkResolver} />
       {items.length > 0 && (
         <ul className="ps-0">
           {items.map((item, i) => (

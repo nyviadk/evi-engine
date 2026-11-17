@@ -77,7 +77,7 @@ function Preview({ p, linkResolver }: { p: Primary; linkResolver: LinkResolverFu
           direction="row"
           align="center"
           gap="sm"
-          className="border-t border-current/12 pt-2 text-xs font-bold"
+          className="border-t border-current/10 pt-2 text-xs font-bold"
         >
           <span
             className={cn("h-4 w-0.75 shrink-0 rounded-full", !isFilled.color(item.color) && "bg-evi-primary")}
@@ -106,7 +106,7 @@ export function PlanioCustomizeColors({
   return (
     <PlanioColors start={start} presets={presets_of(p)}>
       <EviStack direction="row" wrap gap="lg">
-        <PlanioColorsPreview className="grow basis-44 @lg/frame:max-w-64">
+        <PlanioColorsPreview className="max-w-64 grow basis-44">
           <Preview p={p} linkResolver={linkResolver} />
         </PlanioColorsPreview>
         <EviStack gap="sm" className="grow basis-52">

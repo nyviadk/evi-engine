@@ -8,12 +8,13 @@ import {
 import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
-import { EviStack } from "@/src/components/layout/EviStack";
+import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviTitle } from "@/src/components/typography/EviTitle";
+import { EviBox } from "@/src/components/ui/EviBox";
 import { EviCard } from "@/src/components/ui/EviCard";
-import { PlanioHeader } from "@/src/components/planio/PlanioHeader";
-import { PlanioFrame } from "@/src/components/planio/PlanioFrame";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
+import { cn } from "@/src/lib/utils/cn";
 import {
   PlanioCustomizeColors,
   start_palette,
@@ -37,8 +38,8 @@ export type PlanioCustomizeLayoutProps = {
 };
 
 /**
- * En flise: ramme + billedtekst som EviCard-rækker, så billedteksterne flugter
- * på tværs af de to fliser i EviSplit, selv om rammerne er forskelligt høje.
+ * En flise som Evis kort: ramme, titel og tekst i hver sin EviCard-række, så
+ * titler og tekster flugter på tværs af de to fliser.
  */
 function Tile({
   frame,
@@ -52,12 +53,14 @@ function Tile({
   linkResolver: LinkResolverFunction;
 }): React.ReactElement {
   return (
-    <EviCard rows={2}>
+    <EviCard rows={3}>
       {frame}
-      <EviStack gap="sm" className="mt-4">
-        <EviTitle field={title} linkResolver={linkResolver} size="lg" />
-        <EviRichText field={body} linkResolver={linkResolver} className="max-w-prose" />
-      </EviStack>
+      <EviTitle field={title} linkResolver={linkResolver} size="lg" className="mt-4" />
+      <EviRichText
+        field={body}
+        linkResolver={linkResolver}
+        className={cn("mt-2", evi_card_body_class())}
+      />
     </EviCard>
   );
 }
@@ -89,19 +92,19 @@ export function PlanioCustomizeLayout({
       collapsePadding={collapsePadding}
       data-slot="planio-customize"
     >
-      <PlanioHeader
+      <EviHeadingGroup
         title={p.heading}
         description={p.body}
         linkResolver={linkResolver}
         isHero={isHero}
       />
       {(has_colors || has_energy) && (
-        <EviSplit preset="60-40" rows={2}>
+        <EviSplit preset="60-40" rows={3}>
           <Tile
             frame={
-              <PlanioFrame tone="neutral">
+              <EviBox surface="Neutral" size="compact">
                 <PlanioCustomizeColors p={p} linkResolver={linkResolver} />
-              </PlanioFrame>
+              </EviBox>
             }
             title={p.colors_title}
             body={p.colors_body}
@@ -109,9 +112,9 @@ export function PlanioCustomizeLayout({
           />
           <Tile
             frame={
-              <PlanioFrame tone="neutral" aria-hidden>
+              <EviBox surface="Neutral" size="compact" aria-hidden>
                 <PlanioEnergyUnits p={p} linkResolver={linkResolver} />
-              </PlanioFrame>
+              </EviBox>
             }
             title={p.energy_title}
             body={p.energy_body}
@@ -122,9 +125,9 @@ export function PlanioCustomizeLayout({
       {has_days && (
         <EviRow>
           <figure>
-            <PlanioFrame tone="neutral" aria-hidden>
+            <EviBox surface="Neutral" size="compact" aria-hidden>
               <PlanioDaySettings p={p} linkResolver={linkResolver} />
-            </PlanioFrame>
+            </EviBox>
             {isFilled.keyText(p.days_label) && (
               <figcaption className="sr-only">{p.days_label}</figcaption>
             )}

@@ -8,6 +8,8 @@ import {
   parse_hex,
   type Hsv,
 } from "@/src/components/planio/planio-color";
+import { EviStack } from "@/src/components/layout/EviStack";
+import { EviButton } from "@/src/components/ui/EviButton";
 import { cn } from "@/src/lib/utils/cn";
 
 export type PlanioColorRole = "primary" | "background" | "text";
@@ -17,6 +19,7 @@ export type PlanioPreset = { name: string; colors: PlanioPalette };
 const ROLES: PlanioColorRole[] = ["primary", "background", "text"];
 const STEP = 0.02;
 const SHIFT_STEP = 0.1;
+// Farvefeltet og tema-prikkerne har ingen global fokus-stil (inputs og EviButton har).
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current";
 
 type ColorsState = {
@@ -105,9 +108,9 @@ export function PlanioColors({
 
   return (
     <ColorsContext value={state}>
-      <div data-slot="planio-colors" className="flex flex-col gap-5">
+      <EviStack data-slot="planio-colors" gap="lg">
         {children}
-      </div>
+      </EviStack>
     </ColorsContext>
   );
 }
@@ -156,7 +159,7 @@ export function PlanioColorsRoles({
   const name = useId();
 
   return (
-    <fieldset className="flex min-w-0 flex-wrap gap-1.5">
+    <EviStack as="fieldset" direction="row" wrap gap="xs" className="min-w-0">
       {legend && <legend className="sr-only">{legend}</legend>}
       {ROLES.filter((r) => labels[r]).map((r) => (
         <label
@@ -178,7 +181,7 @@ export function PlanioColorsRoles({
           {labels[r]}
         </label>
       ))}
-    </fieldset>
+    </EviStack>
   );
 }
 
@@ -231,7 +234,7 @@ export function PlanioColorsArea({ label }: { label: string | null }): React.Rea
         if (event.currentTarget.hasPointerCapture(event.pointerId)) from_pointer(event);
       }}
       onKeyDown={on_key}
-      className={cn("relative h-26 cursor-crosshair touch-none rounded-lg", FOCUS)}
+      className={cn("relative h-26 cursor-crosshair touch-none rounded-evi", FOCUS)}
       // Selve farverummet (sort/hvid/ren farvetone), ikke tema-farver.
       style={{
         background: `linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, hsl(${hue} 100% 50%))`,
@@ -268,7 +271,6 @@ export function PlanioColorsHue({ label }: { label: string | null }): React.Reac
         "h-6 w-full cursor-pointer appearance-none rounded-full bg-[linear-gradient(to_right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)] bg-size-[100%_12px] bg-center bg-no-repeat",
         "[&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-evi-light [&::-webkit-slider-thumb]:bg-(--thumb)",
         "[&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-evi-light [&::-moz-range-thumb]:bg-(--thumb) [&::-moz-range-track]:bg-transparent",
-        FOCUS,
       )}
       style={{ "--thumb": `hsl(${hue} 100% 50%)` } as React.CSSProperties}
     />
@@ -289,10 +291,7 @@ export function PlanioColorsHex({ label }: { label: string | null }): React.Reac
       value={hexDraft ?? colors[role]}
       onChange={(event) => typeHex(event.target.value)}
       onBlur={commitHex}
-      className={cn(
-        "min-h-8 w-28 rounded-lg bg-transparent px-2.5 text-base font-semibold tracking-wide ring-1 ring-current/25 ring-inset",
-        FOCUS,
-      )}
+      className="min-h-8 w-28 rounded-evi bg-transparent px-2.5 text-base font-semibold tracking-wide ring-1 ring-current/25 ring-inset"
     />
   );
 }
@@ -309,17 +308,10 @@ export function PlanioColorsSwap({
   if (!label) return null;
 
   return (
-    <button
-      type="button"
-      onClick={swap}
-      className={cn(
-        "inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-full pr-3 pl-2 text-xs font-semibold ring-1 ring-current/25 ring-inset hover:bg-current/8",
-        FOCUS,
-      )}
-    >
+    <EviButton type="button" onClick={swap} variant="neutral" appearance="outline" size="sm">
       {icon}
       {label}
-    </button>
+    </EviButton>
   );
 }
 
@@ -334,16 +326,18 @@ export function PlanioColorsPresets({
   if (presets.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-current/12 pt-4">
+    <EviStack direction="row" wrap align="center" gap="md" className="border-t border-current/10 pt-4">
       {label && (
         <span id={id} className="text-xs font-semibold">
           {label}
         </span>
       )}
-      <div
+      <EviStack
         role="group"
         aria-labelledby={label ? id : undefined}
-        className="flex flex-wrap gap-1"
+        direction="row"
+        wrap
+        gap="xs"
       >
         {presets.map((preset, i) => (
           <button
@@ -361,7 +355,7 @@ export function PlanioColorsPresets({
             }}
           />
         ))}
-      </div>
-    </div>
+      </EviStack>
+    </EviStack>
   );
 }

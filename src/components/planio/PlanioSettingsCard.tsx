@@ -1,18 +1,22 @@
+import { EviAutoGrid, type EviAutoGridProps } from "@/src/components/layout/EviAutoGrid";
+import { EviStack } from "@/src/components/layout/EviStack";
+import { evi_box_class } from "@/src/components/ui/EviBox";
 import { cn } from "@/src/lib/utils/cn";
 
 /**
- * Appens indstillinger som lyst kort; to kolonner, når flisen er bred. Rå grid
- * frem for EviAutoGrid: kolonnerne skal have luft, men rækkerne deles af
- * streger uden mellemrum, og EviAutoGrids gap er ens på begge akser.
+ * Appens indstillinger som lyst kort: EviAutoGrid duo (to kolonner, når der er
+ * plads). Rækkerne deles af streger, så række-afstanden er 0 (som Bentos gap).
  */
-function Root({ className, ...props }: React.ComponentProps<"ul">): React.ReactElement {
+function Root({
+  className,
+  ...props
+}: Omit<EviAutoGridProps, "as" | "size">): React.ReactElement {
   return (
-    <ul
+    <EviAutoGrid
+      as="ul"
+      size="duo"
       data-slot="planio-settings-card"
-      className={cn(
-        "theme-light grid grid-cols-1 gap-x-12 rounded-evi px-4 py-1 @2xl/frame:grid-cols-2 @2xl/frame:px-6 @2xl/frame:py-2",
-        className,
-      )}
+      className={cn("theme-light gap-y-0 md:gap-y-0", evi_box_class("compact"), className)}
       {...props}
     />
   );
@@ -30,13 +34,28 @@ export type PlanioSettingsRowProps = {
 /** En indstilling. Er der ikke plads, lægger værdien sig under navnet. */
 function Row({ label, value, swatch, toggle = false }: PlanioSettingsRowProps): React.ReactElement {
   return (
-    <li className="flex min-h-13 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-current/12 py-2 text-sm font-bold first:border-t-0 @2xl/frame:nth-2:border-t-0">
+    <EviStack
+      as="li"
+      direction="row"
+      wrap
+      align="center"
+      justify="between"
+      gap="sm"
+      // Ved to kolonner (EviAutoGrid duo's breakpoint) står række 2 også øverst.
+      className="min-h-13 border-t border-current/10 py-2 text-sm font-bold first:border-t-0 @[532px]/grid:nth-2:border-t-0"
+    >
       <span className="min-w-0 text-pretty">{label}</span>
       {toggle ? (
         <span className="relative ml-auto h-5 w-9 shrink-0 rounded-full bg-evi-primary after:absolute after:top-0.5 after:right-0.5 after:size-4 after:rounded-full after:bg-evi-light" />
       ) : (
         value && (
-          <span className="ml-auto inline-flex min-w-0 items-center gap-2 text-right font-medium">
+          <EviStack
+            as="span"
+            direction="row"
+            align="center"
+            gap="sm"
+            className="ml-auto min-w-0 text-right font-medium"
+          >
             {swatch && (
               <span
                 className="size-3.5 shrink-0 rounded-full border-2"
@@ -44,10 +63,10 @@ function Row({ label, value, swatch, toggle = false }: PlanioSettingsRowProps): 
               />
             )}
             {value}
-          </span>
+          </EviStack>
         )
       )}
-    </li>
+    </EviStack>
   );
 }
 

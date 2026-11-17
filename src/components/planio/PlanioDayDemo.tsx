@@ -108,7 +108,7 @@ export function PlanioDemo({
     <DemoContext value={state}>
       <div
         data-slot="planio-demo"
-        className="flex w-full flex-col gap-5 @3xl/section:grid @3xl/section:grid-cols-[5fr_7fr] @3xl/section:grid-rows-[auto_1fr] @3xl/section:items-start @3xl/section:gap-x-8"
+        className="flex w-full flex-col gap-6 @3xl/section:grid @3xl/section:grid-cols-[5fr_7fr] @3xl/section:grid-rows-[auto_1fr] @3xl/section:items-start @3xl/section:gap-x-8"
       >
         {children}
       </div>
@@ -119,7 +119,7 @@ export function PlanioDemo({
 /**
  * Tal + batteri. Sticky på mobil, så man ser energien, mens man krydser af,
  * lige under My Planios sticky header (--planio-header-h); de negative
- * marginer (= PlanioFrames padding) lader baggrunden gå ud til kanten.
+ * marginer (= EviBox compact-padding om demoen) lader baggrunden gå ud til kanten.
  */
 export function PlanioDemoMeter({
   children,
@@ -127,12 +127,13 @@ export function PlanioDemoMeter({
   children: React.ReactNode;
 }): React.ReactElement {
   return (
-    <div
+    <EviStack
       data-slot="planio-demo-meter"
-      className="sticky top-(--planio-header-h,0px) z-10 -mx-3 flex flex-col gap-4 bg-(--theme-bg) p-3 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:gap-5 @3xl/section:bg-transparent @3xl/section:p-0"
+      gap="md"
+      className="sticky top-(--planio-header-h,0px) z-10 -mx-3 bg-(--theme-bg) p-3 sm:-mx-4 sm:px-4 md:-mx-6 md:px-6 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:bg-transparent @3xl/section:p-0"
     >
       {children}
-    </div>
+    </EviStack>
   );
 }
 
@@ -171,10 +172,11 @@ export function PlanioDemoStat({
 
   return (
     // aria-atomic: en ændring læses som "Tilbage 20%", ikke bare "20%".
-    <div
+    <EviStack
       aria-atomic
+      gap="xs"
       className={cn(
-        "flex min-w-0 grow basis-20 flex-col gap-0.5 rounded-evi px-3 py-2.5",
+        "min-w-0 grow basis-20 rounded-evi px-3 py-2.5",
         kind === "left" ? "theme-primary" : "theme-light",
       )}
     >
@@ -184,7 +186,7 @@ export function PlanioDemoStat({
       <dd className="text-xl leading-snug font-bold tabular-nums">
         {value}
       </dd>
-    </div>
+    </EviStack>
   );
 }
 
@@ -270,7 +272,7 @@ export function PlanioDemoItem({
         onChange={() => toggle(eventKey)}
       />
       <span className="min-w-0 font-bold wrap-break-word hyphens-auto">{title}</span>
-      <span className="col-start-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 @xs/list:contents">
+      <EviStack as="span" direction="row" wrap align="center" gap="sm" className="col-start-2 @xs/list:contents">
         {time && (
           <span className="text-xs font-semibold whitespace-nowrap @xs/list:col-start-2 @xs/list:row-start-2">
             {time}
@@ -284,7 +286,7 @@ export function PlanioDemoItem({
         >
           {format_change(energy)}
         </span>
-      </span>
+      </EviStack>
     </label>
   );
 }
@@ -317,14 +319,15 @@ export function PlanioDemoStatus({
   const sentence = template?.replaceAll(PERCENT_TOKEN, `${Math.abs(left)}%`);
 
   return (
-    <div
+    <EviStack
       data-slot="planio-demo-status"
       aria-live="polite"
-      className="flex flex-col gap-3 @3xl/section:col-start-1 @3xl/section:row-start-2"
+      gap="md"
+      className="@3xl/section:col-start-1 @3xl/section:row-start-2"
     >
       {sentence && <div className="font-bold">{sentence}</div>}
       {children}
-    </div>
+    </EviStack>
   );
 }
 
@@ -336,5 +339,5 @@ export function PlanioDemoTomorrowNote({
 }): React.ReactElement | null {
   const { tomorrowLow } = useDemo();
   if (!tomorrowLow) return null;
-  return <div className="flex flex-col gap-1">{children}</div>;
+  return <EviStack gap="xs">{children}</EviStack>;
 }
