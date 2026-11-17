@@ -15,6 +15,7 @@ import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
 import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
 import { is_staging_domain } from "@/src/lib/seo/domains";
+import { og_locale } from "@/src/lib/seo/og-locale";
 import { local_date } from "@/src/lib/utils/date";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
@@ -230,7 +231,7 @@ export async function generateMetadata(props: {
       description: page.data.meta_description ?? undefined,
       url: full_canonical_url,
       siteName: siteName ?? undefined,
-      locale: lang,
+      locale: og_locale(lang),
       type: "website",
       ...(og_image_url && {
         images: [
