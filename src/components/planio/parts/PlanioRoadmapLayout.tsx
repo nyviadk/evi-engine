@@ -10,13 +10,14 @@ import {
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
 
-// Designets fem stjerner langs kanterne, fri af tekst og trin. Den nederste til
-// venstre vises først fra md: på mobil løber tidslinjen langs venstre kant.
+// Designets fem stjerner. De øverste står med faste afstande i sektionens top-luft:
+// i procent rykkede de ned i overskriften, når sektionen blev høj på mobil. De to
+// midt i sektionen vises først fra md, hvor teksten ikke når helt ud til kanterne.
 const STARS: PlanioSkyStar[] = [
-  { position: "left-[4%] top-[7%]" },
-  { position: "left-[46%] top-[5%]", big: true },
-  { position: "left-[91%] top-[10%]" },
-  { position: "left-[96%] top-[48%]" },
+  { position: "left-[4%] top-12" },
+  { position: "left-[46%] top-9", big: true },
+  { position: "left-[91%] top-18" },
+  { position: "left-[96%] top-[48%]", wide: true },
   { position: "left-[3%] top-[56%]", big: true, wide: true },
 ];
 
