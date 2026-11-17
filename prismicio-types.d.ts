@@ -5821,7 +5821,7 @@ export interface TextContentSliceDocumentPrimary {
 	 * Overskrift field in *TextContent → Document → Primary*
 	 *
 	 * - **Field Type**: Rich Text
-	 * - **Placeholder**: Sidens titel (h1), fx Privatlivspolitik
+	 * - **Placeholder**: Dokumentets titel, fx Privatlivspolitik
 	 * - **API ID Path**: text_content.document.primary.heading
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
@@ -5836,16 +5836,6 @@ export interface TextContentSliceDocumentPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
-	
-	/**
-	 * Sidst opdateret field in *TextContent → Document → Primary*
-	 *
-	 * - **Field Type**: Date
-	 * - **Placeholder**: Vises med en blyant under introen
-	 * - **API ID Path**: text_content.document.primary.last_updated
-	 * - **Documentation**: https://prismic.io/docs/fields/date
-	 */
-	last_updated: prismic.DateField;
 	
 	/**
 	 * Tekst field in *TextContent → Document → Primary*

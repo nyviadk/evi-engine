@@ -134,8 +134,8 @@
         "heading": {
           "config": {
             "label": "Overskrift",
-            "placeholder": "Sidens titel (h1), fx Privatlivspolitik",
-            "single": "heading1,strong,em"
+            "placeholder": "Dokumentets titel, fx Privatlivspolitik",
+            "single": "heading2,strong,em"
           },
           "type": "StructuredText"
         },
@@ -146,13 +146,6 @@
             "single": "paragraph,strong,em,hyperlink"
           },
           "type": "StructuredText"
-        },
-        "last_updated": {
-          "config": {
-            "label": "Sidst opdateret",
-            "placeholder": "Vises med en blyant under introen"
-          },
-          "type": "Date"
         },
         "content": {
           "config": {

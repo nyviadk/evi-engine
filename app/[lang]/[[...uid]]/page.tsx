@@ -15,6 +15,7 @@ import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
 import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
 import { is_staging_domain } from "@/src/lib/seo/domains";
+import { local_date } from "@/src/lib/utils/date";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -114,7 +115,14 @@ export default async function Page(props: {
       <SliceZone
         slices={page.data.slices}
         components={components}
-        context={{ linkResolver: link_resolver, sliceContexts }}
+        context={{
+          linkResolver: link_resolver,
+          sliceContexts,
+          lastPublished: local_date(
+            page.last_publication_date,
+            settings?.data?.timezone || "Europe/Copenhagen",
+          ),
+        }}
       />
     </>
   );

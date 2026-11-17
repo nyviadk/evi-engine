@@ -15,10 +15,6 @@ export const paras = (...texts: string[]): RichTextField =>
     direction: "ltr",
   })) as RichTextField;
 
-export const h1 = (text: string): RichTextField => [
-  { type: "heading1", text, spans: [], direction: "ltr" },
-];
-
 export const h2 = (text: string): RichTextField => [
   { type: "heading2", text, spans: [], direction: "ltr" },
 ];

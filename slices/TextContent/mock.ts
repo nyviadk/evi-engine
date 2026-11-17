@@ -8,7 +8,7 @@ import type {
   RTNode,
 } from "@prismicio/client";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
-import { line, paras, h1, h2, h3, h4 } from "@/src/lib/preview/mockFields";
+import { line, paras, h2, h3, h4 } from "@/src/lib/preview/mockFields";
 import { PERSONA } from "@/src/lib/preview/persona";
 
 export const context: EviPageSliceContext = {
@@ -21,6 +21,7 @@ export const contexts: Record<string, EviPageSliceContext> = {
   document: {
     ...context,
     sliceContexts: [{ theme: "light", isHero: true, collapsePadding: false }],
+    lastPublished: "2026-03-01",
   },
 };
 
@@ -103,11 +104,10 @@ export const mock: Record<string, Content.TextContentSlice> = {
     primary: {
       tag_icon: null,
       tag_text: line("Det med småt"),
-      heading: h1("Privatlivspolitik"),
+      heading: h2("Privatlivspolitik"),
       body: line(
         `Her kan du læse, hvilke oplysninger ${PERSONA.brand} gemmer, når du handler hos os, og hvad vi bruger dem til.`,
       ),
-      last_updated: "2026-03-01",
       content: DOCUMENT,
       background_theme: "Lys",
     },

@@ -13,6 +13,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { short_date } from "@/src/lib/utils/date";
 
 export type TextContentDocumentLayoutProps = {
   slice: Content.TextContentSliceDocument;
@@ -20,25 +21,19 @@ export type TextContentDocumentLayoutProps = {
   context: EviPageSliceContext;
 };
 
-/** Prismic-dato ("2026-11-11") i kort dansk form: 11/11-2026. */
-function short_date(date: string): string {
-  const [year, month, day] = date.split("-");
-  return `${day}/${month}-${year}`;
-}
-
 /**
  * TextContent "document": ét langt dokument i læsbar bredde, fx en
- * privatlivspolitik eller vilkår. Mærkat, overskrift, intro og dato øverst;
- * teksten er sin egen række, så sektionens rytme adskiller den fra introen.
- * Teksten har egne overskrifter og lister og får ikke isHero (dens h2'er skal
- * blive h2'er). Domain-part (Tailwind tilladt, R3.3).
+ * privatlivspolitik eller vilkår. Mærkat, overskrift, intro og sidens sidste
+ * publicering øverst; teksten er sin egen række, så sektionens rytme adskiller
+ * den fra introen. Teksten har egne overskrifter og lister og får ikke isHero
+ * (dens h2'er skal blive h2'er). Domain-part (Tailwind tilladt, R3.3).
  */
 export function TextContentDocumentLayout({
   slice,
   index,
   context,
 }: TextContentDocumentLayoutProps): React.ReactElement | null {
-  const { linkResolver } = context;
+  const { linkResolver, lastPublished } = context;
   const { theme, isHero, collapsePadding } = resolve_slice_context(
     context,
     index,
@@ -67,14 +62,12 @@ export function TextContentDocumentLayout({
             linkResolver={linkResolver}
             isHero={isHero}
           />
-          {isFilled.date(p.last_updated) && (
+          {lastPublished && (
             <EviStack gap="sm" className="w-full max-w-prose">
               <EviDivider />
               <EviStack direction="row" gap="xs" align="center" className="text-sm">
                 <EviIcon name="lucide:pencil" className="size-3.5" />
-                <time dateTime={p.last_updated}>
-                  {short_date(p.last_updated)}
-                </time>
+                <time dateTime={lastPublished}>{short_date(lastPublished)}</time>
               </EviStack>
             </EviStack>
           )}
