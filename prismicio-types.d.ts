@@ -5794,9 +5794,94 @@ export interface TextContentSliceDefaultPrimary {
 export type TextContentSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TextContentSliceDefaultPrimary>, never>;
 
 /**
+ * Primary content in *TextContent → Document → Primary*
+ */
+export interface TextContentSliceDocumentPrimary {
+	/**
+	 * Tag: ikon field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Iconify-navn, fx ph:coffee
+	 * - **API ID Path**: text_content.document.primary.tag_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tag_icon: prismic.KeyTextField;
+	
+	/**
+	 * Tag: tekst field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort label, fx Det med småt
+	 * - **API ID Path**: text_content.document.primary.tag_text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	tag_text: prismic.RichTextField;
+	
+	/**
+	 * Overskrift field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Sidens titel (h1), fx Privatlivspolitik
+	 * - **API ID Path**: text_content.document.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort intro under overskriften
+	 * - **API ID Path**: text_content.document.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Sidst opdateret field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: Vises med en blyant under introen
+	 * - **API ID Path**: text_content.document.primary.last_updated
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	last_updated: prismic.DateField;
+	
+	/**
+	 * Tekst field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Hele dokumentet med afsnit, overskrifter og lister
+	 * - **API ID Path**: text_content.document.primary.content
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	content: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: text_content.document.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Document variation for TextContent Slice
+ *
+ * - **API ID**: `document`
+ * - **Description**: Document
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TextContentSliceDocument = prismic.SharedSliceVariation<"document", Simplify<TextContentSliceDocumentPrimary>, never>;
+
+/**
  * Slice variation for *TextContent*
  */
-type TextContentSliceVariation = TextContentSliceDefault
+type TextContentSliceVariation = TextContentSliceDefault | TextContentSliceDocument
 
 /**
  * TextContent Shared Slice
@@ -6289,8 +6374,10 @@ declare module "@prismicio/client" {
 			TestimonialsSliceCarousel,
 			TextContentSlice,
 			TextContentSliceDefaultPrimary,
+			TextContentSliceDocumentPrimary,
 			TextContentSliceVariation,
 			TextContentSliceDefault,
+			TextContentSliceDocument,
 			TextWithImagesSlice,
 			TextWithImagesSliceDefaultPrimary,
 			TextWithImagesSliceCollagePrimary,

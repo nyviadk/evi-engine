@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_content/default/54bdf37a5a96bca8bbea4a4226d8d6a561a3c025.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_content/default/37bf18c1dfb329914d0e9e4a6d725743a898efb4.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -103,6 +103,79 @@
               "Primær blød",
               "Sekundær blød"
             ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    },
+    {
+      "description": "Document",
+      "docURL": "",
+      "id": "document",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/text_content/document/fcf84c352cd0dc4c6271d9f00a72ec18d1f4b2b1.png?auto=compress%2Cformat",
+      "name": "Document",
+      "primary": {
+        "tag_icon": {
+          "config": {
+            "label": "Tag: ikon",
+            "placeholder": "Iconify-navn, fx ph:coffee"
+          },
+          "type": "Text"
+        },
+        "tag_text": {
+          "config": {
+            "label": "Tag: tekst",
+            "placeholder": "Kort label, fx Det med småt",
+            "single": "paragraph,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Sidens titel (h1), fx Privatlivspolitik",
+            "single": "heading1,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Kort intro under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "last_updated": {
+          "config": {
+            "label": "Sidst opdateret",
+            "placeholder": "Vises med en blyant under introen"
+          },
+          "type": "Date"
+        },
+        "content": {
+          "config": {
+            "label": "Tekst",
+            "multi": "heading2,heading3,heading4,paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Hele dokumentet med afsnit, overskrifter og lister"
+          },
+          "type": "StructuredText"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ],
+            "placeholder": "Baggrundstema for sektionen"
           },
           "type": "Select"
         }
