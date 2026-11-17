@@ -44,6 +44,7 @@ Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har l
 | Cloudflare / Workers / OpenNext | **cloudflare** |
 | UI/a11y-review | **web-design-guidelines** (fetch friske regler fra remote) |
 | Core Web Vitals (LCP/INP/CLS) | **web-perf** |
+| HTML/CSS/klient-JS (dialog, popover, forms, animation, a11y, CWV …) | **modern-web-guidance** (`.claude/skills/`: `search` → `retrieve` før koden) |
 
 ## Always-on konventioner
 - **Mock-data (slice `mock.ts`) SKAL bruge vores fælles PERSONA** — kaffe-virksomheden "Kaffemølle Aarhus" i `src/lib/preview/persona.ts`. Opfind ALDRIG en ny branche/brand i et mock (`feedback_mock_persona`).
