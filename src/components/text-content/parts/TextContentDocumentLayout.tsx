@@ -22,11 +22,11 @@ export type TextContentDocumentLayoutProps = {
 };
 
 /**
- * TextContent "document": ét langt dokument i læsbar bredde, fx en
- * privatlivspolitik eller vilkår. Mærkat, overskrift, intro og sidens sidste
- * publicering øverst; teksten er sin egen række, så sektionens rytme adskiller
- * den fra introen. Teksten har egne overskrifter og lister og får ikke isHero
- * (dens h2'er skal blive h2'er). Domain-part (Tailwind tilladt, R3.3).
+ * TextContent "document": ét langt dokument, fx en privatlivspolitik eller
+ * vilkår. Mærkat, overskrift, intro og sidens sidste publicering øverst;
+ * teksten er sin egen række, så sektionens rytme adskiller den fra introen.
+ * Teksten har egne overskrifter og lister og får ikke isHero (dens h2'er skal
+ * blive h2'er). Domain-part (Tailwind tilladt, R3.3).
  */
 export function TextContentDocumentLayout({
   slice,
@@ -75,10 +75,11 @@ export function TextContentDocumentLayout({
       </EviRow>
       {isFilled.richText(p.content) && (
         <EviRow>
+          {/* Læsebredden kun på brødteksten: overskrifterne må bruge hele bredden. */}
           <EviRichText
             field={p.content}
             linkResolver={linkResolver}
-            className="max-w-prose"
+            className="[&>ol]:max-w-prose [&>p]:max-w-prose [&>ul]:max-w-prose"
           />
         </EviRow>
       )}
