@@ -4,7 +4,7 @@ import {
   type LinkResolverFunction,
   type TableField,
 } from "@prismicio/client";
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextLink } from "@prismicio/next";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
@@ -148,7 +148,7 @@ function CaseCard({
               arrow
               className="self-start"
             >
-              <EviLink
+              <PrismicNextLink
                 field={item.cta_link}
                 linkResolver={linkResolver}
               />

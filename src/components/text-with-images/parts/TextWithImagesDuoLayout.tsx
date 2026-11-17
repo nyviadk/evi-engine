@@ -1,5 +1,5 @@
 import { isFilled, type Content } from "@prismicio/client";
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextLink } from "@prismicio/next";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
@@ -61,7 +61,7 @@ export function TextWithImagesDuoLayout({
       />
       {has_cta && (
         <EviButton asChild variant="primary" appearance="solid" size="lg">
-          <EviLink field={p.cta_link} linkResolver={linkResolver} />
+          <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
         </EviButton>
       )}
     </EviStack>

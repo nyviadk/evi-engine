@@ -5,8 +5,7 @@ import {
   type LinkField,
   type LinkResolverFunction,
 } from "@prismicio/client";
-import { PrismicNextImage } from "@prismicio/next";
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviBrandText } from "@/src/components/typography/EviBrandText";
@@ -89,14 +88,14 @@ function Logo({
   }
 
   return (
-    <EviLink
+    <PrismicNextLink
       field={item.link}
       linkResolver={linkResolver}
       aria-label={label ? undefined : link_host(item.link)}
       className="group inline-flex items-center rounded-evi text-current no-underline focus-visible:outline-2 focus-visible:outline-offset-2"
     >
       <span className={MUTED}>{visual}</span>
-    </EviLink>
+    </PrismicNextLink>
   );
 }
 

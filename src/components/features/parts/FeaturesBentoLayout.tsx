@@ -4,7 +4,7 @@ import {
   type LinkField,
   type LinkResolverFunction,
 } from "@prismicio/client";
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextLink } from "@prismicio/next";
 
 import { is_link_filled } from "@/src/lib/prismic/links";
 import { has_rich_text } from "@/src/lib/prismic/fields";
@@ -61,7 +61,7 @@ function CardLink({
       arrow
       className={cn("w-fit", className)}
     >
-      <EviLink field={field} linkResolver={linkResolver} />
+      <PrismicNextLink field={field} linkResolver={linkResolver} />
     </EviButton>
   );
 }
@@ -221,7 +221,7 @@ export function FeaturesBentoLayout({
         />
         {is_link_filled(p.card_1_link) && (
           <EviButton asChild appearance="solid" className="mt-2 w-fit self-start">
-            <EviLink field={p.card_1_link} linkResolver={linkResolver} />
+            <PrismicNextLink field={p.card_1_link} linkResolver={linkResolver} />
           </EviButton>
         )}
       </EviStack>

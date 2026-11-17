@@ -1,5 +1,5 @@
 import { isFilled, type Content } from "@prismicio/client";
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextLink } from "@prismicio/next";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
@@ -125,7 +125,7 @@ export function PricesDefaultLayout({
                   size="md"
                   className="mt-6 w-full"
                 >
-                  <EviLink
+                  <PrismicNextLink
                     field={plan.cta_link}
                     linkResolver={linkResolver}
                   />

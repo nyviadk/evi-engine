@@ -6,8 +6,6 @@ import {
   type Repeatable,
 } from "@prismicio/client";
 
-import { new_tab_target } from "@/src/lib/prismic/links";
-
 /** Et top-/dropdown-punkt der ER et link (kun serialiserbare felter → klient). */
 export type NavLink = {
   kind: "link";
@@ -51,7 +49,7 @@ export function resolve_nav_groups(
           href,
           label,
           external: !href.startsWith("/"),
-          target: attrs.target ?? new_tab_target(href),
+          target: attrs.target,
           rel: attrs.rel,
         });
       } else {

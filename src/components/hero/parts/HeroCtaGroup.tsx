@@ -1,5 +1,5 @@
 import type { LinkField, LinkResolverFunction } from "@prismicio/client";
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextLink } from "@prismicio/next";
 
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviStack } from "@/src/components/layout/EviStack";
@@ -38,12 +38,12 @@ export function HeroCtaGroup({
     >
       {has_primary && (
         <EviButton asChild variant="primary" appearance="solid" size="lg">
-          <EviLink field={primary} linkResolver={linkResolver} />
+          <PrismicNextLink field={primary} linkResolver={linkResolver} />
         </EviButton>
       )}
       {has_secondary && (
         <EviButton asChild variant="primary" appearance="outline" size="lg">
-          <EviLink field={secondary} linkResolver={linkResolver} />
+          <PrismicNextLink field={secondary} linkResolver={linkResolver} />
         </EviButton>
       )}
     </EviStack>

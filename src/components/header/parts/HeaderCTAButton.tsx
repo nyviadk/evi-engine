@@ -1,4 +1,4 @@
-import { EviLink } from "@/src/components/ui/EviLink";
+import { PrismicNextLink } from "@prismicio/next";
 import { type LinkField, type LinkResolverFunction } from "@prismicio/client";
 import { is_link_filled } from "@/src/lib/prismic/links";
 import { EviButton } from "@/src/components/ui/EviButton";
@@ -24,7 +24,7 @@ export function HeaderCTAButton({
       size="sm"
       className={className}
     >
-      <EviLink field={link} linkResolver={linkResolver} />
+      <PrismicNextLink field={link} linkResolver={linkResolver} />
     </EviButton>
   );
 }
