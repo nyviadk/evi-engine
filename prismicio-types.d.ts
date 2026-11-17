@@ -314,7 +314,7 @@ interface FooterDocumentData {
  */
 export type FooterDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<FooterDocumentData>, "footer", Lang>;
 
-type NavigationDocumentDataSlicesSlice = HeaderClassicSlice
+type NavigationDocumentDataSlicesSlice = HeaderClassicSlice | PlanioHeaderSlice
 
 /**
  * Content for Navigation documents
@@ -4733,6 +4733,79 @@ type PlanioDaySliceVariation = PlanioDaySliceDefault
 export type PlanioDaySlice = prismic.SharedSlice<"planio_day", PlanioDaySliceVariation>;
 
 /**
+ * Item in *PlanioHeader → Default → Primary → Menupunkter*
+ */
+export interface PlanioHeaderSliceDefaultPrimaryNavGroupsItem {
+	/**
+	 * Links field in *PlanioHeader → Default → Primary → Menupunkter*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_header.default.primary.nav_groups[].links
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	links: prismic.Repeatable<prismic.LinkField<string, string, unknown, prismic.FieldState, never>>;
+}
+
+/**
+ * Primary content in *PlanioHeader → Default → Primary*
+ */
+export interface PlanioHeaderSliceDefaultPrimary {
+	/**
+	 * App-ikon field in *PlanioHeader → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Kvadratisk app-ikon, som logoet vokser ud af
+	 * - **API ID Path**: planio_header.default.primary.icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	icon: prismic.ImageField<never>;
+	
+	/**
+	 * Call-to-action field in *PlanioHeader → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_header.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Menupunkter field in *PlanioHeader → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: planio_header.default.primary.nav_groups[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	nav_groups: prismic.GroupField<Simplify<PlanioHeaderSliceDefaultPrimaryNavGroupsItem>>;
+}
+
+/**
+ * Default variation for PlanioHeader Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioHeaderSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PlanioHeaderSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PlanioHeader*
+ */
+type PlanioHeaderSliceVariation = PlanioHeaderSliceDefault
+
+/**
+ * PlanioHeader Shared Slice
+ *
+ * - **API ID**: `planio_header`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioHeaderSlice = prismic.SharedSlice<"planio_header", PlanioHeaderSliceVariation>;
+
+/**
  * Item in *PlanioHero → Default → Primary → Telefon: aftaler*
  */
 export interface PlanioHeroSliceDefaultPrimaryPlanItemsItem {
@@ -6182,6 +6255,11 @@ declare module "@prismicio/client" {
 			PlanioDaySliceDefaultPrimary,
 			PlanioDaySliceVariation,
 			PlanioDaySliceDefault,
+			PlanioHeaderSlice,
+			PlanioHeaderSliceDefaultPrimaryNavGroupsItem,
+			PlanioHeaderSliceDefaultPrimary,
+			PlanioHeaderSliceVariation,
+			PlanioHeaderSliceDefault,
 			PlanioHeroSlice,
 			PlanioHeroSliceDefaultPrimaryPlanItemsItem,
 			PlanioHeroSliceDefaultPrimary,

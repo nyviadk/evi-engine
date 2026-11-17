@@ -8,6 +8,9 @@
           "choices": {
             "header_classic": {
               "type": "SharedSlice"
+            },
+            "planio_header": {
+              "type": "SharedSlice"
             }
           }
         },

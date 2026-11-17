@@ -1,0 +1,49 @@
+{
+  "id": "planio_header",
+  "name": "PlanioHeader",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_header/default/5066449d28f1b31e39355b9e959631ce2446361f.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "icon": {
+          "config": {
+            "label": "App-ikon",
+            "placeholder": "Kvadratisk app-ikon, som logoet vokser ud af"
+          },
+          "type": "Image"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
+        },
+        "nav_groups": {
+          "config": {
+            "fields": {
+              "links": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "allowText": true,
+                  "label": "Links",
+                  "repeat": true
+                },
+                "type": "Link"
+              }
+            },
+            "label": "Menupunkter"
+          },
+          "type": "Group"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

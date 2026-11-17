@@ -15,6 +15,7 @@ import Maps from "./Maps";
 import PhoneMockup from "./PhoneMockup";
 import PlanioCustomize from "./PlanioCustomize";
 import PlanioDay from "./PlanioDay";
+import PlanioHeader from "./PlanioHeader";
 import PlanioHero from "./PlanioHero";
 import PlanioRoadmap from "./PlanioRoadmap";
 import Prices from "./Prices";
@@ -39,6 +40,7 @@ export const components = {
 	phone_mockup: PhoneMockup,
 	planio_customize: PlanioCustomize,
 	planio_day: PlanioDay,
+	planio_header: PlanioHeader,
 	planio_hero: PlanioHero,
 	planio_roadmap: PlanioRoadmap,
 	prices: Prices,
