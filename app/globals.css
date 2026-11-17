@@ -1209,10 +1209,10 @@
 }
 
 /* ── Footer i forlængelse af sidens sidste flade ──
-   Siden sætter data-joins-footer (joins_footer, samme regel som
-   collapsePadding mellem slices): sektionens bund adskiller allerede. */
-:root:has([data-joins-footer]) [data-slot="evi-footer"] {
-  padding-top: 0;
+   Siden sætter data-joins-footer (joins_footer): samme flade som footeren,
+   så sidste sektions bund falder væk, og footerens kompakte top adskiller. */
+[data-joins-footer] > :last-child {
+  padding-bottom: 0;
 }
 
 /* ── EviPhoneMockup: opt out af squircle-reset ──

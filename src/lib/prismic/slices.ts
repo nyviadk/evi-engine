@@ -124,8 +124,9 @@ export function compute_slice_contexts(
 }
 
 /**
- * Footeren er sidens næste bånd: ender siden i footerens flade, falder
- * footerens top væk efter samme regel som mellem slices.
+ * Footeren er sidens næste bånd: ender siden i footerens flade (samme regel
+ * som mellem slices), falder sidste sektions bund væk, så kun footerens
+ * kompakte top adskiller.
  */
 export function joins_footer(
   slices: SliceWithPrimary[],

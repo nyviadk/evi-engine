@@ -14,9 +14,8 @@ export type EviSectionProps = React.ComponentProps<"section"> & {
   /** Tving normal (fuld) top-padding selvom hero — fx centered hero der ser
    *  for tæt på nav'en ud med den reducerede hero-hug. @default false */
   fullTopPadding?: boolean;
-  /** Mindre top og bund — til page-end-båndet (footer): toppen adskilles af
-   *  farveskiftet (eller kollapser ved samme flade), bunden er sidekant-margin.
-   *  @default false */
+  /** Mindre top og bund — til page-end-båndet (footer): toppen adskiller fra
+   *  sektionen over, bunden er sidekant-margin. @default false */
   compact?: boolean;
 };
 
