@@ -1,0 +1,62 @@
+{
+  "id": "planio_about",
+  "name": "PlanioAbout",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_about/default/df395efe0a60b6fef0b8480cd8ca99fd671cfa00.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Kort overskrift om jer bag appen",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "allowTargetBlank": true,
+            "label": "Tekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Historien, et citat og evt. et link"
+          },
+          "type": "StructuredText"
+        },
+        "image": {
+          "config": {
+            "constraint": {
+              "height": 900,
+              "width": 1200
+            },
+            "label": "Foto",
+            "placeholder": "Foto af jer, beskæres til 4:3",
+            "thumbnails": []
+          },
+          "type": "Image"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Mørk",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

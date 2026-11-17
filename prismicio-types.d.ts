@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice
 
 /**
  * Content for Side documents
@@ -3380,6 +3380,75 @@ type PhoneMockupSliceVariation = PhoneMockupSliceMasked
 export type PhoneMockupSlice = prismic.SharedSlice<"phone_mockup", PhoneMockupSliceVariation>;
 
 /**
+ * Primary content in *PlanioAbout → Default → Primary*
+ */
+export interface PlanioAboutSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *PlanioAbout → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort overskrift om jer bag appen
+	 * - **API ID Path**: planio_about.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Tekst field in *PlanioAbout → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Historien, et citat og evt. et link
+	 * - **API ID Path**: planio_about.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Foto field in *PlanioAbout → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Foto af jer, beskæres til 4:3
+	 * - **API ID Path**: planio_about.default.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Baggrundstema field in *PlanioAbout → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Mørk
+	 * - **API ID Path**: planio_about.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for PlanioAbout Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioAboutSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PlanioAboutSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PlanioAbout*
+ */
+type PlanioAboutSliceVariation = PlanioAboutSliceDefault
+
+/**
+ * PlanioAbout Shared Slice
+ *
+ * - **API ID**: `planio_about`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PlanioAboutSlice = prismic.SharedSlice<"planio_about", PlanioAboutSliceVariation>;
+
+/**
  * Item in *PlanioCustomize → Default → Primary → Onsdag: aftaler*
  */
 export interface PlanioCustomizeSliceDefaultPrimaryPreviewItemsItem {
@@ -6312,6 +6381,10 @@ declare module "@prismicio/client" {
 			PhoneMockupSliceMaskedPrimary,
 			PhoneMockupSliceVariation,
 			PhoneMockupSliceMasked,
+			PlanioAboutSlice,
+			PlanioAboutSliceDefaultPrimary,
+			PlanioAboutSliceVariation,
+			PlanioAboutSliceDefault,
 			PlanioCustomizeSlice,
 			PlanioCustomizeSliceDefaultPrimaryPreviewItemsItem,
 			PlanioCustomizeSliceDefaultPrimaryPresetsItem,

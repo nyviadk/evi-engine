@@ -79,6 +79,9 @@
             },
             "call_to_action": {
               "type": "SharedSlice"
+            },
+            "planio_about": {
+              "type": "SharedSlice"
             }
           }
         },
