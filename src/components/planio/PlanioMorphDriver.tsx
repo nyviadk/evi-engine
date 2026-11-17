@@ -6,7 +6,8 @@ import { useEffect, useRef } from "react";
 /**
  * Driver logo-forvandlingen i headeren: sætter `--morph` på `<header>` 1:1 med
  * scrollen, fra 0 øverst til 1, når sidens første sektion er scrollet helt ind
- * under headeren. Halvt scrollet er halvt forvandlet; med reduceret bevægelse
+ * under headeren, dog højst én skærm (på fx vilkårssiden er første sektion hele
+ * dokumentet). Halvt scrollet er halvt forvandlet; med reduceret bevægelse
  * skiftes der i midten. Lægger også headerens højde i `--planio-header-h` og
  * scroll-padding, så sticky elementer og ankre lander under headeren.
  */
@@ -47,9 +48,13 @@ export function PlanioMorphDriver(): React.ReactElement {
         section = first;
       }
       const header_h = header.offsetHeight;
-      range = section
-        ? Math.max(1, section.getBoundingClientRect().bottom + window.scrollY - header_h)
-        : 1;
+      // Skærmhøjden tages ved måling, ikke ved hver resize: mobilens adresselinje
+      // ændrer innerHeight under scroll og ville ellers flytte loftet.
+      const screen = window.innerHeight - header_h;
+      const section_end = section
+        ? section.getBoundingClientRect().bottom + window.scrollY - header_h
+        : screen;
+      range = Math.max(1, Math.min(section_end, screen));
       root.style.setProperty("--planio-header-h", `${header_h}px`);
       root.style.scrollPaddingTop = `${header_h}px`;
       update();
