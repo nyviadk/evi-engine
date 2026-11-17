@@ -57,8 +57,9 @@ const LOGO: Partial<Record<PlanioLogoPart, MorphStyle>> = {
   },
   line: {
     "--r": "clamp(0, (var(--morph) - .6) / .25, 1)",
-    strokeDasharray: "var(--len)",
-    strokeDashoffset: "calc(var(--len) * (1 - var(--r)))",
+    // px, ikke enhedsløs calc(): den afviser Firefox, og stregen står færdig.
+    strokeDasharray: "calc(var(--len) * 1px)",
+    strokeDashoffset: "calc(var(--len) * (1 - var(--r)) * 1px)",
   },
   shape: { ...stage(0.8, 0.2), transform: "scale(var(--t))" },
 };
