@@ -173,6 +173,8 @@ async function screenshot_and_upload(browser, slice) {
 
     const target = page.locator('[data-testid="preview-target"]');
     await target.waitFor({ state: "visible", timeout: 90_000 });
+    // Next' dev-badge sidder fast nederst til venstre og kom med på høje previews.
+    await page.addStyleTag({ content: "nextjs-portal{display:none!important}" });
     await target.screenshot({ path: screenshot_path });
     console.log(`  ✓ Screenshot → ${screenshot_path}`);
 

@@ -8,8 +8,9 @@ import { notFound } from "next/navigation";
  *
  * Dynamic imports: slice_id (snake_case) is mapped to folder name (PascalCase).
  * Any slice that has `slices/<Name>/mock.ts` exporting `mock` (+ optionally
- * `context`) is auto-discoverable. Adding a new slice requires zero changes
- * to this file — just create the mock file.
+ * `context`, or `contexts` keyed by variation id when a variation needs its
+ * own, fx previewed as hero) is auto-discoverable. Adding a new slice requires
+ * zero changes to this file — just create the mock file.
  *
  * Guarded on NODE_ENV so route never exposed in production.
  *
@@ -72,7 +73,8 @@ export default async function SlicePreviewPage({
     ]);
     Component = sliceModule.default;
     slice = mockModule.mock?.[variation_id];
-    context = mockModule.context ?? {};
+    context =
+      mockModule.contexts?.[variation_id] ?? mockModule.context ?? {};
     // Optional per-mock override: header-slices bruger `block w-full` fordi
     // deres interne max-w-evi mx-auto ellers ikke kan udvide sig.
     if (mockModule.previewWrapperClassName) {
