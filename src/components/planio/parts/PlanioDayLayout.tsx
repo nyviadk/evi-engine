@@ -10,11 +10,9 @@ import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviSplit } from "@/src/components/layout/EviSplit";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
-import { EviTitle } from "@/src/components/typography/EviTitle";
 import { evi_box_class } from "@/src/components/ui/EviBox";
-import { EviTag } from "@/src/components/ui/EviTag";
+import { PlanioTimeline } from "@/src/components/planio/PlanioTimeline";
 import {
   PlanioCheckCard,
   PlanioDialogCard,
@@ -67,11 +65,11 @@ export type PlanioDayLayoutProps = {
 };
 
 type MomentProps = {
-  time: RichTextField;
+  time: KeyTextField;
   title: RichTextField;
   body: RichTextField;
   linkResolver: LinkResolverFunction;
-  /** Kortet ved siden af teksten (som TextWithImages' billede). */
+  /** Kortet ved siden af teksten (fra @3xl/section) eller under den. */
   card: React.ReactNode;
 };
 
@@ -82,38 +80,37 @@ function MomentText({
   linkResolver,
 }: Omit<MomentProps, "card">): React.ReactElement {
   return (
-    <EviStack gap="md" align="start">
-      <EviTag
-        // Tidsfelterne var KeyText; ældre indhold kan stadig være en streng, som
-        // isFilled.richText godtager, og som så får rich text-renderingen til at kaste.
-        text={Array.isArray(time) ? time : null}
-        surface="Neutral"
-        linkResolver={linkResolver}
-      />
-      <EviTitle field={title} linkResolver={linkResolver} size="xl" />
-      <EviRichText field={body} linkResolver={linkResolver} />
-    </EviStack>
+    <PlanioTimeline.Content>
+      <EviStack gap="md">
+        <PlanioTimeline.Title time={time} title={title} linkResolver={linkResolver} />
+        <EviRichText field={body} linkResolver={linkResolver} className="max-w-prose" />
+      </EviStack>
+    </PlanioTimeline.Content>
   );
 }
 
-/** Et tidspunkt: tekst og kort i sektionens gitter, som TextWithImages (50/50). */
+/** Et tidspunkt: tekst og kort i sektionens kolonner (50/50 som "Om os"). */
 function Moment({ card, ...text }: MomentProps): React.ReactElement | null {
   if (!has_rich_text(text.title, text.body)) return null;
-  return card ? (
-    <EviSplit preset="50-50" align="center">
-      <MomentText {...text} />
-      {card}
-    </EviSplit>
-  ) : (
-    <EviRow>
-      <MomentText {...text} />
-    </EviRow>
+  return (
+    <PlanioTimeline.Item>
+      {card ? (
+        <EviSplit preset="50-50" align="center">
+          <MomentText {...text} />
+          <PlanioTimeline.Aside>{card}</PlanioTimeline.Aside>
+        </EviSplit>
+      ) : (
+        <EviRow>
+          <MomentText {...text} />
+        </EviRow>
+      )}
+    </PlanioTimeline.Item>
   );
 }
 
 /**
- * planio_day "default": en onsdag med My Planio, fem faste tidspunkter i
- * sektionens gitter. Demoen "Planlæg dagen" fylder hele bredden under sin tekst.
+ * planio_day "default": en onsdag med My Planio som tidslinje. Fem faste
+ * tidspunkter; demoen "Planlæg dagen" fylder hele sporet under sin tekst.
  */
 export function PlanioDayLayout({
   slice,
@@ -146,81 +143,91 @@ export function PlanioDayLayout({
       collapsePadding={collapsePadding}
       data-slot="planio-day"
     >
-      <EviHeadingGroup
-        title={p.heading}
-        description={p.body}
-        linkResolver={linkResolver}
-        isHero={isHero}
-      />
-      <Moment
-        time={p.check_time}
-        title={p.check_title}
-        body={p.check_body}
-        linkResolver={linkResolver}
-        card={
-          has_check_card(p) && (
-            <Frame label={p.check_label}>
-              <PlanioCheckCard p={p} linkResolver={linkResolver} />
-            </Frame>
-          )
-        }
-      />
-      {show_plan && (
-        <EviRow>
-          <MomentText
-            time={p.plan_time}
-            title={p.plan_title}
-            body={p.plan_body}
-            linkResolver={linkResolver}
-          />
-        </EviRow>
-      )}
-      {show_plan && has_plan_demo(p) && (
-        <EviRow>
-          <Frame>
-            <PlanioDayDemoPanel p={p} linkResolver={linkResolver} />
-          </Frame>
-        </EviRow>
-      )}
-      <Moment
-        time={p.dialog_time}
-        title={p.dialog_title}
-        body={p.dialog_body}
-        linkResolver={linkResolver}
-        card={
-          has_dialog_card(p) && (
-            <Frame label={p.dialog_label}>
-              <PlanioDialogCard p={p} linkResolver={linkResolver} />
-            </Frame>
-          )
-        }
-      />
-      <Moment
-        time={p.reflect_time}
-        title={p.reflect_title}
-        body={p.reflect_body}
-        linkResolver={linkResolver}
-        card={
-          has_reflection_card(p) && (
-            <Frame label={p.reflect_label}>
-              <PlanioReflectionCard p={p} linkResolver={linkResolver} />
-            </Frame>
-          )
-        }
-      />
-      <Moment
-        time={p.remind_time}
-        title={p.remind_title}
-        body={p.remind_body}
-        linkResolver={linkResolver}
-        card={
-          has_reminder_card(p) && (
-            <Frame label={p.remind_label}>
-              <PlanioReminderCard p={p} linkResolver={linkResolver} />
-            </Frame>
-          )
-        }
-      />
+      <PlanioTimeline>
+        <PlanioTimeline.Header
+          title={p.heading}
+          description={p.body}
+          linkResolver={linkResolver}
+          isHero={isHero}
+        />
+        {has_moments && (
+          <PlanioTimeline.List>
+            <Moment
+              time={p.check_time}
+              title={p.check_title}
+              body={p.check_body}
+              linkResolver={linkResolver}
+              card={
+                has_check_card(p) && (
+                  <Frame label={p.check_label}>
+                    <PlanioCheckCard p={p} linkResolver={linkResolver} />
+                  </Frame>
+                )
+              }
+            />
+            {show_plan && (
+              <PlanioTimeline.Item>
+                <EviRow>
+                  <MomentText
+                    time={p.plan_time}
+                    title={p.plan_title}
+                    body={p.plan_body}
+                    linkResolver={linkResolver}
+                  />
+                </EviRow>
+                {has_plan_demo(p) && (
+                  <EviRow>
+                    <PlanioTimeline.Content>
+                      <Frame>
+                        <PlanioDayDemoPanel p={p} linkResolver={linkResolver} />
+                      </Frame>
+                    </PlanioTimeline.Content>
+                  </EviRow>
+                )}
+              </PlanioTimeline.Item>
+            )}
+            <Moment
+              time={p.dialog_time}
+              title={p.dialog_title}
+              body={p.dialog_body}
+              linkResolver={linkResolver}
+              card={
+                has_dialog_card(p) && (
+                  <Frame label={p.dialog_label}>
+                    <PlanioDialogCard p={p} linkResolver={linkResolver} />
+                  </Frame>
+                )
+              }
+            />
+            <Moment
+              time={p.reflect_time}
+              title={p.reflect_title}
+              body={p.reflect_body}
+              linkResolver={linkResolver}
+              card={
+                has_reflection_card(p) && (
+                  <Frame label={p.reflect_label}>
+                    <PlanioReflectionCard p={p} linkResolver={linkResolver} />
+                  </Frame>
+                )
+              }
+            />
+            <Moment
+              time={p.remind_time}
+              title={p.remind_title}
+              body={p.remind_body}
+              linkResolver={linkResolver}
+              card={
+                has_reminder_card(p) && (
+                  <Frame label={p.remind_label}>
+                    <PlanioReminderCard p={p} linkResolver={linkResolver} />
+                  </Frame>
+                )
+              }
+            />
+          </PlanioTimeline.List>
+        )}
+      </PlanioTimeline>
     </EviSection>
   );
 }

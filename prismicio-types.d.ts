@@ -4200,12 +4200,12 @@ export interface PlanioDaySliceDefaultPrimary {
 	/**
 	 * Energi: tidspunkt field in *PlanioDay → Default → Primary*
 	 *
-	 * - **Field Type**: Rich Text
+	 * - **Field Type**: Text
 	 * - **Placeholder**: Fx 07.15
 	 * - **API ID Path**: planio_day.default.primary.check_time
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	check_time: prismic.RichTextField;
+	check_time: prismic.KeyTextField;
 	
 	/**
 	 * Energi: overskrift field in *PlanioDay → Default → Primary*
@@ -4290,12 +4290,12 @@ export interface PlanioDaySliceDefaultPrimary {
 	/**
 	 * Plan: tidspunkt field in *PlanioDay → Default → Primary*
 	 *
-	 * - **Field Type**: Rich Text
+	 * - **Field Type**: Text
 	 * - **Placeholder**: Fx 07.30
 	 * - **API ID Path**: planio_day.default.primary.plan_time
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	plan_time: prismic.RichTextField;
+	plan_time: prismic.KeyTextField;
 	
 	/**
 	 * Plan: overskrift field in *PlanioDay → Default → Primary*
@@ -4470,12 +4470,12 @@ export interface PlanioDaySliceDefaultPrimary {
 	/**
 	 * Dialog: tidspunkt field in *PlanioDay → Default → Primary*
 	 *
-	 * - **Field Type**: Rich Text
+	 * - **Field Type**: Text
 	 * - **Placeholder**: Fx 09.15
 	 * - **API ID Path**: planio_day.default.primary.dialog_time
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	dialog_time: prismic.RichTextField;
+	dialog_time: prismic.KeyTextField;
 	
 	/**
 	 * Dialog: overskrift field in *PlanioDay → Default → Primary*
@@ -4580,12 +4580,12 @@ export interface PlanioDaySliceDefaultPrimary {
 	/**
 	 * Refleksion: tidspunkt field in *PlanioDay → Default → Primary*
 	 *
-	 * - **Field Type**: Rich Text
+	 * - **Field Type**: Text
 	 * - **Placeholder**: Fx 10.45
 	 * - **API ID Path**: planio_day.default.primary.reflect_time
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	reflect_time: prismic.RichTextField;
+	reflect_time: prismic.KeyTextField;
 	
 	/**
 	 * Refleksion: overskrift field in *PlanioDay → Default → Primary*
@@ -4710,12 +4710,12 @@ export interface PlanioDaySliceDefaultPrimary {
 	/**
 	 * Påmindelser: tidspunkt field in *PlanioDay → Default → Primary*
 	 *
-	 * - **Field Type**: Rich Text
+	 * - **Field Type**: Text
 	 * - **Placeholder**: Fx 14.20
 	 * - **API ID Path**: planio_day.default.primary.remind_time
-	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	remind_time: prismic.RichTextField;
+	remind_time: prismic.KeyTextField;
 	
 	/**
 	 * Påmindelser: overskrift field in *PlanioDay → Default → Primary*

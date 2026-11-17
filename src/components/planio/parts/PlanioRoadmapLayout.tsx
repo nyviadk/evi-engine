@@ -1,14 +1,12 @@
 import { isFilled, type Content } from "@prismicio/client";
 
-import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviTitle } from "@/src/components/typography/EviTitle";
-import { EviCard } from "@/src/components/ui/EviCard";
 import { EviTag } from "@/src/components/ui/EviTag";
+import { PlanioRoadmap } from "@/src/components/planio/PlanioRoadmap";
 import { PlanioSky, type PlanioSkyStar } from "@/src/components/planio/PlanioSky";
-import { PlanioStar } from "@/src/components/planio/PlanioStar";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import {
   resolve_slice_context,
@@ -17,8 +15,9 @@ import {
 import { evi_card_body_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 
-// De øverste stjerner står med faste afstande i sektionens top-luft: i procent
-// rykkede de ned i overskriften, når sektionen blev høj på mobil.
+// Designets fem stjerner. De øverste står med faste afstande i sektionens top-luft:
+// i procent rykkede de ned i overskriften, når sektionen blev høj på mobil. De to
+// midt i sektionen vises først fra md, hvor teksten ikke når helt ud til kanterne.
 const STARS: PlanioSkyStar[] = [
   { position: "left-[4%] top-12" },
   { position: "left-[46%] top-9", big: true },
@@ -34,8 +33,8 @@ export type PlanioRoadmapLayoutProps = {
 };
 
 /**
- * planio_roadmap "default": "Det her er kun begyndelsen". Bygget som Evis
- * features "cards": trinene er EviCards i et trio-gitter, med stjernen som ikon.
+ * planio_roadmap "default": "Det her er kun begyndelsen". Overskrift og et
+ * åbent antal trin på en stiplet linje under en lille stjernehimmel.
  */
 export function PlanioRoadmapLayout({
   slice,
@@ -55,6 +54,7 @@ export function PlanioRoadmapLayout({
       theme={theme}
       hero={isHero}
       collapsePadding={collapsePadding}
+      // Stjernehimlen placeres i forhold til sektionen og klippes ved dens kant.
       className="relative overflow-hidden"
       data-slot="planio-roadmap-section"
     >
@@ -66,13 +66,10 @@ export function PlanioRoadmapLayout({
         isHero={isHero}
       />
       {steps.length > 0 && (
-        <EviAutoGrid as="ol" size="trio">
+        <PlanioRoadmap>
           {steps.map((step, i) => (
-            <EviCard key={i} as="li" rows={4}>
-              <PlanioStar
-                variant={step.current ? "filled" : "outline"}
-                className={cn("size-8", step.current && "text-evi-primary")}
-              />
+            <PlanioRoadmap.Step key={i}>
+              <PlanioRoadmap.Marker current={step.current} />
               {isFilled.richText(step.tag) ? (
                 <EviTag
                   text={step.tag}
@@ -80,7 +77,7 @@ export function PlanioRoadmapLayout({
                   // står frem mod de neutrale "Senere".
                   surface={step.current ? undefined : "Neutral"}
                   linkResolver={linkResolver}
-                  className="mt-4"
+                  className="self-start lg:mt-3"
                 />
               ) : (
                 <div />
@@ -89,7 +86,7 @@ export function PlanioRoadmapLayout({
                 <EviTitle
                   field={step.title}
                   linkResolver={linkResolver}
-                  size="xl"
+                  size="lg"
                   className="mt-2"
                 />
               ) : (
@@ -104,9 +101,9 @@ export function PlanioRoadmapLayout({
               ) : (
                 <div />
               )}
-            </EviCard>
+            </PlanioRoadmap.Step>
           ))}
-        </EviAutoGrid>
+        </PlanioRoadmap>
       )}
     </EviSection>
   );

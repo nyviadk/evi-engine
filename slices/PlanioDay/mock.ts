@@ -73,7 +73,7 @@ export const mock: Record<string, Content.PlanioDaySlice> = {
       ),
       body: line("Sådan kan en onsdag se ud med My Planio."),
 
-      check_time: line("07.15"),
+      check_time: "07.15",
       check_title: h3("Dagens energi"),
       check_body: line(
         "Sæt den selv, eller få hjælp af PlanioCheck: tre korte spørgsmål om kroppen, sanserne og hovedet.",
@@ -90,7 +90,7 @@ export const mock: Record<string, Content.PlanioDaySlice> = {
       check_energy: 50,
       check_says: line("Koncentrationen er kort i dag."),
 
-      plan_time: line("07.30"),
+      plan_time: "07.30",
       plan_title: h3("Planlæg dagen"),
       plan_body: line(
         "Noget tager energi, andet giver. Prøv selv i et forenklet eksempel: Hvad sker der, hvis papirarbejdet også skal med?",
@@ -123,7 +123,7 @@ export const mock: Record<string, Content.PlanioDaySlice> = {
       plan_note_badge: FUTURE,
       plan_note: line("Fødselsdag hos mor i morgen. Vil du gemme lidt energi til den?"),
 
-      dialog_time: line("09.15"),
+      dialog_time: "09.15",
       dialog_title: h3("Før holdmødet"),
       dialog_body: line(
         "Med et dialogkort vil du kunne vise holdet, hvad der hjælper dig i dag, uden at forklare det hele.",
@@ -142,7 +142,7 @@ export const mock: Record<string, Content.PlanioDaySlice> = {
         { text: line("En pause undervejs") },
       ],
 
-      reflect_time: line("10.45"),
+      reflect_time: "10.45",
       reflect_title: h3("Hvordan gik det?"),
       reflect_body: line(
         "Når du krydser af, kan du sætte ord på, hvad der tog på kræfterne, og hvad der gjorde godt.",
@@ -163,7 +163,7 @@ export const mock: Record<string, Content.PlanioDaySlice> = {
       reflect_note_badge: FUTURE,
       reflect_note: line("Holdet tog over, da jeg mistede tråden."),
 
-      remind_time: line("14.20"),
+      remind_time: "14.20",
       remind_title: h3("Check-in: Krop"),
       remind_body: line(
         "Faste påmindelser er til alt det, der ikke skal fylde i kalenderen. Hver dag, hver lørdag, hver anden måned, eller lige som du vil.",

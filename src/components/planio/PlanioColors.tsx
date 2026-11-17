@@ -9,7 +9,6 @@ import {
   type Hsv,
 } from "@/src/components/planio/planio-color";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviButton } from "@/src/components/ui/EviButton";
 import { cn } from "@/src/lib/utils/cn";
 
 export type PlanioColorRole = "primary" | "background" | "text";
@@ -19,7 +18,7 @@ export type PlanioPreset = { name: string; colors: PlanioPalette };
 const ROLES: PlanioColorRole[] = ["primary", "background", "text"];
 const STEP = 0.02;
 const SHIFT_STEP = 0.1;
-// Farvefeltet og tema-prikkerne har ingen global fokus-stil (inputs og EviButton har).
+// Farvefeltet, skifte-knappen og tema-prikkerne har ingen global fokus-stil (inputs har).
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current";
 
 type ColorsState = {
@@ -308,10 +307,17 @@ export function PlanioColorsSwap({
   if (!label) return null;
 
   return (
-    <EviButton type="button" onClick={swap} variant="neutral" appearance="outline" size="sm">
+    <button
+      type="button"
+      onClick={swap}
+      className={cn(
+        "inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-full pr-3 pl-2 text-xs font-semibold ring-1 ring-current/25 ring-inset hover:bg-current/8",
+        FOCUS,
+      )}
+    >
       {icon}
       {label}
-    </EviButton>
+    </button>
   );
 }
 

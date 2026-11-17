@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_day/default/f97296c43aec12d70ea199102dfafee36137d430.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/planio_day/default/78eb3e0b25f541624fed976083f46d4e71e402cb.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -29,10 +29,9 @@
         "check_time": {
           "config": {
             "label": "Energi: tidspunkt",
-            "placeholder": "Fx 07.15",
-            "single": "paragraph,strong,em"
+            "placeholder": "Fx 07.15"
           },
-          "type": "StructuredText"
+          "type": "Text"
         },
         "check_title": {
           "config": {
@@ -118,10 +117,9 @@
         "plan_time": {
           "config": {
             "label": "Plan: tidspunkt",
-            "placeholder": "Fx 07.30",
-            "single": "paragraph,strong,em"
+            "placeholder": "Fx 07.30"
           },
-          "type": "StructuredText"
+          "type": "Text"
         },
         "plan_title": {
           "config": {
@@ -325,10 +323,9 @@
         "dialog_time": {
           "config": {
             "label": "Dialog: tidspunkt",
-            "placeholder": "Fx 09.15",
-            "single": "paragraph,strong,em"
+            "placeholder": "Fx 09.15"
           },
-          "type": "StructuredText"
+          "type": "Text"
         },
         "dialog_title": {
           "config": {
@@ -420,10 +417,9 @@
         "reflect_time": {
           "config": {
             "label": "Refleksion: tidspunkt",
-            "placeholder": "Fx 10.45",
-            "single": "paragraph,strong,em"
+            "placeholder": "Fx 10.45"
           },
-          "type": "StructuredText"
+          "type": "Text"
         },
         "reflect_title": {
           "config": {
@@ -557,10 +553,9 @@
         "remind_time": {
           "config": {
             "label": "Påmindelser: tidspunkt",
-            "placeholder": "Fx 14.20",
-            "single": "paragraph,strong,em"
+            "placeholder": "Fx 14.20"
           },
-          "type": "StructuredText"
+          "type": "Text"
         },
         "remind_title": {
           "config": {

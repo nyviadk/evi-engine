@@ -85,7 +85,7 @@ export function PlanioHeroLayout({
           <EviRichText
             field={p.note}
             linkResolver={linkResolver}
-            className="text-center text-sm"
+            className="text-center text-sm font-semibold"
           />
         )}
       </EviStack>
