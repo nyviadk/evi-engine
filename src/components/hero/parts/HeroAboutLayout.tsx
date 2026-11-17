@@ -13,7 +13,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
-import { is_link_filled } from "@/src/lib/prismic/links";
+import { has_link } from "@/src/lib/prismic/links";
 
 export type HeroAboutLayoutProps = {
   slice: Content.HeroSliceAbout;
@@ -44,14 +44,11 @@ export function HeroAboutLayout({
   );
   const p = slice.primary;
 
-  const has_cta = is_link_filled(p.cta_link);
-  const has_cta_2 = is_link_filled(p.cta_link_secondary);
   if (
     !isFilled.richText(p.heading) &&
     !isFilled.richText(p.body) &&
     !isFilled.image(p.image) &&
-    !has_cta &&
-    !has_cta_2
+    !has_link(p.cta_link, p.cta_link_secondary)
   ) {
     return null;
   }

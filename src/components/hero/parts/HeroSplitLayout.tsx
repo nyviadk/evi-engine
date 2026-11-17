@@ -11,7 +11,7 @@ import {
 } from "@/src/components/ui/EviBackdropImage";
 import { HeroCtaGroup } from "@/src/components/hero/parts/HeroCtaGroup";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import { is_link_filled } from "@/src/lib/prismic/links";
+import { has_link } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -40,12 +40,9 @@ export function HeroSplitLayout({
   );
   const p = slice.primary;
 
-  const has_cta = is_link_filled(p.cta_link);
-  const has_cta_2 = is_link_filled(p.cta_link_secondary);
   if (
     !has_rich_text(p.heading, p.body) &&
-    !has_cta &&
-    !has_cta_2 &&
+    !has_link(p.cta_link, p.cta_link_secondary) &&
     !isFilled.image(p.image)
   ) {
     return null;

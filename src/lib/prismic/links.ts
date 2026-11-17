@@ -8,3 +8,8 @@ import { isFilled, type LinkField } from "@prismicio/client";
 export function is_link_filled(link: LinkField): boolean {
   return isFilled.link(link) && isFilled.keyText(link.text);
 }
+
+/** True hvis MINDST ét af linkene er udfyldt; links-tvillingen til has_rich_text. */
+export function has_link(...links: LinkField[]): boolean {
+  return links.some(is_link_filled);
+}

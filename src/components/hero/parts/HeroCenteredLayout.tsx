@@ -6,7 +6,7 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { HeroCtaGroup } from "@/src/components/hero/parts/HeroCtaGroup";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import { is_link_filled } from "@/src/lib/prismic/links";
+import { has_link } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -34,9 +34,12 @@ export function HeroCenteredLayout({
     index,
   );
 
-  const has_cta = is_link_filled(p.cta_link);
-  const has_cta_2 = is_link_filled(p.cta_link_secondary);
-  if (!has_rich_text(p.heading, p.body) && !has_cta && !has_cta_2) return null;
+  if (
+    !has_rich_text(p.heading, p.body) &&
+    !has_link(p.cta_link, p.cta_link_secondary)
+  ) {
+    return null;
+  }
 
   return (
     <EviSection
