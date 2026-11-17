@@ -17,7 +17,8 @@ export default function Error({
   reset: () => void;
 }): ReactElement {
   return (
-    <div
+    <main
+      id="main"
       className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
       style={{
         backgroundColor: "var(--color-light)",
@@ -37,6 +38,6 @@ export default function Error({
       >
         Prøv igen
       </EviButton>
-    </div>
+    </main>
   );
 }

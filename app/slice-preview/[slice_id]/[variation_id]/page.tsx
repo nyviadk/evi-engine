@@ -90,7 +90,8 @@ export default async function SlicePreviewPage({
   slice = absolutize_local_urls(slice, `http://${host}`);
 
   return (
-    <div
+    <main
+      id="main"
       data-testid="preview-target"
       className={`theme-light bg-evi-light text-evi-text-on-light ${wrapperClassName}`}
     >
@@ -98,6 +99,6 @@ export default async function SlicePreviewPage({
           kalder komponenten (nødvendigt for page-slices der bruger
           sliceContexts[index]). */}
       <Component slice={slice} context={context} index={0} slices={[slice]} />
-    </div>
+    </main>
   );
 }

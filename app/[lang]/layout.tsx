@@ -83,7 +83,9 @@ export default async function Layout({
         />
       )}
 
-      <div className="flex-1">{children}</div>
+      <main id="main" className="flex-1">
+        {children}
+      </main>
 
       {ctx?.footer && (
         <FooterClassic

@@ -130,9 +130,10 @@ export default async function RootLayout({
         >
           {system_copy(lang).skipToContent}
         </a>
-        <main id="main" className="flex flex-1 flex-col">
-          {children}
-        </main>
+        {/* <main id="main"> sættes af layoutet/siden under, kun om sidens
+            indhold: så springer skip-linket headeren over, og header/footer
+            beholder deres landmarks (banner/contentinfo). */}
+        {children}
         {grainOn && <EviPaperGrain />}
       </body>
     </html>

@@ -14,7 +14,10 @@ export default async function NotFound(): Promise<React.ReactElement> {
   const t = system_copy(h.get("x-evi-locale"));
 
   return (
-    <div className="theme-light flex min-h-svh flex-col items-center justify-center px-6 text-center">
+    <main
+      id="main"
+      className="theme-light flex min-h-svh flex-col items-center justify-center px-6 text-center"
+    >
       <div className="evi-prose max-w-md">
         <h1>{t.notFoundTitle}</h1>
         <p>{t.notFoundBody}</p>
@@ -28,6 +31,6 @@ export default async function NotFound(): Promise<React.ReactElement> {
       >
         <Link href="/">{t.home}</Link>
       </EviButton>
-    </div>
+    </main>
   );
 }
