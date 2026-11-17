@@ -1,6 +1,9 @@
-import { type Content } from "@prismicio/client";
+import { isFilled, type Content } from "@prismicio/client";
 
 import { EviSection } from "@/src/components/layout/EviSection";
+import { EviRichText } from "@/src/components/typography/EviRichText";
+import { EviTitle } from "@/src/components/typography/EviTitle";
+import { EviTag } from "@/src/components/ui/EviTag";
 import { PlanioHeader } from "@/src/components/planio/PlanioHeader";
 import { PlanioRoadmap } from "@/src/components/planio/PlanioRoadmap";
 import { PlanioSky, type PlanioSkyStar } from "@/src/components/planio/PlanioSky";
@@ -9,6 +12,8 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
+import { cn } from "@/src/lib/utils/cn";
 
 // Designets fem stjerner. De øverste står med faste afstande i sektionens top-luft:
 // i procent rykkede de ned i overskriften, når sektionen blev høj på mobil. De to
@@ -65,16 +70,37 @@ export function PlanioRoadmapLayout({
           {steps.map((step, i) => (
             <PlanioRoadmap.Step key={i}>
               <PlanioRoadmap.Marker current={step.current} />
-              <PlanioRoadmap.Tag
-                field={step.tag}
-                linkResolver={linkResolver}
-                current={step.current}
-              />
-              <PlanioRoadmap.Text
-                title={step.title}
-                body={step.body}
-                linkResolver={linkResolver}
-              />
+              {isFilled.richText(step.tag) ? (
+                <EviTag
+                  text={step.tag}
+                  // Udeladt flade = EviTags lyse primær-flade, så det, appen kan i dag,
+                  // står frem mod de neutrale "Senere".
+                  surface={step.current ? undefined : "Neutral"}
+                  linkResolver={linkResolver}
+                  className="self-start lg:mt-3"
+                />
+              ) : (
+                <div />
+              )}
+              {isFilled.richText(step.title) ? (
+                <EviTitle
+                  field={step.title}
+                  linkResolver={linkResolver}
+                  size="lg"
+                  className="mt-2"
+                />
+              ) : (
+                <div />
+              )}
+              {isFilled.richText(step.body) ? (
+                <EviRichText
+                  field={step.body}
+                  linkResolver={linkResolver}
+                  className={cn("mt-2", evi_card_body_class())}
+                />
+              ) : (
+                <div />
+              )}
             </PlanioRoadmap.Step>
           ))}
         </PlanioRoadmap>

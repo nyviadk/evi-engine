@@ -4,6 +4,8 @@ import { cn } from "@/src/lib/utils/cn";
 export type EviCardRows = 2 | 3 | 4 | 5 | 6 | 7;
 
 export type EviCardProps = React.ComponentProps<"div"> & {
+  /** Kortets element. "li" når kortene står i en `<ul>`/`<ol>`. @default "div" */
+  as?: "div" | "li";
   /** Antal subgrid-rækker. Skal matche antallet af direkte børn — tomme slots wrappes i `<div />`. */
   rows: EviCardRows;
 };
@@ -20,11 +22,13 @@ export const EVI_ROW_SPAN: Record<EviCardRows, string> = {
 };
 
 export function EviCard({
+  as = "div",
   rows,
   className,
   children,
   ...props
 }: EviCardProps): React.ReactElement {
+  const Card = as as React.ElementType;
   if (process.env.NODE_ENV === "development") {
     const count = Children.count(children);
     if (count !== rows) {
@@ -36,7 +40,7 @@ export function EviCard({
   }
 
   return (
-    <div
+    <Card
       data-slot="evi-card"
       data-rows={rows}
       className={cn(
@@ -47,6 +51,6 @@ export function EviCard({
       {...props}
     >
       {children}
-    </div>
+    </Card>
   );
 }
