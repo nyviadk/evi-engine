@@ -18,8 +18,8 @@ export type EviHeadingGroupProps = Omit<
   linkResolver: LinkResolverFunction;
   /** Heading-niveau-shift på title — se EviRichText. */
   isHero?: boolean;
-  /** Tekst-justering. "center"/"end" er venstre på mobil (læsbarhed) og
-   *  centreres/højrestilles først fra md. @default "start" */
+  /** Tekst-justering, ens på alle bredder, så den følger sektionens øvrige
+   *  indhold (knapper, ikoner). @default "start" */
   align?: "start" | "center" | "end";
 };
 
@@ -43,10 +43,10 @@ export function EviHeadingGroup({
         // Measure PER element: `ch` regnes på elementets egen (clamp-fluide)
         // størrelse → overskrifter ~30ch, brødtekst det læsbare ~65ch.
         "[&>h1]:max-w-[30ch] [&>h2]:max-w-[30ch] [&>h3]:max-w-[30ch] [&>p]:max-w-prose",
-        // "center"/"end" er venstre på mobil (centreret/højrestillet fler-linjet
-        // tekst er svær at læse på smalle skærme) og skifter først fra md og op.
-        align === "center" && "text-left md:text-center md:*:mx-auto",
-        align === "end" && "text-left md:text-right md:*:ml-auto",
+        // Samme justering på alle bredder: en venstrestillet overskrift over
+        // centrerede knapper på mobil ligner en fejl.
+        align === "center" && "text-center *:mx-auto",
+        align === "end" && "text-right *:ml-auto",
         className,
       )}
       {...props}
