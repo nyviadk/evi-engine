@@ -1,9 +1,10 @@
 import type { LinkField, LinkResolverFunction } from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
 
+import { EviStack } from "@/src/components/layout/EviStack";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviIcon } from "@/src/components/ui/EviIcon";
-import { is_link_filled } from "@/src/lib/prismic/links";
+import { has_link, is_link_filled } from "@/src/lib/prismic/links";
 
 // App-butikkerne genkendes på linkets domæne. Phosphor-ikonerne er rene stier;
 // bi:apple bruger <use href>, som EviIcons SVG-sanering fjerner (blev tomt).
@@ -82,5 +83,36 @@ export function EviStoreButton({
         </span>
       </PrismicNextLink>
     </EviButton>
+  );
+}
+
+export type EviStoreButtonsProps = {
+  /** Solid knap, fx App Store. */
+  primary: LinkField;
+  /** Outline-knap, fx Google Play. */
+  secondary: LinkField;
+  linkResolver: LinkResolverFunction;
+};
+
+/**
+ * To EviStoreButtons centreret side om side, under hinanden når der ikke er
+ * plads. Intet, når begge links er tomme.
+ */
+export function EviStoreButtons({
+  primary,
+  secondary,
+  linkResolver,
+}: EviStoreButtonsProps): React.ReactElement | null {
+  if (!has_link(primary, secondary)) return null;
+
+  return (
+    <EviStack direction="row" wrap justify="center" gap="sm">
+      <EviStoreButton field={primary} linkResolver={linkResolver} />
+      <EviStoreButton
+        field={secondary}
+        linkResolver={linkResolver}
+        appearance="outline"
+      />
+    </EviStack>
   );
 }

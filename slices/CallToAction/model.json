@@ -1,0 +1,73 @@
+{
+  "id": "call_to_action",
+  "name": "CallToAction",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/call_to_action/default/1d77c59891d6e48c1322ba78f9c8a27d266fb3f8.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Kort opfordring, fx \"Kom i gang i dag\"",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Valgfri — kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Call-to-action"
+          },
+          "type": "Link"
+        },
+        "cta_link_secondary": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Sekundær knap"
+          },
+          "type": "Link"
+        },
+        "image": {
+          "config": {
+            "label": "Ikon eller logo",
+            "placeholder": "Valgfri — 64px høj over overskriften, fx app-ikonet"
+          },
+          "type": "Image"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Mørk",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ],
+            "placeholder": "Baggrundstema for sektionen"
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

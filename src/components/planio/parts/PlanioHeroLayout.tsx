@@ -4,11 +4,11 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviPhoneMockup } from "@/src/components/ui/EviPhoneMockup";
-import { EviStoreButton } from "@/src/components/ui/EviStoreButton";
+import { EviStoreButtons } from "@/src/components/ui/EviStoreButton";
 import { PlanioDayScreen } from "@/src/components/planio/PlanioDayScreen";
 import { PlanioHeroSection } from "@/src/components/planio/PlanioHeroSection";
 import { has_rich_text } from "@/src/lib/prismic/fields";
-import { is_link_filled } from "@/src/lib/prismic/links";
+import { has_link } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -37,9 +37,12 @@ export function PlanioHeroLayout({
   const { isHero } = resolve_slice_context(context, index);
   const p = slice.primary;
 
-  const has_cta =
-    is_link_filled(p.cta_link) || is_link_filled(p.cta_link_secondary);
-  if (!has_rich_text(p.heading, p.body) && !has_cta) return null;
+  if (
+    !has_rich_text(p.heading, p.body) &&
+    !has_link(p.cta_link, p.cta_link_secondary)
+  ) {
+    return null;
+  }
 
   const items = p.plan_items ?? [];
   const has_plan = isFilled.richText(p.plan_day) || items.length > 0;
@@ -73,16 +76,11 @@ export function PlanioHeroLayout({
           isHero={isHero}
           align="center"
         />
-        {has_cta && (
-          <EviStack direction="row" wrap justify="center" gap="sm">
-            <EviStoreButton field={p.cta_link} linkResolver={linkResolver} />
-            <EviStoreButton
-              field={p.cta_link_secondary}
-              linkResolver={linkResolver}
-              appearance="outline"
-            />
-          </EviStack>
-        )}
+        <EviStoreButtons
+          primary={p.cta_link}
+          secondary={p.cta_link_secondary}
+          linkResolver={linkResolver}
+        />
         {isFilled.richText(p.note) && (
           <EviRichText
             field={p.note}

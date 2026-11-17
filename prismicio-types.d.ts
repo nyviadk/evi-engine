@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice
 
 /**
  * Content for Side documents
@@ -714,6 +714,95 @@ interface SettingsDocumentData {
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
 export type AllDocumentTypes = BusinessDocument | FooterDocument | NavigationDocument | PageDocument | SettingsDocument;
+
+/**
+ * Primary content in *CallToAction → Default → Primary*
+ */
+export interface CallToActionSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Kort opfordring, fx "Kom i gang i dag"
+	 * - **API ID Path**: call_to_action.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri — kort tekst under overskriften
+	 * - **API ID Path**: call_to_action.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Call-to-action field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: call_to_action.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Sekundær knap field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: call_to_action.default.primary.cta_link_secondary
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Ikon eller logo field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Valgfri — 64px høj over overskriften, fx app-ikonet
+	 * - **API ID Path**: call_to_action.default.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Baggrundstema field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Mørk
+	 * - **API ID Path**: call_to_action.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for CallToAction Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CallToActionSliceDefault = prismic.SharedSliceVariation<"default", Simplify<CallToActionSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *CallToAction*
+ */
+type CallToActionSliceVariation = CallToActionSliceDefault
+
+/**
+ * CallToAction Shared Slice
+ *
+ * - **API ID**: `call_to_action`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CallToActionSlice = prismic.SharedSlice<"call_to_action", CallToActionSliceVariation>;
 
 /**
  * Item in *CaseStudies → Default → Primary → Cases*
@@ -5992,6 +6081,10 @@ declare module "@prismicio/client" {
 			SettingsDocumentData,
 			SettingsDocumentDataRedirectsItem,
 			AllDocumentTypes,
+			CallToActionSlice,
+			CallToActionSliceDefaultPrimary,
+			CallToActionSliceVariation,
+			CallToActionSliceDefault,
 			CaseStudiesSlice,
 			CaseStudiesSliceDefaultPrimaryCasesItem,
 			CaseStudiesSliceDefaultPrimary,
