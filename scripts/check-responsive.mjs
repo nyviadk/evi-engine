@@ -14,6 +14,7 @@ import { chromium, webkit } from "playwright";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { arg } from "./cli-args.mjs";
 import { ensure_dev_server, stop_dev_server } from "./dev-server.mjs";
 import { find_text_spills } from "./page-checks.mjs";
 
@@ -21,11 +22,6 @@ import { find_text_spills } from "./page-checks.mjs";
 const WIDTHS = [280, 375, 768, 1024, 1440];
 const BROWSERS = { chromium, webkit };
 
-const args = process.argv.slice(2);
-const arg = (...names) => {
-  const i = args.findIndex((a) => names.includes(a));
-  return i >= 0 ? args[i + 1] : undefined;
-};
 const slice_id = arg("-s", "--slice");
 const only_browser = arg("--browser");
 const url_arg = arg("--url")?.replace(/\/+$/, "");

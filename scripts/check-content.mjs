@@ -15,17 +15,13 @@ import { chromium, webkit } from "playwright";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { arg } from "./cli-args.mjs";
 import { find_text_spills } from "./page-checks.mjs";
 
 // 280: smalle telefoner og zoomet tekst; dér klemmes indlejrede kasser først.
 const DEFAULT_WIDTHS = [280, 375, 768, 1024, 1280, 1440];
 const BROWSERS = { chromium, webkit };
 
-const args = process.argv.slice(2);
-const arg = (...names) => {
-  const i = args.findIndex((a) => names.includes(a));
-  return i >= 0 ? args[i + 1] : undefined;
-};
 const url = arg("--url");
 const only_browser = arg("--browser");
 const widths =
