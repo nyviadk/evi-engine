@@ -1,10 +1,11 @@
+import { PlanioSky, type PlanioSkyStar } from "@/src/components/planio/PlanioSky";
 import { cn } from "@/src/lib/utils/cn";
 
 // Stjernerne fra designet: placering + indtoning. `big` er de lysere, `wide`
 // vises kun fra md. Designets placeringer gælder fra xl; under det står de
 // inderste ude ved kanten, ellers lander de i overskrift og knapper (designets
 // header lå inde i heroen og skubbede teksten ned). Mobil: ude ved telefonen.
-const STARS = [
+const STARS: PlanioSkyStar[] = [
   { position: "left-[6%] top-[16%] delay-400", big: true, wide: true },
   { position: "left-[14%] top-[46%] delay-1600", wide: true },
   {
@@ -69,19 +70,7 @@ export function PlanioHeroSection({
       )}
       {...props}
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        {STARS.map((star) => (
-          <span
-            key={star.position}
-            className={cn(
-              "absolute rounded-full bg-evi-light transition-opacity duration-1200 ease-out starting:opacity-0 motion-reduce:delay-0",
-              star.big ? "size-0.75 opacity-80" : "size-0.5 opacity-60",
-              star.wide && "max-md:hidden",
-              star.position,
-            )}
-          />
-        ))}
-      </div>
+      <PlanioSky stars={STARS} />
 
       <div className="relative mx-auto max-w-evi px-4">{children}</div>
 

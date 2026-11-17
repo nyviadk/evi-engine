@@ -12,6 +12,7 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviTitle } from "@/src/components/typography/EviTitle";
 import { EviCard } from "@/src/components/ui/EviCard";
+import { PlanioHeader } from "@/src/components/planio/PlanioHeader";
 import { PlanioTile } from "@/src/components/planio/PlanioTile";
 import {
   PlanioCustomizeColors,
@@ -88,21 +89,12 @@ export function PlanioCustomizeLayout({
       collapsePadding={collapsePadding}
       data-slot="planio-customize"
     >
-      {has_rich_text(p.heading, p.body) && (
-        <EviStack as="hgroup" gap="lg" className="col-span-12">
-          <EviRichText
-            field={p.heading}
-            linkResolver={linkResolver}
-            isHero={isHero}
-            className="[&_h1]:max-w-[30ch] [&_h2]:max-w-[30ch]"
-          />
-          <EviRichText
-            field={p.body}
-            linkResolver={linkResolver}
-            className="evi-lead max-w-prose"
-          />
-        </EviStack>
-      )}
+      <PlanioHeader
+        title={p.heading}
+        description={p.body}
+        linkResolver={linkResolver}
+        isHero={isHero}
+      />
       {(has_colors || has_energy) && (
         <EviSplit preset="60-40" rows={2}>
           <Tile
