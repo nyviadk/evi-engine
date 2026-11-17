@@ -3,6 +3,26 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
+// Hvor browseren kan, driver CSS --morph direkte fra scrollen: så er logoet
+// rigtigt fra første frame efter et reload midt på siden, før React hydrerer
+// (ellers blinker app-ikonet). JS sætter kun loftet (--planio-morph-range).
+const SCROLL_DRIVEN_CSS = `
+@property --morph { syntax: "<number>"; inherits: true; initial-value: 0; }
+@keyframes planio-morph { from { --morph: 0; } to { --morph: 1; } }
+@supports (animation-timeline: scroll()) {
+  header:has([data-slot="planio-morph-driver"]) {
+    animation: planio-morph linear both;
+    animation-duration: auto;
+    animation-timeline: scroll(root);
+    animation-range: 0px var(--planio-morph-range, 100svh);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    header:has([data-slot="planio-morph-driver"]) {
+      animation-timing-function: steps(2, jump-none);
+    }
+  }
+}`;
+
 /**
  * Driver logo-forvandlingen i headeren: sætter `--morph` på `<header>` 1:1 med
  * scrollen, fra 0 øverst til 1, når sidens første sektion er scrollet helt ind
@@ -23,12 +43,14 @@ export function PlanioMorphDriver(): React.ReactElement {
 
     const root = document.documentElement;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    const css_driven = CSS.supports("animation-timeline: scroll()");
     let section: Element | null = null;
     let range = 1;
     let frame = 0;
 
     const update = () => {
       frame = 0;
+      if (css_driven) return;
       const p = Math.min(Math.max(window.scrollY / range, 0), 1);
       header.style.setProperty(
         "--morph",
@@ -55,6 +77,7 @@ export function PlanioMorphDriver(): React.ReactElement {
         ? section.getBoundingClientRect().bottom + window.scrollY - header_h
         : screen;
       range = Math.max(1, Math.min(section_end, screen));
+      header.style.setProperty("--planio-morph-range", `${range}px`);
       root.style.setProperty("--planio-header-h", `${header_h}px`);
       root.style.scrollPaddingTop = `${header_h}px`;
       update();
@@ -78,5 +101,10 @@ export function PlanioMorphDriver(): React.ReactElement {
     };
   }, [pathname]);
 
-  return <span ref={ref} hidden />;
+  return (
+    <>
+      <style>{SCROLL_DRIVEN_CSS}</style>
+      <span ref={ref} hidden data-slot="planio-morph-driver" />
+    </>
+  );
 }
