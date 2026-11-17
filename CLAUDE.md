@@ -5,6 +5,7 @@
 Vi har mange memories/skills/regler. Antag ALDRIG at du ved hvordan — vi har lavet det før. Læs dem, ellers spilder vi tid på at genopdage ting der allerede virker.
 
 ## Før ENHVER opgave
+- **Hav ALTID alle Evi-komponenter i kontekst, når du bygger. Uanset hvad.** SessionStart-hooken (`.claude/hooks/evi_context.mjs`) lægger kataloget ind ved opstart og efter hver compact. Mangler det, så kør `node .claude/hooks/evi_context.mjs --plain`, før du skriver kode. Find rollen i kataloget før hver ny del (titel → EviTitle, mærkat → EviTag, søster-kort → EviCard, flade → EviBox). (`feedback_evi_catalog_always_in_context`)
 - **Load `project_rulebook` memory** ved al kode/model/slice-arbejde.
 - **Check first**: grep/read/fetch FØR du skriver. **Før du bygger NOGET nyt (komponent/layout/helper): glob `src/components/{layout,ui,typography}` + `src/lib/` og gennemgå ALLE Evi-komponenter/helpers** — genbrug eller udvid frem for at lave nyt. (`feedback_check_first_reuse_always`)
   - **Kort / række-alignede layouts = `EviCard`** (grid-rows-subgrid, aligner titel/tekst/knap på tværs af søster-kort). Jeg GLEMMER den gentagne gange (3×) — brug den til ALLE kort med flere ens søskende, ikke rå `<div>`-flader.
