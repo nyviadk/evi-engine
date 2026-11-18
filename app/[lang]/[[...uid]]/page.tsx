@@ -68,7 +68,7 @@ export default async function Page(props: {
   };
   const sliceContexts = compute_slice_contexts(page.data.slices, colors);
   const timezone = settings?.data?.timezone || "Europe/Copenhagen";
-  const feedPages = page.data.slices.some((s) => s.slice_type === "feed")
+  const feedPages = (page.data.slices ?? []).some((s) => s.slice_type === "feed")
     ? build_feed_pages(ctx.pages, page.lang, tree, tenant, timezone)
     : undefined;
   const joinsFooter =
