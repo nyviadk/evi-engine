@@ -1,13 +1,12 @@
 import { Fragment } from "react";
 import { isFilled, type Content, type LinkResolverFunction } from "@prismicio/client";
-import { PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";
 
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviRow } from "@/src/components/layout/EviRow";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviSection } from "@/src/components/layout/EviSection";
-import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
+import { EviSectionHeader } from "@/src/components/typography/EviSectionHeader";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviTitle } from "@/src/components/typography/EviTitle";
 import { evi_box_class, evi_card_bleed_class } from "@/src/components/ui/EviBox";
@@ -20,7 +19,6 @@ import { FeedPost } from "@/src/components/feed/parts/FeedPost";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import type { FeedPage } from "@/src/lib/prismic/feed";
 import { has_rich_text, text_as_rich_text } from "@/src/lib/prismic/fields";
-import { is_link_filled } from "@/src/lib/prismic/links";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -195,9 +193,10 @@ export function FeedDefaultLayout({
 
   return (
     <EviSection theme={theme} hero={isHero} collapsePadding={collapsePadding} data-slot="feed">
-      <EviHeadingGroup
+      <EviSectionHeader
         title={p.heading}
         description={p.body}
+        ctaLink={p.cta_link}
         linkResolver={linkResolver}
         isHero={isHero}
         align={resolve_heading_align(p.heading_align)}
@@ -216,13 +215,6 @@ export function FeedDefaultLayout({
             <EviAutoGrid size="trio">{items.map((item) => <Fragment key={item.key}>{item.node}</Fragment>)}</EviAutoGrid>
           </EviRow>
         )
-      )}
-      {is_link_filled(p.cta_link) && (
-        <EviRow className={cn(resolve_heading_align(p.heading_align) === "center" && "md:text-center")}>
-          <EviButton asChild variant="primary" appearance="solid">
-            <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
-          </EviButton>
-        </EviRow>
       )}
     </EviSection>
   );
