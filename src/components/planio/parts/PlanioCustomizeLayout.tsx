@@ -15,8 +15,10 @@ import { EviBox } from "@/src/components/ui/EviBox";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { evi_card_body_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
+import { PlanioColors } from "@/src/components/planio/PlanioColors";
 import {
   PlanioCustomizeColors,
+  presets_of,
   start_palette,
 } from "@/src/components/planio/parts/PlanioCustomizeColors";
 import {
@@ -36,6 +38,12 @@ export type PlanioCustomizeLayoutProps = {
   index: number;
   context: EviPageSliceContext;
 };
+
+// Fed tekst i overskriften ("My") får farven fra demoen. Samme tone og mætning,
+// men lysheden holdes over/under en grænse, så den kan læses på baggrunden.
+// Uden relativ farve-syntaks ignoreres reglen, og ordet arver overskriftens farve.
+const CHOSEN_ON_DARK = "[&>:is(h1,h2)_strong]:text-[oklch(from_var(--planio-chosen)_max(l,0.65)_c_h)]";
+const CHOSEN_ON_LIGHT = "[&>:is(h1,h2)_strong]:text-[oklch(from_var(--planio-chosen)_min(l,0.5)_c_h)]";
 
 /**
  * En flise som Evis kort: ramme, titel og tekst i hver sin EviCard-række, så
@@ -78,25 +86,22 @@ export function PlanioCustomizeLayout({
   const { theme, isHero, collapsePadding } = resolve_slice_context(context, index);
   const p = slice.primary;
 
-  const has_colors = start_palette(p) !== null;
+  const start = start_palette(p);
+  const has_colors = start !== null;
   const has_energy = has_energy_units(p);
   const has_days = has_day_settings(p);
   if (!has_rich_text(p.heading, p.body) && !has_colors && !has_energy && !has_days) {
     return null;
   }
 
-  return (
-    <EviSection
-      theme={theme}
-      hero={isHero}
-      collapsePadding={collapsePadding}
-      data-slot="planio-customize"
-    >
+  const content = (
+    <>
       <EviHeadingGroup
         title={p.heading}
         description={p.body}
         linkResolver={linkResolver}
         isHero={isHero}
+        className={theme === "dark" ? CHOSEN_ON_DARK : CHOSEN_ON_LIGHT}
       />
       {(has_colors || has_energy) && (
         <EviSplit preset="60-40" rows={3}>
@@ -133,6 +138,23 @@ export function PlanioCustomizeLayout({
             )}
           </figure>
         </EviRow>
+      )}
+    </>
+  );
+
+  return (
+    <EviSection
+      theme={theme}
+      hero={isHero}
+      collapsePadding={collapsePadding}
+      data-slot="planio-customize"
+    >
+      {start ? (
+        <PlanioColors start={start} presets={presets_of(p)}>
+          {content}
+        </PlanioColors>
+      ) : (
+        content
       )}
     </EviSection>
   );

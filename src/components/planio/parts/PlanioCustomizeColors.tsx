@@ -9,7 +9,6 @@ import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviIcon } from "@/src/components/ui/EviIcon";
 import {
-  PlanioColors,
   PlanioColorsArea,
   PlanioColorsHex,
   PlanioColorsHue,
@@ -40,7 +39,7 @@ function palette(primary: ColorField, background: ColorField, text: ColorField):
   };
 }
 
-function presets_of(p: Primary): PlanioPreset[] {
+export function presets_of(p: Primary): PlanioPreset[] {
   return (p.presets ?? []).flatMap((preset) => {
     const colors = palette(preset.primary, preset.background, preset.text);
     return colors && isFilled.keyText(preset.name) ? [{ name: preset.name, colors }] : [];
@@ -92,19 +91,16 @@ function Preview({ p, linkResolver }: { p: Primary; linkResolver: LinkResolverFu
   );
 }
 
-/** Farve-flisen: forhåndsvisning + vælger, og temaerne under. */
+/** Farve-flisen: forhåndsvisning + vælger, og temaerne under. Skal ligge inde i <PlanioColors>. */
 export function PlanioCustomizeColors({
   p,
   linkResolver,
 }: {
   p: Primary;
   linkResolver: LinkResolverFunction;
-}): React.ReactElement | null {
-  const start = start_palette(p);
-  if (!start) return null;
-
+}): React.ReactElement {
   return (
-    <PlanioColors start={start} presets={presets_of(p)}>
+    <EviStack data-slot="planio-colors-tile" gap="lg">
       <EviStack direction="row" wrap gap="lg">
         <PlanioColorsPreview className="max-w-64 grow basis-44">
           <Preview p={p} linkResolver={linkResolver} />
@@ -136,6 +132,6 @@ export function PlanioCustomizeColors({
           ) : null
         }
       />
-    </PlanioColors>
+    </EviStack>
   );
 }

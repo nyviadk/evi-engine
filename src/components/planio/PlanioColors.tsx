@@ -58,8 +58,9 @@ export type PlanioColorsProps = {
 
 /**
  * Farvevælgeren i "Gør appen til din": vælg primær-, baggrunds- og tekstfarve
- * og se den lille onsdag skifte. Kun forhåndsvisningen skifter, ikke siden.
- * Holder kun farverne; al tekst renderes på serveren og sendes ind.
+ * og se den lille onsdag skifte. Holder kun farverne; al tekst renderes på
+ * serveren og sendes ind. Kan omslutte hele sektionen: den valgte primærfarve
+ * ligger i `--planio-chosen`, så fx "My" i overskriften kan følge med.
  */
 export function PlanioColors({
   start,
@@ -107,9 +108,14 @@ export function PlanioColors({
 
   return (
     <ColorsContext value={state}>
-      <EviStack data-slot="planio-colors" gap="lg">
+      {/* contents: ingen boks i sektionens grid, men variablen arves stadig. */}
+      <div
+        data-slot="planio-colors"
+        className="contents"
+        style={{ "--planio-chosen": colors.primary } as React.CSSProperties}
+      >
         {children}
-      </EviStack>
+      </div>
     </ColorsContext>
   );
 }
