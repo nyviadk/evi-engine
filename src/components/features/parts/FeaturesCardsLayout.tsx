@@ -1,4 +1,5 @@
 import { isFilled, type Content } from "@prismicio/client";
+import { PrismicNextLink } from "@prismicio/next";
 
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
@@ -16,6 +17,8 @@ import { EviIconBadge } from "@/src/components/ui/EviIconBadge";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { evi_card_body_class } from "@/src/lib/utils/card-text";
 import { EviTitle } from "@/src/components/typography/EviTitle";
+import { EviButton } from "@/src/components/ui/EviButton";
+import { is_link_filled } from "@/src/lib/prismic/links";
 
 export type FeaturesCardsLayoutProps = {
   slice: Content.FeaturesSliceCards;
@@ -65,7 +68,7 @@ export function FeaturesCardsLayout({
         {cards.map((card, i) => (
           <EviCard
             key={i}
-            rows={3}
+            rows={4}
             className={box_surface(cardColor)}
           >
             {isFilled.keyText(card.icon) ? (
@@ -89,6 +92,20 @@ export function FeaturesCardsLayout({
               linkResolver={linkResolver}
               className={cn("mt-2", evi_card_body_class())}
             />
+            {is_link_filled(card.link) ? (
+              <EviButton
+                asChild
+                variant="primary"
+                appearance="text"
+                size="md"
+                arrow
+                className="mt-4 justify-self-start"
+              >
+                <PrismicNextLink field={card.link} linkResolver={linkResolver} />
+              </EviButton>
+            ) : (
+              <div />
+            )}
           </EviCard>
         ))}
       </EviAutoGrid>

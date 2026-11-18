@@ -101,6 +101,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
           body: line(
             "Vi rister i små portioner, så bønnerne altid er friske når de når din kop.",
           ),
+          link: webLink("Se ristedagene"),
         },
         {
           icon: "sprout",
@@ -108,6 +109,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
           body: line(
             "100% arabica, indkøbt direkte fra farmere vi kender ved navn.",
           ),
+          link: webLink("Mød farmerne"),
         },
         {
           icon: "graduation-cap",
@@ -115,6 +117,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
           body: line(
             "Lær at brygge den perfekte kop til vores hyggelige kaffekurser i butikken.",
           ),
+          link: webLink("Find et kursus"),
         },
       ],
       card_color: "Sekundær",

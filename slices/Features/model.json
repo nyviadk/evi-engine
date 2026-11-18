@@ -144,6 +144,14 @@
                   "single": "paragraph,strong,em,hyperlink"
                 },
                 "type": "StructuredText"
+              },
+              "link": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "allowText": true,
+                  "label": "Link (valgfrit, fx LinkedIn)"
+                },
+                "type": "Link"
               }
             },
             "label": "Kort"

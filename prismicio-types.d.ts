@@ -1119,6 +1119,16 @@ export interface FeaturesSliceCardsPrimaryCardsItem {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
+	
+	/**
+	 * Link (valgfrit, fx LinkedIn) field in *Features → Cards → Primary → Kort*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: features.cards.primary.cards[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
