@@ -35,7 +35,7 @@ function post_avatars(source: FeedPostSource): Avatar[] {
 }
 
 function PostAvatar({ avatar, overlap }: { avatar: Avatar; overlap: boolean }): React.ReactElement {
-  const shape = cn("size-9 ring-2 ring-(--theme-bg)", overlap && "-ms-3.5");
+  const shape = cn("size-9 ring-2 ring-(--theme-bg)", overlap && "-ms-2.5");
   if ("image" in avatar) {
     return <EviImage field={avatar.image} circle sizes="36px" className={shape} />;
   }
