@@ -17,6 +17,7 @@ import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
 import { is_staging_domain } from "@/src/lib/seo/domains";
 import { og_locale } from "@/src/lib/seo/og-locale";
 import { local_date } from "@/src/lib/utils/date";
+import { build_feed_pages, page_date } from "@/src/lib/prismic/feed";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -66,6 +67,10 @@ export default async function Page(props: {
       settings?.data?.color_secondary || DEFAULTS_COLORS.color_secondary,
   };
   const sliceContexts = compute_slice_contexts(page.data.slices, colors);
+  const timezone = settings?.data?.timezone || "Europe/Copenhagen";
+  const feedPages = page.data.slices.some((s) => s.slice_type === "feed")
+    ? build_feed_pages(ctx.pages, page.lang, tree, tenant, timezone)
+    : undefined;
   const joinsFooter =
     ctx.footer != null &&
     joins_footer(page.data.slices, ctx.footer.data.background_theme, colors);
@@ -123,10 +128,10 @@ export default async function Page(props: {
             linkResolver: link_resolver,
             sliceContexts,
             lang,
-            lastPublished: local_date(
-              page.last_publication_date,
-              settings?.data?.timezone || "Europe/Copenhagen",
-            ),
+            lastPublished: local_date(page.last_publication_date, timezone),
+            published: page_date(page, timezone),
+            pageId: page.id,
+            feedPages,
           }}
         />
       </div>

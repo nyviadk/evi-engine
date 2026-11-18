@@ -5,6 +5,17 @@ import { isFilled, type RichTextField } from "@prismicio/client";
  * gentagne `isFilled.richText(a) || isFilled.richText(b)`-mønster fra
  * kort-/kasse-guards på tværs af slice-parts (cards, split, highlights, bento).
  */
+/**
+ * En almindelig tekst (fx en sides SEO-titel) som rich text, så den kan vises
+ * gennem EviTitle/EviRichText som alt andet display-tekst (R2.1).
+ */
+export function text_as_rich_text(
+  text: string,
+  type: "heading3" | "paragraph",
+): RichTextField {
+  return [{ type, text, spans: [], direction: "ltr" }] as RichTextField;
+}
+
 export function has_rich_text(
   ...fields: (RichTextField | null | undefined)[]
 ): boolean {

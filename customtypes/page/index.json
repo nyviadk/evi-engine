@@ -20,6 +20,12 @@
         },
         "type": "Link"
       },
+      "publication_date": {
+        "config": {
+          "label": "Dato (valgfri)"
+        },
+        "type": "Date"
+      },
       "slices": {
         "config": {
           "choices": {
@@ -84,6 +90,9 @@
               "type": "SharedSlice"
             },
             "release_notes": {
+              "type": "SharedSlice"
+            },
+            "feed": {
               "type": "SharedSlice"
             }
           }

@@ -65,10 +65,18 @@ export const get_evi_tree = cache(async () => {
   if (!base) return null;
   const docs = await base.client.getAllByType("page", {
     lang: "*",
-    fetch: ["page.parent_page", "page.meta_title"],
+    // Beskrivelse, billede og dato er Feed-slicens kort, så den ikke henter selv.
+    fetch: [
+      "page.parent_page",
+      "page.meta_title",
+      "page.meta_description",
+      "page.meta_image",
+      "page.publication_date",
+    ],
   });
   const tree = build_tree_from_docs(docs);
   return {
+    docs,
     tree,
     trails: build_breadcrumb_trails(docs),
     languages: build_language_map(docs, tree, base.tenant),
@@ -142,7 +150,7 @@ export const get_evi_context = cache(async () => {
   // treeData kan kun være null hvis tenant manglede — men base er allerede
   // tjekket. Vi narrower derfor strengt før vi bygger link_resolver.
   if (!treeData) return null;
-  const { tree, trails, languages } = treeData;
+  const { docs, tree, trails, languages } = treeData;
 
   // Navigation og footer fetches i den ønskede locale først; falder tilbage
   // til default_locale hvis oversættelsen ikke findes — så editoren ikke
@@ -168,6 +176,7 @@ export const get_evi_context = cache(async () => {
 
   return {
     ...base,
+    pages: docs,
     tree,
     breadcrumbTrails: trails,
     languages,

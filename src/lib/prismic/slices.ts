@@ -1,4 +1,5 @@
 import type { LinkResolverFunction } from "@prismicio/client";
+import type { FeedPage } from "@/src/lib/prismic/feed";
 import { resolve_section_theme } from "@/src/lib/prismic/section-theme";
 
 export type SliceWithPrimary = {
@@ -47,6 +48,12 @@ export interface EviPageSliceContext {
   lang?: string;
   /** Sidens sidste publicering (Prismics auto-felt) som "ÅÅÅÅ-MM-DD" i sitets tidszone. */
   lastPublished?: string;
+  /** Sidens udgivelse som "ÅÅÅÅ-MM-DD": feltet "Dato", ellers Prismics første udgivelse. */
+  published?: string;
+  /** Sidens id, så en Feed kan vise sidens egne undersider og udelade siden selv. */
+  pageId?: string;
+  /** Sitets sider på sidens sprog som kort; kun sat, når siden har en Feed. */
+  feedPages?: FeedPage[];
 }
 
 export interface EviColors {

@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice | ReleaseNotesSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice | ReleaseNotesSlice | FeedSlice
 
 /**
  * Content for Side documents
@@ -383,6 +383,17 @@ interface PageDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
 	 */
 	parent_page: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * Dato (valgfri) field in *Side*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: page.publication_date
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	publication_date: prismic.DateField;
 	
 	/**
 	 * Slice Zone field in *Side*
@@ -1976,6 +1987,179 @@ type FeaturesSliceVariation = FeaturesSliceDefault | FeaturesSliceCards | Featur
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type FeaturesSlice = prismic.SharedSlice<"features", FeaturesSliceVariation>;
+
+/**
+ * Primary content in *Feed → Default → Primary*
+ */
+export interface FeedSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Venstre
+	 * - **API ID Path**: feed.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Vis undersider af field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.parent_page
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	parent_page: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * Maks. antal kort field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: Tom = alle
+	 * - **API ID Path**: feed.default.primary.limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	limit: prismic.NumberField;
+	
+	/**
+	 * Dato på kortene field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: feed.default.primary.show_date
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_date: prismic.BooleanField;
+	
+	/**
+	 * Filtre ud fra tags field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: feed.default.primary.show_filters
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_filters: prismic.BooleanField;
+	
+	/**
+	 * Kortets link-tekst field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Læs artikel
+	 * - **API ID Path**: feed.default.primary.card_cta
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	card_cta: prismic.KeyTextField;
+	
+	/**
+	 * Filtre: overskrift field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Emne (læses op af skærmlæsere)
+	 * - **API ID Path**: feed.default.primary.filter_legend
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	filter_legend: prismic.KeyTextField;
+	
+	/**
+	 * Filtre: alle field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Alle
+	 * - **API ID Path**: feed.default.primary.filter_all
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	filter_all: prismic.KeyTextField;
+	
+	/**
+	 * Filtre: antal field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx {antal} indlæg
+	 * - **API ID Path**: feed.default.primary.filter_status
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	filter_status: prismic.KeyTextField;
+	
+	/**
+	 * Knap under kortene (valgfri) field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Kortfarve field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Neutral
+	 * - **API ID Path**: feed.default.primary.card_color
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
+	
+	/**
+	 * Baggrundstema field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: feed.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Feed Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeedSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FeedSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Feed*
+ */
+type FeedSliceVariation = FeedSliceDefault
+
+/**
+ * Feed Shared Slice
+ *
+ * - **API ID**: `feed`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FeedSlice = prismic.SharedSlice<"feed", FeedSliceVariation>;
 
 /**
  * Primary content in *FooterColumnLinks → Default → Primary*
@@ -6107,6 +6291,27 @@ export interface TextContentSliceDocumentPrimary {
 	body: prismic.RichTextField;
 	
 	/**
+	 * Dato under overskriften field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Udgivet = nyheder, Opdateret = vilkår
+	 * - **Default Value**: Senest opdateret
+	 * - **API ID Path**: text_content.document.primary.date_display
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	date_display: prismic.SelectField<"Senest opdateret" | "Udgivet" | "Skjul", "filled">;
+	
+	/**
+	 * Billede (valgfrit) field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: text_content.document.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
 	 * Tekst field in *TextContent → Document → Primary*
 	 *
 	 * - **Field Type**: Rich Text
@@ -6529,6 +6734,10 @@ declare module "@prismicio/client" {
 			FeaturesSliceBento,
 			FeaturesSliceIconBento,
 			FeaturesSliceIconList,
+			FeedSlice,
+			FeedSliceDefaultPrimary,
+			FeedSliceVariation,
+			FeedSliceDefault,
 			FooterColumnLinksSlice,
 			FooterColumnLinksSliceDefaultPrimary,
 			FooterColumnLinksSliceVariation,

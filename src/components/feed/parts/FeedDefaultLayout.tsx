@@ -1,0 +1,189 @@
+import { Fragment } from "react";
+import { isFilled, type Content, type LinkResolverFunction } from "@prismicio/client";
+import { PrismicNextLink } from "@prismicio/next";
+import Link from "next/link";
+
+import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
+import { EviRow } from "@/src/components/layout/EviRow";
+import { EviSection } from "@/src/components/layout/EviSection";
+import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
+import { EviRichText } from "@/src/components/typography/EviRichText";
+import { EviTitle } from "@/src/components/typography/EviTitle";
+import { box_surface, evi_card_bleed_class } from "@/src/components/ui/EviBox";
+import { EviButton } from "@/src/components/ui/EviButton";
+import { EviCard } from "@/src/components/ui/EviCard";
+import { EviImage } from "@/src/components/ui/EviImage";
+import { FeedFilter } from "@/src/components/feed/parts/FeedFilter";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
+import type { FeedPage } from "@/src/lib/prismic/feed";
+import { has_rich_text, text_as_rich_text } from "@/src/lib/prismic/fields";
+import { is_link_filled } from "@/src/lib/prismic/links";
+import {
+  resolve_slice_context,
+  type EviPageSliceContext,
+} from "@/src/lib/prismic/slices";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
+import { cn } from "@/src/lib/utils/cn";
+import { long_date } from "@/src/lib/utils/date";
+
+export type FeedDefaultLayoutProps = {
+  slice: Content.FeedSliceDefault;
+  index: number;
+  context: EviPageSliceContext;
+};
+
+/** Emnerne på tværs af kortene, de hyppigste først. */
+function common_tags(pages: FeedPage[]): string[] {
+  const count = new Map<string, number>();
+  for (const page of pages) {
+    for (const tag of page.tags) count.set(tag, (count.get(tag) ?? 0) + 1);
+  }
+  return [...count].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([tag]) => tag);
+}
+
+/**
+ * Ét kort: billede, (dato), titel, uddrag og link. Linket dækker hele kortet
+ * (before:inset-0; pilen bruger ::after), så kortet er ét klik og ét tab-stop. Søster-kort → EviCard,
+ * så titler, uddrag og links flugter.
+ */
+function FeedCard({
+  page,
+  surface,
+  cta,
+  date,
+  linkResolver,
+}: {
+  page: FeedPage;
+  surface: string | null;
+  cta: string | null;
+  date: string | null;
+  linkResolver: LinkResolverFunction;
+}): React.ReactElement {
+  return (
+    <EviCard rows={5} className={cn(box_surface(surface), "overflow-hidden")}>
+      {isFilled.image(page.image) ? (
+        <EviImage
+          field={page.image}
+          aspectRatio="video"
+          variant="plain"
+          rounded={false}
+          imageClassName="object-cover"
+          sizes="(min-width: 1024px) 30vw, (min-width: 672px) 45vw, 92vw"
+          className={evi_card_bleed_class("top")}
+        />
+      ) : (
+        <div />
+      )}
+      {date ? (
+        <time dateTime={page.date} className="mt-4 text-sm opacity-75">
+          {date}
+        </time>
+      ) : (
+        <div />
+      )}
+      <EviTitle
+        field={text_as_rich_text(page.title, "heading3")}
+        linkResolver={linkResolver}
+        size="xl"
+        className={date ? "mt-1" : "mt-4"}
+      />
+      {page.description ? (
+        <EviRichText
+          field={text_as_rich_text(page.description, "paragraph")}
+          linkResolver={linkResolver}
+          className={cn("mt-2", evi_card_body_class())}
+        />
+      ) : (
+        <div />
+      )}
+      <EviButton
+        asChild
+        variant="primary"
+        appearance="text"
+        size="md"
+        arrow
+        className="mt-4 justify-self-start before:absolute before:inset-0"
+      >
+        <Link href={page.href}>
+          {cta ?? page.title}
+          {cta && <span className="sr-only">: {page.title}</span>}
+        </Link>
+      </EviButton>
+    </EviCard>
+  );
+}
+
+/**
+ * Feed "default": en sides undersider som kort, nyeste først. Uden valgt side
+ * er det sidens egne undersider; siden selv er aldrig med. Kortene bygges af
+ * hver sides SEO-titel, -beskrivelse og -billede; datoen er sidens "Dato" eller
+ * Prismics første udgivelse. Filtrene er sidernes Prismic-tags.
+ */
+export function FeedDefaultLayout({
+  slice,
+  index,
+  context,
+}: FeedDefaultLayoutProps): React.ReactElement | null {
+  const { linkResolver, pageId, feedPages = [], lang = "da-dk" } = context;
+  const { theme, isHero, collapsePadding } = resolve_slice_context(context, index);
+  const p = slice.primary;
+
+  const parentId = isFilled.contentRelationship(p.parent_page) ? p.parent_page.id : pageId;
+  const pages = feedPages
+    .filter((page) => page.parentId === parentId && page.id !== pageId)
+    .slice(0, isFilled.number(p.limit) && p.limit > 0 ? p.limit : undefined);
+  if (pages.length === 0 && !has_rich_text(p.heading, p.body)) return null;
+
+  const cta = isFilled.keyText(p.card_cta) ? p.card_cta : null;
+  const items = pages.map((page) => ({
+    key: page.id,
+    tags: page.tags,
+    node: (
+      <FeedCard
+        page={page}
+        surface={p.card_color}
+        cta={cta}
+        date={p.show_date ? long_date(page.date, lang) : null}
+        linkResolver={linkResolver}
+      />
+    ),
+  }));
+
+  const tags = p.show_filters ? common_tags(pages) : [];
+  const filtered =
+    tags.length > 1 && isFilled.keyText(p.filter_legend) && isFilled.keyText(p.filter_all);
+
+  return (
+    <EviSection theme={theme} hero={isHero} collapsePadding={collapsePadding} data-slot="feed">
+      <EviHeadingGroup
+        title={p.heading}
+        description={p.body}
+        linkResolver={linkResolver}
+        isHero={isHero}
+        align={resolve_heading_align(p.heading_align)}
+      />
+      {filtered ? (
+        <FeedFilter
+          legend={p.filter_legend ?? ""}
+          allLabel={p.filter_all ?? ""}
+          status={isFilled.keyText(p.filter_status) ? p.filter_status : null}
+          tags={tags}
+          items={items}
+        />
+      ) : (
+        items.length > 0 && (
+          <EviRow>
+            <EviAutoGrid size="trio">{items.map((item) => <Fragment key={item.key}>{item.node}</Fragment>)}</EviAutoGrid>
+          </EviRow>
+        )
+      )}
+      {is_link_filled(p.cta_link) && (
+        <EviRow className={cn(resolve_heading_align(p.heading_align) === "center" && "md:text-center")}>
+          <EviButton asChild variant="primary" appearance="solid">
+            <PrismicNextLink field={p.cta_link} linkResolver={linkResolver} />
+          </EviButton>
+        </EviRow>
+      )}
+    </EviSection>
+  );
+}

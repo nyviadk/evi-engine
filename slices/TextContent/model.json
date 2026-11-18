@@ -147,6 +147,25 @@
           },
           "type": "StructuredText"
         },
+        "date_display": {
+          "config": {
+            "default_value": "Senest opdateret",
+            "label": "Dato under overskriften",
+            "options": [
+              "Senest opdateret",
+              "Udgivet",
+              "Skjul"
+            ],
+            "placeholder": "Udgivet = nyheder, Opdateret = vilkår"
+          },
+          "type": "Select"
+        },
+        "image": {
+          "config": {
+            "label": "Billede (valgfrit)"
+          },
+          "type": "Image"
+        },
         "content": {
           "config": {
             "label": "Tekst",

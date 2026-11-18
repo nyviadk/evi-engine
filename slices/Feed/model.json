@@ -1,0 +1,142 @@
+{
+  "id": "feed",
+  "name": "Feed",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/feed/default/787a74a4e0b10f0754958fef2edae2b100ab797d.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Venstre",
+            "label": "Overskrift-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
+        },
+        "parent_page": {
+          "config": {
+            "customtypes": [
+              "page"
+            ],
+            "label": "Vis undersider af",
+            "select": "document"
+          },
+          "type": "Link"
+        },
+        "limit": {
+          "config": {
+            "label": "Maks. antal kort",
+            "min": 1,
+            "placeholder": "Tom = alle"
+          },
+          "type": "Number"
+        },
+        "show_date": {
+          "config": {
+            "default_value": false,
+            "label": "Dato på kortene",
+            "placeholder_false": "Skjul dato",
+            "placeholder_true": "Vis dato"
+          },
+          "type": "Boolean"
+        },
+        "show_filters": {
+          "config": {
+            "default_value": false,
+            "label": "Filtre ud fra tags",
+            "placeholder_false": "Skjul filtre",
+            "placeholder_true": "Vis filtre"
+          },
+          "type": "Boolean"
+        },
+        "card_cta": {
+          "config": {
+            "label": "Kortets link-tekst",
+            "placeholder": "fx Læs artikel"
+          },
+          "type": "Text"
+        },
+        "filter_legend": {
+          "config": {
+            "label": "Filtre: overskrift",
+            "placeholder": "fx Emne (læses op af skærmlæsere)"
+          },
+          "type": "Text"
+        },
+        "filter_all": {
+          "config": {
+            "label": "Filtre: alle",
+            "placeholder": "fx Alle"
+          },
+          "type": "Text"
+        },
+        "filter_status": {
+          "config": {
+            "label": "Filtre: antal",
+            "placeholder": "fx {antal} indlæg"
+          },
+          "type": "Text"
+        },
+        "cta_link": {
+          "config": {
+            "allowText": true,
+            "label": "Knap under kortene (valgfri)"
+          },
+          "type": "Link"
+        },
+        "card_color": {
+          "config": {
+            "default_value": "Neutral",
+            "label": "Kortfarve",
+            "options": [
+              "Neutral",
+              "Primær",
+              "Sekundær",
+              "Uden farve"
+            ]
+          },
+          "type": "Select"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

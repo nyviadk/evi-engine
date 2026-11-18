@@ -4,6 +4,7 @@ import CallToAction from "./CallToAction";
 import CaseStudies from "./CaseStudies";
 import Faq from "./Faq";
 import Features from "./Features";
+import Feed from "./Feed";
 import FooterColumnLinks from "./FooterColumnLinks";
 import FooterColumnText from "./FooterColumnText";
 import Gallery from "./Gallery";
@@ -31,6 +32,7 @@ export const components = {
 	case_studies: CaseStudies,
 	faq: Faq,
 	features: Features,
+	feed: Feed,
 	footer_column_links: FooterColumnLinks,
 	footer_column_text: FooterColumnText,
 	gallery: Gallery,
