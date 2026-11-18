@@ -16,6 +16,7 @@ import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { EviTag } from "@/src/components/ui/EviTag";
 import { FeedFilter } from "@/src/components/feed/parts/FeedFilter";
+import { FeedPost } from "@/src/components/feed/parts/FeedPost";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import type { FeedPage } from "@/src/lib/prismic/feed";
 import { has_rich_text, text_as_rich_text } from "@/src/lib/prismic/fields";
@@ -35,10 +36,10 @@ export type FeedDefaultLayoutProps = {
 };
 
 /** Emnerne på tværs af kortene, de hyppigste først. */
-function common_tags(pages: FeedPage[]): string[] {
+function common_tags(items: { tags: string[] }[]): string[] {
   const count = new Map<string, number>();
-  for (const page of pages) {
-    for (const tag of page.tags) count.set(tag, (count.get(tag) ?? 0) + 1);
+  for (const item of items) {
+    for (const tag of item.tags) count.set(tag, (count.get(tag) ?? 0) + 1);
   }
   return [...count].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([tag]) => tag);
 }
@@ -86,7 +87,7 @@ function FeedCard({
         <EviTag
           text={text_as_rich_text(topic, "paragraph")}
           linkResolver={linkResolver}
-          className="mt-5 justify-self-start"
+          className="mt-5 self-start justify-self-start"
         />
       ) : (
         <div />
@@ -153,26 +154,43 @@ export function FeedDefaultLayout({
   const p = slice.primary;
 
   const parentId = isFilled.contentRelationship(p.parent_page) ? p.parent_page.id : pageId;
-  const pages = feedPages
-    .filter((page) => page.parentId === parentId && page.id !== pageId)
-    .slice(0, isFilled.number(p.limit) && p.limit > 0 ? p.limit : undefined);
-  if (pages.length === 0 && !has_rich_text(p.heading, p.body)) return null;
-
   const cta = isFilled.keyText(p.card_cta) ? p.card_cta : null;
-  const items = pages.map((page) => ({
-    key: page.id,
-    tags: page.tags,
-    node: (
-      <FeedCard
-        page={page}
-        cta={cta}
-        date={p.show_date ? long_date(page.date, lang) : null}
-        linkResolver={linkResolver}
-      />
-    ),
-  }));
 
-  const tags = p.show_filters ? common_tags(pages) : [];
+  // Undersider (artikler) og opslag i én tidslinje, nyeste først.
+  const pageItems = feedPages
+    .filter((page) => page.parentId === parentId && page.id !== pageId)
+    .map((page) => ({
+      key: page.id,
+      date: page.date,
+      tags: page.tags,
+      node: (
+        <FeedCard
+          page={page}
+          cta={cta}
+          date={p.show_date ? long_date(page.date, lang) : null}
+          linkResolver={linkResolver}
+        />
+      ),
+    }));
+  const source = parentId ? context.feedPosts?.[parentId] : undefined;
+  const postItems = source
+    ? (source.posts ?? []).flatMap((post, i) => {
+        const date = post.date;
+        if (!isFilled.date(date) || !has_rich_text(post.text)) return [];
+        return [{
+          key: `post-${i}`,
+          date,
+          tags: isFilled.keyText(post.topic) ? [post.topic] : [],
+          node: <FeedPost post={post} date={long_date(date, lang)} source={source} linkResolver={linkResolver} />,
+        }];
+      })
+    : [];
+  const items = [...pageItems, ...postItems]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, isFilled.number(p.limit) && p.limit > 0 ? p.limit : undefined);
+  if (items.length === 0 && !has_rich_text(p.heading, p.body)) return null;
+
+  const tags = p.show_filters ? common_tags(items) : [];
   const filtered =
     tags.length > 1 && isFilled.keyText(p.filter_legend) && isFilled.keyText(p.filter_all);
 

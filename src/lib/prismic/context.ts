@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { headers } from "next/headers";
+import type { Content } from "@prismicio/client";
 
 import { get_tenant_config } from "@/src/lib/kv/tenants";
 import { createTenantClient } from "@/prismicio";
@@ -106,6 +107,16 @@ export const get_evi_page = cache(
       .catch(() => null);
   },
 );
+
+/**
+ * En side ud fra id, fx den side en Feed viser opslag fra. `null` hvis den
+ * ikke findes (eller tenant mangler).
+ */
+export const get_evi_page_by_id = cache(async (id: string) => {
+  const base = await get_evi_tenant();
+  if (!base) return null;
+  return base.client.getByID<Content.PageDocument>(id).catch(() => null);
+});
 
 /**
  * Alle sider på tværs af sprog med de felter sitemap.xml behøver. Inkl.

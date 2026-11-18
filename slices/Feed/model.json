@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/feed/default/e895a4237f31a6cd701bf79ffa6382d8c026e38a.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/feed/default/ab39b35f83d81a926f25d230810ddfd45c01ea05.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -44,6 +44,48 @@
             "select": "document"
           },
           "type": "Link"
+        },
+        "posts": {
+          "config": {
+            "fields": {
+              "date": {
+                "config": {
+                  "label": "Dato"
+                },
+                "type": "Date"
+              },
+              "topic": {
+                "config": {
+                  "label": "Emne (til filtrene)",
+                  "placeholder": "fx Støtte"
+                },
+                "type": "Text"
+              },
+              "text": {
+                "config": {
+                  "label": "Tekst",
+                  "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+                },
+                "type": "StructuredText"
+              },
+              "image": {
+                "config": {
+                  "label": "Billede (valgfrit)"
+                },
+                "type": "Image"
+              },
+              "url": {
+                "config": {
+                  "allowTargetBlank": true,
+                  "label": "Link til opslaget",
+                  "select": "web"
+                },
+                "type": "Link"
+              }
+            },
+            "label": "LinkedIn-opslag"
+          },
+          "type": "Group"
         },
         "limit": {
           "config": {
@@ -121,6 +163,46 @@
             ]
           },
           "type": "Select"
+        },
+        "author_name": {
+          "config": {
+            "label": "Opslag: afsender",
+            "placeholder": "fx Sebastian & Yannik"
+          },
+          "type": "Text"
+        },
+        "author_image_1": {
+          "config": {
+            "label": "Opslag: afsenderbillede 1"
+          },
+          "type": "Image"
+        },
+        "author_image_2": {
+          "config": {
+            "label": "Opslag: afsenderbillede 2"
+          },
+          "type": "Image"
+        },
+        "post_more": {
+          "config": {
+            "label": "Opslag: vis mere",
+            "placeholder": "fx Vis hele opslaget"
+          },
+          "type": "Text"
+        },
+        "post_less": {
+          "config": {
+            "label": "Opslag: vis mindre",
+            "placeholder": "fx Vis mindre"
+          },
+          "type": "Text"
+        },
+        "post_link_label": {
+          "config": {
+            "label": "Opslag: link-tekst",
+            "placeholder": "fx Deltag i samtalen på LinkedIn"
+          },
+          "type": "Text"
         }
       },
       "version": ""

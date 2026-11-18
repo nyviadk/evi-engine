@@ -1,5 +1,5 @@
 import type { LinkResolverFunction } from "@prismicio/client";
-import type { FeedPage } from "@/src/lib/prismic/feed";
+import type { FeedPage, FeedPostSource } from "@/src/lib/prismic/feed";
 import { resolve_section_theme } from "@/src/lib/prismic/section-theme";
 
 export type SliceWithPrimary = {
@@ -54,6 +54,8 @@ export interface EviPageSliceContext {
   pageId?: string;
   /** Sitets sider på sidens sprog som kort; kun sat, når siden har en Feed. */
   feedPages?: FeedPage[];
+  /** Opslag pr. side-id, som Feeds på siden viser; kun sat, når siden har en Feed. */
+  feedPosts?: Record<string, FeedPostSource>;
 }
 
 export interface EviColors {

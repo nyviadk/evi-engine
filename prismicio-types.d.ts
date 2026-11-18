@@ -1989,6 +1989,61 @@ type FeaturesSliceVariation = FeaturesSliceDefault | FeaturesSliceCards | Featur
 export type FeaturesSlice = prismic.SharedSlice<"features", FeaturesSliceVariation>;
 
 /**
+ * Item in *Feed → Default → Primary → LinkedIn-opslag*
+ */
+export interface FeedSliceDefaultPrimaryPostsItem {
+	/**
+	 * Dato field in *Feed → Default → Primary → LinkedIn-opslag*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.posts[].date
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	date: prismic.DateField;
+	
+	/**
+	 * Emne (til filtrene) field in *Feed → Default → Primary → LinkedIn-opslag*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Støtte
+	 * - **API ID Path**: feed.default.primary.posts[].topic
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	topic: prismic.KeyTextField;
+	
+	/**
+	 * Tekst field in *Feed → Default → Primary → LinkedIn-opslag*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.posts[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	text: prismic.RichTextField;
+	
+	/**
+	 * Billede (valgfrit) field in *Feed → Default → Primary → LinkedIn-opslag*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.posts[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Link til opslaget field in *Feed → Default → Primary → LinkedIn-opslag*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.posts[].url
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	url: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
  * Primary content in *Feed → Default → Primary*
  */
 export interface FeedSliceDefaultPrimary {
@@ -2032,6 +2087,16 @@ export interface FeedSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
 	 */
 	parent_page: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * LinkedIn-opslag field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.posts[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	posts: prismic.GroupField<Simplify<FeedSliceDefaultPrimaryPostsItem>>;
 	
 	/**
 	 * Maks. antal kort field in *Feed → Default → Primary*
@@ -2125,6 +2190,66 @@ export interface FeedSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+	
+	/**
+	 * Opslag: afsender field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Sebastian & Yannik
+	 * - **API ID Path**: feed.default.primary.author_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	author_name: prismic.KeyTextField;
+	
+	/**
+	 * Opslag: afsenderbillede 1 field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.author_image_1
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	author_image_1: prismic.ImageField<never>;
+	
+	/**
+	 * Opslag: afsenderbillede 2 field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: feed.default.primary.author_image_2
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	author_image_2: prismic.ImageField<never>;
+	
+	/**
+	 * Opslag: vis mere field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Vis hele opslaget
+	 * - **API ID Path**: feed.default.primary.post_more
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	post_more: prismic.KeyTextField;
+	
+	/**
+	 * Opslag: vis mindre field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Vis mindre
+	 * - **API ID Path**: feed.default.primary.post_less
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	post_less: prismic.KeyTextField;
+	
+	/**
+	 * Opslag: link-tekst field in *Feed → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx Deltag i samtalen på LinkedIn
+	 * - **API ID Path**: feed.default.primary.post_link_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	post_link_label: prismic.KeyTextField;
 }
 
 /**
@@ -6735,6 +6860,7 @@ declare module "@prismicio/client" {
 			FeaturesSliceIconBento,
 			FeaturesSliceIconList,
 			FeedSlice,
+			FeedSliceDefaultPrimaryPostsItem,
 			FeedSliceDefaultPrimary,
 			FeedSliceVariation,
 			FeedSliceDefault,

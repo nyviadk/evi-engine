@@ -53,3 +53,25 @@ export function build_feed_pages(
     }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
+
+/** Opslagene i en Feed og det, de vises med (afsender og knaptekster). */
+export type FeedPostSource = Pick<
+  Content.FeedSliceDefaultPrimary,
+  | "posts"
+  | "author_name"
+  | "author_image_1"
+  | "author_image_2"
+  | "post_more"
+  | "post_less"
+  | "post_link_label"
+>;
+
+/** Den første Feed på en side, der har opslag. */
+export function post_source(
+  slices: Content.PageDocument["data"]["slices"],
+): FeedPostSource | null {
+  for (const slice of slices) {
+    if (slice.slice_type === "feed" && (slice.primary.posts ?? []).length > 0) return slice.primary;
+  }
+  return null;
+}

@@ -9,7 +9,7 @@ import {
   build_translation_url_map,
   resolve_page_url,
 } from "@/src/lib/prismic/paths";
-import { get_evi_context, get_evi_page } from "@/src/lib/prismic/context";
+import { get_evi_context, get_evi_page, get_evi_page_by_id } from "@/src/lib/prismic/context";
 import { compute_slice_contexts, joins_footer } from "@/src/lib/prismic/slices";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
 import { collectSchemaGraph } from "@/src/lib/seo/schemaCollector";
@@ -17,7 +17,7 @@ import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
 import { is_staging_domain } from "@/src/lib/seo/domains";
 import { og_locale } from "@/src/lib/seo/og-locale";
 import { local_date } from "@/src/lib/utils/date";
-import { build_feed_pages, page_date } from "@/src/lib/prismic/feed";
+import { build_feed_pages, page_date, post_source } from "@/src/lib/prismic/feed";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
 
@@ -68,8 +68,26 @@ export default async function Page(props: {
   };
   const sliceContexts = compute_slice_contexts(page.data.slices, colors);
   const timezone = settings?.data?.timezone || "Europe/Copenhagen";
-  const feedPages = (page.data.slices ?? []).some((s) => s.slice_type === "feed")
+  const feeds = (page.data.slices ?? []).flatMap((s) => (s.slice_type === "feed" ? [s] : []));
+  const feedPages = feeds.length > 0
     ? build_feed_pages(ctx.pages, page.lang, tree, tenant, timezone)
+    : undefined;
+  // Opslagene ligger i Feeden på den side, en Feed viser (fx Nyheder); en
+  // samleside henter dem derfra, så de kun skal skrives ét sted.
+  const feedPosts = feeds.length > 0
+    ? Object.fromEntries(
+        (
+          await Promise.all(
+            [...new Set(feeds.map((s) =>
+              isFilled.contentRelationship(s.primary.parent_page) ? s.primary.parent_page.id : page.id,
+            ))].map(async (id) => {
+              const doc = id === page.id ? page : await get_evi_page_by_id(id);
+              const source = doc ? post_source(doc.data.slices ?? []) : null;
+              return source ? ([id, source] as const) : null;
+            }),
+          )
+        ).filter((entry) => entry !== null),
+      )
     : undefined;
   const joinsFooter =
     ctx.footer != null &&
@@ -132,6 +150,7 @@ export default async function Page(props: {
             published: page_date(page, timezone),
             pageId: page.id,
             feedPages,
+            feedPosts,
           }}
         />
       </div>
