@@ -572,6 +572,18 @@
     margin-bottom: 0.75rem;
   }
 
+  /* Lang tekst (artikler, vilkår): mellemrubrikkerne et trin under sektionernes,
+     så de ikke konkurrerer med sidens overskrift. Kun størrelsen skifter. */
+  .evi-prose-long h2 {
+    font-size: calc(
+      clamp(1.375rem, 2.5vw + 0.75rem, 2.441rem) * var(--heading-damp)
+    );
+  }
+
+  .evi-prose-long h3 {
+    font-size: clamp(1.25rem, 1.5vw + 0.75rem, 1.953rem);
+  }
+
   /* ── Paragraphs — 1 rhythm unit below ── */
 
   .evi-prose p {

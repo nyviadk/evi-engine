@@ -86,9 +86,7 @@ export function TextContentDocumentLayout({
         <EviRow>
           <EviImage
             field={p.image}
-            aspectRatio="video"
             variant="plain"
-            imageClassName="object-cover"
             sizes="(min-width: 768px) 65ch, 100vw"
             priority={isHero}
             className="shadow-evi max-w-prose"
@@ -101,7 +99,7 @@ export function TextContentDocumentLayout({
           <EviRichText
             field={p.content}
             linkResolver={linkResolver}
-            className="[&>ol]:max-w-prose [&>p]:max-w-prose [&>ul]:max-w-prose"
+            className="evi-prose-long [&>ol]:max-w-prose [&>p]:max-w-prose [&>ul]:max-w-prose"
           />
         </EviRow>
       )}
