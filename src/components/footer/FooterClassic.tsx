@@ -83,7 +83,7 @@ export function FooterClassic({
       data-slot="evi-footer"
       data-variant="classic"
     >
-      <EviSplit preset="33-67" align="start">
+      <EviSplit preset="25-75" align="start">
         <EviStack gap="md">
           <BrandLink
             logo={footer.data.logo}
