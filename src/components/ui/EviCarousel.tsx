@@ -103,7 +103,7 @@ export function EviCarousel({
             <span className="-scale-x-100">{icon}</span>
           </button>
 
-          <EviStack direction="row" align="center" gap="sm">
+          <EviStack direction="row" align="center" gap="xs">
             {slides.map((_, i) => (
               <button
                 key={i}
@@ -112,11 +112,12 @@ export function EviCarousel({
                 onKeyDown={onKeyDown}
                 aria-label={dotLabels?.[i] || String(i + 1)}
                 aria-current={i === active}
+                // Klikfladen er 24×24 (WCAG 2.5.8); prikken er kun det synlige midterstykke.
                 className={cn(
-                  "size-2 cursor-pointer rounded-full transition-colors",
+                  "grid size-6 cursor-pointer place-items-center rounded-full before:size-2 before:rounded-full before:transition-colors",
                   i === active
-                    ? "bg-current"
-                    : "bg-current/25 hover:bg-current/50",
+                    ? "before:bg-current"
+                    : "before:bg-current/25 hover:before:bg-current/50",
                 )}
               />
             ))}
