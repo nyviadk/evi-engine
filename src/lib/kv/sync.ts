@@ -11,7 +11,7 @@ type SyncStatus = "updated" | "unchanged" | "failed";
 
 type SyncedFields = Pick<
   TenantConfig,
-  "locales" | "default_locale" | "force_lang_prefix" | "redirects"
+  "locales" | "default_locale" | "force_lang_prefix" | "redirects" | "prefer_www"
 >;
 
 export interface SyncSummary {
@@ -106,6 +106,7 @@ async function fetch_synced_fields_from_prismic(
   const data = settings?.data as
     | {
         force_lang_prefix?: boolean;
+        prefer_www?: boolean;
         redirects?: Array<{
           from_url?: string | null;
           to_url?: string | null;
@@ -115,9 +116,10 @@ async function fetch_synced_fields_from_prismic(
     | undefined;
 
   const force_lang_prefix = data?.force_lang_prefix === true;
+  const prefer_www = data?.prefer_www === true;
   const redirects = map_redirects(data?.redirects);
 
-  return { locales, default_locale, force_lang_prefix, redirects };
+  return { locales, default_locale, force_lang_prefix, prefer_www, redirects };
 }
 
 function map_redirects(

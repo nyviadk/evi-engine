@@ -96,5 +96,11 @@
       "pattern": "*.nyvia.dk/*",
       "zone_name": "nyvia.dk",
     },
+    // Kundedomæner via Cloudflare for SaaS (custom hostname på nyvia.dk):
+    // hver skal have sin egen route, ellers går trafikken til fallback-origin.
+    {
+      "pattern": "www.myplanio.com/*",
+      "zone_name": "nyvia.dk",
+    },
   ],
 }

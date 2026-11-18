@@ -600,7 +600,19 @@ interface SettingsDocumentData {
 	 * - **Tab**: Generelt
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
-	default_og_image_intl: prismic.ImageField<never>;/**
+	default_og_image_intl: prismic.ImageField<never>;
+	
+	/**
+	 * Brug www. som hovedadresse (fx www.kunde.dk) field in *Indstillinger*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: settings.prefer_www
+	 * - **Tab**: Generelt
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	prefer_www: prismic.BooleanField;/**
 	 * Lys farve field in *Indstillinger*
 	 *
 	 * - **Field Type**: Color

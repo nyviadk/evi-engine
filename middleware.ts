@@ -11,6 +11,7 @@ import {
   validate_hostname,
 } from "./src/lib/utils/security";
 import { redirect_key } from "./src/lib/utils/redirect-key";
+import { is_staging_domain } from "./src/lib/seo/domains";
 
 export const runtime = "experimental-edge";
 
@@ -53,15 +54,19 @@ function reject_bot_scanner(pathname: string): NextResponse | null {
     : null;
 }
 
-// www → apex 301. Begge værter serverer samme indhold; uden denne redirect
-// splittes SEO-signaler mellem www.kunde.dk og kunde.dk.
-function redirect_www_to_apex(
+// www ↔ uden www 301 til hovedadressen. Begge værter serverer samme indhold;
+// uden denne redirect splittes SEO-signaler mellem www.kunde.dk og kunde.dk.
+// Testadresser (kunde.nyvia.dk) får aldrig www foran.
+function redirect_to_canonical_host(
   hostname: string,
+  prefer_www: boolean,
   request: NextRequest,
 ): NextResponse | null {
-  if (!hostname.startsWith("www.")) return null;
+  const is_www = hostname.startsWith("www.");
+  const want_www = prefer_www && !is_staging_domain(hostname);
+  if (is_www === want_www) return null;
   const target = new URL(request.nextUrl);
-  target.host = hostname.slice(4);
+  target.host = is_www ? hostname.slice(4) : `www.${hostname}`;
   target.protocol = "https:";
   return create_response_with_hsts(NextResponse.redirect(target, 301));
 }
@@ -194,14 +199,17 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     request.nextUrl.host || request.headers.get("host") || "";
   const hostname = validate_hostname(raw_hostname) || "localhost:3000";
 
-  const www = redirect_www_to_apex(hostname, request);
-  if (www) return www;
-
   if (hostname === "nyvia.dk") return NextResponse.next();
   // Stats-dashboard bor på sit eget host, uden om tenant/Prismic-pipelinen.
   if (hostname === "stats.nyvia.dk") return handle_stats_request(request);
 
   const tenant = await get_tenant_config(hostname);
+  const canonical = redirect_to_canonical_host(
+    hostname,
+    tenant?.prefer_www === true,
+    request,
+  );
+  if (canonical) return canonical;
   if (!tenant) return create_response_with_hsts(NextResponse.next());
 
   const vanity = resolve_vanity_redirect(tenant, pathname, request);

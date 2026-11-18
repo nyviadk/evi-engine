@@ -89,6 +89,15 @@
           "thumbnails": []
         },
         "type": "Image"
+      },
+      "prefer_www": {
+        "config": {
+          "default_value": false,
+          "label": "Brug www. som hovedadresse (fx www.kunde.dk)",
+          "placeholder_false": "Nej, uden www.",
+          "placeholder_true": "Ja, med www."
+        },
+        "type": "Boolean"
       }
     },
     "Udseende og layout": {

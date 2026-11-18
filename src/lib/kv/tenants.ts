@@ -12,6 +12,8 @@ export interface TenantConfig {
   default_locale: string;
   force_lang_prefix: boolean;
   redirects: Record<string, { destination: string; type: 301 | 307 }>;
+  /** www.kunde.dk er hovedadressen (ellers kunde.dk). Mangler i ældre entries. */
+  prefer_www?: boolean;
 
   prismic_token: string; // Nødvendig for Preview af kladder
   prismic_write_api_token: string; // Nødvendig for sync af slices
