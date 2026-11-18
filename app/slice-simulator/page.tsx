@@ -11,7 +11,10 @@ import {
   type SliceWithPrimary,
 } from "@/src/lib/prismic/slices";
 import { get_evi_context } from "@/src/lib/prismic/context";
+import { post_source } from "@/src/lib/prismic/feed";
 import { DEFAULTS_COLORS } from "@/src/lib/theme/colors";
+
+const SIMULATOR_PAGE = "slice-simulator";
 
 export default async function SliceSimulatorPage({
   searchParams,
@@ -36,6 +39,9 @@ export default async function SliceSimulatorPage({
     slices as SliceWithPrimary[],
     colors,
   );
+  // Simulatoren har ingen side: en Feed uden valgt side viser opslagene i de
+  // viste slices, så redaktøren ser dem, mens de skrives.
+  const posts = post_source(slices as Parameters<typeof post_source>[0]);
 
   return (
     <SliceSimulator>
@@ -45,6 +51,8 @@ export default async function SliceSimulatorPage({
         context={{
           linkResolver: ctx?.link_resolver ?? (() => "/"),
           sliceContexts,
+          pageId: SIMULATOR_PAGE,
+          feedPosts: posts ? { [SIMULATOR_PAGE]: posts } : undefined,
         }}
       />
     </SliceSimulator>
