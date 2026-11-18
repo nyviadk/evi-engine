@@ -38,6 +38,9 @@ export default async function Page(props: {
     get_evi_page(prismic_uid, lang),
   ]);
   if (!ctx) return notFound();
+  // Filstier (/ads.txt, /x.png) springer middleware over og lander her med
+  // filnavnet som `lang`; uden tjekket faldt de tilbage til forsiden med 200.
+  if (!ctx.tenant.locales.includes(lang)) return notFound();
   if (!page) return notFound();
 
   const { tree, tenant, settings, business, link_resolver, hostname } = ctx;
@@ -173,6 +176,7 @@ export async function generateMetadata(props: {
     get_evi_page(prismic_uid, lang),
   ]);
   if (!ctx) return {};
+  if (!ctx.tenant.locales.includes(lang)) return {};
   if (!page) return {};
 
   const { tree, tenant, settings, hostname } = ctx;
