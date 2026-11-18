@@ -20,6 +20,18 @@ function fmt(n: number): string {
   return n.toLocaleString("da-DK");
 }
 
+const REGIONS = new Intl.DisplayNames(["da"], { type: "region" });
+
+// Cloudflare giver ISO-koder ("IN"); vis navnet ("Indien"). Ukendte koder
+// (fx "T1" for Tor) står som de er.
+function country_name(code: string): string {
+  try {
+    return REGIONS.of(code) ?? code;
+  } catch {
+    return code;
+  }
+}
+
 function list(title: string, rows: NameCount[], empty: string): string {
   const items = rows.length
     ? rows
@@ -70,7 +82,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
         ${list("Landingssider", data.entry_pages, "Ingen data endnu.")}
         ${list("Kilder", data.referrers, "Ingen eksterne kilder endnu.")}
         ${flow_section(data)}
-        ${list("Lande", data.countries, "Ingen data endnu.")}
+        ${list("Lande", data.countries.map((r) => ({ ...r, name: country_name(r.name) })), "Ingen data endnu.")}
         ${list("Sprog", data.languages, "Ingen data endnu.")}
         ${list("Enheder", data.devices, "Ingen data endnu.")}
       </div>`
