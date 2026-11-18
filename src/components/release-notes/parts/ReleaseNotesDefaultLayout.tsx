@@ -75,7 +75,9 @@ export function ReleaseNotesDefaultLayout({
       />
       {releases.length > 0 && (
         <EviRow>
-          <EviAccordion className="mx-auto w-full max-w-3xl">
+          <EviAccordion
+            className={cn("w-full max-w-3xl", align === "center" && "mx-auto")}
+          >
             {releases.map((release, i) => {
               const version = isFilled.keyText(release.version)
                 ? release.version

@@ -82,7 +82,7 @@ export function FeaturesCardsLayout({
               field={card.heading}
               linkResolver={linkResolver}
               size="xl"
-              className="mt-4"
+              className={cn(isFilled.keyText(card.icon) && "mt-4")}
             />
             <EviRichText
               field={card.body}
