@@ -43,6 +43,8 @@ export interface SliceContext {
 export interface EviPageSliceContext {
   linkResolver: LinkResolverFunction;
   sliceContexts?: SliceContext[];
+  /** Sidens Prismic-locale, fx "da-dk". */
+  lang?: string;
   /** Sidens sidste publicering (Prismics auto-felt) som "ÅÅÅÅ-MM-DD" i sitets tidszone. */
   lastPublished?: string;
 }

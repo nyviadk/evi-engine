@@ -33,7 +33,7 @@ export function PlanioHeroLayout({
   index,
   context,
 }: PlanioHeroLayoutProps): React.ReactElement | null {
-  const { linkResolver } = context;
+  const { linkResolver, lang } = context;
   const { isHero } = resolve_slice_context(context, index);
   const p = slice.primary;
 
@@ -80,6 +80,7 @@ export function PlanioHeroLayout({
           primary={p.cta_link}
           secondary={p.cta_link_secondary}
           linkResolver={linkResolver}
+          lang={lang}
         />
         {isFilled.richText(p.note) && (
           <EviRichText

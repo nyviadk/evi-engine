@@ -122,6 +122,7 @@ export default async function Page(props: {
           context={{
             linkResolver: link_resolver,
             sliceContexts,
+            lang,
             lastPublished: local_date(
               page.last_publication_date,
               settings?.data?.timezone || "Europe/Copenhagen",

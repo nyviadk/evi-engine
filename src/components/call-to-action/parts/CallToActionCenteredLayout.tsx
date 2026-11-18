@@ -32,7 +32,7 @@ export function CallToActionCenteredLayout({
   index,
   context,
 }: CallToActionCenteredLayoutProps): React.ReactElement | null {
-  const { linkResolver } = context;
+  const { linkResolver, lang } = context;
   const { theme, isHero, collapsePadding, eagerImages } = resolve_slice_context(
     context,
     index,
@@ -75,6 +75,8 @@ export function CallToActionCenteredLayout({
             primary={p.cta_link}
             secondary={p.cta_link_secondary}
             linkResolver={linkResolver}
+            lang={lang}
+            qr
           />
         </EviStack>
       </EviRow>
