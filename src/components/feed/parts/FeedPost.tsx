@@ -3,13 +3,13 @@ import { asText, isFilled, type Content, type ImageField, type LinkResolverFunct
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { evi_box_class } from "@/src/components/ui/EviBox";
-import { EVI_ROW_SPAN } from "@/src/components/ui/EviCard";
+import { EviButton } from "@/src/components/ui/EviButton";
+import { EviCard } from "@/src/components/ui/EviCard";
 import { EviIcon } from "@/src/components/ui/EviIcon";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { FeedPostText } from "@/src/components/feed/parts/FeedPostText";
 import type { FeedPostSource } from "@/src/lib/prismic/feed";
 import { cn } from "@/src/lib/utils/cn";
-import { resolve_surface } from "@/src/lib/utils/surface";
 
 type Post = Content.FeedSliceDefaultPrimaryPostsItem;
 
@@ -59,8 +59,8 @@ function PostAvatar({ avatar, overlap }: { avatar: Avatar; overlap: boolean }): 
  * Et LinkedIn-opslag i feedet: læses færdigt her, uden egen underside. Et
  * `<blockquote>` med opslagets adresse i `cite` fortæller Google, at teksten er
  * citeret fra LinkedIn, og `data-nosnippet` holder den ude af sidens uddrag i
- * søgeresultaterne. En let tonet boks adskiller det fra artikelkortene. Spænder
- * over EviCard-rækkerne, så det kan stå i samme gitter som dem.
+ * søgeresultaterne. Samme rolige kort som artiklerne; afsender og LinkedIn-
+ * mærket viser, at det er et opslag.
  */
 export function FeedPost({
   post,
@@ -77,63 +77,72 @@ export function FeedPost({
   const long = asText(post.text).length > LONG_POST;
   const avatars = post_avatars(source);
 
+  const link = url && isFilled.keyText(source.post_link_label) ? source.post_link_label : null;
+
+  // Fire rækker (afsender, tekst, billede, fod), så søster-opslag deler spor og
+  // kortene i en række bliver lige høje. En tom pladsholder-række ville opsuge
+  // gitterets rækkeafstand og stå som et hul.
   return (
-    <blockquote
+    <EviCard
+      as="blockquote"
+      rows={4}
       cite={url ?? undefined}
       data-nosnippet
-      className={cn(EVI_ROW_SPAN[5], "m-0 self-start", resolve_surface("Neutral"), evi_box_class("outlined"))}
+      className={cn("m-0", evi_box_class("outlined"))}
     >
-      <EviStack gap="md">
-        <EviStack direction="row" align="center" justify="between" gap="sm">
-          <EviStack direction="row" align="center" gap="sm">
-            {avatars.length > 0 && (
-              <EviStack direction="row" align="center" gap="xs" aria-hidden>
-                {avatars.map((avatar, i) => (
-                  <PostAvatar key={i} avatar={avatar} overlap={i > 0} />
-                ))}
-              </EviStack>
-            )}
-            <EviStack gap="xs" className="gap-0.5 leading-tight">
-              {isFilled.keyText(source.author_name) && (
-                <span className="text-sm font-bold">{source.author_name}</span>
-              )}
-              <time dateTime={post.date ?? undefined} className="text-xs text-current/70">
-                {date}
-              </time>
+      <EviStack direction="row" align="center" justify="between" gap="sm">
+        <EviStack direction="row" align="center" gap="sm">
+          {avatars.length > 0 && (
+            <EviStack direction="row" align="center" gap="xs" aria-hidden>
+              {avatars.map((avatar, i) => (
+                <PostAvatar key={i} avatar={avatar} overlap={i > 0} />
+              ))}
             </EviStack>
+          )}
+          <EviStack gap="xs" className="gap-0.5 leading-tight">
+            {isFilled.keyText(source.author_name) && (
+              <span className="text-sm font-bold">{source.author_name}</span>
+            )}
+            <time dateTime={post.date ?? undefined} className="text-xs text-current/70">
+              {date}
+            </time>
           </EviStack>
-          <span className="theme-surface-primary shrink-0 rounded-md p-1">
-            <EviIcon name="lucide:linkedin" aria-label="LinkedIn" className="size-4 text-evi-primary" />
-          </span>
         </EviStack>
-
-        <FeedPostText more={long ? source.post_more : null} less={source.post_less}>
-          <EviRichText
-            field={post.text}
-            linkResolver={linkResolver}
-            className="[&_li]:text-sm [&_p]:mb-3 [&_p]:text-sm"
-          />
-        </FeedPostText>
-
-        {isFilled.image(post.image) && (
-          <EviImage
-            field={post.image}
-            aspectRatio="video"
-            variant="plain"
-            imageClassName="object-cover"
-            sizes="(min-width: 1024px) 30vw, (min-width: 672px) 45vw, 92vw"
-          />
-        )}
-
-        {url && isFilled.keyText(source.post_link_label) && (
-          <footer className="border-t border-current/10 pt-3 text-sm">
-            <a href={url} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
-              {source.post_link_label}
-              <EviIcon name="lucide:arrow-up-right" className="ms-1 inline size-4 align-text-bottom" />
-            </a>
-          </footer>
-        )}
+        <EviIcon name="bi:linkedin" aria-label="LinkedIn" className="size-6 shrink-0 text-evi-primary" />
       </EviStack>
-    </blockquote>
+
+      <FeedPostText more={long ? source.post_more : null} less={source.post_less} className="mt-4">
+        <EviRichText
+          field={post.text}
+          linkResolver={linkResolver}
+          className="[&_li]:text-sm [&_p]:mb-3 [&_p]:text-sm"
+        />
+      </FeedPostText>
+
+      {isFilled.image(post.image) ? (
+        <EviImage
+          field={post.image}
+          aspectRatio="video"
+          variant="plain"
+          imageClassName="object-cover"
+          sizes="(min-width: 1024px) 30vw, (min-width: 672px) 45vw, 92vw"
+          className="mt-4"
+        />
+      ) : (
+        <div />
+      )}
+
+      {link ? (
+        <footer className="mt-5 self-end border-t border-current/10 pt-4">
+          <EviButton asChild variant="primary" appearance="text" size="sm" arrow>
+            <a href={url ?? undefined} target="_blank" rel="noopener noreferrer">
+              {link}
+            </a>
+          </EviButton>
+        </footer>
+      ) : (
+        <div />
+      )}
+    </EviCard>
   );
 }

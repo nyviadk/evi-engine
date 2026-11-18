@@ -14,18 +14,20 @@ import { cn } from "@/src/lib/utils/cn";
 export function FeedPostText({
   more,
   less,
+  className,
   children,
 }: {
   more: string | null;
   less: string | null;
+  className?: string;
   children: React.ReactNode;
 }): React.ReactNode {
   const [open, setOpen] = useState(false);
   const id = useId();
-  if (!more) return children;
+  if (!more) return <div className={className}>{children}</div>;
 
   return (
-    <EviStack gap="xs" align="start">
+    <EviStack gap="xs" align="start" className={className}>
       <div id={id} className={cn(!open && "max-h-[7lh] overflow-hidden mask-b-from-50%")}>
         {children}
       </div>

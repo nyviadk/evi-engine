@@ -930,12 +930,12 @@ export interface CaseStudiesSliceDefaultPrimary {
 	 * Kort-layout field in *CaseStudies → Default → Primary*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Kolonner = mindre kort side om side
+	 * - **Placeholder**: Kompakt = lille billede ved teksten
 	 * - **Default Value**: Rækker
 	 * - **API ID Path**: case_studies.default.primary.case_layout
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	case_layout: prismic.SelectField<"Rækker" | "Kolonner", "filled">;
+	case_layout: prismic.SelectField<"Rækker" | "Kolonner" | "Kompakt", "filled">;
 	
 	/**
 	 * Læs alle-tekst field in *CaseStudies → Default → Primary*

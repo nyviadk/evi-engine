@@ -93,9 +93,10 @@
             "label": "Kort-layout",
             "options": [
               "Rækker",
-              "Kolonner"
+              "Kolonner",
+              "Kompakt"
             ],
-            "placeholder": "Kolonner = mindre kort side om side"
+            "placeholder": "Kompakt = lille billede ved teksten"
           },
           "type": "Select"
         },

@@ -4,8 +4,11 @@ import { cn } from "@/src/lib/utils/cn";
 export type EviCardRows = 2 | 3 | 4 | 5 | 6 | 7;
 
 export type EviCardProps = React.ComponentProps<"div"> & {
-  /** Kortets element. "li" når kortene står i en `<ul>`/`<ol>`. @default "div" */
-  as?: "div" | "li";
+  /** Kortets element. "li" når kortene står i en `<ul>`/`<ol>`; "blockquote" for
+   *  et citeret opslag (med `cite`). @default "div" */
+  as?: "div" | "li" | "blockquote";
+  /** Kildens adresse, når kortet er et `<blockquote>`. */
+  cite?: string;
   /** Antal subgrid-rækker. Skal matche antallet af direkte børn — tomme slots wrappes i `<div />`. */
   rows: EviCardRows;
 };

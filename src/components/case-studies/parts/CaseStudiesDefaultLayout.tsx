@@ -13,6 +13,7 @@ import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import {
   EviBox,
   box_surface,
+  evi_box_class,
   evi_card_bleed_class,
 } from "@/src/components/ui/EviBox";
 import { EviButton } from "@/src/components/ui/EviButton";
@@ -239,9 +240,59 @@ function CaseColumnCard({
 }
 
 /**
+ * Kompakt kort ("Kort-layout: Kompakt"): et lille kvadratisk billede ved siden
+ * af titel, tekst og link, så personer kan nævnes uden at fylde mere end
+ * sidens egne profiler. Tynd kant, ingen flade.
+ */
+function CaseCompactCard({
+  item,
+  linkResolver,
+  collapsed,
+}: {
+  item: CaseItem;
+  linkResolver: LinkResolverFunction;
+  collapsed?: boolean;
+}): React.ReactElement {
+  return (
+    <EviStack
+      direction="row"
+      align="start"
+      gap="md"
+      data-reveal-overflow={collapsed || undefined}
+      // eslint-disable-next-line evi/no-raw-layout-classes -- EviStack er selv flex; et foldet kort skal tilbage til flex, ikke block
+      className={cn(
+        evi_box_class("compact"),
+        "border border-current/10",
+        collapsed && "hidden group-data-open/reveal:flex",
+      )}
+    >
+      {isFilled.image(item.image) && (
+        <EviImage
+          field={item.image}
+          aspectRatio="square"
+          variant="plain"
+          imageClassName="object-cover"
+          sizes="96px"
+          className="size-20 shrink-0 sm:size-24"
+        />
+      )}
+      <EviStack gap="xs" align="start" className="min-w-0">
+        <EviTitle field={item.title} linkResolver={linkResolver} size="lg" />
+        <EviRichText field={item.description} linkResolver={linkResolver} className={evi_card_body_class()} />
+        {is_link_filled(item.cta_link) && (
+          <EviButton asChild variant="primary" appearance="text" size="sm" arrow className="mt-1">
+            <PrismicNextLink field={item.cta_link} linkResolver={linkResolver} />
+          </EviButton>
+        )}
+      </EviStack>
+    </EviStack>
+  );
+}
+
+/**
  * CaseStudies "default": intro (overskrift + brødtekst) + en repeatable liste af
- * case-kort, enten én pr. række (billede ved siden af tekst) eller som mindre
- * kort i kolonner (`case_layout`). Domain-part (Tailwind tilladt, R3.3); rendres af dispatcheren.
+ * case-kort: én pr. række (billede ved siden af tekst), mindre kort i kolonner
+ * eller kompakte kort med et lille billede (`case_layout`). Domain-part (Tailwind tilladt, R3.3); rendres af dispatcheren.
  */
 export function CaseStudiesDefaultLayout({
   slice,
@@ -264,7 +315,18 @@ export function CaseStudiesDefaultLayout({
   const collapsible = cases.length > CASE_VISIBLE && moreLabel !== "";
 
   const list =
-    p.case_layout === "Kolonner" ? (
+    p.case_layout === "Kompakt" ? (
+      <EviAutoGrid size="duo">
+        {cases.map((item, i) => (
+          <CaseCompactCard
+            key={i}
+            item={item}
+            linkResolver={linkResolver}
+            collapsed={collapsible && i >= CASE_VISIBLE}
+          />
+        ))}
+      </EviAutoGrid>
+    ) : p.case_layout === "Kolonner" ? (
       <EviAutoGrid size="sm">
         {cases.map((item, i) => (
           <CaseColumnCard
