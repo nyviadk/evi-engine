@@ -760,6 +760,17 @@ export interface CallToActionSliceDefaultPrimary {
 	cta_link_secondary: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
+	 * QR-koder ved butiksknapper field in *CallToAction → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: call_to_action.default.primary.show_qr
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_qr: prismic.BooleanField;
+	
+	/**
 	 * Ikon eller logo field in *CallToAction → Default → Primary*
 	 *
 	 * - **Field Type**: Image

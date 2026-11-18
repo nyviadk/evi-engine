@@ -68,27 +68,31 @@ export function PlanioHeroLayout({
         ) : undefined
       }
     >
-      <EviStack gap="lg" align="center">
+      <EviStack gap="xl" align="center">
+        {/* Undertitlen er appens løfte: et trin under H1, ikke brødtekst. */}
         <EviHeadingGroup
           title={p.heading}
           description={p.body}
           linkResolver={linkResolver}
           isHero={isHero}
           align="center"
+          className="[&>p]:text-xl [&>p]:font-semibold md:[&>p]:text-2xl"
         />
-        <EviStoreButtons
-          primary={p.cta_link}
-          secondary={p.cta_link_secondary}
-          linkResolver={linkResolver}
-          lang={lang}
-        />
-        {isFilled.richText(p.note) && (
-          <EviRichText
-            field={p.note}
+        <EviStack gap="lg" align="center">
+          <EviStoreButtons
+            primary={p.cta_link}
+            secondary={p.cta_link_secondary}
             linkResolver={linkResolver}
-            className="text-center text-sm font-semibold"
+            lang={lang}
           />
-        )}
+          {isFilled.richText(p.note) && (
+            <EviRichText
+              field={p.note}
+              linkResolver={linkResolver}
+              className="text-center text-sm font-semibold"
+            />
+          )}
+        </EviStack>
       </EviStack>
     </PlanioHeroSection>
   );

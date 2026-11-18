@@ -53,6 +53,7 @@ export const mock: Record<string, Content.CallToActionSlice> = {
         "Hent på Google Play",
       ),
       image: ICON,
+      show_qr: false,
       background_theme: "Mørk",
     },
   },

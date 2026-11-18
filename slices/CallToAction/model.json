@@ -42,6 +42,15 @@
           },
           "type": "Link"
         },
+        "show_qr": {
+          "config": {
+            "default_value": false,
+            "label": "QR-koder ved butiksknapper",
+            "placeholder_false": "Skjul QR-koder",
+            "placeholder_true": "Vis QR-koder"
+          },
+          "type": "Boolean"
+        },
         "image": {
           "config": {
             "label": "Ikon eller logo",

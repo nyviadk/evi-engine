@@ -76,7 +76,7 @@ export function CallToActionCenteredLayout({
             secondary={p.cta_link_secondary}
             linkResolver={linkResolver}
             lang={lang}
-            qr
+            qr={p.show_qr}
           />
         </EviStack>
       </EviRow>
