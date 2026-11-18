@@ -75,9 +75,9 @@ export type PlanioDemoProps = {
  * Holder kun afkrydsningen; al tekst renderes på serveren og sendes ind.
  *
  * Mobil: flex-kolonne, så måleren kan være sticky (et grid-element kan ikke
- * flytte sig ud af sin celle). Bredt: måler + status til venstre, liste til
- * højre. Grid-placering frem for EviSplit, fordi status står under listen på
- * mobil, men under måleren på bredt.
+ * flytte sig ud af sin celle). Bredt: måler + status (PlanioDemoAside) til
+ * venstre, liste til højre. Grid frem for EviSplit, fordi status står under
+ * listen på mobil, men under måleren på bredt.
  */
 export function PlanioDemo({
   start,
@@ -108,11 +108,33 @@ export function PlanioDemo({
     <DemoContext value={state}>
       <div
         data-slot="planio-demo"
-        className="flex w-full flex-col gap-6 @3xl/section:grid @3xl/section:grid-cols-[5fr_7fr] @3xl/section:grid-rows-[auto_1fr] @3xl/section:items-start @3xl/section:gap-x-8"
+        className="flex w-full flex-col gap-6 @3xl/section:grid @3xl/section:grid-cols-[5fr_7fr] @3xl/section:items-start @3xl/section:gap-x-8"
       >
         {children}
       </div>
     </DemoContext>
+  );
+}
+
+/**
+ * Venstre kolonne på bredt: måler + status, sticky under headeren, mens man
+ * krydser af i listen. Gridcellen er lige så høj som listen, så den har plads
+ * at klæbe i. På mobil `contents`: måleren klæber selv, og status (order-1)
+ * lægger sig efter listen.
+ */
+export function PlanioDemoAside({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactElement {
+  return (
+    <EviStack
+      data-slot="planio-demo-aside"
+      gap="lg"
+      className="contents @3xl/section:sticky @3xl/section:top-[calc(var(--planio-header-h,0px)+--spacing(6))] @3xl/section:col-start-1 @3xl/section:flex"
+    >
+      {children}
+    </EviStack>
   );
 }
 
@@ -130,7 +152,7 @@ export function PlanioDemoMeter({
     <EviStack
       data-slot="planio-demo-meter"
       gap="md"
-      className="sticky top-(--planio-header-h,0px) z-10 -mx-3 bg-(--theme-bg) p-3 sm:-mx-4 sm:px-4 md:-mx-6 md:px-6 @3xl/section:static @3xl/section:col-start-1 @3xl/section:row-start-1 @3xl/section:mx-0 @3xl/section:bg-transparent @3xl/section:p-0"
+      className="sticky top-(--planio-header-h,0px) z-10 -mx-3 bg-(--theme-bg) p-3 sm:-mx-4 sm:px-4 md:-mx-6 md:px-6 @3xl/section:static @3xl/section:mx-0 @3xl/section:bg-transparent @3xl/section:p-0"
     >
       {children}
     </EviStack>
@@ -215,7 +237,7 @@ export function PlanioDemoList({
   return (
     <div
       data-slot="planio-demo-list"
-      className="theme-light @container/list min-w-0 rounded-evi px-3 py-2 sm:px-6 sm:py-3 @3xl/section:col-start-2 @3xl/section:row-span-2 @3xl/section:row-start-1 [&>fieldset+fieldset]:mt-1.5 [&>fieldset+fieldset]:border-t [&>fieldset+fieldset]:border-dashed [&>fieldset+fieldset]:border-current/25 [&>fieldset+fieldset]:pt-1"
+      className="theme-light @container/list min-w-0 rounded-evi px-3 py-2 sm:px-6 sm:py-3 @3xl/section:col-start-2 @3xl/section:row-start-1 [&>fieldset+fieldset]:mt-1.5 [&>fieldset+fieldset]:border-t [&>fieldset+fieldset]:border-dashed [&>fieldset+fieldset]:border-current/25 [&>fieldset+fieldset]:pt-1"
     >
       {children}
     </div>
@@ -323,7 +345,7 @@ export function PlanioDemoStatus({
       data-slot="planio-demo-status"
       aria-live="polite"
       gap="md"
-      className="@3xl/section:col-start-1 @3xl/section:row-start-2"
+      className="order-1"
     >
       {sentence && <div className="font-bold">{sentence}</div>}
       {children}

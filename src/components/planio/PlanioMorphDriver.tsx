@@ -9,6 +9,12 @@ import { useEffect, useRef } from "react";
 const SCROLL_DRIVEN_CSS = `
 @property --morph { syntax: "<number>"; inherits: true; initial-value: 0; }
 @keyframes planio-morph { from { --morph: 0; } to { --morph: 1; } }
+/* Plads til headeren ved ankre og tastaturfokus. Ikke scroll-padding på <html>:
+   så ligger den sticky header selv i zonen, og fokus på fx sprogvælgeren
+   scroller siden op (WebKit ignorerer en negativ scroll-margin ved tryk). */
+body :not(header, header *) {
+  scroll-margin-top: var(--planio-header-h, 0px);
+}
 @supports (animation-timeline: scroll()) {
   header:has([data-slot="planio-morph-driver"]) {
     animation: planio-morph linear both;
@@ -32,8 +38,8 @@ const PACE = 1.5;
  * scrollen, fra 0 øverst til 1 efter PACE × afstanden, til sidens første
  * sektion er scrollet ind under headeren (dog højst én skærm, på fx vilkårs-
  * siden er første sektion hele dokumentet). Lineært; med reduceret bevægelse
- * skiftes der i midten. Lægger også headerens højde i `--planio-header-h` og
- * scroll-padding, så sticky elementer og ankre lander under headeren.
+ * skiftes der i midten. Lægger også headerens højde i `--planio-header-h`, så
+ * sticky elementer og ankre lander under headeren.
  */
 export function PlanioMorphDriver(): React.ReactElement {
   const ref = useRef<HTMLSpanElement>(null);
@@ -83,7 +89,6 @@ export function PlanioMorphDriver(): React.ReactElement {
       range = Math.max(1, Math.min(section_end, screen) * PACE);
       header.style.setProperty("--planio-morph-range", `${range}px`);
       root.style.setProperty("--planio-header-h", `${header_h}px`);
-      root.style.scrollPaddingTop = `${header_h}px`;
       update();
     };
 
@@ -101,7 +106,6 @@ export function PlanioMorphDriver(): React.ReactElement {
       reduce.removeEventListener("change", update);
       cancelAnimationFrame(frame);
       root.style.removeProperty("--planio-header-h");
-      root.style.removeProperty("scroll-padding-top");
     };
   }, [pathname]);
 

@@ -9,6 +9,7 @@ import { EviRichText } from "@/src/components/typography/EviRichText";
 import { PlanioCard } from "@/src/components/planio/PlanioCard";
 import {
   PlanioDemo,
+  PlanioDemoAside,
   PlanioDemoBattery,
   PlanioDemoDay,
   PlanioDemoItem,
@@ -62,23 +63,41 @@ export function PlanioDayDemoPanel({
 
   return (
     <PlanioDemo start={percent(p.plan_start, 0)} events={events}>
-      <PlanioDemoMeter>
-        <PlanioDemoStats>
-          <PlanioDemoStat
-            kind="start"
-            label={<EviRichText.Inline field={p.plan_energy_label} linkResolver={linkResolver} />}
-          />
-          <PlanioDemoStat
-            kind="planned"
-            label={<EviRichText.Inline field={p.plan_planned_label} linkResolver={linkResolver} />}
-          />
-          <PlanioDemoStat
-            kind="left"
-            label={<EviRichText.Inline field={p.plan_left_label} linkResolver={linkResolver} />}
-          />
-        </PlanioDemoStats>
-        <PlanioDemoBattery />
-      </PlanioDemoMeter>
+      <PlanioDemoAside>
+        <PlanioDemoMeter>
+          <PlanioDemoStats>
+            <PlanioDemoStat
+              kind="start"
+              label={<EviRichText.Inline field={p.plan_energy_label} linkResolver={linkResolver} />}
+            />
+            <PlanioDemoStat
+              kind="planned"
+              label={<EviRichText.Inline field={p.plan_planned_label} linkResolver={linkResolver} />}
+            />
+            <PlanioDemoStat
+              kind="left"
+              label={<EviRichText.Inline field={p.plan_left_label} linkResolver={linkResolver} />}
+            />
+          </PlanioDemoStats>
+          <PlanioDemoBattery />
+        </PlanioDemoMeter>
+        <PlanioDemoStatus
+          templates={{
+            start: p.plan_status_start,
+            balance: p.plan_status_balance,
+            over: p.plan_status_over,
+            zero: p.plan_status_zero,
+            short: p.plan_status_short,
+          }}
+        >
+          {isFilled.richText(p.plan_note) && (
+            <PlanioDemoTomorrowNote>
+              <PlanioCard.FutureBadge field={p.plan_note_badge} linkResolver={linkResolver} />
+              <EviRichText.Raw field={p.plan_note} linkResolver={linkResolver} />
+            </PlanioDemoTomorrowNote>
+          )}
+        </PlanioDemoStatus>
+      </PlanioDemoAside>
 
       <PlanioDemoList>
         {days.map((day) => (
@@ -98,23 +117,6 @@ export function PlanioDayDemoPanel({
           </PlanioDemoDay>
         ))}
       </PlanioDemoList>
-
-      <PlanioDemoStatus
-        templates={{
-          start: p.plan_status_start,
-          balance: p.plan_status_balance,
-          over: p.plan_status_over,
-          zero: p.plan_status_zero,
-          short: p.plan_status_short,
-        }}
-      >
-        {isFilled.richText(p.plan_note) && (
-          <PlanioDemoTomorrowNote>
-            <PlanioCard.FutureBadge field={p.plan_note_badge} linkResolver={linkResolver} />
-            <EviRichText.Raw field={p.plan_note} linkResolver={linkResolver} />
-          </PlanioDemoTomorrowNote>
-        )}
-      </PlanioDemoStatus>
     </PlanioDemo>
   );
 }
