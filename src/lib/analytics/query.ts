@@ -20,6 +20,10 @@ declare global {
 const DATASET = "evi_stats_v1";
 const DAY_MS = 86_400_000;
 
+// Tal tæller først fra My Planios lancering (UTC): før det var al prod-trafik
+// vores egne tjek af det nye domæne. Gælder alle, men der var ingen andre live.
+const STATS_START = "2026-11-18 16:20:00";
+
 // Datacenter/cloud-ASN'er hvor næsten al trafik er bots/crawlere. Ekskluderet
 // fra prod-tal. ASN gemmes som blob10, så listen kan justeres uden re-indsamling.
 // Bemærk: fanger også ægte brugere bag cloud-VPN/-proxy på disse ASN'er;
@@ -123,7 +127,7 @@ export async function query_stats(
     : "";
 
   const dc = ` AND blob10 NOT IN (${DATACENTER_ASNS.map((a) => `'${a}'`).join(",")})`;
-  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY${exclude}${dc}`;
+  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY AND timestamp >= toDateTime('${STATS_START}')${exclude}${dc}`;
 
   // Top-N efter en blob-kolonne (DRY — samme form for sider/kilder/lande/…).
   const top = (col: string, extra = ""): Promise<Record<string, unknown>[]> =>
