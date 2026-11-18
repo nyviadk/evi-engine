@@ -115,7 +115,8 @@ export const get_evi_page = cache(
 export const get_evi_page_by_id = cache(async (id: string) => {
   const base = await get_evi_tenant();
   if (!base) return null;
-  return base.client.getByID<Content.PageDocument>(id).catch(() => null);
+  // Uden lang søger Prismic kun i master-sproget → en engelsk side findes ikke.
+  return base.client.getByID<Content.PageDocument>(id, { lang: "*" }).catch(() => null);
 });
 
 /**
