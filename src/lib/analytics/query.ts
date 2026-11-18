@@ -22,7 +22,7 @@ const DAY_MS = 86_400_000;
 
 // Tal tæller først fra My Planios lancering (UTC): før det var al prod-trafik
 // vores egne tjek af det nye domæne. Gælder alle, men der var ingen andre live.
-const STATS_START = "2026-11-18 17:00:00";
+const STATS_START = "2026-11-18 17:15:00";
 
 // Datacenter/cloud-ASN'er hvor næsten al trafik er bots/crawlere. Ekskluderet
 // fra prod-tal. ASN gemmes som blob10, så listen kan justeres uden re-indsamling.
