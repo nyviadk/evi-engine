@@ -589,7 +589,18 @@ interface SettingsDocumentData {
 	 * - **Tab**: Generelt
 	 * - **Documentation**: https://prismic.io/docs/fields/boolean
 	 */
-	translate_brand: prismic.BooleanField;/**
+	translate_brand: prismic.BooleanField;
+	
+	/**
+	 * Standard billede (sociale medier), andre sprog field in *Indstillinger*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: settings.default_og_image_intl
+	 * - **Tab**: Generelt
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	default_og_image_intl: prismic.ImageField<never>;/**
 	 * Lys farve field in *Indstillinger*
 	 *
 	 * - **Field Type**: Color

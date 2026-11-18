@@ -78,6 +78,17 @@
           "placeholder_true": "Tillad oversættelse"
         },
         "type": "Boolean"
+      },
+      "default_og_image_intl": {
+        "config": {
+          "constraint": {
+            "height": 1260,
+            "width": 2400
+          },
+          "label": "Standard billede (sociale medier), andre sprog",
+          "thumbnails": []
+        },
+        "type": "Image"
       }
     },
     "Udseende og layout": {

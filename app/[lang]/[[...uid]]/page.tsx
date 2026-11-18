@@ -229,11 +229,19 @@ export async function generateMetadata(props: {
     }
   }
 
-  // OG image fallback: page.meta_image → settings.default_og_image → null.
+  // OG image fallback: page.meta_image → (andre sprog end master) settings.
+  // default_og_image_intl → settings.default_og_image → null. Settings findes
+  // kun på master-sproget, derfor et separat felt til de øvrige sprog.
   // Hvis null, udelader vi images-arrayet helt — aldrig en tom <meta> tag.
+  const defaults = settings?.data;
+  const intl_image =
+    lang !== tenant.default_locale && isFilled.image(defaults?.default_og_image_intl)
+      ? defaults.default_og_image_intl.url
+      : null;
   const og_image_url =
-    page.data.meta_image?.url ||
-    settings?.data?.default_og_image?.url ||
+    (isFilled.image(page.data.meta_image) ? page.data.meta_image.url : null) ||
+    intl_image ||
+    (isFilled.image(defaults?.default_og_image) ? defaults.default_og_image.url : null) ||
     null;
 
   const is_staging = is_staging_domain(hostname);
