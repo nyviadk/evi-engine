@@ -5,14 +5,16 @@ import Link from "next/link";
 
 import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
 import { EviRow } from "@/src/components/layout/EviRow";
+import { EviStack } from "@/src/components/layout/EviStack";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
 import { EviTitle } from "@/src/components/typography/EviTitle";
-import { box_surface, evi_card_bleed_class } from "@/src/components/ui/EviBox";
+import { evi_box_class, evi_card_bleed_class } from "@/src/components/ui/EviBox";
 import { EviButton } from "@/src/components/ui/EviButton";
 import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
+import { EviTag } from "@/src/components/ui/EviTag";
 import { FeedFilter } from "@/src/components/feed/parts/FeedFilter";
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import type { FeedPage } from "@/src/lib/prismic/feed";
@@ -42,25 +44,31 @@ function common_tags(pages: FeedPage[]): string[] {
 }
 
 /**
- * Ét kort: billede, (dato), titel, uddrag og link. Linket dækker hele kortet
- * (before:inset-0; pilen bruger ::after), så kortet er ét klik og ét tab-stop. Søster-kort → EviCard,
- * så titler, uddrag og links flugter.
+ * Ét kort: billede, emne, titel, uddrag og en fod med dato og link. Lyst kort
+ * med tynd kant; skyggen kommer først ved hover. Linket dækker hele kortet
+ * (before:inset-0; pilen bruger ::after), så kortet er ét klik og ét tab-stop.
+ * Søster-kort → EviCard, så titler, uddrag og fødder flugter.
  */
 function FeedCard({
   page,
-  surface,
   cta,
   date,
   linkResolver,
 }: {
   page: FeedPage;
-  surface: string | null;
   cta: string | null;
   date: string | null;
   linkResolver: LinkResolverFunction;
 }): React.ReactElement {
+  const topic = page.tags[0];
   return (
-    <EviCard rows={5} className={cn(box_surface(surface), "overflow-hidden")}>
+    <EviCard
+      rows={5}
+      className={cn(
+        evi_box_class("outlined"),
+        "overflow-hidden motion-safe:transition-shadow hover:shadow-evi",
+      )}
+    >
       {isFilled.image(page.image) ? (
         <EviImage
           field={page.image}
@@ -74,41 +82,57 @@ function FeedCard({
       ) : (
         <div />
       )}
-      {date ? (
-        <time dateTime={page.date} className="mt-4 text-sm opacity-75">
-          {date}
-        </time>
+      {topic ? (
+        <EviTag
+          text={text_as_rich_text(topic, "paragraph")}
+          linkResolver={linkResolver}
+          className="mt-5 justify-self-start"
+        />
       ) : (
         <div />
       )}
       <EviTitle
         field={text_as_rich_text(page.title, "heading3")}
         linkResolver={linkResolver}
-        size="xl"
-        className={date ? "mt-1" : "mt-4"}
+        size="lg"
+        className="mt-3"
       />
       {page.description ? (
         <EviRichText
           field={text_as_rich_text(page.description, "paragraph")}
           linkResolver={linkResolver}
-          className={cn("mt-2", evi_card_body_class())}
+          className={cn("mt-2 text-current/75", evi_card_body_class())}
         />
       ) : (
         <div />
       )}
-      <EviButton
-        asChild
-        variant="primary"
-        appearance="text"
-        size="md"
-        arrow
-        className="mt-4 justify-self-start before:absolute before:inset-0"
+      <EviStack
+        direction="row"
+        wrap
+        align="center"
+        justify="between"
+        gap="sm"
+        className="mt-5 border-t border-current/10 pt-4 text-sm"
       >
-        <Link href={page.href}>
-          {cta ?? page.title}
-          {cta && <span className="sr-only">: {page.title}</span>}
-        </Link>
-      </EviButton>
+        {date && (
+          <time dateTime={page.date} className="text-current/75">
+            {date}
+          </time>
+        )}
+        <EviButton
+          asChild
+          variant="primary"
+          appearance="text"
+          size="sm"
+          arrow
+          className="before:absolute before:inset-0"
+        >
+          <Link href={page.href}>
+            {cta ?? page.title}
+            {cta && <span className="sr-only">: {page.title}</span>}
+          </Link>
+        </EviButton>
+      </EviStack>
     </EviCard>
   );
 }
@@ -141,7 +165,6 @@ export function FeedDefaultLayout({
     node: (
       <FeedCard
         page={page}
-        surface={p.card_color}
         cta={cta}
         date={p.show_date ? long_date(page.date, lang) : null}
         linkResolver={linkResolver}

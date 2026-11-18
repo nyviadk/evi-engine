@@ -76,7 +76,6 @@ export const mock: Record<string, Content.FeedSlice> = {
       filter_all: "Alle",
       filter_status: "{antal} artikler",
       cta_link: webLink("Se alle artikler"),
-      card_color: "Neutral",
       background_theme: "Lys",
     },
   },

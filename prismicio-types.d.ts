@@ -2116,17 +2116,6 @@ export interface FeedSliceDefaultPrimary {
 	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 	
 	/**
-	 * Kortfarve field in *Feed → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: *None*
-	 * - **Default Value**: Neutral
-	 * - **API ID Path**: feed.default.primary.card_color
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	card_color: prismic.SelectField<"Neutral" | "Primær" | "Sekundær" | "Uden farve", "filled">;
-	
-	/**
 	 * Baggrundstema field in *Feed → Default → Primary*
 	 *
 	 * - **Field Type**: Select

@@ -1,7 +1,7 @@
 import { cn } from "@/src/lib/utils/cn";
 import { resolve_surface, NO_SURFACE } from "@/src/lib/utils/surface";
 
-type BoxSize = "card" | "compact";
+type BoxSize = "card" | "compact" | "outlined";
 
 // Kasse-FORMEN (afrunding + luft + elevation) ét sted. Padding trappes i 3 trin:
 // på en 332px-skærm ville 24px i hver side æde for meget. Samme skala bruges af
@@ -9,6 +9,8 @@ type BoxSize = "card" | "compact";
 const sizeClass: Record<BoxSize, string> = {
   card: "rounded-evi p-4 shadow-evi sm:p-6 md:p-8",
   compact: "rounded-evi p-3 sm:p-4 md:p-6",
+  // Samme luft som card (så evi_card_bleed_class passer), men kant i stedet for skygge.
+  outlined: "rounded-evi border border-current/10 p-4 sm:p-6 md:p-8",
 };
 
 /**
@@ -54,7 +56,8 @@ export function evi_card_bleed_class(edge: "top" | "bottom"): string {
 export type EviBoxProps = React.ComponentProps<"div"> & {
   /** Prismic farve-label ("Neutral"/"Primær"/"Sekundær"). @default "Neutral" */
   surface?: string | null;
-  /** "card" = fremhævet (p-4→p-8 + skygge). "compact" = flad (p-3→p-6). @default "card" */
+  /** "card" = fremhævet (p-4→p-8 + skygge). "compact" = flad (p-3→p-6).
+   *  "outlined" = som card, men tynd kant og ingen skygge. @default "card" */
   size?: BoxSize;
 };
 
