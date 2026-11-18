@@ -234,6 +234,7 @@ export const mock: Record<string, Content.FeaturesSlice> = {
         { icon: "graduation-cap", text: line("Kaffekurser og smagninger") },
       ],
       heading_align: "Venstre",
+      icon_align: "Øverst",
       background_theme: "Lys",
     },
   },

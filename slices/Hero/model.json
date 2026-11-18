@@ -7,7 +7,7 @@
       "description": "Centered",
       "docURL": "",
       "id": "centered",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/8832d389b9601a979d568a51d077b4cc8040c6d3.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/centered/82e6ae0d5fda6acf36b18fb10321456415ad332a.png?auto=compress%2Cformat",
       "name": "Centered",
       "primary": {
         "heading": {
@@ -25,6 +25,17 @@
             "single": "paragraph,strong,em,hyperlink"
           },
           "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Tekst-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
         },
         "cta_link": {
           "config": {
@@ -66,7 +77,7 @@
       "description": "Split",
       "docURL": "",
       "id": "split",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/4330623269e5d948b061211a421da12b2ef1c0b7.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/split/05064156f1534589d926027b00cc41e24fcdb52c.png?auto=compress%2Cformat",
       "name": "Split",
       "primary": {
         "heading": {
@@ -187,7 +198,7 @@
       "description": "About",
       "docURL": "",
       "id": "about",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/07b7dcbd0b905f612c682cba7475f4daed192eee.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/about/db4cf3f929d9a9d9d2ad3da31077f3dff953bc25.png?auto=compress%2Cformat",
       "name": "About",
       "primary": {
         "heading": {
@@ -300,7 +311,7 @@
       "description": "Cover",
       "docURL": "",
       "id": "cover",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/cover/dc03bf5765417aa0016e10515df7ce1220bfa74a.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/hero/cover/06da0593c3d125882337612054ea86fcae0cfa26.png?auto=compress%2Cformat",
       "name": "Cover",
       "primary": {
         "heading": {

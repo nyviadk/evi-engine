@@ -5,6 +5,7 @@ import { EviSection } from "@/src/components/layout/EviSection";
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { HeroCtaGroup } from "@/src/components/hero/parts/HeroCtaGroup";
+import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { has_link } from "@/src/lib/prismic/links";
 import {
@@ -19,7 +20,8 @@ export type HeroCenteredLayoutProps = {
 };
 
 /**
- * Hero-variation "centered" — centreret tekst-hero. Domain-part (Tailwind
+ * Hero-variation "centered" — tekst-hero i én kolonne, centreret eller
+ * venstrestillet efter `heading_align` (default centreret). Domain-part (Tailwind
  * tilladt jf. R3.3); rendres af Hero-dispatcheren via dynamic import.
  */
 export function HeroCenteredLayout({
@@ -33,6 +35,8 @@ export function HeroCenteredLayout({
     context,
     index,
   );
+
+  const align = resolve_heading_align(p.heading_align);
 
   if (
     !has_rich_text(p.heading, p.body) &&
@@ -50,19 +54,19 @@ export function HeroCenteredLayout({
       data-slot="hero-centered"
     >
       <EviRow>
-        <EviStack gap="lg" align="center">
+        <EviStack gap="lg" align={align}>
           <EviHeadingGroup
             title={p.heading}
             description={p.body}
             linkResolver={linkResolver}
             isHero={isHero}
-            align="center"
+            align={align}
           />
           <HeroCtaGroup
             primary={p.cta_link}
             secondary={p.cta_link_secondary}
             linkResolver={linkResolver}
-            align="center"
+            align={align}
           />
         </EviStack>
       </EviRow>

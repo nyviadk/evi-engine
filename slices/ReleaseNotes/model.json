@@ -1,0 +1,101 @@
+{
+  "id": "release_notes",
+  "name": "ReleaseNotes",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/release_notes/default/8d92242e1650fc2abf5728966306eae184c7a7fd.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Brødtekst",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "heading_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Overskrift-justering",
+            "options": [
+              "Venstre",
+              "Centreret"
+            ]
+          },
+          "type": "Select"
+        },
+        "releases": {
+          "config": {
+            "fields": {
+              "version": {
+                "config": {
+                  "label": "Version",
+                  "placeholder": "fx 1.7.3"
+                },
+                "type": "Text"
+              },
+              "release_date": {
+                "config": {
+                  "label": "Udgivelsesdato"
+                },
+                "type": "Date"
+              },
+              "title": {
+                "config": {
+                  "label": "Titel",
+                  "single": "heading3,strong,em"
+                },
+                "type": "StructuredText"
+              },
+              "notes": {
+                "config": {
+                  "label": "Ændringer",
+                  "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+                },
+                "type": "StructuredText"
+              }
+            },
+            "label": "Udgivelser"
+          },
+          "type": "Group"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Knap under listen (valgfri)"
+          },
+          "type": "Link"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/profile/default/52b64d2089cd6011d32e0e64d2eade7af88c3c6e.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/profile/default/08db7504facb115316a08bfa87c7b0fecee34408.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "portrait": {
@@ -21,6 +21,18 @@
             "thumbnails": []
           },
           "type": "Image"
+        },
+        "portrait_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Portræt-justering",
+            "options": [
+              "Centreret",
+              "Øverst"
+            ],
+            "placeholder": "Øverst flugter portrættet med teksten"
+          },
+          "type": "Select"
         },
         "description": {
           "config": {

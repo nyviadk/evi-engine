@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/case_studies/default/1bd582bc1343f050b5d112783bd91aa3988a72eb.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/case_studies/default/3bcb748c7fbd4ab9404f753cb153a5865bf5dedd.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -86,6 +86,18 @@
             "label": "Cases"
           },
           "type": "Group"
+        },
+        "case_layout": {
+          "config": {
+            "default_value": "Rækker",
+            "label": "Kort-layout",
+            "options": [
+              "Rækker",
+              "Kolonner"
+            ],
+            "placeholder": "Kolonner = mindre kort side om side"
+          },
+          "type": "Select"
         },
         "more_label": {
           "config": {

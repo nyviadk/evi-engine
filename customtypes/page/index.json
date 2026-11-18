@@ -82,6 +82,9 @@
             },
             "planio_about": {
               "type": "SharedSlice"
+            },
+            "release_notes": {
+              "type": "SharedSlice"
             }
           }
         },

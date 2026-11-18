@@ -9,12 +9,19 @@ import { PrismicNextLink } from "@prismicio/next";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviRow } from "@/src/components/layout/EviRow";
 import { EviStack } from "@/src/components/layout/EviStack";
-import { EviBox, evi_card_bleed_class } from "@/src/components/ui/EviBox";
+import { EviAutoGrid } from "@/src/components/layout/EviAutoGrid";
+import {
+  EviBox,
+  box_surface,
+  evi_card_bleed_class,
+} from "@/src/components/ui/EviBox";
 import { EviButton } from "@/src/components/ui/EviButton";
+import { EviCard } from "@/src/components/ui/EviCard";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { EviReveal } from "@/src/components/ui/EviReveal";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
+import { EviTitle } from "@/src/components/typography/EviTitle";
 import {
   resolve_slice_context,
   type EviPageSliceContext,
@@ -22,6 +29,7 @@ import {
 import { resolve_heading_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 import { is_link_filled } from "@/src/lib/prismic/links";
+import { evi_card_body_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 
 export type CaseStudiesDefaultLayoutProps = {
@@ -161,8 +169,79 @@ function CaseCard({
 }
 
 /**
+ * Kolonne-kort ("Kort-layout: Kolonner"): billedet bløder ud i toppen, tekst
+ * under. Søster-kort i et gitter → EviCard, så titel, tekst, meta og knap
+ * flugter på tværs af kortene. Tomme slots er `<div />` (rækkeantallet er fast).
+ */
+function CaseColumnCard({
+  item,
+  linkResolver,
+  collapsed,
+}: {
+  item: CaseItem;
+  linkResolver: LinkResolverFunction;
+  collapsed?: boolean;
+}): React.ReactElement {
+  return (
+    <EviCard
+      rows={5}
+      data-reveal-overflow={collapsed || undefined}
+      // eslint-disable-next-line evi/no-raw-layout-classes -- EviCard er selv et subgrid; et foldet kort skal tilbage til grid, ikke block
+      className={cn(
+        box_surface("Neutral"),
+        "overflow-hidden",
+        collapsed && "hidden group-data-open/reveal:grid",
+      )}
+    >
+      {isFilled.image(item.image) ? (
+        <EviImage
+          field={item.image}
+          aspectRatio="landscape"
+          variant="plain"
+          rounded={false}
+          imageClassName="object-cover"
+          sizes="(min-width: 1096px) 22vw, (min-width: 532px) 45vw, 92vw"
+          className={evi_card_bleed_class("top")}
+        />
+      ) : (
+        <div />
+      )}
+      <EviTitle
+        field={item.title}
+        linkResolver={linkResolver}
+        size="xl"
+        className="mt-4"
+      />
+      <EviRichText
+        field={item.description}
+        linkResolver={linkResolver}
+        className={cn("mt-2", evi_card_body_class())}
+      />
+      <div>
+        <CaseMeta table={item.meta} linkResolver={linkResolver} />
+      </div>
+      {is_link_filled(item.cta_link) ? (
+        <EviButton
+          asChild
+          variant="primary"
+          appearance="text"
+          size="md"
+          arrow
+          className="mt-4 justify-self-start"
+        >
+          <PrismicNextLink field={item.cta_link} linkResolver={linkResolver} />
+        </EviButton>
+      ) : (
+        <div />
+      )}
+    </EviCard>
+  );
+}
+
+/**
  * CaseStudies "default": intro (overskrift + brødtekst) + en repeatable liste af
- * case-kort. Domain-part (Tailwind tilladt, R3.3); rendres af dispatcheren.
+ * case-kort, enten én pr. række (billede ved siden af tekst) eller som mindre
+ * kort i kolonner (`case_layout`). Domain-part (Tailwind tilladt, R3.3); rendres af dispatcheren.
  */
 export function CaseStudiesDefaultLayout({
   slice,
@@ -184,20 +263,30 @@ export function CaseStudiesDefaultLayout({
   const moreLabel = isFilled.keyText(p.more_label) ? p.more_label : "";
   const collapsible = cases.length > CASE_VISIBLE && moreLabel !== "";
 
-  const list = (
-    <EviStack gap="xl">
-      {cases.map((item, i) => {
-        return (
+  const list =
+    p.case_layout === "Kolonner" ? (
+      <EviAutoGrid size="sm">
+        {cases.map((item, i) => (
+          <CaseColumnCard
+            key={i}
+            item={item}
+            linkResolver={linkResolver}
+            collapsed={collapsible && i >= CASE_VISIBLE}
+          />
+        ))}
+      </EviAutoGrid>
+    ) : (
+      <EviStack gap="xl">
+        {cases.map((item, i) => (
           <CaseCard
             key={i}
             item={item}
             linkResolver={linkResolver}
             collapsed={collapsible && i >= CASE_VISIBLE}
           />
-        );
-      })}
-    </EviStack>
-  );
+        ))}
+      </EviStack>
+    );
 
   return (
     <EviSection

@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/default/686d505000e23586d203e2c63b43ee27e89ac105.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/default/00748ec481da73fa5bb268e4a73b4d33085c9393.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "feature_1_icon": {
@@ -89,7 +89,7 @@
       "description": "Cards",
       "docURL": "",
       "id": "cards",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/cards/2f30bf5387865aa52a4cc5ce88dfcaa350c801d8.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/cards/0dadd6282521b9e905735ad8cccd5defacd91e35.png?auto=compress%2Cformat",
       "name": "Cards",
       "primary": {
         "heading": {
@@ -186,7 +186,7 @@
       "description": "Split",
       "docURL": "",
       "id": "split",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/a72d741ed1b69a9b5f5d61d66e48c0a47e61248f.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/split/1a459b1be5c16268cfccf9b3535bf4d7a92d847d.png?auto=compress%2Cformat",
       "name": "Split",
       "primary": {
         "heading": {
@@ -340,7 +340,7 @@
       "description": "Bento",
       "docURL": "",
       "id": "bento",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/bento/9944bb5ea71f6b6daa92383cc16290ec71db3f83.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/bento/7b359dfa6b007c0e28f22255186f51fc15eb64df.png?auto=compress%2Cformat",
       "name": "Bento",
       "primary": {
         "heading": {
@@ -521,7 +521,7 @@
       "description": "Icon Bento",
       "docURL": "",
       "id": "icon-bento",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/icon-bento/4918f2167aec5a4e59c1f478b1c7eb2771d4303d.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/features/icon-bento/2b57fc368dbbb9a38968fd3ff6d49b8bec4d3fc7.png?auto=compress%2Cformat",
       "name": "Icon Bento",
       "primary": {
         "heading": {
@@ -718,6 +718,18 @@
             "label": "Punkter"
           },
           "type": "Group"
+        },
+        "icon_align": {
+          "config": {
+            "default_value": "Centreret",
+            "label": "Ikon-justering",
+            "options": [
+              "Centreret",
+              "Øverst"
+            ],
+            "placeholder": "Øverst flugter ikonet med første linje"
+          },
+          "type": "Select"
         },
         "background_theme": {
           "config": {

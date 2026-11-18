@@ -9,6 +9,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { resolve_media_align } from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
 
 export type ProfileDefaultLayoutProps = {
@@ -92,7 +93,7 @@ export function ProfileDefaultLayout({
       data-slot="profile"
     >
       {hasPortrait ? (
-        <EviSplit preset="25-75" align="center">
+        <EviSplit preset="25-75" align={resolve_media_align(p.portrait_align)}>
           {/* Cirklen cappes på mobil (fuld kolonne = kæmpe portræt), fylder den
               smalle kolonne på desktop. */}
           <div className="mx-auto w-40 sm:w-52 @3xl/section:mx-0 @3xl/section:w-full">

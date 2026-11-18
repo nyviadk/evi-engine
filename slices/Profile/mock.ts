@@ -44,6 +44,7 @@ export const mock: Record<string, Content.ProfileSlice> = {
     items: [],
     primary: {
       portrait: portraitImg,
+      portrait_align: "Centreret",
       description: line(
         "Mange tror, god kaffe skal være kompliceret — dyre maskiner og fine ord. Sådan ser vi det ikke. Vi startede Kaffemølle for at gøre friskristet specialkaffe til hverdagskaffe, alle kan have stående derhjemme.",
       ),

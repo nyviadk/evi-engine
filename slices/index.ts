@@ -21,6 +21,7 @@ import PlanioHero from "./PlanioHero";
 import PlanioRoadmap from "./PlanioRoadmap";
 import Prices from "./Prices";
 import Profile from "./Profile";
+import ReleaseNotes from "./ReleaseNotes";
 import Testimonials from "./Testimonials";
 import TextContent from "./TextContent";
 import TextWithImages from "./TextWithImages";
@@ -47,6 +48,7 @@ export const components = {
 	planio_roadmap: PlanioRoadmap,
 	prices: Prices,
 	profile: Profile,
+	release_notes: ReleaseNotes,
 	testimonials: Testimonials,
 	text_content: TextContent,
 	text_with_images: TextWithImages

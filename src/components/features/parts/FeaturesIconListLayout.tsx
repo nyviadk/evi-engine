@@ -10,8 +10,12 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
-import { resolve_heading_align } from "@/src/lib/prismic/align";
+import {
+  resolve_heading_align,
+  resolve_media_align,
+} from "@/src/lib/prismic/align";
 import { has_rich_text } from "@/src/lib/prismic/fields";
+import { cn } from "@/src/lib/utils/cn";
 
 export type FeaturesIconListLayoutProps = {
   slice: Content.FeaturesSliceIconList;
@@ -42,6 +46,8 @@ export function FeaturesIconListLayout({
 
   if (!has_rich_text(p.heading, p.body) && items.length === 0) return null;
 
+  const icon_align = resolve_media_align(p.icon_align);
+
   return (
     <EviSection
       theme={theme}
@@ -59,9 +65,15 @@ export function FeaturesIconListLayout({
       {items.length > 0 && (
         <EviAutoGrid as="ul" size="sm" gap="compact">
           {items.map((item, i) => (
-            <EviStack key={i} as="li" direction="row" align="center" gap="md">
+            <EviStack key={i} as="li" direction="row" align={icon_align} gap="md">
               <EviIconBadge name={item.icon} size="md" tone="surface" />
-              <span className="min-w-0 font-semibold wrap-break-word">
+              {/* Øverst: første linje centreres på badgen (md = 3rem høj). */}
+              <span
+                className={cn(
+                  "min-w-0 font-semibold wrap-break-word",
+                  icon_align === "start" && "pt-[calc((3rem-1lh)/2)]",
+                )}
+              >
                 <EviRichText.Inline field={item.text} linkResolver={linkResolver} />
               </span>
             </EviStack>

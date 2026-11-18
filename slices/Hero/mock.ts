@@ -45,6 +45,7 @@ export const mock: Record<string, Content.HeroSlice> = {
         url: "#",
         text: "Læs mere",
       } as Content.HeroSliceCenteredPrimary["cta_link_secondary"],
+      heading_align: "Centreret",
       background_theme: "Lys",
     },
   },

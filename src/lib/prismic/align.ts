@@ -9,6 +9,16 @@ export function resolve_heading_align(
 }
 
 /**
+ * Prismic "Portræt-/Ikon-justering"-select (Centreret/Øverst) → Evi `align`.
+ * "Øverst" flugter billedet/ikonet med toppen af teksten ved siden af.
+ */
+export function resolve_media_align(
+  value: string | null | undefined,
+): "start" | "center" {
+  return value === "Øverst" ? "start" : "center";
+}
+
+/**
  * Prismic "Indholds-justering"-select (Venstre/Centreret/Højre) → Evi `align`
  * ("start" | "center" | "end"). Til layouts med tre-vejs justering (fx cover-hero).
  */

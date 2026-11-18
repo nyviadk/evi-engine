@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice | ReleaseNotesSlice
 
 /**
  * Content for Side documents
@@ -903,6 +903,17 @@ export interface CaseStudiesSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
 	cases: prismic.GroupField<Simplify<CaseStudiesSliceDefaultPrimaryCasesItem>>;
+	
+	/**
+	 * Kort-layout field in *CaseStudies → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Kolonner = mindre kort side om side
+	 * - **Default Value**: Rækker
+	 * - **API ID Path**: case_studies.default.primary.case_layout
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	case_layout: prismic.SelectField<"Rækker" | "Kolonner", "filled">;
 	
 	/**
 	 * Læs alle-tekst field in *CaseStudies → Default → Primary*
@@ -1900,6 +1911,17 @@ export interface FeaturesSliceIconListPrimary {
 	items: prismic.GroupField<Simplify<FeaturesSliceIconListPrimaryItemsItem>>;
 	
 	/**
+	 * Ikon-justering field in *Features → Icon List → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Øverst flugter ikonet med første linje
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: features.icon-list.primary.icon_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	icon_align: prismic.SelectField<"Centreret" | "Øverst", "filled">;
+	
+	/**
 	 * Baggrundstema field in *Features → Icon List → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -2251,6 +2273,17 @@ export interface HeroSliceCenteredPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
 	 */
 	body: prismic.RichTextField;
+	
+	/**
+	 * Tekst-justering field in *Hero → Centered → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: hero.centered.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
 	
 	/**
 	 * Call-to-action field in *Hero → Centered → Primary*
@@ -5374,6 +5407,17 @@ export interface ProfileSliceDefaultPrimary {
 	portrait: prismic.ImageField<never>;
 	
 	/**
+	 * Portræt-justering field in *Profile → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Øverst flugter portrættet med teksten
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: profile.default.primary.portrait_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	portrait_align: prismic.SelectField<"Centreret" | "Øverst", "filled">;
+	
+	/**
 	 * Beskrivelse field in *Profile → Default → Primary*
 	 *
 	 * - **Field Type**: Rich Text
@@ -5457,6 +5501,141 @@ type ProfileSliceVariation = ProfileSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type ProfileSlice = prismic.SharedSlice<"profile", ProfileSliceVariation>;
+
+/**
+ * Item in *ReleaseNotes → Default → Primary → Udgivelser*
+ */
+export interface ReleaseNotesSliceDefaultPrimaryReleasesItem {
+	/**
+	 * Version field in *ReleaseNotes → Default → Primary → Udgivelser*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: fx 1.7.3
+	 * - **API ID Path**: release_notes.default.primary.releases[].version
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	version: prismic.KeyTextField;
+	
+	/**
+	 * Udgivelsesdato field in *ReleaseNotes → Default → Primary → Udgivelser*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.releases[].release_date
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	release_date: prismic.DateField;
+	
+	/**
+	 * Titel field in *ReleaseNotes → Default → Primary → Udgivelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.releases[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	title: prismic.RichTextField;
+	
+	/**
+	 * Ændringer field in *ReleaseNotes → Default → Primary → Udgivelser*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.releases[].notes
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	notes: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *ReleaseNotes → Default → Primary*
+ */
+export interface ReleaseNotesSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *ReleaseNotes → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Brødtekst field in *ReleaseNotes → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Overskrift-justering field in *ReleaseNotes → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Centreret
+	 * - **API ID Path**: release_notes.default.primary.heading_align
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	heading_align: prismic.SelectField<"Venstre" | "Centreret", "filled">;
+	
+	/**
+	 * Udgivelser field in *ReleaseNotes → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.releases[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	releases: prismic.GroupField<Simplify<ReleaseNotesSliceDefaultPrimaryReleasesItem>>;
+	
+	/**
+	 * Knap under listen (valgfri) field in *ReleaseNotes → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: release_notes.default.primary.cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Baggrundstema field in *ReleaseNotes → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: release_notes.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for ReleaseNotes Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ReleaseNotesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ReleaseNotesSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *ReleaseNotes*
+ */
+type ReleaseNotesSliceVariation = ReleaseNotesSliceDefault
+
+/**
+ * ReleaseNotes Shared Slice
+ *
+ * - **API ID**: `release_notes`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ReleaseNotesSlice = prismic.SharedSlice<"release_notes", ReleaseNotesSliceVariation>;
 
 /**
  * Item in *Testimonials → Default → Primary → Anmeldelser*
@@ -6427,6 +6606,11 @@ declare module "@prismicio/client" {
 			ProfileSliceDefaultPrimary,
 			ProfileSliceVariation,
 			ProfileSliceDefault,
+			ReleaseNotesSlice,
+			ReleaseNotesSliceDefaultPrimaryReleasesItem,
+			ReleaseNotesSliceDefaultPrimary,
+			ReleaseNotesSliceVariation,
+			ReleaseNotesSliceDefault,
 			TestimonialsSlice,
 			TestimonialsSliceDefaultPrimaryTestimonialsItem,
 			TestimonialsSliceDefaultPrimary,
