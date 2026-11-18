@@ -161,7 +161,8 @@ export async function query_stats(
     top("blob7"),
     top("blob9", " AND blob9 != ''"),
     q(
-      `SELECT blob5 AS \`from\`, blob3 AS \`to\`, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob5 != '' GROUP BY blob5, blob3 ORDER BY c DESC LIMIT 30`,
+      // Ikke "from"/"to" som alias: reserverede ord.
+      `SELECT blob5 AS src, blob3 AS dst, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob5 != '' GROUP BY blob5, blob3 ORDER BY c DESC LIMIT 30`,
     ),
   ]);
 
@@ -178,8 +179,8 @@ export async function query_stats(
     devices: to_name_count(devices),
     languages: to_name_count(languages),
     flow: flow.map((r) => ({
-      from: String(r.from ?? ""),
-      to: String(r.to ?? ""),
+      from: String(r.src ?? ""),
+      to: String(r.dst ?? ""),
       count: Number(r.c ?? 0),
     })),
   };
