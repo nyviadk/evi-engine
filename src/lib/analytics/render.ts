@@ -44,21 +44,43 @@ function list(title: string, rows: NameCount[], empty: string): string {
   return `<section class="card"><h2>${esc(title)}</h2><ul>${items}</ul></section>`;
 }
 
+// "/" og "/da-dk" er begge forsiden; navngiv dem, så de ikke ligner tomme stier.
+function page_label(path: string): string {
+  if (!path || path === "/") return "Forsiden";
+  if (/^\/[a-z]{2}-[a-z]{2}$/.test(path)) return `Forsiden (${path.slice(1)})`;
+  return path;
+}
+
+// Escaped + brudpunkt efter hver "/", så lange stier brydes mellem led, ikke i "da-dk".
+function flow_label(path: string): string {
+  return esc(page_label(path)).replaceAll("/", "/<wbr>");
+}
+
 function flow_section(data: StatsData): string {
-  // Andel pr. from-sti: "af alle der forlod X, gik n% videre til Y".
-  const totals = new Map<string, number>();
-  for (const f of data.flow)
-    totals.set(f.from, (totals.get(f.from) ?? 0) + f.count);
-  const items = data.flow.length
-    ? data.flow
-        .map((f) => {
-          const total = totals.get(f.from) ?? f.count;
-          const pct = total ? Math.round((f.count / total) * 100) : 0;
-          return `<li><span class="k">${esc(f.from || "/")} → ${esc(f.to || "/")}</span><span class="v">${pct}%</span></li>`;
+  // Grupperet pr. startside: "af alle klik videre fra X gik n til Y".
+  const groups = new Map<string, { total: number; rows: StatsData["flow"] }>();
+  for (const f of data.flow) {
+    const g = groups.get(f.from) ?? { total: 0, rows: [] };
+    g.total += f.count;
+    g.rows.push(f);
+    groups.set(f.from, g);
+  }
+  const body = groups.size
+    ? [...groups.entries()]
+        .sort((a, b) => b[1].total - a[1].total)
+        .map(([from, g]) => {
+          const rows = g.rows
+            .sort((a, b) => b.count - a.count)
+            .map((f) => {
+              const pct = Math.round((f.count / g.total) * 100);
+              return `<li><span class="k">→ ${flow_label(f.to)}</span><span class="bar" style="--w:${pct}%"></span><span class="v">${fmt(f.count)} · ${pct}%</span></li>`;
+            })
+            .join("");
+          return `<div class="fg"><h3><span class="k">Fra ${flow_label(from)}</span><span class="v">${fmt(g.total)} klik videre</span></h3><ul>${rows}</ul></div>`;
         })
         .join("")
-    : `<li class="empty">Ingen intern navigation endnu.</li>`;
-  return `<section class="card"><h2>Flow — hvor de klikker videre</h2><ul>${items}</ul></section>`;
+    : `<ul><li class="empty">Ingen intern navigation endnu.</li></ul>`;
+  return `<section class="card full"><h2>Flow — hvor de klikker videre</h2>${body}</section>`;
 }
 
 function range_picker(days: number): string {
@@ -135,5 +157,13 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 .card .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card .v{color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
 .card .empty{color:var(--mut);justify-content:flex-start}
+.card.full{grid-column:1/-1}
+.fg+.fg{margin-top:1rem}
+.fg h3{display:flex;justify-content:space-between;gap:1rem;margin:0 0 .2rem;font-size:.92rem;font-weight:600}
+.fg li{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(3rem,1fr) 5.5rem;align-items:center}
+.fg li .k{color:var(--mut)}
+.fg li .v{text-align:right}
+@media(max-width:640px){.fg li{grid-template-columns:1fr 5.5rem;row-gap:.3rem}.fg li .k{grid-column:1/-1}.fg .k{white-space:normal;overflow-wrap:anywhere}}
+.bar{height:6px;border-radius:3px;background:linear-gradient(var(--acc),var(--acc)) 0/var(--w) 100% no-repeat var(--line)}
 .notice{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:1.5rem;color:var(--mut)}
 .foot{margin-top:2rem;color:var(--mut);font-size:.82rem;text-align:center}`;
