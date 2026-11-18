@@ -17,6 +17,7 @@ import { safeJsonLdStringify } from "@/src/lib/seo/safeJsonLdStringify";
 import { is_staging_domain } from "@/src/lib/seo/domains";
 import { og_locale } from "@/src/lib/seo/og-locale";
 import { local_date } from "@/src/lib/utils/date";
+import { share_image_url } from "@/src/lib/utils/imgix";
 import { build_feed_pages, page_date, post_source } from "@/src/lib/prismic/feed";
 
 type Params = Promise<{ lang: string; uid?: string[] }>;
@@ -238,11 +239,13 @@ export async function generateMetadata(props: {
     lang !== tenant.default_locale && isFilled.image(defaults?.default_og_image_intl)
       ? defaults.default_og_image_intl.url
       : null;
-  const og_image_url =
+  const og_source =
     (isFilled.image(page.data.meta_image) ? page.data.meta_image.url : null) ||
     intl_image ||
-    (isFilled.image(defaults?.default_og_image) ? defaults.default_og_image.url : null) ||
-    null;
+    (isFilled.image(defaults?.default_og_image) ? defaults.default_og_image.url : null);
+  const og_image_url = og_source
+    ? share_image_url(og_source, defaults?.color_light || DEFAULTS_COLORS.color_light)
+    : null;
 
   const is_staging = is_staging_domain(hostname);
 

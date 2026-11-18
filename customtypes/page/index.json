@@ -118,10 +118,6 @@
       },
       "meta_image": {
         "config": {
-          "constraint": {
-            "height": 1260,
-            "width": 2400
-          },
           "label": "Billede (Sociale Medier)",
           "thumbnails": []
         },

@@ -46,14 +46,21 @@ export function force_jpg(url: string): string {
 }
 
 /**
- * Originalbilledet uden Prismics beskæring (`rect`) og faste mål (`w`/`h`).
- * Til steder, der skal vise hele billedet, selvom feltet er beskåret til et
- * andet format (fx delingsbilledets 1,9:1). Returnerer input uændret ved fejl.
+ * Delingsbillede i 1200×630 (link-previews' format) uden at beskære motivet:
+ * et billede i et andet format får kanter i `background` i stedet. `bg` fylder
+ * også gennemsigtighed, som ellers kan blive sort på sociale medier.
+ * Kantfarven er hex med eller uden `#`. Returnerer input uændret ved fejl.
  */
-export function uncropped_url(url: string): string {
+export function share_image_url(url: string, background: string): string {
   try {
     const u = new URL(url);
-    for (const param of ["rect", "w", "h"]) u.searchParams.delete(param);
+    const color = background.replace("#", "");
+    u.searchParams.set("w", "1200");
+    u.searchParams.set("h", "630");
+    u.searchParams.set("fit", "fill");
+    u.searchParams.set("fill", "solid");
+    u.searchParams.set("fill-color", color);
+    u.searchParams.set("bg", color);
     return u.toString();
   } catch {
     return url;

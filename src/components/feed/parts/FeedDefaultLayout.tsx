@@ -28,7 +28,6 @@ import {
 import { evi_card_body_class } from "@/src/lib/utils/card-text";
 import { cn } from "@/src/lib/utils/cn";
 import { long_date } from "@/src/lib/utils/date";
-import { uncropped_url } from "@/src/lib/utils/imgix";
 
 export type FeedDefaultLayoutProps = {
   slice: Content.FeedSliceDefault;
@@ -72,10 +71,8 @@ function FeedCard({
       )}
     >
       {isFilled.image(page.image) ? (
-        // Hele originalen: delingsbilledet er beskåret til 1,9:1, hvilket
-        // klipper fx en illustration, hvis motiv ikke er bredt.
         <EviImage
-          field={{ ...page.image, url: uncropped_url(page.image.url) }}
+          field={page.image}
           aspectRatio="video"
           variant="transparent"
           rounded={false}
