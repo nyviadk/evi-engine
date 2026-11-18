@@ -10,10 +10,12 @@ type AspectRatio = "landscape" | "square" | "video" | "portrait" | "3:4" | "auto
  * - `framed`: soft baggrund + padding; neutral-surface er selv placeholder.
  * - `plain`: kant-til-kant; LQIP-blur (imgix, ~1-2kb) som CSS-baggrund så store
  *   billeder ikke popper ind på tom flade. Nul Worker-arbejde.
+ * - `transparent`: ingen flade og ingen blur, og formatet bevares (ingen JPEG),
+ *   så et gennemsigtigt billede (PNG/SVG-illustration) står direkte på sektionen.
  *
  * Eksplicit variant frem for booleans (jf. vercel-composition-patterns).
  */
-type ImageVariant = "framed" | "plain";
+type ImageVariant = "framed" | "plain" | "transparent";
 
 export type EviImageProps = Omit<React.ComponentProps<"div">, "children"> & {
   /** Prismic image field. Komponenten rendrer ingenting hvis feltet er tomt. */
@@ -90,6 +92,7 @@ const mdAspectClasses: Record<AspectRatio, string> = {
 const variantClasses: Record<ImageVariant, string> = {
   framed: "theme-surface-neutral p-4 sm:p-6 md:p-8",
   plain: "",
+  transparent: "",
 };
 
 export function EviImage({
@@ -152,8 +155,10 @@ export function EviImage({
   if (priority || isFilled.image(mobileField)) {
     const width = field.dimensions?.width ?? undefined;
     const height = field.dimensions?.height ?? undefined;
-    const src = priority ? force_jpg(field.url) : field.url;
-    const srcSet = priority ? jpg_srcset(field.url, width) : undefined;
+    // JPEG har ingen gennemsigtighed: et transparent billede beholder sit format.
+    const jpg = priority && effectiveVariant !== "transparent";
+    const src = jpg ? force_jpg(field.url) : field.url;
+    const srcSet = jpg ? jpg_srcset(field.url, width) : undefined;
     return (
       <div
         data-slot="evi-image"
@@ -171,7 +176,7 @@ export function EviImage({
             <source
               media="(max-width: 768px)"
               srcSet={
-                priority
+                jpg
                   ? jpg_srcset(mobileField.url, mobileField.dimensions?.width) ??
                     force_jpg(mobileField.url)
                   : mobileField.url

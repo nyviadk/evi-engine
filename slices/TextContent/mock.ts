@@ -107,6 +107,7 @@ export const mock: Record<string, Content.TextContentSlice> = {
       heading: h2("Privatlivspolitik"),
       date_display: "Senest opdateret",
       image: {},
+      image_display: "Med skygge",
       body: line(
         `Her kan du læse, hvilke oplysninger ${PERSONA.brand} gemmer, når du handler hos os, og hvad vi bruger dem til.`,
       ),

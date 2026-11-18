@@ -6312,6 +6312,17 @@ export interface TextContentSliceDocumentPrimary {
 	image: prismic.ImageField<never>;
 	
 	/**
+	 * Billedvisning field in *TextContent → Document → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Uden baggrund = til gennemsigtige billeder
+	 * - **Default Value**: Med skygge
+	 * - **API ID Path**: text_content.document.primary.image_display
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_display: prismic.SelectField<"Med skygge" | "Uden baggrund", "filled">;
+	
+	/**
 	 * Tekst field in *TextContent → Document → Primary*
 	 *
 	 * - **Field Type**: Rich Text
@@ -6394,12 +6405,12 @@ export interface TextWithImagesSliceDefaultPrimary {
 	 * Billedvisning field in *TextWithImages → Default → Primary*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Med ramme (paspartout) eller kant-til-kant
+	 * - **Placeholder**: Uden baggrund = til gennemsigtige billeder
 	 * - **Default Value**: Rammet
 	 * - **API ID Path**: text_with_images.default.primary.image_display
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	image_display: prismic.SelectField<"Rammet" | "Kant-til-kant", "filled">;
+	image_display: prismic.SelectField<"Rammet" | "Kant-til-kant" | "Uden baggrund", "filled">;
 	
 	/**
 	 * Billedets side (desktop) field in *TextWithImages → Default → Primary*

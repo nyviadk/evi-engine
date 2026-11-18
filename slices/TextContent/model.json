@@ -166,6 +166,18 @@
           },
           "type": "Image"
         },
+        "image_display": {
+          "config": {
+            "default_value": "Med skygge",
+            "label": "Billedvisning",
+            "options": [
+              "Med skygge",
+              "Uden baggrund"
+            ],
+            "placeholder": "Uden baggrund = til gennemsigtige billeder"
+          },
+          "type": "Select"
+        },
         "content": {
           "config": {
             "label": "Tekst",

@@ -45,9 +45,15 @@ export function TextWithImagesDefaultLayout({
 
   const imageLeftOnDesktop = p.image_side !== "Højre";
   const imageTopOnMobile = p.mobile_order !== "Tekst øverst";
-  // Billedvisning: "Rammet" (paspartout, hele motivet) vs "Kant-til-kant"
-  // (cover — fylder rammen ud). 4:3-constraint → ingen af dem beskærer motivet.
-  const framed = p.image_display !== "Kant-til-kant";
+  // Billedvisning: "Rammet" (paspartout, hele motivet), "Kant-til-kant" (cover,
+  // fylder rammen ud) eller "Uden baggrund" (gennemsigtigt billede direkte på
+  // sektionen). 4:3-constraint → ingen af dem beskærer motivet.
+  const variant =
+    p.image_display === "Kant-til-kant"
+      ? "plain"
+      : p.image_display === "Uden baggrund"
+        ? "transparent"
+        : "framed";
 
   const contentEl = (
     <EviHeadingGroup
@@ -63,8 +69,8 @@ export function TextWithImagesDefaultLayout({
       aspectRatio="landscape"
       sizes="(min-width: 768px) 45vw, 92vw"
       priority={isHero}
-      variant={framed ? "framed" : "plain"}
-      imageClassName={framed ? undefined : "object-cover"}
+      variant={variant}
+      imageClassName={variant === "plain" ? "object-cover" : undefined}
     />
   );
 

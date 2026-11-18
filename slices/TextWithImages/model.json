@@ -44,9 +44,10 @@
             "label": "Billedvisning",
             "options": [
               "Rammet",
-              "Kant-til-kant"
+              "Kant-til-kant",
+              "Uden baggrund"
             ],
-            "placeholder": "Med ramme (paspartout) eller kant-til-kant"
+            "placeholder": "Uden baggrund = til gennemsigtige billeder"
           },
           "type": "Select"
         },

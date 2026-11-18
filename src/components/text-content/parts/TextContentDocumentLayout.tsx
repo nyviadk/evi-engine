@@ -14,6 +14,7 @@ import {
   resolve_slice_context,
   type EviPageSliceContext,
 } from "@/src/lib/prismic/slices";
+import { cn } from "@/src/lib/utils/cn";
 import { long_date, short_date } from "@/src/lib/utils/date";
 
 export type TextContentDocumentLayoutProps = {
@@ -42,6 +43,8 @@ export function TextContentDocumentLayout({
   const p = slice.primary;
 
   if (!has_rich_text(p.heading, p.body, p.content)) return null;
+
+  const transparent = p.image_display === "Uden baggrund";
 
   // Nyheder viser udgivelsen, vilkår o.l. hvornår de sidst blev ændret.
   const date =
@@ -86,10 +89,10 @@ export function TextContentDocumentLayout({
         <EviRow>
           <EviImage
             field={p.image}
-            variant="plain"
+            variant={transparent ? "transparent" : "plain"}
             sizes="(min-width: 768px) 65ch, 100vw"
             priority={isHero}
-            className="shadow-evi max-w-prose"
+            className={cn("max-w-prose", !transparent && "shadow-evi")}
           />
         </EviRow>
       )}
