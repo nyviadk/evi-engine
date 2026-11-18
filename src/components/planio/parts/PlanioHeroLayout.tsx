@@ -69,16 +69,17 @@ export function PlanioHeroLayout({
       }
     >
       <EviStack gap="xl" align="center">
-        {/* Undertitlen er appens løfte: et trin under H1, ikke brødtekst. */}
+        {/* Undertitlen er appens løfte: et trin under H1 og tæt på den, så
+            overskrift + løfte og knapper + note læses som to grupper. */}
         <EviHeadingGroup
           title={p.heading}
           description={p.body}
           linkResolver={linkResolver}
           isHero={isHero}
           align="center"
-          className="[&>p]:text-xl [&>p]:font-semibold md:[&>p]:text-2xl"
+          className="[&>h1]:mb-3 md:[&>h1]:mb-4 [&>p]:text-xl [&>p]:font-semibold md:[&>p]:text-2xl"
         />
-        <EviStack gap="lg" align="center">
+        <EviStack gap="md" align="center" className="mt-4 md:mt-8">
           <EviStoreButtons
             primary={p.cta_link}
             secondary={p.cta_link_secondary}
