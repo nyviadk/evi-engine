@@ -3,7 +3,6 @@
 
 import type { Content, ImageField } from "@prismicio/client";
 import { h2, line, paras, webLink } from "@/src/lib/preview/mockFields";
-import { PERSONA } from "@/src/lib/preview/persona";
 import type { FeedPage } from "@/src/lib/prismic/feed";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
@@ -61,7 +60,7 @@ const primary: Content.FeedSliceDefaultPrimary = {
       url: webLink("LinkedIn"),
     },
   ],
-  author_name: PERSONA.brand,
+  author_name: "Mette & Jonas",
   author_image_1: NO_IMAGE,
   author_image_2: NO_IMAGE,
   post_more: "Vis hele opslaget",

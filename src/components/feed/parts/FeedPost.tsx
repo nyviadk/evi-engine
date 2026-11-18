@@ -1,4 +1,4 @@
-import { asText, isFilled, type Content, type LinkResolverFunction } from "@prismicio/client";
+import { asText, isFilled, type Content, type ImageField, type LinkResolverFunction } from "@prismicio/client";
 
 import { EviStack } from "@/src/components/layout/EviStack";
 import { EviRichText } from "@/src/components/typography/EviRichText";
@@ -15,6 +15,45 @@ type Post = Content.FeedSliceDefaultPrimaryPostsItem;
 
 // Over ca. 7 linjer i et kort foldes teksten sammen.
 const LONG_POST = 320;
+
+type Avatar = { image: ImageField } | { initial: string };
+
+/**
+ * Afsenderens runde billeder; mangler et billede, står forbogstavet i stedet
+ * ("Sebastian & Yannik" → S og Y). Højst to.
+ */
+function post_avatars(source: FeedPostSource): Avatar[] {
+  const names = isFilled.keyText(source.author_name)
+    ? source.author_name.split(/\s*(?:&|,|\bog\b|\band\b)\s*/i).filter(Boolean)
+    : [];
+  const images = [source.author_image_1, source.author_image_2];
+  const count = Math.max(names.length, images.filter((image) => isFilled.image(image)).length);
+  return Array.from({ length: Math.min(count, 2) }, (_, i): Avatar => {
+    const image = images[i];
+    return image && isFilled.image(image) ? { image } : { initial: (names[i] ?? "").charAt(0).toUpperCase() };
+  }).filter((avatar) => "image" in avatar || avatar.initial);
+}
+
+function PostAvatar({ avatar, overlap }: { avatar: Avatar; overlap: boolean }): React.ReactElement {
+  const shape = cn("size-9 ring-2 ring-(--theme-bg)", overlap && "-ms-3.5");
+  if ("image" in avatar) {
+    return <EviImage field={avatar.image} circle sizes="36px" className={shape} />;
+  }
+  return (
+    <EviStack
+      as="span"
+      align="center"
+      justify="center"
+      className={cn(
+        shape,
+        "rounded-full text-sm font-bold text-evi-text-on-primary",
+        overlap ? "bg-evi-primary/80" : "bg-evi-primary",
+      )}
+    >
+      {avatar.initial}
+    </EviStack>
+  );
+}
 
 /**
  * Et LinkedIn-opslag i feedet: læses færdigt her, uden egen underside. Et
@@ -36,7 +75,7 @@ export function FeedPost({
 }): React.ReactElement {
   const url = isFilled.link(post.url) && post.url.link_type === "Web" ? post.url.url : null;
   const long = asText(post.text).length > LONG_POST;
-  const avatars = [source.author_image_1, source.author_image_2].filter((image) => isFilled.image(image));
+  const avatars = post_avatars(source);
 
   return (
     <blockquote
@@ -48,28 +87,24 @@ export function FeedPost({
         <EviStack direction="row" align="center" justify="between" gap="sm">
           <EviStack direction="row" align="center" gap="sm">
             {avatars.length > 0 && (
-              <EviStack direction="row" align="center" gap="xs">
-                {avatars.map((image, i) => (
-                  <EviImage
-                    key={i}
-                    field={image}
-                    circle
-                    sizes="40px"
-                    className={cn("size-10 ring-2 ring-(--theme-bg)", i > 0 && "-ms-4")}
-                  />
+              <EviStack direction="row" align="center" gap="xs" aria-hidden>
+                {avatars.map((avatar, i) => (
+                  <PostAvatar key={i} avatar={avatar} overlap={i > 0} />
                 ))}
               </EviStack>
             )}
-            <EviStack gap="xs" className="text-sm leading-tight">
+            <EviStack gap="xs" className="gap-0.5 leading-tight">
               {isFilled.keyText(source.author_name) && (
-                <span className="font-semibold">{source.author_name}</span>
+                <span className="text-sm font-bold">{source.author_name}</span>
               )}
-              <time dateTime={post.date ?? undefined} className="text-current/75">
+              <time dateTime={post.date ?? undefined} className="text-xs text-current/70">
                 {date}
               </time>
             </EviStack>
           </EviStack>
-          <EviIcon name="lucide:linkedin" aria-label="LinkedIn" className="size-5 shrink-0 text-current/60" />
+          <span className="theme-surface-primary shrink-0 rounded-md p-1">
+            <EviIcon name="lucide:linkedin" aria-label="LinkedIn" className="size-4 text-evi-primary" />
+          </span>
         </EviStack>
 
         <FeedPostText more={long ? source.post_more : null} less={source.post_less}>
