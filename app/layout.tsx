@@ -12,11 +12,27 @@ import { get_evi_context } from "@/src/lib/prismic/context";
 import { EviPaperGrain } from "@/src/components/ui/EviPaperGrain";
 import { system_copy } from "@/src/lib/i18n/system-pages";
 
+// iOS' hjemmeskærm-ikon (180×180). iOS fylder gennemsigtighed med sort, så det
+// fyldes med sitets lyse farve i stedet.
+function apple_touch_icon(url: string | null, background: string): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    u.searchParams.set("w", "180");
+    u.searchParams.set("h", "180");
+    u.searchParams.set("bg", background.replace("#", ""));
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const ctx = await get_evi_context();
   const d = ctx?.settings?.data;
   const light = isFilled.image(d?.favicon_light) ? d.favicon_light.url : null;
   const dark = isFilled.image(d?.favicon_dark) ? d.favicon_dark.url : null;
+  const apple = apple_touch_icon(light || dark, d?.color_light || DEFAULTS_COLORS.color_light);
 
   // Begge uploadet → browseren vælger via prefers-color-scheme.
   if (light && dark) {
@@ -26,12 +42,13 @@ export async function generateMetadata(): Promise<Metadata> {
           { url: light, media: "(prefers-color-scheme: light)" },
           { url: dark, media: "(prefers-color-scheme: dark)" },
         ],
+        ...(apple && { apple }),
       },
     };
   }
   // Kun én uploadet → servér uden media så den bruges i begge themes.
   if (light || dark) {
-    return { icons: { icon: [{ url: (light || dark) as string }] } };
+    return { icons: { icon: [{ url: (light || dark) as string }], ...(apple && { apple }) } };
   }
   // Ingen uploadet → Evis eget ikon. Det ligger i public/, ikke app/: Next sætter
   // altid app/favicon.ico i <head>, så det ville konkurrere med sitets eget ikon.
