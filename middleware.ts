@@ -10,6 +10,7 @@ import {
   create_secure_url,
   validate_hostname,
 } from "./src/lib/utils/security";
+import { redirect_key } from "./src/lib/utils/redirect-key";
 
 export const runtime = "experimental-edge";
 
@@ -65,13 +66,32 @@ function redirect_www_to_apex(
   return create_response_with_hsts(NextResponse.redirect(target, 301));
 }
 
+type Redirects = TenantConfig["redirects"];
+
+// Pr. isolate, så rækkerne kun foldes én gang pr. tenant-config (lever ~60s i
+// tenant-cachen) og ikke på hver sidevisning.
+const folded_redirects = new WeakMap<Redirects, Map<string, Redirects[string]>>();
+
+function find_redirect(redirects: Redirects, pathname: string) {
+  const exact = redirects[pathname];
+  if (exact) return exact;
+  let folded = folded_redirects.get(redirects);
+  if (!folded) {
+    folded = new Map(
+      Object.entries(redirects).map(([from, target]) => [redirect_key(from), target]),
+    );
+    folded_redirects.set(redirects, folded);
+  }
+  return folded.get(redirect_key(pathname));
+}
+
 // Manuelle vanity-redirects (fx /sommer → /kampagne), konfigureret pr. tenant.
 function resolve_vanity_redirect(
   tenant: TenantConfig,
   pathname: string,
   request: NextRequest,
 ): NextResponse | null {
-  const fuzzy_target = tenant.redirects[pathname];
+  const fuzzy_target = find_redirect(tenant.redirects, pathname);
   if (!fuzzy_target) return null;
   return create_response_with_hsts(
     NextResponse.redirect(
