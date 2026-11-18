@@ -45,6 +45,21 @@ export function force_jpg(url: string): string {
   }
 }
 
+/**
+ * Originalbilledet uden Prismics beskæring (`rect`) og faste mål (`w`/`h`).
+ * Til steder, der skal vise hele billedet, selvom feltet er beskåret til et
+ * andet format (fx delingsbilledets 1,9:1). Returnerer input uændret ved fejl.
+ */
+export function uncropped_url(url: string): string {
+  try {
+    const u = new URL(url);
+    for (const param of ["rect", "w", "h"]) u.searchParams.delete(param);
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
 // Op til ~1200 dækker en kolonne-hero (max ~45vw) på retina; over kildens egen
 // bredde upscaler imgix bare → derfor cappes der på billedets faktiske bredde.
 const SRCSET_WIDTHS = [480, 640, 828, 1080, 1200, 1600, 1920];
