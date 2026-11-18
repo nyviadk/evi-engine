@@ -108,7 +108,8 @@ export function FeedPost({
             </time>
           </EviStack>
         </EviStack>
-        <EviIcon name="bi:linkedin" aria-label="LinkedIn" className="size-6 shrink-0 text-evi-primary" />
+        {/* LinkedIns eget brandblå: logoet er deres mærke, ikke en del af temaet. */}
+        <EviIcon name="bi:linkedin" aria-label="LinkedIn" className="size-6 shrink-0 text-[#0A66C2]" />
       </EviStack>
 
       <FeedPostText more={long ? source.post_more : null} less={source.post_less} className="mt-4">
