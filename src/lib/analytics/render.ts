@@ -102,6 +102,46 @@ function network_list(title: string, rows: StatsData["networks"], empty: string)
   return `<section class="card"><h2>${esc(title)}</h2><ul>${items}</ul></section>`;
 }
 
+const TIME = new Intl.DateTimeFormat("da-DK", {
+  timeZone: "Europe/Copenhagen",
+  day: "numeric",
+  month: "short",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+// AE-tider er UTC uden zone ("2026-11-18 20:46:28").
+function local_time(ts: string): string {
+  const d = new Date(`${ts.replace(" ", "T")}Z`);
+  return Number.isNaN(d.getTime()) ? ts : TIME.format(d);
+}
+
+function journeys_section(data: StatsData): string {
+  const locales = new Set(data.languages.map((l) => l.name));
+  const body = data.journeys.length
+    ? data.journeys
+        .map((j) => {
+          const first = j.pages[0];
+          const meta = [
+            first ? local_time(first.time) : "",
+            j.country ? country_name(j.country) : "",
+            j.device,
+            j.network,
+            j.referrer ? `via ${j.referrer}` : "",
+          ]
+            .filter(Boolean)
+            .map(esc)
+            .join(" · ");
+          const bot = HOSTING.test(j.network) ? ` <span class="tag">robot?</span>` : "";
+          const route = j.pages.map((pg) => flow_label(pg.path, locales)).join(` <span class="arrow">→</span> `);
+          const n = j.pages.length;
+          return `<li class="jr"><div class="jh"><span>${meta}${bot}</span><span class="v">${n} ${n === 1 ? "side" : "sider"}</span></div><div class="route">${route}</div></li>`;
+        })
+        .join("")
+    : `<li class="empty">Ingen besøg endnu.</li>`;
+  return `<section class="card full"><h2>Besøg — de seneste ${data.journeys.length || ""} besøgende</h2><ul>${body}</ul></section>`;
+}
+
 function range_picker(days: number): string {
   const links = RANGES.map((r) => {
     const active = r === days;
@@ -128,6 +168,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
         ${list("Sprog", data.languages, "Ingen data endnu.")}
         ${network_list("Internetudbydere — sandsynligvis mennesker", data.networks.filter((n) => !HOSTING.test(n.name)), "Ingen data endnu.")}
         ${network_list("Servere og hosting — sandsynligvis robotter", data.networks.filter((n) => HOSTING.test(n.name)), "Ingen fundet.")}
+        ${journeys_section(data)}
       </div>`
     : `<p class="notice">Kunne ikke hente tallene lige nu. Prøv igen om lidt.</p>`;
 
@@ -179,6 +220,11 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 .card .v{color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
 .card .empty{color:var(--mut);justify-content:flex-start}
 .asn{color:var(--mut);font-size:.8rem}
+.card li.jr{display:block;padding:.6rem 0}
+.jh{display:flex;justify-content:space-between;gap:1rem;color:var(--mut);font-size:.85rem}
+.route{margin-top:.2rem;overflow-wrap:anywhere}
+.arrow{color:var(--mut)}
+.tag{font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:0 .45rem;margin-left:.3rem}
 .card.full{grid-column:1/-1}
 .fg+.fg{margin-top:1rem}
 .fg h3{display:flex;justify-content:space-between;gap:1rem;margin:0 0 .2rem;font-size:.92rem;font-weight:600}

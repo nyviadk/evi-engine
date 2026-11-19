@@ -2,6 +2,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import {
   clamp_days,
   empty_stats,
+  to_journeys,
+  JOURNEY_LIMIT,
   type DayCount,
   type NameCount,
   type StatsData,
@@ -147,6 +149,7 @@ export async function query_stats(
     languages,
     flow,
     networks,
+    visits,
   ] = await Promise.all([
     q(`SELECT SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base}`),
     q(
@@ -167,6 +170,9 @@ export async function query_stats(
     ),
     q(
       `SELECT blob11 AS name, blob10 AS asn, SUM(_sample_interval) AS c, count(DISTINCT blob8) AS u FROM ${DATASET} WHERE ${base} AND blob11 != '' GROUP BY blob11, blob10 ORDER BY c DESC LIMIT 25`,
+    ),
+    q(
+      `SELECT blob8 AS h, timestamp AS t, blob3 AS p, blob6 AS c, blob7 AS d, blob11 AS n, blob4 AS r FROM ${DATASET} WHERE ${base} AND blob8 != '' ORDER BY timestamp DESC LIMIT 1000`,
     ),
   ]);
 
@@ -193,5 +199,6 @@ export async function query_stats(
       count: Number(r.c ?? 0),
       visitors: Number(r.u ?? 0),
     })),
+    journeys: to_journeys(visits, JOURNEY_LIMIT),
   };
 }
