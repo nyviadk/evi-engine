@@ -139,6 +139,13 @@ export const get_evi_sitemap_pages = cache(async () => {
   });
 });
 
+/** Alle sider på tværs af sprog med hele indholdet, fx til at samle et sites logoer. */
+export const get_evi_all_pages = cache(async () => {
+  const base = await get_evi_tenant();
+  if (!base) return null;
+  return base.client.getAllByType("page", { lang: "*" }).catch(() => null);
+});
+
 // ── Tier 2: full site-globale batch ──
 
 export const get_evi_context = cache(async () => {

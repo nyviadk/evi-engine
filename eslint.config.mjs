@@ -283,10 +283,16 @@ const eslintConfig = defineConfig([
   },
 
   // Evi og Planio holdes adskilt: core må ikke importere Planio-kode. Planio
-  // (planio_-slices + src/components/planio/) må gerne bruge core.
+  // (planio_-slices + src/components/planio/) må gerne bruge core. Styleguide-
+  // ruterne er My Planios egne sider; de skal ligge i app/ for at få adressen.
   {
     files: ["**/*.{ts,tsx,js,mjs}"],
-    ignores: ["src/components/planio/**", "slices/Planio*/**"],
+    ignores: [
+      "src/components/planio/**",
+      "slices/Planio*/**",
+      "app/[[]lang]/styleguide/**",
+      "app/styleguide/**",
+    ],
     rules: {
       "no-restricted-imports": [
         "error",

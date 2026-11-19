@@ -67,6 +67,63 @@ function rgb_to_hex(r: number, g: number, b: number): string {
   return `#${[r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
 }
 
+/** WCAG-kontrastforholdet mellem to hex-farver (fx 13.9 for 13,9:1). */
+export function contrast_between(a: string, b: string): number {
+  return contrast_ratio(
+    luminance(...hex_to_rgb(a)),
+    luminance(...hex_to_rgb(b)),
+  );
+}
+
+type Lch = [number, number, number];
+
+function hex_to_oklch(hex: string): Lch {
+  const [r, g, b] = hex_to_rgb(hex).map(srgb_to_linear) as [number, number, number];
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  const L = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
+  const A = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s;
+  const B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
+  return [L, Math.hypot(A, B), (Math.atan2(B, A) * 180) / Math.PI];
+}
+
+function oklch_to_hex([L, C, H]: Lch): string {
+  const A = C * Math.cos((H * Math.PI) / 180);
+  const B = C * Math.sin((H * Math.PI) / 180);
+  const l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3;
+  const m = (L - 0.1055613458 * A - 0.0638541728 * B) ** 3;
+  const s = (L - 0.0894841775 * A - 1.291485548 * B) ** 3;
+  const to_byte = (x: number) => {
+    const v = x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
+    return Math.round(Math.min(1, Math.max(0, v)) * 255);
+  };
+  return rgb_to_hex(
+    to_byte(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    to_byte(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    to_byte(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+  );
+}
+
+/**
+ * Samme farve som CSS `color-mix(in oklch, color amount, base)`, som hex, til
+ * steder uden color-mix (fx Word og PowerPoint).
+ */
+export function mix_oklch(base: string, color: string, amount: number): string {
+  const a = hex_to_oklch(base);
+  const b = hex_to_oklch(color);
+  // En grå farve har ingen nuance; CSS lader så den anden farves nuance gælde.
+  const ACHROMATIC = 1e-4;
+  const ha = a[1] < ACHROMATIC ? b[2] : a[2];
+  const hb = b[1] < ACHROMATIC ? a[2] : b[2];
+  const dh = ((((hb - ha) % 360) + 540) % 360) - 180;
+  return oklch_to_hex([
+    a[0] + (b[0] - a[0]) * amount,
+    a[1] + (b[1] - a[1]) * amount,
+    ha + dh * amount,
+  ]);
+}
+
 // Compute safe button colors for a given section background.
 // Returns three values from one contrast check:
 //   bg/text  — for solid buttons (1.5 graphical-object threshold)

@@ -11,7 +11,7 @@ import { isFilled, type RichTextField } from "@prismicio/client";
  */
 export function text_as_rich_text(
   text: string,
-  type: "heading3" | "paragraph",
+  type: "heading2" | "heading3" | "paragraph",
 ): RichTextField {
   return [{ type, text, spans: [], direction: "ltr" }] as RichTextField;
 }
