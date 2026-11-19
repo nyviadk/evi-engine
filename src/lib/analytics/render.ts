@@ -85,6 +85,23 @@ function flow_section(data: StatsData): string {
   return `<section class="card full"><h2>Flow — hvor de klikker videre</h2>${body}</section>`;
 }
 
+// Groft skøn ud fra netværkets navn: hosting/servere er næsten altid robotter.
+// Kendte datacentre er allerede filtreret fra i query.ts; dette fanger resten.
+const HOSTING =
+  /server|hosting|cloud|data ?(center|services|camp)|vps|infrastructure|m247|logicweb|netlabs|palo alto|digitalocean|amazon|google|microsoft|ovh|hetzner|linode|akamai|vultr|alibaba|oracle/i;
+
+function network_list(title: string, rows: StatsData["networks"], empty: string): string {
+  const items = rows.length
+    ? rows
+        .map(
+          (n) =>
+            `<li><span class="k">${esc(n.name)} <span class="asn">AS${esc(n.asn)}</span></span><span class="v">${fmt(n.count)} · ${fmt(n.visitors)} pers.</span></li>`,
+        )
+        .join("")
+    : `<li class="empty">${esc(empty)}</li>`;
+  return `<section class="card"><h2>${esc(title)}</h2><ul>${items}</ul></section>`;
+}
+
 function range_picker(days: number): string {
   const links = RANGES.map((r) => {
     const active = r === days;
@@ -105,10 +122,12 @@ export function render_dashboard(repo: string, data: StatsData): string {
         ${list("Mest besøgte sider", data.top_pages, "Ingen data endnu.")}
         ${list("Landingssider", data.entry_pages, "Ingen data endnu.")}
         ${list("Kilder", data.referrers, "Ingen eksterne kilder endnu.")}
+        ${list("Enheder", data.devices, "Ingen data endnu.")}
         ${flow_section(data)}
         ${list("Lande", data.countries.map((r) => ({ ...r, name: country_name(r.name) })), "Ingen data endnu.")}
         ${list("Sprog", data.languages, "Ingen data endnu.")}
-        ${list("Enheder", data.devices, "Ingen data endnu.")}
+        ${network_list("Internetudbydere — sandsynligvis mennesker", data.networks.filter((n) => !HOSTING.test(n.name)), "Ingen data endnu.")}
+        ${network_list("Servere og hosting — sandsynligvis robotter", data.networks.filter((n) => HOSTING.test(n.name)), "Ingen fundet.")}
       </div>`
     : `<p class="notice">Kunne ikke hente tallene lige nu. Prøv igen om lidt.</p>`;
 
@@ -159,6 +178,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 .card .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card .v{color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
 .card .empty{color:var(--mut);justify-content:flex-start}
+.asn{color:var(--mut);font-size:.8rem}
 .card.full{grid-column:1/-1}
 .fg+.fg{margin-top:1rem}
 .fg h3{display:flex;justify-content:space-between;gap:1rem;margin:0 0 .2rem;font-size:.92rem;font-weight:600}

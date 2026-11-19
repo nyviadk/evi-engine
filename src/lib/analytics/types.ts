@@ -5,6 +5,7 @@
 export type NameCount = { name: string; count: number };
 export type DayCount = { day: string; views: number };
 export type Flow = { from: string; to: string; count: number };
+export type Network = { name: string; asn: string; count: number; visitors: number };
 export type StatsData = {
   ok: boolean;
   days: number;
@@ -18,6 +19,7 @@ export type StatsData = {
   devices: NameCount[];
   languages: NameCount[];
   flow: Flow[];
+  networks: Network[];
 };
 
 /** Tilladte tidsintervaller (dage). Andet input klampes til 30. */
@@ -41,5 +43,6 @@ export function empty_stats(days: number): StatsData {
     devices: [],
     languages: [],
     flow: [],
+    networks: [],
   };
 }

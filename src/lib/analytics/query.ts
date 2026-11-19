@@ -146,6 +146,7 @@ export async function query_stats(
     devices,
     languages,
     flow,
+    networks,
   ] = await Promise.all([
     q(`SELECT SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base}`),
     q(
@@ -163,6 +164,9 @@ export async function query_stats(
     q(
       // Ikke "from"/"to" som alias: reserverede ord.
       `SELECT blob5 AS src, blob3 AS dst, SUM(_sample_interval) AS c FROM ${DATASET} WHERE ${base} AND blob5 != '' GROUP BY blob5, blob3 ORDER BY c DESC LIMIT 30`,
+    ),
+    q(
+      `SELECT blob11 AS name, blob10 AS asn, SUM(_sample_interval) AS c, count(DISTINCT blob8) AS u FROM ${DATASET} WHERE ${base} AND blob11 != '' GROUP BY blob11, blob10 ORDER BY c DESC LIMIT 25`,
     ),
   ]);
 
@@ -182,6 +186,12 @@ export async function query_stats(
       from: String(r.src ?? ""),
       to: String(r.dst ?? ""),
       count: Number(r.c ?? 0),
+    })),
+    networks: networks.map((r) => ({
+      name: String(r.name ?? ""),
+      asn: String(r.asn ?? ""),
+      count: Number(r.c ?? 0),
+      visitors: Number(r.u ?? 0),
     })),
   };
 }
