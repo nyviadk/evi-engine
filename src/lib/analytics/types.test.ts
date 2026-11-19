@@ -5,10 +5,10 @@ import { to_journeys } from "./types";
 
 // Rækker kommer nyeste først, som fra Analytics Engine.
 const rows = [
-  { h: "b", t: "2026-11-18 20:47:08", p: "/da-dk/download", c: "DK", d: "mobile", n: "Norlys", r: "" },
-  { h: "a", t: "2026-11-18 20:46:00", p: "/en-eu", c: "MX", d: "desktop", n: "UNINET", r: "" },
-  { h: "b", t: "2026-11-18 20:46:28", p: "/da-dk/univers/nyheder", c: "DK", d: "mobile", n: "Norlys", r: "" },
-  { h: "b", t: "2026-11-18 20:45:14", p: "/", c: "DK", d: "mobile", n: "Norlys", r: "linkedin.com" },
+  { visitor: "b", timestamp: "2026-11-18 20:47:08", page_path: "/da-dk/download", country: "DK", device: "mobile", network: "Norlys", source: "" },
+  { visitor: "a", timestamp: "2026-11-18 20:46:00", page_path: "/en-eu", country: "MX", device: "desktop", network: "UNINET", source: "" },
+  { visitor: "b", timestamp: "2026-11-18 20:46:28", page_path: "/da-dk/univers/nyheder", country: "DK", device: "mobile", network: "Norlys", source: "" },
+  { visitor: "b", timestamp: "2026-11-18 20:45:14", page_path: "/", country: "DK", device: "mobile", network: "Norlys", source: "linkedin.com" },
 ];
 
 test("samler sider pr. besøgende i rækkefølge, nyeste besøgende først", () => {

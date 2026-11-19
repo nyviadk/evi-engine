@@ -64,7 +64,7 @@ export const JOURNEY_LIMIT = 30;
 export function to_journeys(rows: Record<string, unknown>[], limit: number): Journey[] {
   const by_hash = new Map<string, Journey>();
   for (const r of rows) {
-    const h = String(r.h ?? "");
+    const h = String(r.visitor ?? "");
     let j = by_hash.get(h);
     if (!j) {
       if (by_hash.size >= limit) continue;
@@ -72,11 +72,11 @@ export function to_journeys(rows: Record<string, unknown>[], limit: number): Jou
       by_hash.set(h, j);
     }
     // Ældre rækker kommer senere; den ældste beskriver ankomsten.
-    j.pages.unshift({ time: String(r.t ?? ""), path: String(r.p ?? "") });
-    j.country = String(r.c ?? "");
-    j.device = String(r.d ?? "");
-    j.network = String(r.n ?? "");
-    j.referrer = String(r.r ?? "");
+    j.pages.unshift({ time: String(r.timestamp ?? ""), path: String(r.page_path ?? "") });
+    j.country = String(r.country ?? "");
+    j.device = String(r.device ?? "");
+    j.network = String(r.network ?? "");
+    j.referrer = String(r.source ?? "");
   }
   return [...by_hash.values()];
 }

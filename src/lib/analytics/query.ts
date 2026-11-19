@@ -172,7 +172,7 @@ export async function query_stats(
       `SELECT blob11 AS name, blob10 AS asn, SUM(_sample_interval) AS c, count(DISTINCT blob8) AS u FROM ${DATASET} WHERE ${base} AND blob11 != '' GROUP BY blob11, blob10 ORDER BY c DESC LIMIT 25`,
     ),
     q(
-      `SELECT blob8 AS h, timestamp AS t, blob3 AS p, blob6 AS c, blob7 AS d, blob11 AS n, blob4 AS r FROM ${DATASET} WHERE ${base} AND blob8 != '' ORDER BY timestamp DESC LIMIT 1000`,
+      `SELECT timestamp, blob8 AS visitor, blob3 AS page_path, blob6 AS country, blob7 AS device, blob11 AS network, blob4 AS source FROM ${DATASET} WHERE ${base} AND blob8 != '' ORDER BY timestamp DESC LIMIT 1000`,
     ),
   ]);
 
