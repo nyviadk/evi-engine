@@ -37,6 +37,22 @@ function get_browser_locale(
   }
 }
 
+// Forsiden "/": browserens sprog, hvis sitet har det; ellers sitets andet sprog
+// (en udenlandsk besøgende forstår det oftere end hovedsproget). Uden
+// Accept-Language (typisk crawlere, fx Googlebot) → hovedsproget som hidtil.
+function front_page_locale(request: NextRequest, tenant: TenantConfig): string {
+  const header = request.headers.get("accept-language");
+  if (!header) return tenant.default_locale;
+  const fallback =
+    tenant.locales.find((l) => l !== tenant.default_locale) ?? tenant.default_locale;
+  const languages = new Negotiator({ headers: { "accept-language": header } }).languages();
+  try {
+    return match(languages, tenant.locales, fallback).toLowerCase();
+  } catch {
+    return fallback;
+  }
+}
+
 // Browseren sender æøå URL-encoded ("/%C3%A6blekage"), men i Prismic/KV står de
 // som læsbare tegn. Decode så lookups matcher; try/catch fordi decodeURIComponent
 // smider ved malformet input.
@@ -140,12 +156,14 @@ function apply_locale_routing(
 
   // SCENARIE: sproget mangler i URL'en (fx /kontakt).
   if (!locale_from_path) {
-    // force_lang_prefix: true → altid default_locale (deterministisk, bot-venligt);
-    // false → browser-locale. Googlebot sender ofte en-US; default_locale
-    // garanterer at siden findes i force-mode.
-    const target_locale = tenant.force_lang_prefix
-      ? tenant.default_locale
-      : get_browser_locale(request, tenant.locales, tenant.default_locale);
+    // force_lang_prefix: true → default_locale (deterministisk, bot-venligt), dog
+    // vælger forsiden "/" efter browserens sprog; false → browser-locale.
+    // Googlebot sender ofte en-US; default_locale garanterer at siden findes.
+    const target_locale = !tenant.force_lang_prefix
+      ? get_browser_locale(request, tenant.locales, tenant.default_locale)
+      : pathname === "/"
+        ? front_page_locale(request, tenant)
+        : tenant.default_locale;
 
     const new_path = `/${target_locale}${pathname === "/" ? "" : pathname}`;
     request_headers.set("x-evi-locale", target_locale);
