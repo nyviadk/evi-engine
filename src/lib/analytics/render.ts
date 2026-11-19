@@ -45,18 +45,20 @@ function list(title: string, rows: NameCount[], empty: string): string {
 }
 
 // "/" og "/da-dk" er begge forsiden; navngiv dem, så de ikke ligner tomme stier.
-function page_label(path: string): string {
+// Kun sitets egne sprog (fra data) — ellers ligner fx "/om-os" en sprogkode.
+function page_label(path: string, locales: Set<string>): string {
   if (!path || path === "/") return "Forsiden";
-  if (/^\/[a-z]{2}-[a-z]{2}$/.test(path)) return `Forsiden (${path.slice(1)})`;
+  if (locales.has(path.slice(1))) return `Forsiden (${path.slice(1)})`;
   return path;
 }
 
 // Escaped + brudpunkt efter hver "/", så lange stier brydes mellem led, ikke i "da-dk".
-function flow_label(path: string): string {
-  return esc(page_label(path)).replaceAll("/", "/<wbr>");
+function flow_label(path: string, locales: Set<string>): string {
+  return esc(page_label(path, locales)).replaceAll("/", "/<wbr>");
 }
 
 function flow_section(data: StatsData): string {
+  const locales = new Set(data.languages.map((l) => l.name));
   // Grupperet pr. startside: "af alle klik videre fra X gik n til Y".
   const groups = new Map<string, { total: number; rows: StatsData["flow"] }>();
   for (const f of data.flow) {
@@ -73,10 +75,10 @@ function flow_section(data: StatsData): string {
             .sort((a, b) => b.count - a.count)
             .map((f) => {
               const pct = Math.round((f.count / g.total) * 100);
-              return `<li><span class="k">→ ${flow_label(f.to)}</span><span class="bar" style="--w:${pct}%"></span><span class="v">${fmt(f.count)} · ${pct}%</span></li>`;
+              return `<li><span class="k">→ ${flow_label(f.to, locales)}</span><span class="bar" style="--w:${pct}%"></span><span class="v">${fmt(f.count)} · ${pct}%</span></li>`;
             })
             .join("");
-          return `<div class="fg"><h3><span class="k">Fra ${flow_label(from)}</span><span class="v">${fmt(g.total)} klik videre</span></h3><ul>${rows}</ul></div>`;
+          return `<div class="fg"><h3><span class="k">Fra ${flow_label(from, locales)}</span><span class="v">${fmt(g.total)} klik videre</span></h3><ul>${rows}</ul></div>`;
         })
         .join("")
     : `<ul><li class="empty">Ingen intern navigation endnu.</li></ul>`;
