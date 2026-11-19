@@ -41,8 +41,8 @@ export type PlanioBrand = {
   radius: string;
   /** Ordmærket til lys baggrund (SVG) fra footerens logo. */
   logoUrl: string | null;
-  /** App-ikonet i fuld størrelse (settings.favicon_light). */
-  appIcon: { url: string; size: number } | null;
+  /** App-ikonet i fuld størrelse (settings.favicon_light); size = originalens bredde i px. */
+  appIcon: { url: string; size: number | null } | null;
 };
 
 /** Selve filen uden Prismics beskæring og skalering. */
@@ -52,14 +52,28 @@ function original_url(image: ImageFieldImage<"filled">): string {
   return url.toString();
 }
 
-function app_icon(field: ImageField | undefined): PlanioBrand["appIcon"] {
-  if (!isFilled.image(field)) return null;
-  // Feltet er beskåret til 512 px; zoom fortæller, hvor stor originalen er.
-  const zoom = field.edit?.zoom || 1;
-  return { url: original_url(field), size: Math.round(field.dimensions.width / zoom) };
+/**
+ * Originalens bredde. Prismic oplyser kun beskæringens mål (zoom er altid 1 i
+ * leverings-API'et), så imgix spørges. Filen skifter aldrig under samme adresse.
+ */
+async function original_width(url: string): Promise<number | null> {
+  try {
+    const res = await fetch(`${url}?fm=json`, { cache: "force-cache" });
+    if (!res.ok) return null;
+    const meta = (await res.json()) as { PixelWidth?: number };
+    return typeof meta.PixelWidth === "number" ? meta.PixelWidth : null;
+  } catch {
+    return null;
+  }
 }
 
-export function planio_brand(ctx: EviContext): PlanioBrand {
+async function app_icon(field: ImageField | undefined): Promise<PlanioBrand["appIcon"]> {
+  if (!isFilled.image(field)) return null;
+  const url = original_url(field);
+  return { url, size: await original_width(url) };
+}
+
+export async function planio_brand(ctx: EviContext): Promise<PlanioBrand> {
   const s = ctx.settings?.data;
   const logo = ctx.footer?.data?.logo;
   return {
@@ -73,7 +87,7 @@ export function planio_brand(ctx: EviContext): PlanioBrand {
     font: s?.font_select || "Comfortaa",
     radius: RADIUS_MAP[s?.border_radius ?? ""] ?? "0.5rem",
     logoUrl: isFilled.image(logo) ? original_url(logo) : null,
-    appIcon: app_icon(s?.favicon_light),
+    appIcon: await app_icon(s?.favicon_light),
   };
 }
 

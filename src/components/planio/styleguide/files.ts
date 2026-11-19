@@ -97,7 +97,7 @@ async function manifest_response(ctx: EviContext, brand: PlanioBrand): Promise<R
 export async function planio_styleguide_file(file: string): Promise<Response> {
   const ctx = await get_evi_context();
   if (!ctx || !is_planio_tenant(ctx.tenant)) return not_found();
-  const brand = planio_brand(ctx);
+  const brand = await planio_brand(ctx);
 
   switch (file) {
     case STYLEGUIDE_FILES.manifest:

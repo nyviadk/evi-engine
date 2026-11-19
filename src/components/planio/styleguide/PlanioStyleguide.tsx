@@ -241,7 +241,9 @@ export function PlanioStyleguide({ ctx, brand, partners }: PlanioStyleguideProps
                 <EviStack gap="sm">
                   <EviTitle field={heading("App-ikon · PNG")} linkResolver={linkResolver} size="xl" />
                   <EviRichText
-                    field={paragraph(`${brand.appIcon.size} × ${brand.appIcon.size} px. Skalér det ned efter behov, aldrig op.`)}
+                    field={paragraph(
+                      `${brand.appIcon.size ? `${brand.appIcon.size} × ${brand.appIcon.size} px` : "Fuld størrelse"}. Skalér det ned efter behov, aldrig op.`,
+                    )}
                     linkResolver={linkResolver}
                     className={evi_card_body_class()}
                   />

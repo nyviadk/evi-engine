@@ -25,7 +25,7 @@ export async function generateMetadata(props: { params: Params }): Promise<Metad
   const { lang } = await props.params;
   const ctx = await styleguide_context(lang);
   if (!ctx) return {};
-  const brand = planio_brand(ctx);
+  const brand = await planio_brand(ctx);
   return {
     title: `Designguide – ${brand.siteName}`,
     description: `Logoer, app-ikon, farver, typografi og afstande til ${brand.siteName}.`,
@@ -38,6 +38,6 @@ export default async function StyleguidePage(props: { params: Params }): Promise
   const { lang } = await props.params;
   const ctx = await styleguide_context(lang);
   if (!ctx) return notFound();
-  const partners = await planio_partner_logos(ctx);
-  return <PlanioStyleguide ctx={ctx} brand={planio_brand(ctx)} partners={partners} />;
+  const [brand, partners] = await Promise.all([planio_brand(ctx), planio_partner_logos(ctx)]);
+  return <PlanioStyleguide ctx={ctx} brand={brand} partners={partners} />;
 }
