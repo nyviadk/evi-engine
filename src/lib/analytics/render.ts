@@ -176,7 +176,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
     esc(repo),
     `<header class="head"><div class="head-l"><span class="brand">Evi Stats</span><span class="meta">${esc(repo)}</span></div>${range_picker(data.days)}</header>
      ${body}
-     <footer class="foot">Cookieless statistik · ingen personoplysninger gemmes.</footer>`,
+     <footer class="foot">Cookieless statistik · pseudonyme besøgskoder, der skifter dagligt · IP-adresser gemmes aldrig.</footer>`,
   );
 }
 
