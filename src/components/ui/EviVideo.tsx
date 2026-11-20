@@ -160,7 +160,7 @@ export function EviVideo({
         gap="sm"
         onPointerEnter={load_duration}
         onFocus={load_duration}
-        className="absolute inset-x-3 bottom-3 rounded-full bg-evi-dark py-1 ps-1 pe-4 text-evi-text-on-dark md:inset-x-4 md:bottom-4"
+        className="evi-video-controls absolute inset-x-3 bottom-3 rounded-full bg-evi-dark py-1 ps-1 pe-4 text-evi-text-on-dark md:inset-x-4 md:bottom-4"
       >
         <button
           type="button"

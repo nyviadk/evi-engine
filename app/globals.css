@@ -290,6 +290,23 @@
     border-radius: 999px;
   }
 
+  /* EviVideo's bjælke vises kun ved hover, mens videoen spiller. Kun opacity:
+     den forbliver i tab-rækkefølgen og kommer frem ved fokus. Uden hover
+     (touch) og på pause bliver den stående, så man kan se, at det er en video. */
+  .evi-video-controls {
+    transition: opacity 0.2s ease;
+  }
+  @media (hover: hover) {
+    [data-slot="evi-video"][data-playing]:not(:hover, :focus-within) .evi-video-controls {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .evi-video-controls {
+      transition: none;
+    }
+  }
+
   /* A. Solide temaer */
   .theme-light {
     --theme-bg: var(--color-light);
