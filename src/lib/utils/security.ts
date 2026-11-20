@@ -44,6 +44,8 @@ export function create_response_with_hsts(response: NextResponse): NextResponse 
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
+      // Videoer (EviVideo) ligger i kundens Prismic-mediebibliotek.
+      "media-src 'self' https://*.cdn.prismic.io https://*.prismic.io",
       "connect-src 'self' https://*.prismic.io https://*.cdn.prismic.io",
       "frame-src 'self' https://*.prismic.io",
       "frame-ancestors 'self' https://*.prismic.io",

@@ -26,6 +26,7 @@ import ReleaseNotes from "./ReleaseNotes";
 import Testimonials from "./Testimonials";
 import TextContent from "./TextContent";
 import TextWithImages from "./TextWithImages";
+import Video from "./Video";
 
 export const components = {
 	call_to_action: CallToAction,
@@ -53,5 +54,6 @@ export const components = {
 	release_notes: ReleaseNotes,
 	testimonials: Testimonials,
 	text_content: TextContent,
-	text_with_images: TextWithImages
+	text_with_images: TextWithImages,
+	video: Video
 };

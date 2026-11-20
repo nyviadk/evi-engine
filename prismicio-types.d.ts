@@ -367,7 +367,7 @@ interface NavigationDocumentData {
  */
 export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<NavigationDocumentData>, "navigation", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice | ReleaseNotesSlice | FeedSlice
+type PageDocumentDataSlicesSlice = HeroSlice | FeaturesSlice | FaqSlice | HighlightsSlice | PhoneMockupSlice | TestimonialsSlice | TextWithImagesSlice | CaseStudiesSlice | PricesSlice | GallerySlice | MapsSlice | ProfileSlice | TextContentSlice | LogosSlice | PlanioHeroSlice | PlanioDaySlice | PlanioCustomizeSlice | PlanioRoadmapSlice | CallToActionSlice | PlanioAboutSlice | ReleaseNotesSlice | FeedSlice | VideoSlice
 
 /**
  * Content for Side documents
@@ -6820,6 +6820,115 @@ type TextWithImagesSliceVariation = TextWithImagesSliceDefault | TextWithImagesS
  */
 export type TextWithImagesSlice = prismic.SharedSlice<"text_with_images", TextWithImagesSliceVariation>;
 
+/**
+ * Primary content in *Video → Default → Primary*
+ */
+export interface VideoSliceDefaultPrimary {
+	/**
+	 * Overskrift field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri overskrift over videoen
+	 * - **API ID Path**: video.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Beskrivelse field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Valgfri kort tekst under overskriften
+	 * - **API ID Path**: video.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Video 16:9 (MP4 uden lyd) field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: video.default.primary.video
+	 * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+	 */
+	video: prismic.LinkToMediaField<prismic.FieldState, never>;
+	
+	/**
+	 * Video 9:16 til mobil field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: video.default.primary.video_mobile
+	 * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+	 */
+	video_mobile: prismic.LinkToMediaField<prismic.FieldState, never>;
+	
+	/**
+	 * Startbillede 16:9 field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Vises før videoen og ved reduceret bevægelse
+	 * - **API ID Path**: video.default.primary.poster
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	poster: prismic.ImageField<never>;
+	
+	/**
+	 * Startbillede 9:16 field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Til mobilvideoen, samme rolle som 16:9
+	 * - **API ID Path**: video.default.primary.poster_mobile
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	poster_mobile: prismic.ImageField<never>;
+	
+	/**
+	 * Videoens tekst field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Teksten i videoen, til dem der ikke kan se den
+	 * - **API ID Path**: video.default.primary.transcript
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	transcript: prismic.RichTextField;
+	
+	/**
+	 * Baggrundstema field in *Video → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Baggrundstema for sektionen
+	 * - **Default Value**: Lys
+	 * - **API ID Path**: video.default.primary.background_theme
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_theme: prismic.SelectField<"Lys" | "Mørk" | "Primær" | "Sekundær" | "Mørk blød" | "Primær blød" | "Sekundær blød", "filled">;
+}
+
+/**
+ * Default variation for Video Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type VideoSliceDefault = prismic.SharedSliceVariation<"default", Simplify<VideoSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Video*
+ */
+type VideoSliceVariation = VideoSliceDefault
+
+/**
+ * Video Shared Slice
+ *
+ * - **API ID**: `video`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type VideoSlice = prismic.SharedSlice<"video", VideoSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -7011,7 +7120,11 @@ declare module "@prismicio/client" {
 			TextWithImagesSliceVariation,
 			TextWithImagesSliceDefault,
 			TextWithImagesSliceCollage,
-			TextWithImagesSliceDuo
+			TextWithImagesSliceDuo,
+			VideoSlice,
+			VideoSliceDefaultPrimary,
+			VideoSliceVariation,
+			VideoSliceDefault
 		}
 	}
 }

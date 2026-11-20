@@ -94,6 +94,9 @@
             },
             "feed": {
               "type": "SharedSlice"
+            },
+            "video": {
+              "type": "SharedSlice"
             }
           }
         },

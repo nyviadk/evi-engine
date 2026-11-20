@@ -1,0 +1,94 @@
+{
+  "id": "video",
+  "name": "Video",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/video/default/faed3d9ac278bfe0582c6387b86c72f73f42f440.png?auto=compress%2Cformat",
+      "name": "Default",
+      "primary": {
+        "heading": {
+          "config": {
+            "label": "Overskrift",
+            "placeholder": "Valgfri overskrift over videoen",
+            "single": "heading2,strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "body": {
+          "config": {
+            "label": "Beskrivelse",
+            "placeholder": "Valgfri kort tekst under overskriften",
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        },
+        "video": {
+          "config": {
+            "label": "Video 16:9 (MP4 uden lyd)",
+            "select": "media"
+          },
+          "type": "Link"
+        },
+        "video_mobile": {
+          "config": {
+            "label": "Video 9:16 til mobil",
+            "select": "media"
+          },
+          "type": "Link"
+        },
+        "poster": {
+          "config": {
+            "constraint": {
+              "height": 1080,
+              "width": 1920
+            },
+            "label": "Startbillede 16:9",
+            "placeholder": "Vises før videoen og ved reduceret bevægelse"
+          },
+          "type": "Image"
+        },
+        "poster_mobile": {
+          "config": {
+            "constraint": {
+              "height": 1920,
+              "width": 1080
+            },
+            "label": "Startbillede 9:16",
+            "placeholder": "Til mobilvideoen, samme rolle som 16:9"
+          },
+          "type": "Image"
+        },
+        "transcript": {
+          "config": {
+            "label": "Videoens tekst",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item",
+            "placeholder": "Teksten i videoen, til dem der ikke kan se den"
+          },
+          "type": "StructuredText"
+        },
+        "background_theme": {
+          "config": {
+            "default_value": "Lys",
+            "label": "Baggrundstema",
+            "options": [
+              "Lys",
+              "Mørk",
+              "Primær",
+              "Sekundær",
+              "Mørk blød",
+              "Primær blød",
+              "Sekundær blød"
+            ],
+            "placeholder": "Baggrundstema for sektionen"
+          },
+          "type": "Select"
+        }
+      },
+      "version": ""
+    }
+  ]
+}

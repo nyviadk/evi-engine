@@ -13,6 +13,10 @@ export type SystemPageCopy = {
   retry: string;
   /** Skip-link (WCAG 2.4.1) i root-layout'et — engine-chrome, oversættes her. */
   skipToContent: string;
+  /** EviVideo's knap og udskriftens åbner. */
+  videoPlay: string;
+  videoPause: string;
+  videoTranscript: string;
 };
 
 const EN: SystemPageCopy = {
@@ -23,6 +27,9 @@ const EN: SystemPageCopy = {
   errorBody: "An unexpected error occurred. Please try again shortly.",
   retry: "Try again",
   skipToContent: "Skip to content",
+  videoPlay: "Play video",
+  videoPause: "Pause video",
+  videoTranscript: "Read the text in the video",
 };
 
 const COPY: Record<string, SystemPageCopy> = {
@@ -35,6 +42,9 @@ const COPY: Record<string, SystemPageCopy> = {
     errorBody: "Der opstod en uventet fejl. Prøv igen om lidt.",
     retry: "Prøv igen",
     skipToContent: "Spring til indhold",
+    videoPlay: "Afspil video",
+    videoPause: "Sæt video på pause",
+    videoTranscript: "Læs teksten i videoen",
   },
 };
 
