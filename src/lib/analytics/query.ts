@@ -43,7 +43,7 @@ const DATACENTER_ASNS = [
   "45102", // Alibaba Cloud
   "31898", // Oracle Cloud
   "9009", // M247 (hosting + VPN-udgange)
-  "60068", // Datacamp / CDN77
+  "60068", "212238", // Datacamp / CDN77
   "43444", // Fast Servers ("Fine Group Servers Solutions")
   "213954", // Global Transit Systems ("NETLABS")
   "54538", // Palo Alto Networks (sårbarheds-scanner)
