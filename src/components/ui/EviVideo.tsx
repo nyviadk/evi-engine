@@ -145,11 +145,14 @@ export function EviVideo({
         // bjælken styrer den.
         aria-hidden="true"
         tabIndex={-1}
+        // Et tryk på videoen er pause/afspil (på touch er bjælken skjult, mens
+        // den spiller). Knappen i bjælken er samme handling for tastatur.
+        onClick={toggle}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
-        className="absolute inset-0 size-full object-cover"
+        className="absolute inset-0 size-full cursor-pointer object-cover"
       >
         {mobileSrc && <source media={MOBILE_MEDIA} src={mobileSrc} type="video/mp4" />}
         <source src={src} type="video/mp4" />

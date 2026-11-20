@@ -290,15 +290,22 @@
     border-radius: 999px;
   }
 
-  /* EviVideo's bjælke vises kun ved hover, mens videoen spiller. Kun opacity:
-     den forbliver i tab-rækkefølgen og kommer frem ved fokus. Uden hover
-     (touch) og på pause bliver den stående, så man kan se, at det er en video. */
+  /* EviVideo's bjælke er skjult, mens videoen spiller, og står på pause.
+     Kun opacity: den bliver i tab-rækkefølgen og kommer frem ved tastaturfokus
+     (:focus-visible, så et tryk på telefonen ikke holder den fremme). Skjult
+     tager den ikke imod tryk, så et tryk rammer videoen og sætter den på pause.
+     Hover kun med en rigtig mus: på touch hænger :hover fast efter et tryk. */
   .evi-video-controls {
     transition: opacity 0.2s ease;
   }
+  [data-slot="evi-video"][data-playing]:not(:has(:focus-visible)) .evi-video-controls {
+    opacity: 0;
+    pointer-events: none;
+  }
   @media (hover: hover) {
-    [data-slot="evi-video"][data-playing]:not(:hover, :focus-within) .evi-video-controls {
-      opacity: 0;
+    [data-slot="evi-video"][data-playing]:hover .evi-video-controls {
+      opacity: 1;
+      pointer-events: auto;
     }
   }
   @media (prefers-reduced-motion: reduce) {
