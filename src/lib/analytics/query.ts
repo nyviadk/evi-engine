@@ -46,6 +46,9 @@ const DATACENTER_ASNS = [
   "43444", // Fast Servers ("Fine Group Servers Solutions")
   "213954", // Global Transit Systems ("NETLABS")
   "54538", // Palo Alto Networks (sårbarheds-scanner)
+  "48090", // DMZHOST / Techoff SRV (sårbarheds-scanner, NL)
+  "64286", // LogicWeb (hosting)
+  "26548", // PureVoltage Hosting ("Fine Group Servers")
 ];
 
 async function run_sql(

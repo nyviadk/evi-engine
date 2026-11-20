@@ -15,10 +15,11 @@ import { is_staging_domain } from "./src/lib/seo/domains";
 
 export const runtime = "experimental-edge";
 
-// Bot-scannere prober for WordPress/PHP-huller. Vi kører intet af det → altid
-// junk. Match → billigt 404 i middleware FØR tenant-lookup/render.
+// Bot-scannere prober for WordPress/PHP-huller og lækkede kodefiler (.git, .svn,
+// lockfiler). Vi har intet af det → altid junk. Match → billigt 404 i
+// middleware FØR tenant-lookup/render, og visningen tælles ikke i Evi Stats.
 const BOT_SCANNER_PATH =
-  /\.php\b|\.aspx?\b|\/wp-|\/cgi-bin|\/xmlrpc|\/vendor\/|\/\.(?:env|git)\b/i;
+  /\.php\b|\.aspx?\b|\/wp-|\/cgi-bin|\/xmlrpc|\/vendor(?:\/|$)|\/\.(?:env|git|svn|hg|npmrc)\b|\/www\.git\b|\.lock$|-lock\.ya?ml$|\/go\.sum$|\/node_modules\b|\/_ignition\b|laravel\.log|reconx-/i;
 
 function get_browser_locale(
   request: NextRequest,
