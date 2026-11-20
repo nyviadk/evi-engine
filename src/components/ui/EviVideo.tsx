@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 
+import { EviStack } from "@/src/components/layout/EviStack";
 import { cn } from "@/src/lib/utils/cn";
 
 // Samme brud som EviImage's <picture>, så startbillede og video skifter sammen.
@@ -13,15 +14,27 @@ function play(video: HTMLVideoElement): void {
   video.play().catch(() => undefined);
 }
 
+/** 74.3 → "1:14". */
+function clock(seconds: number): string {
+  const s = Math.max(0, Math.floor(seconds));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+export type EviVideoLabels = {
+  play: string;
+  pause: string;
+  /** Tidslinjens navn, fx "Spol i videoen". */
+  seek: string;
+  /** Ordet mellem tiderne til skærmlæsere, fx "af" i "0:12 af 0:31". */
+  of: string;
+};
+
 export type EviVideoProps = {
   /** MP4 (16:9). Bruges på alle skærme, hvis der ikke er en mobilvideo. */
   src: string;
   /** MP4 (9:16) til skærme op til 768px. */
   mobileSrc?: string | null;
-  /** Etiket på afspil-knappen (kun ikon, så den læses op). */
-  playLabel: string;
-  /** Etiket på pause-knappen. */
-  pauseLabel: string;
+  labels: EviVideoLabels;
   /** Startbilledet (fx EviImage), vist bag videoen, til den spiller. */
   children?: React.ReactNode;
   className?: string;
@@ -30,15 +43,14 @@ export type EviVideoProps = {
 /**
  * EviVideo — lydløs video i loop, fx en forklarende video. Den spiller kun,
  * mens den er synlig, og hentes først der (preload="none"). Ønsker man
- * reduceret bevægelse, starter den på pause med startbilledet, og knappen
- * nederst til højre kan altid stoppe den (WCAG 2.2.2). Ingen cookies: en
- * almindelig <video> uden afspiller fra tredjepart.
+ * reduceret bevægelse, starter den på pause med startbilledet. Bjælken nederst
+ * kan altid stoppe den (WCAG 2.2.2) og spole frem og tilbage. Ingen cookies:
+ * en almindelig <video> uden afspiller fra tredjepart.
  */
 export function EviVideo({
   src,
   mobileSrc,
-  playLabel,
-  pauseLabel,
+  labels,
   children,
   className,
 }: EviVideoProps): React.ReactElement {
@@ -46,6 +58,8 @@ export function EviVideo({
   // En pause, man selv har valgt, skal ikke ophæves, når videoen ruller ind igen.
   const paused_by_user = useRef(false);
   const [playing, setPlaying] = useState(false);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     const video = ref.current;
@@ -61,11 +75,8 @@ export function EviVideo({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting && !paused_by_user.current) {
-          play(video);
-        } else if (!entry?.isIntersecting) {
-          video.pause();
-        }
+        if (entry?.isIntersecting && !paused_by_user.current) play(video);
+        else if (!entry?.isIntersecting) video.pause();
       },
       { threshold: 0.4 },
     );
@@ -88,7 +99,28 @@ export function EviVideo({
     }
   };
 
+  // Står videoen på pause fra start (reduceret bevægelse), er intet hentet
+  // endnu; længden hentes, så snart man nærmer sig bjælken.
+  const load_duration = () => {
+    const video = ref.current;
+    if (!video || video.readyState > 0) return;
+    video.preload = "metadata";
+    video.load();
+  };
+
+  const seek = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const video = ref.current;
+    if (!video) return;
+    const value = Number(event.target.value);
+    video.currentTime = value;
+    setTime(value);
+  };
+
   const Icon = playing ? Pause : Play;
+  const progress = duration ? (time / duration) * 100 : 0;
+  const seek_style: React.CSSProperties & { "--seek-progress": string } = {
+    "--seek-progress": `${progress}%`,
+  };
 
   return (
     <div
@@ -109,24 +141,52 @@ export function EviVideo({
         preload="none"
         width={1920}
         height={1080}
-        // Dekorativ: teksten står i sektionens udskrift, og knappen styrer den.
+        // Dekorativ: teksten står skjult i sektionen til skærmlæsere, og
+        // bjælken styrer den.
         aria-hidden="true"
         tabIndex={-1}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
+        onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
+        onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
         className="absolute inset-0 size-full object-cover"
       >
         {mobileSrc && <source media={MOBILE_MEDIA} src={mobileSrc} type="video/mp4" />}
         <source src={src} type="video/mp4" />
       </video>
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={playing ? pauseLabel : playLabel}
-        className="absolute right-3 bottom-3 grid size-11 cursor-pointer place-items-center rounded-full bg-evi-dark text-evi-text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-evi-dark md:right-4 md:bottom-4"
+      <EviStack
+        direction="row"
+        align="center"
+        gap="sm"
+        onPointerEnter={load_duration}
+        onFocus={load_duration}
+        className="absolute inset-x-3 bottom-3 rounded-full bg-evi-dark py-1 ps-1 pe-4 text-evi-text-on-dark md:inset-x-4 md:bottom-4"
       >
-        <Icon aria-hidden="true" className="size-5" />
-      </button>
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? labels.pause : labels.play}
+          className="grid size-10 shrink-0 cursor-pointer place-items-center rounded-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current"
+        >
+          <Icon aria-hidden="true" className="size-5" />
+        </button>
+        <input
+          type="range"
+          min={0}
+          max={duration || 1}
+          // Ét sekund pr. piletast; 0,1 var for langsomt at spole med.
+          step={1}
+          value={time}
+          onChange={seek}
+          aria-label={labels.seek}
+          aria-valuetext={`${clock(time)} ${labels.of} ${clock(duration)}`}
+          style={seek_style}
+          className="evi-seek min-w-0 flex-1"
+        />
+        <span aria-hidden="true" className="text-xs whitespace-nowrap tabular-nums">
+          {clock(time)} / {clock(duration)}
+        </span>
+      </EviStack>
     </div>
   );
 }

@@ -236,6 +236,60 @@
       0 4px 8px -4px color-mix(in oklch, currentColor 9%, transparent);
   }
 
+  /* EviVideo's tidslinje: et rigtigt range-input (tastatur, træk og skærmlæser
+     gratis), stylet ens i alle browsere. Fyldet kommer fra --seek-progress, som
+     komponenten sætter, fordi WebKit ikke har et pseudo-element til det. Sporet
+     er 40 % af tekstfarven, så det står med mindst 3:1 på den mørke bjælke. */
+  .evi-seek {
+    --seek-track: color-mix(in oklch, currentColor 40%, transparent);
+    /* Primær, når den kan ses på mørk bund; ellers tekstfarven (kontrast-token). */
+    --seek-fill: var(--btn-primary-ink-on-dark);
+    appearance: none;
+    block-size: 2.25rem;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .evi-seek::-webkit-slider-runnable-track {
+    block-size: 0.375rem;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--seek-fill) var(--seek-progress, 0%),
+      var(--seek-track) var(--seek-progress, 0%)
+    );
+  }
+  .evi-seek::-webkit-slider-thumb {
+    appearance: none;
+    inline-size: 1rem;
+    block-size: 1rem;
+    margin-block-start: -0.3125rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .evi-seek::-moz-range-track {
+    block-size: 0.375rem;
+    border-radius: 999px;
+    background: var(--seek-track);
+  }
+  .evi-seek::-moz-range-progress {
+    block-size: 0.375rem;
+    border-radius: 999px;
+    background: var(--seek-fill);
+  }
+  .evi-seek::-moz-range-thumb {
+    inline-size: 1rem;
+    block-size: 1rem;
+    border: 0;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .evi-seek:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
+
   /* A. Solide temaer */
   .theme-light {
     --theme-bg: var(--color-light);

@@ -13,10 +13,11 @@ export type SystemPageCopy = {
   retry: string;
   /** Skip-link (WCAG 2.4.1) i root-layout'et — engine-chrome, oversættes her. */
   skipToContent: string;
-  /** EviVideo's knap og udskriftens åbner. */
+  /** EviVideo's kontroller; videoOf står mellem tiderne ("0:12 af 0:31"). */
   videoPlay: string;
   videoPause: string;
-  videoTranscript: string;
+  videoSeek: string;
+  videoOf: string;
 };
 
 const EN: SystemPageCopy = {
@@ -29,7 +30,8 @@ const EN: SystemPageCopy = {
   skipToContent: "Skip to content",
   videoPlay: "Play video",
   videoPause: "Pause video",
-  videoTranscript: "Read the text in the video",
+  videoSeek: "Seek in the video",
+  videoOf: "of",
 };
 
 const COPY: Record<string, SystemPageCopy> = {
@@ -44,7 +46,8 @@ const COPY: Record<string, SystemPageCopy> = {
     skipToContent: "Spring til indhold",
     videoPlay: "Afspil video",
     videoPause: "Sæt video på pause",
-    videoTranscript: "Læs teksten i videoen",
+    videoSeek: "Spol i videoen",
+    videoOf: "af",
   },
 };
 

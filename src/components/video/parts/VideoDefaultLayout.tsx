@@ -4,10 +4,6 @@ import { EviRow } from "@/src/components/layout/EviRow";
 import { EviSection } from "@/src/components/layout/EviSection";
 import { EviHeadingGroup } from "@/src/components/typography/EviHeadingGroup";
 import { EviRichText } from "@/src/components/typography/EviRichText";
-import {
-  EviAccordion,
-  EviAccordionItem,
-} from "@/src/components/ui/EviAccordion";
 import { EviImage } from "@/src/components/ui/EviImage";
 import { EviVideo } from "@/src/components/ui/EviVideo";
 import { system_copy } from "@/src/lib/i18n/system-pages";
@@ -23,9 +19,8 @@ export type VideoDefaultLayoutProps = {
 };
 
 /**
- * Video "default": valgfri overskrift, en lydløs video i loop (16:9, og 9:16 på
- * mobil, hvis den findes) og videoens tekst bag en åbner. Domain-part
- * (Tailwind tilladt, R3.3).
+ * Video "default": valgfri overskrift og en lydløs video i loop (16:9, og 9:16
+ * på mobil, hvis den findes). Domain-part (Tailwind tilladt, R3.3).
  */
 export function VideoDefaultLayout({
   slice,
@@ -61,8 +56,12 @@ export function VideoDefaultLayout({
         <EviVideo
           src={p.video.url}
           mobileSrc={mobile}
-          playLabel={copy.videoPlay}
-          pauseLabel={copy.videoPause}
+          labels={{
+            play: copy.videoPlay,
+            pause: copy.videoPause,
+            seek: copy.videoSeek,
+            of: copy.videoOf,
+          }}
           className="mx-auto max-w-5xl"
         >
           <EviImage
@@ -78,15 +77,13 @@ export function VideoDefaultLayout({
           />
         </EviVideo>
       </EviRow>
-      {isFilled.richText(p.transcript) && (
-        <EviRow>
-          <EviAccordion className="mx-auto max-w-5xl">
-            <EviAccordionItem summary={copy.videoTranscript}>
-              <EviRichText field={p.transcript} linkResolver={linkResolver} />
-            </EviAccordionItem>
-          </EviAccordion>
-        </EviRow>
-      )}
+      {/* Videoen har ingen lyd, så teksten er dens alternativ til skærmlæsere
+          (WCAG 1.2.1). Synlig var den i vejen, så den er kun til dem. */}
+      <EviRichText
+        field={p.transcript}
+        linkResolver={linkResolver}
+        className="sr-only"
+      />
     </EviSection>
   );
 }
