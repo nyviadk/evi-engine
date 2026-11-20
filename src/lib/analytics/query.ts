@@ -2,6 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import {
   clamp_days,
   empty_stats,
+  find_burst_bots,
   to_journeys,
   JOURNEY_LIMIT,
   type DayCount,
@@ -125,19 +126,29 @@ export async function query_stats(
   // Auto-ekskludér operatørens egne besøg: besøgs-hashen er repo-scoped, så en
   // hash der også har ramt et staging/preview-domæne (fx kunde.nyvia.dk) i
   // perioden er ikke en rigtig kunde (kunder kender ikke dev-URL'en) → fjern den
-  // fra prod-tallene. Hashen roterer dagligt, så det gælder pr. dag.
-  const staging = await q(
-    `SELECT DISTINCT blob8 AS h FROM ${DATASET} WHERE index1 = '${repo}' AND blob2 = 'staging' AND blob8 != '' AND timestamp > now() - INTERVAL '${days}' DAY LIMIT 1000`,
-  );
-  const dev_hashes = staging
-    .map((r) => String(r.h ?? ""))
-    .filter((h) => /^[0-9a-f]{1,64}$/.test(h));
-  const exclude = dev_hashes.length
-    ? ` AND blob8 NOT IN (${dev_hashes.map((h) => `'${h}'`).join(",")})`
-    : "";
-
+  // fra prod-tallene. Hashen roterer dagligt, så det gælder pr. dag. Besøgende i
+  // robot-bølger (find_burst_bots) fjernes på samme måde.
   const dc = ` AND blob10 NOT IN (${DATACENTER_ASNS.map((a) => `'${a}'`).join(",")})`;
-  const base = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY AND timestamp >= toDateTime('${STATS_START}')${exclude}${dc}`;
+  const prod = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY AND timestamp >= toDateTime('${STATS_START}')${dc}`;
+
+  const [staging, recent] = await Promise.all([
+    q(
+      `SELECT DISTINCT blob8 AS h FROM ${DATASET} WHERE index1 = '${repo}' AND blob2 = 'staging' AND blob8 != '' AND timestamp > now() - INTERVAL '${days}' DAY LIMIT 1000`,
+    ),
+    // Rå rækker til robot-bølgerne. Fejler forespørgslen, er listen tom, og der
+    // filtreres bare ingen bølger fra.
+    q(
+      `SELECT timestamp, blob8 AS visitor, blob4 AS source, blob10 AS asn FROM ${DATASET} WHERE ${prod} AND blob8 != '' ORDER BY timestamp DESC LIMIT 10000`,
+    ),
+  ]);
+  const is_hash = (h: string) => /^[0-9a-f]{1,64}$/.test(h);
+  const dev_hashes = new Set(staging.map((r) => String(r.h ?? "")).filter(is_hash));
+  const bot_hashes = [...find_burst_bots(recent)].filter((h) => is_hash(h) && !dev_hashes.has(h));
+  const excluded = [...dev_hashes, ...bot_hashes];
+  const exclude = excluded.length
+    ? ` AND blob8 NOT IN (${excluded.map((h) => `'${h}'`).join(",")})`
+    : "";
+  const base = `${prod}${exclude}`;
 
   // Top-N efter en blob-kolonne (DRY — samme form for sider/kilder/lande/…).
   const top = (col: string, extra = ""): Promise<Record<string, unknown>[]> =>
@@ -208,5 +219,6 @@ export async function query_stats(
       visitors: Number(r.u ?? 0),
     })),
     journeys: to_journeys(visits, JOURNEY_LIMIT),
+    bot_visitors: bot_hashes.length,
   };
 }

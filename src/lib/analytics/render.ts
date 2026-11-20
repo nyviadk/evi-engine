@@ -139,7 +139,11 @@ function journeys_section(data: StatsData): string {
         })
         .join("")
     : `<li class="empty">Ingen besøg endnu.</li>`;
-  return `<section class="card full"><h2>Besøg — de seneste ${data.journeys.length || ""} besøgende</h2><ul>${body}</ul></section>`;
+  const n = data.bot_visitors;
+  const filtered = n
+    ? `<p class="note">${fmt(n)} besøgende i robot-bølger er sorteret fra alle tal: mindst 3 enkeltsidebesøg inden for et minut, uden henvisning og fra hver sit netværk.</p>`
+    : "";
+  return `<section class="card full"><h2>Besøg — de seneste ${data.journeys.length || ""} besøgende</h2>${filtered}<ul>${body}</ul></section>`;
 }
 
 function range_picker(days: number): string {
@@ -220,6 +224,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 .card .v{color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
 .card .empty{color:var(--mut);justify-content:flex-start}
 .asn{color:var(--mut);font-size:.8rem}
+.note{color:var(--mut);font-size:.85rem;margin:0 0 .75rem}
 .card li.jr{display:block;padding:.6rem 0}
 .jh{display:flex;justify-content:space-between;gap:1rem;color:var(--mut);font-size:.85rem}
 .route{margin-top:.2rem;overflow-wrap:anywhere}
