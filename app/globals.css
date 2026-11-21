@@ -314,6 +314,24 @@
     }
   }
 
+  /* Videoen vokser til fuld størrelse, mens den scrolles ind, og står i fuld
+     størrelse, når hele den er synlig. Kun scale (compositor). Uden scroll-drevne
+     animationer eller med reduceret bevægelse er den bare fuld størrelse. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @keyframes evi-video-grow {
+        from {
+          scale: 0.8;
+        }
+      }
+      .evi-video-grow {
+        animation: evi-video-grow linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
   /* A. Solide temaer */
   .theme-light {
     --theme-bg: var(--color-light);
