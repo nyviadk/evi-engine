@@ -17,6 +17,17 @@ function subscribe_mobile(on_change: () => void): () => void {
 const is_mobile = (): boolean => window.matchMedia(MOBILE_MEDIA).matches;
 const no_screen = (): null => null;
 
+// Videoen starter først, når næsten hele den er synlig; ved 40 % var åbningen
+// spillet, mens den voksede på plads. En video, der er højere end skærmen,
+// kan aldrig blive 90 % synlig, så der tæller det, at den dækker skærmen.
+const START_AT = 0.9;
+const THRESHOLDS = Array.from({ length: 21 }, (_, i) => i / 20);
+function in_view(entry: IntersectionObserverEntry): boolean {
+  if (entry.intersectionRatio >= START_AT) return true;
+  const screen = entry.rootBounds?.height ?? window.innerHeight;
+  return entry.intersectionRect.height >= screen * START_AT;
+}
+
 // Afvist afspilning (fx strømbesparelse) efterlader bare startbilledet.
 function play(video: HTMLVideoElement): void {
   video.play().catch(() => undefined);
@@ -97,10 +108,11 @@ export function EviVideo({
     if (position.current) video.currentTime = position.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting && !paused_by_user.current) play(video);
-        else if (!entry?.isIntersecting) video.pause();
+        if (!entry) return;
+        if (!entry.isIntersecting) video.pause();
+        else if (in_view(entry) && video.paused && !paused_by_user.current) play(video);
       },
-      { threshold: 0.4 },
+      { threshold: THRESHOLDS },
     );
     observer.observe(video);
     return () => observer.disconnect();
