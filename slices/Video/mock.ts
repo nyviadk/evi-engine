@@ -2,7 +2,7 @@
 // Se R4.7 i regelbogen (memory: project_rulebook.md).
 
 import type { Content, ImageField, LinkToMediaField } from "@prismicio/client";
-import { h2, line, paras } from "@/src/lib/preview/mockFields";
+import { h2, line, paras, webLink } from "@/src/lib/preview/mockFields";
 import type { EviPageSliceContext } from "@/src/lib/prismic/slices";
 
 type Primary = Content.VideoSliceDefaultPrimary;
@@ -55,6 +55,7 @@ export const mock: Record<string, Content.VideoSlice> = {
         "Hent ved disken.",
         "Kaffemølle Aarhus.",
       ),
+      cta_link: webLink("Se hele menuen"),
       background_theme: "Lys",
     },
   },

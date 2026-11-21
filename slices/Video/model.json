@@ -7,7 +7,7 @@
       "description": "Default",
       "docURL": "",
       "id": "default",
-      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/video/default/921214ee58e39a174d6245fe7089a52e67b44b3b.png?auto=compress%2Cformat",
+      "imageUrl": "https://images.prismic.io/evi-engine/shared-slices/video/default/868415c2076c395173beb3c4b4392d5c75ce3582.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -86,6 +86,14 @@
             "placeholder": "Baggrundstema for sektionen"
           },
           "type": "Select"
+        },
+        "cta_link": {
+          "config": {
+            "allowTargetBlank": true,
+            "allowText": true,
+            "label": "Knap under videoen (valgfri)"
+          },
+          "type": "Link"
         }
       },
       "version": ""
