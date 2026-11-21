@@ -56,11 +56,34 @@ const DATACENTER_ASNS = [
   "12876", // Scaleway
 ];
 
+// Vores egne browser-tjek af live-domænet, før de sendte "evi-check-bot" i UA'en
+// (WebKit ligner en almindelig Safari). Tidsrum i UTC med 3 min margen, fundet i
+// samtaleloggen; kun fra det netværk, tjekkene kørte fra. Rå UA gemmes ikke, så
+// de kan ikke kendes på andet end tid og netværk.
+const OWN_CHECKS_ASN = "208172";
+const OWN_CHECKS: [string, string][] = [
+  ["2026-11-18 17:30:00", "2026-11-18 17:38:00"],
+  ["2026-11-18 20:09:00", "2026-11-18 20:25:00"],
+  ["2026-11-20 11:36:00", "2026-11-20 11:43:00"],
+  ["2026-11-20 12:35:00", "2026-11-20 12:48:00"],
+  ["2026-11-20 13:23:00", "2026-11-20 13:31:00"],
+  ["2026-11-21 10:12:00", "2026-11-21 10:20:00"],
+  ["2026-11-21 11:18:00", "2026-11-21 11:30:00"],
+  ["2026-11-21 12:06:00", "2026-11-21 12:13:00"],
+  ["2026-11-21 12:49:00", "2026-11-21 12:56:00"],
+  ["2026-11-21 14:20:00", "2026-11-21 14:26:00"],
+];
+// Kun AND/OR og sammenligninger (Analytics Engines SQL er et lille subset):
+// behold rækken, hvis den er fra et andet netværk eller uden for alle tidsrum.
+const own_checks_sql = ` AND (blob10 != '${OWN_CHECKS_ASN}' OR (${OWN_CHECKS.map(
+  ([from, to]) => `(timestamp < toDateTime('${from}') OR timestamp > toDateTime('${to}'))`,
+).join(" AND ")}))`;
+
 async function run_sql(
   account_id: string,
   token: string,
   sql: string,
-): Promise<Record<string, unknown>[]> {
+): Promise<Record<string, unknown>[] | null> {
   try {
     const res = await fetch(
       `https://api.cloudflare.com/client/v4/accounts/${account_id}/analytics_engine/sql`,
@@ -70,11 +93,11 @@ async function run_sql(
         body: `${sql} FORMAT JSON`,
       },
     );
-    if (!res.ok) return [];
+    if (!res.ok) return null;
     const json = (await res.json()) as { data?: Record<string, unknown>[] };
     return json.data ?? [];
   } catch {
-    return [];
+    return null;
   }
 }
 
@@ -124,8 +147,13 @@ export async function query_stats(
   const token = cf?.env?.EVI_STATS_QUERY_TOKEN;
   if (!account_id || !token) return empty_stats(days);
 
-  const q = (sql: string): Promise<Record<string, unknown>[]> =>
-    run_sql(account_id, token, sql);
+  // Gruppering med parenteser står ikke i Analytics Engines SQL-dokumentation.
+  // Afviser den filteret for egne tjek, vises tallene hellere med dem end tomme.
+  const q = async (sql: string): Promise<Record<string, unknown>[]> =>
+    (await run_sql(account_id, token, sql)) ??
+    (sql.includes(own_checks_sql)
+      ? ((await run_sql(account_id, token, sql.replaceAll(own_checks_sql, ""))) ?? [])
+      : []);
 
   // Auto-ekskludér operatørens egne besøg: besøgs-hashen er repo-scoped, så en
   // hash der også har ramt et staging/preview-domæne (fx kunde.nyvia.dk) i
@@ -133,7 +161,7 @@ export async function query_stats(
   // fra prod-tallene. Hashen roterer dagligt, så det gælder pr. dag. Besøgende i
   // robot-bølger (find_burst_bots) fjernes på samme måde.
   const dc = ` AND blob10 NOT IN (${DATACENTER_ASNS.map((a) => `'${a}'`).join(",")})`;
-  const prod = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY AND timestamp >= toDateTime('${STATS_START}')${dc}`;
+  const prod = `index1 = '${repo}' AND blob2 = 'prod' AND timestamp > now() - INTERVAL '${days}' DAY AND timestamp >= toDateTime('${STATS_START}')${dc}${own_checks_sql}`;
 
   const [staging, recent] = await Promise.all([
     q(
