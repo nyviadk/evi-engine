@@ -66,7 +66,7 @@ export function VideoDefaultLayout({
             seek: copy.videoSeek,
             of: copy.videoOf,
           }}
-          className="mx-auto max-w-6xl shadow-evi-lg"
+          className="shadow-evi-lg mx-auto max-w-6xl"
         >
           <EviImage
             field={p.poster}
