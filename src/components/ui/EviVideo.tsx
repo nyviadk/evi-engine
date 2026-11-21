@@ -18,15 +18,9 @@ const is_mobile = (): boolean => window.matchMedia(MOBILE_MEDIA).matches;
 const no_screen = (): null => null;
 
 // Videoen starter først, når næsten hele den er synlig; ved 40 % var åbningen
-// spillet, mens den voksede på plads. En video, der er højere end skærmen,
-// kan aldrig blive 90 % synlig, så der tæller det, at den dækker skærmen.
+// spillet, mens den voksede på plads.
 const START_AT = 0.9;
 const THRESHOLDS = Array.from({ length: 21 }, (_, i) => i / 20);
-function in_view(entry: IntersectionObserverEntry): boolean {
-  if (entry.intersectionRatio >= START_AT) return true;
-  const screen = entry.rootBounds?.height ?? window.innerHeight;
-  return entry.intersectionRect.height >= screen * START_AT;
-}
 
 // Afvist afspilning (fx strømbesparelse) efterlader bare startbilledet.
 function play(video: HTMLVideoElement): void {
@@ -110,7 +104,9 @@ export function EviVideo({
       ([entry]) => {
         if (!entry) return;
         if (!entry.isIntersecting) video.pause();
-        else if (in_view(entry) && video.paused && !paused_by_user.current) play(video);
+        else if (entry.intersectionRatio >= START_AT && video.paused && !paused_by_user.current) {
+          play(video);
+        }
       },
       { threshold: THRESHOLDS },
     );
@@ -159,8 +155,12 @@ export function EviVideo({
       data-slot="evi-video"
       data-playing={playing || undefined}
       className={cn(
-        "relative w-full overflow-hidden rounded-evi border border-current/10",
-        mobileSrc ? "aspect-9/16 md:aspect-video" : "aspect-video",
+        "relative mx-auto w-full overflow-hidden rounded-evi border border-current/10",
+        // Aldrig højere end skærmen minus header og luft, så hele videoen kan
+        // ses på én gang; bredden følger formatet.
+        mobileSrc
+          ? "aspect-9/16 max-w-[calc((100svh-8rem)*9/16)] md:aspect-video md:max-w-[calc((100svh-8rem)*16/9)]"
+          : "aspect-video max-w-[calc((100svh-8rem)*16/9)]",
         className,
       )}
     >
