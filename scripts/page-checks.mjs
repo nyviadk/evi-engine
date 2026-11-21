@@ -33,8 +33,16 @@ export function find_text_spills() {
     if (style.overflowX !== "visible" || style.visibility === "hidden") continue;
     if (visually_hidden(box)) continue;
 
+    // hanging-punctuation (globals.css, kun Safari) lader citationstegn og
+    // parenteser hænge ud i margenen med vilje; mål teksten uden dem.
+    const hang = style.hangingPunctuation ?? "";
+    const text = node.textContent;
+    const lead = hang.includes("first") ? text.match(/^\s*[\p{Ps}\p{Pi}\p{Pf}"']?/u)[0].length : 0;
+    const trail = hang.includes("last") ? text.match(/[\p{Pe}\p{Pi}\p{Pf}"']?\s*$/u)[0].length : 0;
+    if (lead + trail >= text.length) continue;
     const range = document.createRange();
-    range.selectNodeContents(node);
+    range.setStart(node, lead);
+    range.setEnd(node, text.length - trail);
     const rect = box.getBoundingClientRect();
     const left = rect.left + parseFloat(style.borderLeftWidth);
     const right = rect.right - parseFloat(style.borderRightWidth);
