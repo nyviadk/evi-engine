@@ -8,7 +8,8 @@ import path from "node:path";
 
 // Claude Code viser kun et uddrag af tekst over 10.000 tegn.
 const LIMIT = 9500;
-const SUMMARY_MAX = 120;
+// 100, ikke 120: med EviVideo nåede kataloget over LIMIT; navne og props er det vigtige.
+const SUMMARY_MAX = 100;
 const PROPS_MAX = 9;
 
 const COMPONENT_GROUPS = [

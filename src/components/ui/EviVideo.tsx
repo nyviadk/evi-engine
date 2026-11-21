@@ -61,6 +61,28 @@ export function EviVideo({
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
+  // Filen vælges her og ikke med <source media>: media på video-kilder er
+  // upålideligt på tværs af browsere (en iPhone viste 16:9-filen). Skifter
+  // skærmen side af bruddet, skiftes filen, og den fortsætter fra samme sekund,
+  // fordi begge versioner følger samme tidslinje. Kører før afspil-effekten.
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const mobile = window.matchMedia(MOBILE_MEDIA);
+    const choose = () => {
+      const next = mobileSrc && mobile.matches ? mobileSrc : src;
+      if (video.getAttribute("src") === next) return;
+      const was_playing = !video.paused;
+      const at = video.currentTime;
+      video.src = next;
+      if (at) video.currentTime = at;
+      if (was_playing) play(video);
+    };
+    choose();
+    mobile.addEventListener("change", choose);
+    return () => mobile.removeEventListener("change", choose);
+  }, [src, mobileSrc]);
+
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
@@ -153,10 +175,7 @@ export function EviVideo({
         onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
         className="absolute inset-0 size-full cursor-pointer object-cover"
-      >
-        {mobileSrc && <source media={MOBILE_MEDIA} src={mobileSrc} type="video/mp4" />}
-        <source src={src} type="video/mp4" />
-      </video>
+      />
       <EviStack
         direction="row"
         align="center"
