@@ -141,7 +141,7 @@ function journeys_section(data: StatsData): string {
     : `<li class="empty">Ingen besøg endnu.</li>`;
   const n = data.bot_visitors;
   const filtered = n
-    ? `<p class="note">${fmt(n)} besøgende i robot-bølger er sorteret fra alle tal: mindst 3 enkeltsidebesøg inden for et minut, uden henvisning og fra hver sit netværk.</p>`
+    ? `<p class="note">${fmt(n)} besøgende i robot-bølger er sorteret fra alle tal: mindst 3 direkte enkeltsidebesøg fra hver sit netværk inden for et minut, eller mindst 5 “via Google/Bing” fra mindst 4 netværk.</p>`
     : "";
   return `<section class="card full"><h2>Besøg — de seneste ${data.journeys.length || ""} besøgende</h2>${filtered}<ul>${body}</ul></section>`;
 }
