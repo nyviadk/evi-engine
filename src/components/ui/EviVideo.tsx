@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Pause, Play } from "lucide-react";
 
 import { EviStack } from "@/src/components/layout/EviStack";
@@ -8,6 +8,14 @@ import { cn } from "@/src/lib/utils/cn";
 
 // Samme brud som EviImage's <picture>, så startbillede og video skifter sammen.
 const MOBILE_MEDIA = "(max-width: 768px)";
+
+function subscribe_mobile(on_change: () => void): () => void {
+  const query = window.matchMedia(MOBILE_MEDIA);
+  query.addEventListener("change", on_change);
+  return () => query.removeEventListener("change", on_change);
+}
+const is_mobile = (): boolean => window.matchMedia(MOBILE_MEDIA).matches;
+const no_screen = (): null => null;
 
 // Afvist afspilning (fx strømbesparelse) efterlader bare startbilledet.
 function play(video: HTMLVideoElement): void {
@@ -57,44 +65,36 @@ export function EviVideo({
   const ref = useRef<HTMLVideoElement>(null);
   // En pause, man selv har valgt, skal ikke ophæves, når videoen ruller ind igen.
   const paused_by_user = useRef(false);
+  // Hvor langt videoen var; currentTime er nulstillet, når React har skiftet fil.
+  const position = useRef(0);
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Filen vælges her og ikke med <source media>: media på video-kilder er
-  // upålideligt på tværs af browsere (en iPhone viste 16:9-filen). Skifter
-  // skærmen side af bruddet, skiftes filen, og den fortsætter fra samme sekund,
-  // fordi begge versioner følger samme tidslinje. Kører før afspil-effekten.
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    const mobile = window.matchMedia(MOBILE_MEDIA);
-    const choose = () => {
-      const next = mobileSrc && mobile.matches ? mobileSrc : src;
-      if (video.getAttribute("src") === next) return;
-      const was_playing = !video.paused;
-      const at = video.currentTime;
-      video.src = next;
-      if (at) video.currentTime = at;
-      if (was_playing) play(video);
-    };
-    choose();
-    mobile.addEventListener("change", choose);
-    return () => mobile.removeEventListener("change", choose);
-  }, [src, mobileSrc]);
+  // Filen beregnes i render ud fra skærmen, ikke med <source media>, som er
+  // upålideligt på tværs af browsere (en iPhone viste 16:9-filen). Serveren
+  // kender ikke skærmen, så videoen får først sin fil i browseren.
+  const mobile = useSyncExternalStore(subscribe_mobile, is_mobile, no_screen);
+  const file = mobile === null ? undefined : mobile && mobileSrc ? mobileSrc : src;
 
   useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (motion.matches) paused_by_user.current = true;
     const on_motion = (event: MediaQueryListEvent) => {
       if (!event.matches) return;
       paused_by_user.current = true;
-      video.pause();
+      ref.current?.pause();
     };
     motion.addEventListener("change", on_motion);
+    return () => motion.removeEventListener("change", on_motion);
+  }, []);
 
+  // Kører igen, når filen skifter (fx når telefonen drejes): den nye fil
+  // fortsætter fra samme sekund, fordi begge versioner følger samme tidslinje.
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || !file) return;
+    if (position.current) video.currentTime = position.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting && !paused_by_user.current) play(video);
@@ -103,11 +103,8 @@ export function EviVideo({
       { threshold: 0.4 },
     );
     observer.observe(video);
-    return () => {
-      observer.disconnect();
-      motion.removeEventListener("change", on_motion);
-    };
-  }, []);
+    return () => observer.disconnect();
+  }, [file]);
 
   const toggle = () => {
     const video = ref.current;
@@ -135,6 +132,7 @@ export function EviVideo({
     if (!video) return;
     const value = Number(event.target.value);
     video.currentTime = value;
+    position.current = value;
     setTime(value);
   };
 
@@ -157,6 +155,7 @@ export function EviVideo({
       {children && <div className="absolute inset-0">{children}</div>}
       <video
         ref={ref}
+        src={file}
         muted
         loop
         playsInline
@@ -172,7 +171,10 @@ export function EviVideo({
         onClick={toggle}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
-        onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
+        onTimeUpdate={(event) => {
+          position.current = event.currentTarget.currentTime;
+          setTime(position.current);
+        }}
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
         className="absolute inset-0 size-full cursor-pointer object-cover"
       />
