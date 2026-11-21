@@ -66,7 +66,7 @@ export function VideoDefaultLayout({
             seek: copy.videoSeek,
             of: copy.videoOf,
           }}
-          className="mx-auto max-w-5xl"
+          className="mx-auto max-w-6xl shadow-evi-lg"
         >
           <EviImage
             field={p.poster}
@@ -76,7 +76,7 @@ export function VideoDefaultLayout({
             variant="plain"
             rounded={false}
             priority={eagerImages}
-            sizes="(min-width: 1024px) 1024px, 100vw"
+            sizes="(min-width: 1152px) 1152px, 100vw"
             imageClassName="object-cover"
           />
         </EviVideo>
