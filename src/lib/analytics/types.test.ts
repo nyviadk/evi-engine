@@ -48,6 +48,27 @@ test("en bølge, der krydser et minutskifte, fanges stadig", () => {
   assert.equal(find_burst_bots(rows).size, 3);
 });
 
+// Mønstret fra 20. nov. kl. 20.44: tolv enkeltsidebesøg "via google.com" på
+// ét minut, fra seks netværk (nogle gentaget).
+const fake_google = ["207990", "207990", "207990", "207990", "1", "1", "2", "2", "3", "4", "5", "6"].map(
+  (asn, i) => ({ visitor: `g${i}`, timestamp: `2026-11-20 20:44:${String(i * 4).padStart(2, "0")}`, source: "google.com", asn }),
+);
+
+test("en bølge af besøg med falsk Google-henvisning fanges", () => {
+  assert.equal(find_burst_bots(fake_google).size, 12);
+});
+
+test("almindelige søgninger og et LinkedIn-opslag tæller ikke som robot", () => {
+  // Fire søgninger på et minut: under grænsen.
+  assert.equal(find_burst_bots(fake_google.slice(4, 8)).size, 0);
+  // Fem via Google, men kun tre netværk.
+  const few_networks = fake_google.slice(0, 5).map((r, i) => ({ ...r, asn: String(i % 3) }));
+  assert.equal(find_burst_bots(few_networks).size, 0);
+  // Et opslag på LinkedIn kan sende mange ind på én gang.
+  const linkedin = fake_google.map((r) => ({ ...r, source: "linkedin.com" }));
+  assert.equal(find_burst_bots(linkedin).size, 0);
+});
+
 test("rigtige mønstre tæller ikke som robot", () => {
   const at = (s: number) => `2026-11-19 10:00:${String(s).padStart(2, "0")}`;
   // Via en henvisning (fx et LinkedIn-opslag, der sender mange ind på én gang).

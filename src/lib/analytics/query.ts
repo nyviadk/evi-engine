@@ -50,6 +50,10 @@ const DATACENTER_ASNS = [
   "48090", // DMZHOST / Techoff SRV (sårbarheds-scanner, NL)
   "64286", // LogicWeb (hosting)
   "26548", // PureVoltage Hosting ("Fine Group Servers")
+  "46475", "59651", // Fine Group Servers Solutions (flere netværk)
+  "207990", // HostRoyale (hosting + proxy)
+  "30633", // Leaseweb USA
+  "12876", // Scaleway
 ];
 
 async function run_sql(

@@ -65,13 +65,41 @@ export function empty_stats(days: number): StatsData {
 // skifter hjemme-netværk for hvert kald, så de kan ikke filtreres på ASN.
 const BURST_MIN = 3;
 const BURST_WINDOW_MS = 60_000;
+// Søgninger kommer én ad gangen, aldrig som et kor: fem enkeltsidebesøg "via
+// Google" på samme minut fra fire netværk er en falsk henvisning (20. nov.
+// kl. 20.44: tolv på ét minut til vilkår og kontakt). Sociale medier er ikke
+// med, for et opslag kan godt sende flere ind på én gang.
+const SEARCH_BURST_MIN = 5;
+const SEARCH_BURST_NETWORKS = 4;
+const SEARCH_SOURCE = /(^|\.)(google|bing)\.[a-z.]+$/;
 
 type Candidate = { hash: string; at: number; asn: string };
 
+function mark_bursts(
+  candidates: Candidate[],
+  min_visits: number,
+  min_networks: number,
+  bots: Set<string>,
+): void {
+  candidates.forEach((first, i) => {
+    // Sorteret efter tid, så vinduet slutter ved første besøg uden for det.
+    const window: Candidate[] = [];
+    for (let j = i; j < candidates.length; j++) {
+      const c = candidates[j];
+      if (!c || c.at - first.at > BURST_WINDOW_MS) break;
+      window.push(c);
+    }
+    if (window.length >= min_visits && new Set(window.map((c) => c.asn)).size >= min_networks) {
+      for (const c of window) bots.add(c.hash);
+    }
+  });
+}
+
 /**
  * Besøgskoder i robot-bølger ud fra rå visningsrækker (visitor, timestamp,
- * source, asn). Bevidst forsigtig: besøg via en henvisning, med flere sider
- * eller fra samme netværk (fx et kontor) tæller aldrig som robot.
+ * source, asn). Bevidst forsigtig: besøg med flere sider, fra samme netværk
+ * (fx et kontor) eller via sociale medier tæller aldrig som robot; via en
+ * søgemaskine kræver det en større bølge end direkte besøg.
  */
 export function find_burst_bots(rows: Record<string, unknown>[]): Set<string> {
   const by_hash = new Map<string, { views: number; candidate: Candidate; source: string }>();
@@ -91,24 +119,19 @@ export function find_burst_bots(rows: Record<string, unknown>[]): Set<string> {
     });
   }
 
-  const candidates = [...by_hash.values()]
-    .filter((v) => v.views === 1 && !v.source && !Number.isNaN(v.candidate.at))
+  const singles = [...by_hash.values()].filter(
+    (v) => v.views === 1 && !Number.isNaN(v.candidate.at),
+  );
+  const by_time = (a: Candidate, b: Candidate) => a.at - b.at;
+  const direct = singles.filter((v) => !v.source).map((v) => v.candidate).sort(by_time);
+  const search = singles
+    .filter((v) => SEARCH_SOURCE.test(v.source))
     .map((v) => v.candidate)
-    .sort((a, b) => a.at - b.at);
+    .sort(by_time);
 
   const bots = new Set<string>();
-  candidates.forEach((first, i) => {
-    // Sorteret efter tid, så vinduet slutter ved første besøg uden for det.
-    const window: Candidate[] = [];
-    for (let j = i; j < candidates.length; j++) {
-      const c = candidates[j];
-      if (!c || c.at - first.at > BURST_WINDOW_MS) break;
-      window.push(c);
-    }
-    if (window.length >= BURST_MIN && new Set(window.map((c) => c.asn)).size >= BURST_MIN) {
-      for (const c of window) bots.add(c.hash);
-    }
-  });
+  mark_bursts(direct, BURST_MIN, BURST_MIN, bots);
+  mark_bursts(search, SEARCH_BURST_MIN, SEARCH_BURST_NETWORKS, bots);
   return bots;
 }
 

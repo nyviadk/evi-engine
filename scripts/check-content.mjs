@@ -96,7 +96,12 @@ async function check_browser(engine, browser_name) {
   let failed = false;
   try {
     // reducedMotion: skærmbillederne viser slut-tilstanden, ikke midt i en indtoning.
-    const context = await browser.newContext({ reducedMotion: "reduce" });
+    // "bot" i UA'en, så Evi Stats ikke tæller tjekket som besøg. WebKit sender
+    // ellers en almindelig Safari-UA (Chromiums "Headless" sorteres allerede fra).
+    const probe = await browser.newPage();
+    const userAgent = `${await probe.evaluate(() => navigator.userAgent)} evi-check-bot`;
+    await probe.close();
+    const context = await browser.newContext({ reducedMotion: "reduce", userAgent });
     const page = await context.newPage();
     // Første besøg følger preview-linkets redirect og sætter cookien; resten
     // af bredderne genindlæser den endelige side i samme context.
