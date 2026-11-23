@@ -146,6 +146,29 @@ function journeys_section(data: StatsData): string {
   return `<section class="card full"><h2>Besøg — de seneste ${data.journeys.length || ""} besøgende</h2>${filtered}<ul>${body}</ul></section>`;
 }
 
+const DAY = new Intl.DateTimeFormat("da-DK", { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" });
+const day_text = (iso: string): string => (iso ? DAY.format(new Date(`${iso}T00:00:00Z`)) : "—");
+const days_text = (n: number): string => `${fmt(n)} døgn`;
+
+// Data går gennem tre trin: live i Analytics Engine (ca. 90 dage), arkiveret
+// med besøgskode (12 måneder) og anonymiseret (resten, for altid).
+function storage_section(data: StatsData): string {
+  const s = data.storage;
+  if (!s) return "";
+  const rows: [string, string][] = [
+    ["1. Live statistik (Cloudflare, ca. 90 dage)", `fra ${day_text(s.live_from)}`],
+    [
+      "2. Arkiv med besøgskode (op til 12 måneder)",
+      s.coded_days ? `${days_text(s.coded_days)} · anonymiseres fra ${day_text(s.anonymize_next)}` : "ingen døgn",
+    ],
+    ["3. Anonymiseret arkiv (besøgskoden slettet)", s.anonymized_days ? days_text(s.anonymized_days) : "ingen døgn endnu"],
+    ["Gemt i arkivet", `${fmt(s.archive_views)} sidevisninger · ${day_text(s.archive_first)} – ${day_text(s.archive_last)}`],
+    ["Arkivet kørte sidst", s.last_run ? TIME.format(new Date(s.last_run)) : "—"],
+  ];
+  const items = rows.map(([k, v]) => `<li><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></li>`).join("");
+  return `<section class="card full storage"><h2>Datalagring</h2><p class="note">Arkivet henter hvert hele døgn fra den live statistik og gemmer det permanent. Sidevisningerne i arkivet er tal før robotfiltre.</p><ul>${items}</ul></section>`;
+}
+
 function range_picker(days: number): string {
   const links = RANGES.map((r) => {
     const active = r === days;
@@ -177,6 +200,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
         ${network_list("Internetudbydere — sandsynligvis mennesker", data.networks.filter((n) => !HOSTING.test(n.name)), "Ingen data endnu.")}
         ${network_list("Servere og hosting — sandsynligvis robotter", data.networks.filter((n) => HOSTING.test(n.name)), "Ingen fundet.")}
         ${journeys_section(data)}
+        ${storage_section(data)}
       </div>`
     : `<p class="notice">Kunne ikke hente tallene lige nu. Prøv igen om lidt.</p>`;
 
@@ -227,6 +251,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 .card .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card .v{color:var(--mut);font-variant-numeric:tabular-nums;flex-shrink:0}
 .card .empty{color:var(--mut);justify-content:flex-start}
+.storage li{flex-wrap:wrap;column-gap:1rem;row-gap:.15rem}
+.storage .k{white-space:normal}
+.storage .v{flex-shrink:1}
 .asn{color:var(--mut);font-size:.8rem}
 .note{color:var(--mut);font-size:.85rem;margin:0 0 .75rem}
 .card li.jr{display:block;padding:.6rem 0}

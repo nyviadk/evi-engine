@@ -11,6 +11,7 @@ import {
   type DayCount,
   type NameCount,
   type StatsData,
+  type Storage,
 } from "./types";
 
 // Læses via SQL-API'et (HTTP), ikke en binding — sat via `wrangler secret put`.
@@ -259,7 +260,51 @@ export async function query_stats(
     journeys: to_journeys(visits, JOURNEY_LIMIT),
     bot_visitors: bot_hashes.length,
     archive: false,
+    storage: await storage_status(cf?.env?.EVI_STATS_ARCHIVE, repo),
   };
+}
+
+const ANONYMIZE_AFTER_MS = 365 * DAY_MS;
+const LIVE_SPAN_DAYS = 89;
+
+/** De tre trin for én tenant. Fejler arkivet, vises kortet bare ikke. */
+export async function storage_status(
+  db: D1Database | undefined,
+  repo: string,
+  now = Date.now(),
+): Promise<Storage | null> {
+  if (!db) return null;
+  try {
+    const [row, run] = await Promise.all([
+      db
+        .prepare(
+          `SELECT min(day) AS first, max(day) AS last, count(DISTINCT day) AS days, SUM(sample_interval) AS views,
+            count(DISTINCT CASE WHEN day IN (SELECT day FROM anonymized_days) THEN day END) AS anon,
+            min(CASE WHEN day NOT IN (SELECT day FROM anonymized_days) THEN day END) AS oldest_coded
+           FROM pageviews WHERE repo = ? AND kind = 'prod' AND ts >= '${STATS_START}'`,
+        )
+        .bind(repo)
+        .first<Record<string, unknown>>(),
+      db.prepare("SELECT max(archived_at) AS at FROM archived_days").first<{ at: string | null }>(),
+    ]);
+    if (!row?.first) return null;
+    const day = (ms: number) => new Date(ms).toISOString().slice(0, 10);
+    const start = Date.parse(`${STATS_START.slice(0, 10)}T00:00:00Z`);
+    const today = Math.floor(now / DAY_MS) * DAY_MS;
+    const oldest = row.oldest_coded ? Date.parse(`${String(row.oldest_coded)}T00:00:00Z`) : null;
+    return {
+      live_from: day(Math.max(start, today - LIVE_SPAN_DAYS * DAY_MS)),
+      archive_first: String(row.first),
+      archive_last: String(row.last ?? row.first),
+      coded_days: Number(row.days ?? 0) - Number(row.anon ?? 0),
+      anonymized_days: Number(row.anon ?? 0),
+      anonymize_next: oldest === null ? "" : day(oldest + ANONYMIZE_AFTER_MS),
+      archive_views: Number(row.views ?? 0),
+      last_run: String(run?.at ?? ""),
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -339,5 +384,6 @@ export async function stats_from_archive(
     journeys: to_journeys(visits, JOURNEY_LIMIT),
     bot_visitors: Number(counts[0]?.bot ?? 0),
     archive: true,
+    storage: await storage_status(db, repo, now),
   };
 }

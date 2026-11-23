@@ -25,7 +25,7 @@ import {
   to_archive_row,
   type DayRow,
 } from "./archive";
-import { stats_from_archive } from "./query";
+import { stats_from_archive, storage_status } from "./query";
 
 test("døgnets besøgende mærkes, før besøgskoden slettes", () => {
   const row = (visitor: string, over: Partial<DayRow> = {}): DayRow => ({
@@ -93,6 +93,7 @@ function fake_d1(sql = new DatabaseSync(":memory:")) {
   const statement = (query: string, params: Params = []) => ({
     bind: (...p: Params) => statement(query, p),
     all: async () => ({ results: sql.prepare(query).all(...params) }),
+    first: async () => sql.prepare(query).get(...params) ?? null,
     run: async () => sql.prepare(query).run(...params),
     exec: () => sql.prepare(query).run(...params),
   });
@@ -202,4 +203,23 @@ test("dashboardet læser arkivet: robotter, datacentre og staging tælles ikke",
   assert.equal(later.views, 2);
   assert.equal(later.visitors, 1);
   assert.equal(later.journeys.length, 0);
+});
+
+test("datalagring: døgn med kode, anonymiserede døgn og næste anonymisering", async () => {
+  const { db } = fake_d1();
+  await db.batch(SCHEMA.map((q) => db.prepare(q)));
+  await store_day(db, "2026-11-19", [ae_row("a", "2026-11-19 10:00:00"), ae_row("a", "2026-11-19 10:01:00")]);
+  await store_day(db, "2026-11-20", [ae_row("b", "2026-11-20 10:00:00")]);
+  await anonymize_day(db, "2026-11-19");
+  const s = await storage_status(db, "myplanio", Date.parse("2026-11-23T08:00:00Z"));
+  assert.equal(s?.archive_first, "2026-11-19");
+  assert.equal(s?.archive_last, "2026-11-20");
+  assert.equal(s?.coded_days, 1);
+  assert.equal(s?.anonymized_days, 1);
+  assert.equal(s?.anonymize_next, "2027-11-20");
+  assert.equal(s?.archive_views, 3);
+  assert.equal(s?.live_from, "2026-11-18");
+  assert.ok(s?.last_run);
+  // Ingen arkiv-binding: kortet vises ikke.
+  assert.equal(await storage_status(undefined, "myplanio"), null);
 });

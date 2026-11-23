@@ -14,6 +14,22 @@ export type Journey = {
   referrer: string;
   pages: { time: string; path: string }[];
 };
+/** Hvor tenantens data står i de tre trin: live, arkiv med besøgskode, anonymiseret. */
+export type Storage = {
+  /** Første dag, Analytics Engine stadig har (ca. 90 dage tilbage, tidligst lanceringen). */
+  live_from: string;
+  archive_first: string;
+  archive_last: string;
+  coded_days: number;
+  anonymized_days: number;
+  /** Dag, hvor det ældste døgn med besøgskode anonymiseres (12 måneder). */
+  anonymize_next: string;
+  /** Sidevisninger i arkivet, før robotfiltre. */
+  archive_views: number;
+  /** ISO-tid for seneste arkivering. */
+  last_run: string;
+};
+
 export type StatsData = {
   ok: boolean;
   days: number;
@@ -33,6 +49,7 @@ export type StatsData = {
   bot_visitors: number;
   /** Tallene kommer fra det permanente arkiv (til og med i går), ikke Analytics Engine. */
   archive: boolean;
+  storage: Storage | null;
 };
 
 /** Tilladte tidsintervaller (dage); 0 = alt. Andet input klampes til 30. */
@@ -69,6 +86,7 @@ export function empty_stats(days: number): StatsData {
     journeys: [],
     bot_visitors: 0,
     archive: false,
+    storage: null,
   };
 }
 
