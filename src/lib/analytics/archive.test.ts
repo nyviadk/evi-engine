@@ -124,42 +124,42 @@ test("arkivets SQL: skema, indsættelse i blokke og anonymisering i SQLite", asy
   await add_missing_columns(db);
   // 9 rækker krydser blokgrænsen (6 pr. INSERT).
   const rows = [
-    ae_row("human", "2025-11-20 10:00:00", { b4: "google.com" }),
-    ae_row("human", "2025-11-20 10:01:00", { b5: "/da-dk" }),
-    ae_row("reload", "2025-11-20 11:00:00"),
-    ae_row("reload", "2025-11-20 11:00:30"),
-    ae_row("x1", "2025-11-20 12:00:00", { b4: "linkedin.com" }),
-    ae_row("x2", "2025-11-20 12:30:00", { b4: "linkedin.com" }),
-    ae_row("x3", "2025-11-20 13:00:00", { b4: "linkedin.com" }),
-    ae_row("me", "2025-11-20 14:00:00", { b1: "myplanio.nyvia.dk", b2: "staging" }),
-    ae_row("me", "2025-11-20 14:05:00", { b4: "google.com" }),
+    ae_row("human", "2026-11-20 10:00:00", { b4: "google.com" }),
+    ae_row("human", "2026-11-20 10:01:00", { b5: "/da-dk" }),
+    ae_row("reload", "2026-11-20 11:00:00"),
+    ae_row("reload", "2026-11-20 11:00:30"),
+    ae_row("x1", "2026-11-20 12:00:00", { b4: "linkedin.com" }),
+    ae_row("x2", "2026-11-20 12:30:00", { b4: "linkedin.com" }),
+    ae_row("x3", "2026-11-20 13:00:00", { b4: "linkedin.com" }),
+    ae_row("me", "2026-11-20 14:00:00", { b1: "myplanio.nyvia.dk", b2: "staging" }),
+    ae_row("me", "2026-11-20 14:05:00", { b4: "google.com" }),
   ];
-  await store_day(db, "2025-11-20", rows);
+  await store_day(db, "2026-11-20", rows);
   // Igen samme dag: erstatter, dublerer ikke.
-  await store_day(db, "2025-11-20", rows);
+  await store_day(db, "2026-11-20", rows);
   assert.equal(sql.prepare("SELECT count(*) AS n FROM pageviews").get()?.n, 9);
-  assert.equal(sql.prepare("SELECT rows FROM archived_days WHERE day = '2025-11-20'").get()?.rows, 9);
+  assert.equal(sql.prepare("SELECT rows FROM archived_days WHERE day = '2026-11-20'").get()?.rows, 9);
 
-  await classify_stored_day(db, "2025-11-20");
+  await classify_stored_day(db, "2026-11-20");
   // To gange: mærkningen erstattes, ikke dubleres.
-  await classify_stored_day(db, "2025-11-20");
+  await classify_stored_day(db, "2026-11-20");
   assert.equal(sql.prepare("SELECT count(*) AS n FROM pageviews WHERE excluded = 'unclicked'").get()?.n, 2);
   // Begge "me"-rækker (staging + prod) får mærket.
   assert.equal(sql.prepare("SELECT count(*) AS n FROM pageviews WHERE excluded = 'dev'").get()?.n, 2);
   assert.deepEqual(
-    { ...sql.prepare("SELECT visitors, visitors_human, visitors_bot FROM daily_visitors WHERE day = '2025-11-20' AND repo = 'myplanio'").get() },
+    { ...sql.prepare("SELECT visitors, visitors_human, visitors_bot FROM daily_visitors WHERE day = '2026-11-20' AND repo = 'myplanio'").get() },
     { visitors: 6, visitors_human: 4, visitors_bot: 1 },
   );
-  assert.equal(sql.prepare("SELECT version FROM classified_days WHERE day = '2025-11-20'").get()?.version, 1);
+  assert.equal(sql.prepare("SELECT version FROM classified_days WHERE day = '2026-11-20'").get()?.version, 2);
 
-  await anonymize_day(db, "2025-11-20");
+  await anonymize_day(db, "2026-11-20");
   assert.equal(sql.prepare("SELECT count(*) AS n FROM pageviews WHERE visitor != ''").get()?.n, 0);
   // Mærkningen overlever, at koden slettes.
   assert.equal(sql.prepare("SELECT count(*) AS n FROM pageviews WHERE excluded = 'unclicked'").get()?.n, 2);
-  assert.ok(sql.prepare("SELECT day FROM anonymized_days WHERE day = '2025-11-20'").get());
+  assert.ok(sql.prepare("SELECT day FROM anonymized_days WHERE day = '2026-11-20'").get());
 
   // Arkiveres døgnet forfra, skal det mærkes igen.
-  await store_day(db, "2025-11-20", rows);
+  await store_day(db, "2026-11-20", rows);
   assert.equal(sql.prepare("SELECT count(*) AS n FROM classified_days").get()?.n, 0);
 });
 

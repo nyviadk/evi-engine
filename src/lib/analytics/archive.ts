@@ -1,4 +1,4 @@
-import { DATACENTER_ASNS, DATASET, OWN_CHECKS, OWN_CHECKS_ASN, run_sql } from "./query";
+import { DATACENTER_ASNS, DATASET, OWN_CHECKS, OWN_CHECKS_ASN, STATS_START, run_sql } from "./query";
 import { find_burst_bots, find_unclicked_visitors } from "./types";
 
 // Permanent arkiv for Evi Stats: Analytics Engine sletter rækker efter ca.
@@ -24,7 +24,7 @@ const ROWS_PER_INSERT = 6;
 
 const ANONYMIZE_AFTER_DAYS = 365;
 // Hæv, når filtrene i classify_day ændres: døgn med besøgskode mærkes så om.
-export const CLASSIFY_VERSION = 1;
+export const CLASSIFY_VERSION = 2;
 
 export const SCHEMA = [
   // excluded: hvorfor besøget blev sorteret fra ("dev", "burst", "unclicked"),
@@ -74,7 +74,8 @@ export function classify_day(rows: DayRow[]): {
   const visitors = new Map<string, DayVisitors>();
   for (const repo of new Set(rows.map((r) => r.repo))) {
     const mine = rows.filter((r) => r.repo === repo && r.visitor);
-    const prod = mine.filter((r) => r.kind === "prod");
+    // Som dashboardet: prod tæller først fra lanceringen (STATS_START).
+    const prod = mine.filter((r) => r.kind === "prod" && r.ts >= STATS_START);
     const dev = new Set(mine.filter((r) => r.kind === "staging").map((r) => r.visitor));
     const burst = find_burst_bots(prod.map((r) => ({ visitor: r.visitor, timestamp: r.ts, source: r.referrer_host, asn: r.asn })));
     const unclicked = find_unclicked_visitors(prod.map((r) => ({ visitor: r.visitor, source: r.referrer_host, from_path: r.from_path })));
