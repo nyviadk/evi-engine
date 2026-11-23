@@ -3,9 +3,9 @@ import { find_burst_bots, find_unclicked_visitors } from "./types";
 
 // Permanent arkiv for Evi Stats: Analytics Engine sletter rækker efter ca.
 // 3 måneder, så et cron-job kopierer hvert helt døgn (UTC) til D1, råt, så alle
-// filtre og opgørelser også kan køres bagud. Efter 12 måneder slettes
-// besøgskoden (det eneste, der gør rækkerne pseudonyme); robot-mærkning og
-// døgnets unikke besøgende gemmes først, så de tal overlever.
+// filtre og opgørelser også kan køres bagud. Hvert døgn mærkes (robotter, os
+// selv, unikke besøgende), så dashboardet kan læse arkivet uden besøgskoderne.
+// Efter 12 måneder slettes besøgskoden, det eneste, der gør rækkerne pseudonyme.
 declare global {
   interface CloudflareEnv {
     EVI_STATS_ARCHIVE?: D1Database;
@@ -23,6 +23,8 @@ const COLUMNS = [
 const ROWS_PER_INSERT = 6;
 
 const ANONYMIZE_AFTER_DAYS = 365;
+// Hæv, når filtrene i classify_day ændres: døgn med besøgskode mærkes så om.
+export const CLASSIFY_VERSION = 1;
 
 export const SCHEMA = [
   // excluded: hvorfor besøget blev sorteret fra ("dev", "burst", "unclicked"),
@@ -35,10 +37,13 @@ export const SCHEMA = [
   )`,
   "CREATE INDEX IF NOT EXISTS pageviews_repo_day ON pageviews (repo, day)",
   "CREATE TABLE IF NOT EXISTS archived_days (day TEXT PRIMARY KEY, rows INTEGER NOT NULL, archived_at TEXT NOT NULL)",
+  // Unikke besøgende på prod pr. døgn: alle, efter alle filtre og robotter
+  // (bølger + flere sider uden klik), som dashboardet viser.
   `CREATE TABLE IF NOT EXISTS daily_visitors (
     day TEXT NOT NULL, repo TEXT NOT NULL, visitors INTEGER NOT NULL, visitors_human INTEGER NOT NULL,
-    PRIMARY KEY (day, repo)
+    visitors_bot INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, repo)
   )`,
+  "CREATE TABLE IF NOT EXISTS classified_days (day TEXT PRIMARY KEY, version INTEGER NOT NULL)",
   "CREATE TABLE IF NOT EXISTS anonymized_days (day TEXT PRIMARY KEY, anonymized_at TEXT NOT NULL)",
 ];
 
@@ -59,12 +64,14 @@ const is_own_check = (asn: string, ts: string): boolean =>
  * Ét døgns rækker → hvilke besøgskoder der sorteres fra og hvorfor, og pr. repo
  * antal unikke besøgende på prod, før og efter alle filtre.
  */
+export type DayVisitors = { all: number; human: number; bot: number };
+
 export function classify_day(rows: DayRow[]): {
   excluded: Map<string, string>;
-  visitors: Map<string, { all: number; human: number }>;
+  visitors: Map<string, DayVisitors>;
 } {
   const excluded = new Map<string, string>();
-  const visitors = new Map<string, { all: number; human: number }>();
+  const visitors = new Map<string, DayVisitors>();
   for (const repo of new Set(rows.map((r) => r.repo))) {
     const mine = rows.filter((r) => r.repo === repo && r.visitor);
     const prod = mine.filter((r) => r.kind === "prod");
@@ -80,7 +87,8 @@ export function classify_day(rows: DayRow[]): {
       if (reason) excluded.set(v, reason);
     }
     const human = [...all].filter((v) => !excluded.has(v) && !machine.has(v)).length;
-    visitors.set(repo, { all: all.size, human });
+    const bot = [...all].filter((v) => burst.has(v) || unclicked.has(v)).filter((v) => !dev.has(v)).length;
+    visitors.set(repo, { all: all.size, human, bot });
   }
   return { excluded, visitors };
 }
@@ -131,7 +139,11 @@ async function archive_day(
 /** Skriver ét døgns rækker og markerer døgnet som arkiveret. */
 export async function store_day(db: D1Database, day: string, rows: Record<string, unknown>[]): Promise<void> {
   const values = rows.map(to_archive_row);
-  const statements: D1PreparedStatement[] = [db.prepare("DELETE FROM pageviews WHERE day = ?").bind(day)];
+  const statements: D1PreparedStatement[] = [
+    db.prepare("DELETE FROM pageviews WHERE day = ?").bind(day),
+    // Nye rækker skal mærkes forfra.
+    db.prepare("DELETE FROM classified_days WHERE day = ?").bind(day),
+  ];
   for (let i = 0; i < values.length; i += ROWS_PER_INSERT) {
     const chunk = values.slice(i, i + ROWS_PER_INSERT);
     const placeholders = chunk.map(() => `(${COLUMNS.map(() => "?").join(", ")})`).join(", ");
@@ -148,39 +160,56 @@ export async function store_day(db: D1Database, day: string, rows: Record<string
   await db.batch(statements);
 }
 
-export async function anonymize_day(db: D1Database, day: string): Promise<void> {
+/** Mærker et arkiveret døgn med de nuværende filtre (kræver besøgskoderne). */
+export async function classify_stored_day(db: D1Database, day: string): Promise<void> {
   const rows = await db
     .prepare("SELECT repo, ts, kind, visitor, referrer_host, from_path, asn FROM pageviews WHERE day = ? AND visitor != ''")
     .bind(day)
     .all<DayRow>();
   const { excluded, visitors } = classify_day(rows.results);
-  const statements: D1PreparedStatement[] = [];
+  const statements: D1PreparedStatement[] = [
+    db.prepare("UPDATE pageviews SET excluded = '' WHERE day = ?").bind(day),
+    db.prepare("DELETE FROM daily_visitors WHERE day = ?").bind(day),
+  ];
   for (const [visitor, reason] of excluded) {
     statements.push(db.prepare("UPDATE pageviews SET excluded = ? WHERE day = ? AND visitor = ?").bind(reason, day, visitor));
   }
   for (const [repo, n] of visitors) {
     statements.push(
       db
-        .prepare("INSERT OR REPLACE INTO daily_visitors (day, repo, visitors, visitors_human) VALUES (?, ?, ?, ?)")
-        .bind(day, repo, n.all, n.human),
+        .prepare("INSERT INTO daily_visitors (day, repo, visitors, visitors_human, visitors_bot) VALUES (?, ?, ?, ?, ?)")
+        .bind(day, repo, n.all, n.human, n.bot),
     );
   }
-  statements.push(db.prepare("UPDATE pageviews SET visitor = '' WHERE day = ?").bind(day));
   statements.push(
-    db.prepare("INSERT OR REPLACE INTO anonymized_days (day, anonymized_at) VALUES (?, ?)").bind(day, new Date().toISOString()),
+    db.prepare("INSERT OR REPLACE INTO classified_days (day, version) VALUES (?, ?)").bind(day, CLASSIFY_VERSION),
   );
-  // Én transaktion: koden slettes kun sammen med mærkningen og tallene.
   await db.batch(statements);
 }
 
+/** Sletter døgnets besøgskoder; mærkningen fra classify_stored_day bliver stående. */
+export async function anonymize_day(db: D1Database, day: string): Promise<void> {
+  await db.batch([
+    db.prepare("UPDATE pageviews SET visitor = '' WHERE day = ?").bind(day),
+    db.prepare("INSERT OR REPLACE INTO anonymized_days (day, anonymized_at) VALUES (?, ?)").bind(day, new Date().toISOString()),
+  ]);
+}
+
 export async function add_missing_columns(db: D1Database): Promise<void> {
-  const cols = await db.prepare("PRAGMA table_info(pageviews)").all<{ name: string }>();
-  if (!cols.results.some((c) => c.name === "excluded")) {
+  const has = async (table: string, column: string) =>
+    (await db.prepare(`PRAGMA table_info(${table})`).all<{ name: string }>()).results.some((c) => c.name === column);
+  if (!(await has("pageviews", "excluded"))) {
     await db.prepare("ALTER TABLE pageviews ADD COLUMN excluded TEXT NOT NULL DEFAULT ''").run();
+  }
+  if (!(await has("daily_visitors", "visitors_bot"))) {
+    await db.prepare("ALTER TABLE daily_visitors ADD COLUMN visitors_bot INTEGER NOT NULL DEFAULT 0").run();
   }
 }
 
-/** Kaldes af cron (worker.ts). Arkiverer manglende døgn og anonymiserer døgn over 12 måneder. */
+/**
+ * Kaldes af cron (worker.ts): arkiverer manglende døgn, mærker døgn med
+ * forældet eller manglende mærkning, og anonymiserer døgn over 12 måneder.
+ */
 export async function archive_stats(env: CloudflareEnv, now = Date.now()): Promise<void> {
   const db = env.EVI_STATS_ARCHIVE;
   const account_id = env.EVI_STATS_ACCOUNT_ID;
@@ -199,9 +228,22 @@ export async function archive_stats(env: CloudflareEnv, now = Date.now()): Promi
     if (!ok) break;
   }
 
+  // Anonymiserede døgn har ingen besøgskoder og beholder deres sidste mærkning.
+  const stale = await db
+    .prepare(
+      `SELECT a.day FROM archived_days a LEFT JOIN classified_days c ON c.day = a.day
+       WHERE (c.version IS NULL OR c.version < ?) AND a.day NOT IN (SELECT day FROM anonymized_days) ORDER BY a.day`,
+    )
+    .bind(CLASSIFY_VERSION)
+    .all<{ day: string }>();
+  for (const { day } of stale.results) await classify_stored_day(db, day);
+
   const cutoff = iso_day(Math.floor(now / DAY_MS) * DAY_MS - ANONYMIZE_AFTER_DAYS * DAY_MS);
   const old = await db
-    .prepare("SELECT day FROM archived_days WHERE day < ? AND day NOT IN (SELECT day FROM anonymized_days) ORDER BY day")
+    .prepare(
+      `SELECT a.day FROM archived_days a JOIN classified_days c ON c.day = a.day
+       WHERE a.day < ? AND a.day NOT IN (SELECT day FROM anonymized_days) ORDER BY a.day`,
+    )
     .bind(cutoff)
     .all<{ day: string }>();
   for (const { day } of old.results) {

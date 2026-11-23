@@ -29,15 +29,26 @@ export type StatsData = {
   flow: Flow[];
   networks: Network[];
   journeys: Journey[];
-  /** Besøgende i robot-bølger (find_burst_bots), trukket fra alle tal. */
+  /** Besøgende, der ligner robotter (bølger + flere sider uden klik), trukket fra alle tal. */
   bot_visitors: number;
+  /** Tallene kommer fra det permanente arkiv (til og med i går), ikke Analytics Engine. */
+  archive: boolean;
 };
 
-/** Tilladte tidsintervaller (dage). Andet input klampes til 30. */
-export const RANGES = [7, 30, 90] as const;
+/** Tilladte tidsintervaller (dage); 0 = alt. Andet input klampes til 30. */
+export const RANGES = [7, 30, 90, 365, 0] as const;
+export const ALL_DAYS = 0;
+/** Længste interval, Analytics Engine selv har; længere læses fra arkivet. */
+export const LIVE_MAX_DAYS = 90;
 
 export function clamp_days(input: number): number {
   return (RANGES as readonly number[]).includes(input) ? input : 30;
+}
+
+export function range_label(days: number): string {
+  if (days === ALL_DAYS) return "Alt";
+  if (days === 365) return "1 år";
+  return `${days} dage`;
 }
 
 export function empty_stats(days: number): StatsData {
@@ -57,6 +68,7 @@ export function empty_stats(days: number): StatsData {
     networks: [],
     journeys: [],
     bot_visitors: 0,
+    archive: false,
   };
 }
 

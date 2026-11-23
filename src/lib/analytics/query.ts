@@ -1,5 +1,7 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import {
+  ALL_DAYS,
+  LIVE_MAX_DAYS,
   clamp_days,
   empty_stats,
   find_burst_bots,
@@ -142,6 +144,7 @@ export async function query_stats(
   const days = clamp_days(days_in);
   if (!/^[a-z0-9-]+$/.test(repo_in)) return empty_stats(days);
   const repo = repo_in;
+  if (days === ALL_DAYS || days > LIVE_MAX_DAYS) return query_archive_stats(repo, days);
 
   const cf = await getCloudflareContext({ async: true }).catch(() => null);
   const account_id = cf?.env?.EVI_STATS_ACCOUNT_ID;
@@ -255,5 +258,86 @@ export async function query_stats(
     })),
     journeys: to_journeys(visits, JOURNEY_LIMIT),
     bot_visitors: bot_hashes.length,
+    archive: false,
+  };
+}
+
+/**
+ * Samme tal fra det permanente arkiv (D1), til og med i går. Arkivet har
+ * allerede mærket robotter og os selv pr. døgn (archive.ts), så forespørgslerne
+ * filtrerer på `excluded` i stedet for lange lister af besøgskoder; unikke
+ * besøgende kommer fra døgntallene, fordi koderne slettes efter 12 måneder.
+ */
+async function query_archive_stats(repo: string, days: number): Promise<StatsData> {
+  const cf = await getCloudflareContext({ async: true }).catch(() => null);
+  const db = cf?.env?.EVI_STATS_ARCHIVE;
+  if (!db) return { ...empty_stats(days), archive: true };
+  return stats_from_archive(db, repo, days);
+}
+
+export async function stats_from_archive(
+  db: D1Database,
+  repo: string,
+  days: number,
+  now = Date.now(),
+): Promise<StatsData> {
+  const yesterday = Math.floor(now / DAY_MS) * DAY_MS - DAY_MS;
+  const start = Date.parse(`${STATS_START.slice(0, 10)}T00:00:00Z`);
+  const from_ms = days === ALL_DAYS ? start : Math.max(start, yesterday - (days - 1) * DAY_MS);
+  const from = new Date(from_ms).toISOString().slice(0, 10);
+  const span = Math.round((yesterday - from_ms) / DAY_MS) + 1;
+
+  const dc = DATACENTER_ASNS.map((a) => `'${a}'`).join(",");
+  const own = OWN_CHECKS.map(([a, b]) => `(ts >= '${a}' AND ts <= '${b}')`).join(" OR ");
+  // Kun to bundne parametre (repo, fra-dag) i samme rækkefølge i alle forespørgsler.
+  const base = `repo = ? AND day >= ? AND kind = 'prod' AND excluded = '' AND ts >= '${STATS_START}' AND asn NOT IN (${dc}) AND NOT (asn = '${OWN_CHECKS_ASN}' AND (${own}))`;
+  const q = async (sql: string): Promise<Record<string, unknown>[]> =>
+    db
+      .prepare(sql)
+      .bind(repo, from)
+      .all<Record<string, unknown>>()
+      .then((r) => r.results)
+      .catch(() => []);
+  const top = (col: string, extra = "") =>
+    q(`SELECT ${col} AS name, SUM(sample_interval) AS c FROM pageviews WHERE ${base}${extra} GROUP BY ${col} ORDER BY c DESC LIMIT 15`);
+
+  const [views, counts, series, pages, entries, refs, countries, devices, languages, flow, networks, visits] =
+    await Promise.all([
+      q(`SELECT SUM(sample_interval) AS c FROM pageviews WHERE ${base}`),
+      q("SELECT SUM(visitors_human) AS human, SUM(visitors_bot) AS bot FROM daily_visitors WHERE repo = ? AND day >= ?"),
+      q(`SELECT day, SUM(sample_interval) AS c FROM pageviews WHERE ${base} GROUP BY day ORDER BY day`),
+      top("path"),
+      top("path", " AND from_path = ''"),
+      top("referrer_host", " AND referrer_host != ''"),
+      top("country", " AND country != ''"),
+      top("device"),
+      top("locale", " AND locale != ''"),
+      q(`SELECT from_path AS src, path AS dst, SUM(sample_interval) AS c FROM pageviews WHERE ${base} AND from_path != '' GROUP BY from_path, path ORDER BY c DESC LIMIT 30`),
+      q(`SELECT as_org AS name, asn, SUM(sample_interval) AS c, count(DISTINCT NULLIF(visitor, '')) AS u FROM pageviews WHERE ${base} AND as_org != '' GROUP BY as_org, asn ORDER BY c DESC LIMIT 25`),
+      q(`SELECT ts AS timestamp, visitor, path AS page_path, country, device, as_org AS network, referrer_host AS source FROM pageviews WHERE ${base} AND visitor != '' ORDER BY ts DESC LIMIT 1000`),
+    ]);
+
+  return {
+    ok: true,
+    days,
+    views: Number(views[0]?.c ?? 0),
+    visitors: Number(counts[0]?.human ?? 0),
+    timeseries: build_timeseries(series, span, yesterday),
+    top_pages: to_name_count(pages),
+    entry_pages: to_name_count(entries),
+    referrers: to_name_count(refs),
+    countries: to_name_count(countries),
+    devices: to_name_count(devices),
+    languages: to_name_count(languages),
+    flow: flow.map((r) => ({ from: String(r.src ?? ""), to: String(r.dst ?? ""), count: Number(r.c ?? 0) })),
+    networks: networks.map((r) => ({
+      name: String(r.name ?? ""),
+      asn: String(r.asn ?? ""),
+      count: Number(r.c ?? 0),
+      visitors: Number(r.u ?? 0),
+    })),
+    journeys: to_journeys(visits, JOURNEY_LIMIT),
+    bot_visitors: Number(counts[0]?.bot ?? 0),
+    archive: true,
   };
 }

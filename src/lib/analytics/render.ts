@@ -2,7 +2,7 @@
 // React/Next-side). ALLE dynamiske værdier (stier, referrers) stammer fra
 // besøgendes input → escapes altid mod XSS.
 
-import { RANGES, type NameCount, type StatsData } from "./types";
+import { RANGES, range_label, type NameCount, type StatsData } from "./types";
 import { render_chart, CHART_CSS, CHART_SCRIPT } from "./chart";
 
 const ESC: Record<string, string> = {
@@ -149,14 +149,18 @@ function journeys_section(data: StatsData): string {
 function range_picker(days: number): string {
   const links = RANGES.map((r) => {
     const active = r === days;
-    return `<a class="range${active ? " active" : ""}" href="?d=${r}"${active ? ' aria-current="true"' : ""}>${r} dage</a>`;
+    return `<a class="range${active ? " active" : ""}" href="?d=${r}"${active ? ' aria-current="true"' : ""}>${range_label(r)}</a>`;
   }).join("");
   return `<nav class="ranges" aria-label="Tidsinterval">${links}</nav>`;
 }
 
 export function render_dashboard(repo: string, data: StatsData): string {
+  const archive_note = data.archive
+    ? `<p class="note">Fra det permanente arkiv, til og med i går. Rejser og antal personer pr. netværk findes kun for de seneste 12 måneder.</p>`
+    : "";
   const body = data.ok
     ? `
+      ${archive_note}
       <div class="stats">
         <div class="stat"><div class="num">${fmt(data.views)}</div><div class="lbl">Sidevisninger</div></div>
         <div class="stat"><div class="num">${data.visitors ? fmt(data.visitors) : "—"}</div><div class="lbl">Unikke besøgende</div></div>
@@ -180,7 +184,7 @@ export function render_dashboard(repo: string, data: StatsData): string {
     esc(repo),
     `<header class="head"><div class="head-l"><span class="brand">Evi Stats</span><span class="meta">${esc(repo)}</span></div>${range_picker(data.days)}</header>
      ${body}
-     <footer class="foot">Cookieless statistik · pseudonyme besøgskoder, der skifter dagligt · IP-adresser gemmes aldrig.</footer>`,
+     <footer class="foot">Cookieless statistik · pseudonyme besøgskoder, der skifter dagligt og slettes efter 12 måneder · IP-adresser gemmes aldrig.</footer>`,
   );
 }
 

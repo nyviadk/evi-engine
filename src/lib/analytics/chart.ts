@@ -78,7 +78,8 @@ export function render_chart(series: DayCount[], days: number): string {
   const xlabels = xparts.join("");
 
   const peak = series.reduce((a, b) => (b.views > a.views ? b : a), first);
-  const aria = `Sidevisninger pr. dag, seneste ${days} dage. I alt ${num(total)}. Højest ${num(peak.views)} den ${day_label(peak.day)}.`;
+  const period = days === 0 ? "siden start" : days === 365 ? "seneste år" : `seneste ${days} dage`;
+  const aria = `Sidevisninger pr. dag, ${period}. I alt ${num(total)}. Højest ${num(peak.views)} den ${day_label(peak.day)}.`;
 
   const data_attr = JSON.stringify(series.map((p) => [p.day, p.views])).replace(
     /'/g,

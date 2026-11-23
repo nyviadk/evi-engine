@@ -44,7 +44,9 @@ export async function handle_stats_request(
       return page(render_message("Linket er udløbet — bed om et nyt."), 404);
     }
 
-    const days = clamp_days(Number(url.searchParams.get("d")));
+    // Uden ?d= er Number(null) 0, som er "alt"; NaN falder tilbage til 30 dage.
+    const d = url.searchParams.get("d");
+    const days = clamp_days(d === null ? Number.NaN : Number(d));
     const data = await query_stats(verified.repo, days);
     return page(render_dashboard(verified.repo, data), 200);
   } catch {
