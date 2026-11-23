@@ -32,7 +32,7 @@ const STATS_START = "2026-11-18 17:15:00";
 // fra prod-tal. ASN gemmes som blob10, så listen kan justeres uden re-indsamling.
 // Bemærk: fanger også ægte brugere bag cloud-VPN/-proxy på disse ASN'er;
 // forbruger-VPN som Proton (egen ASN) er IKKE med.
-const DATACENTER_ASNS = [
+export const DATACENTER_ASNS = [
   "16509", "14618", // Amazon AWS
   "8075", // Microsoft Azure
   "15169", "396982", // Google (Googlebot + Cloud)
@@ -61,8 +61,8 @@ const DATACENTER_ASNS = [
 // (WebKit ligner en almindelig Safari). Tidsrum i UTC med 3 min margen, fundet i
 // samtaleloggen; kun fra det netværk, tjekkene kørte fra. Rå UA gemmes ikke, så
 // de kan ikke kendes på andet end tid og netværk.
-const OWN_CHECKS_ASN = "208172";
-const OWN_CHECKS: [string, string][] = [
+export const OWN_CHECKS_ASN = "208172";
+export const OWN_CHECKS: [string, string][] = [
   ["2026-11-18 17:30:00", "2026-11-18 17:38:00"],
   ["2026-11-18 20:09:00", "2026-11-18 20:25:00"],
   ["2026-11-20 11:36:00", "2026-11-20 11:43:00"],
