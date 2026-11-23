@@ -4,7 +4,7 @@
 // skillen: tynd 2px-linje, lav-opacitet areal, fremhævet endepunkt, recessivt
 // grid, selektiv direkte-label. Tilgængelig: role=img + aria-label + tabel-view.
 
-import type { DayCount } from "./types";
+import { range_label, type DayCount } from "./types";
 
 // ViewBox-geometri. Hover-scriptet læser plot-boksen fra .hit-rektanglen, så
 // disse tal findes kun ét sted.
@@ -78,7 +78,7 @@ export function render_chart(series: DayCount[], days: number): string {
   const xlabels = xparts.join("");
 
   const peak = series.reduce((a, b) => (b.views > a.views ? b : a), first);
-  const period = days === 0 ? "siden start" : days === 365 ? "seneste år" : `seneste ${days} dage`;
+  const period = days === 0 ? "siden start" : `seneste ${range_label(days).replace("1 år", "år")}`;
   const aria = `Sidevisninger pr. dag, ${period}. I alt ${num(total)}. Højest ${num(peak.views)} den ${day_label(peak.day)}.`;
 
   const data_attr = JSON.stringify(series.map((p) => [p.day, p.views])).replace(

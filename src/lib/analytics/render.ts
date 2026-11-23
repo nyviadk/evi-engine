@@ -230,9 +230,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 .wrap{max-width:920px;margin:0 auto;padding:2rem 1.25rem 3rem}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.75rem;border-bottom:1px solid var(--line);padding-bottom:1rem;margin-bottom:1.5rem}
 .head-l{display:flex;flex-direction:column;gap:.1rem}
-.ranges{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0}
-.ranges .range{padding:.32rem .7rem;font-size:.85rem;color:var(--mut);text-decoration:none;border-left:1px solid var(--line);white-space:nowrap}
-.ranges .range:first-child{border-left:none}
+.ranges{display:flex;flex-wrap:wrap;gap:.3rem}
+.ranges .range{padding:.32rem .7rem;font-size:.85rem;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:8px;white-space:nowrap}
 .ranges .range:hover{background:var(--line)}
 .ranges .range.active,.ranges .range.active:hover{background:var(--acc);color:var(--sf)}
 .brand{font-weight:700;font-size:1.15rem;color:var(--acc)}

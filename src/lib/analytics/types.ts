@@ -53,7 +53,7 @@ export type StatsData = {
 };
 
 /** Tilladte tidsintervaller (dage); 0 = alt. Andet input klampes til 30. */
-export const RANGES = [7, 30, 90, 365, 0] as const;
+export const RANGES = [7, 30, 90, 180, 365, 0] as const;
 export const ALL_DAYS = 0;
 /** Længste interval, Analytics Engine selv har; længere læses fra arkivet. */
 export const LIVE_MAX_DAYS = 90;
@@ -65,6 +65,8 @@ export function clamp_days(input: number): number {
 export function range_label(days: number): string {
   if (days === ALL_DAYS) return "Alt";
   if (days === 365) return "1 år";
+  if (days === 180) return "6 måneder";
+  if (days === 90) return "3 måneder";
   return `${days} dage`;
 }
 
