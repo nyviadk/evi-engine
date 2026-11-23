@@ -1,6 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  // Genbruger OpenNexts fetch-handler og tilføjer cron (Evi Stats-arkivet).
+  "main": "worker.ts",
+  "triggers": {
+    // Hver time: arkivet tager kun hele døgn, der mangler, så ekstra kørsler er gratis.
+    "crons": ["17 * * * *"],
+  },
   "name": "evi-engine",
   "compatibility_date": "2026-04-17",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -49,6 +54,14 @@
       // automatisk ved første deploy.
       "binding": "EVI_STATS",
       "dataset": "evi_stats_v1",
+    },
+  ],
+  "d1_databases": [
+    {
+      // Evi Stats' permanente arkiv: Analytics Engine sletter efter ca. 3 mdr.
+      "binding": "EVI_STATS_ARCHIVE",
+      "database_name": "evi-stats-archive",
+      "database_id": "5ab3b1b6-8c7f-43e3-8247-046c5bec2e7a",
     },
   ],
   // AES-GCM master-key til at encrypt/decrypt Prismic-tokens i KV.

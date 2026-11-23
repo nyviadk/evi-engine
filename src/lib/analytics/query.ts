@@ -21,7 +21,7 @@ declare global {
 
 // Bump navnet for at "nulstille": et nyt dataset starter tomt, gammel data
 // forældes (Analytics Engine kan ikke slette — kun ældes ud efter ~3 mdr.).
-const DATASET = "evi_stats_v1";
+export const DATASET = "evi_stats_v1";
 const DAY_MS = 86_400_000;
 
 // Tal tæller først fra My Planios lancering (UTC): før det var al prod-trafik
@@ -80,7 +80,7 @@ const own_checks_sql = ` AND (blob10 != '${OWN_CHECKS_ASN}' OR (${OWN_CHECKS.map
   ([from, to]) => `(timestamp < toDateTime('${from}') OR timestamp > toDateTime('${to}'))`,
 ).join(" AND ")}))`;
 
-async function run_sql(
+export async function run_sql(
   account_id: string,
   token: string,
   sql: string,
