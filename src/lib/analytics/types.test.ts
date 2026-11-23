@@ -1,7 +1,25 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { find_burst_bots, to_journeys } from "./types";
+import { find_burst_bots, find_unclicked_visitors, to_journeys } from "./types";
+
+test("flere sider uden et eneste klik tæller som robot", () => {
+  const rows = [
+    // Robot: tre adresser kaldt direkte.
+    { visitor: "r", source: "", from_path: "" },
+    { visitor: "r", source: "", from_path: "" },
+    { visitor: "r", source: "", from_path: "" },
+    // Menneske: kom direkte og klikkede videre.
+    { visitor: "m", source: "", from_path: "" },
+    { visitor: "m", source: "", from_path: "/" },
+    // Via Google og genindlæste.
+    { visitor: "g", source: "google.com", from_path: "" },
+    { visitor: "g", source: "", from_path: "" },
+    // Én side direkte: kan ikke bedømmes.
+    { visitor: "e", source: "", from_path: "" },
+  ];
+  assert.deepEqual([...find_unclicked_visitors(rows)], ["r"]);
+});
 
 // Rækker kommer nyeste først, som fra Analytics Engine.
 const rows = [

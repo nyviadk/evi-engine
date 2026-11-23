@@ -135,6 +135,25 @@ export function find_burst_bots(rows: Record<string, unknown>[]): Set<string> {
   return bots;
 }
 
+/**
+ * Besøgskoder med flere visninger, hvor ingen kom fra et klik: hver side er
+ * hentet direkte (ingen henvisning og ingen intern afsender). Et menneske, der
+ * klikker videre, giver altid en afsender (Referer eller beaconens from_path);
+ * flere sider uden er robotter, der kalder adresser, eller genindlæsninger.
+ */
+export function find_unclicked_visitors(rows: Record<string, unknown>[]): Set<string> {
+  const by_hash = new Map<string, { views: number; clicked: boolean }>();
+  for (const r of rows) {
+    const hash = String(r.visitor ?? "");
+    if (!hash) continue;
+    const v = by_hash.get(hash) ?? { views: 0, clicked: false };
+    v.views += 1;
+    if (String(r.source ?? "") || String(r.from_path ?? "")) v.clicked = true;
+    by_hash.set(hash, v);
+  }
+  return new Set([...by_hash].filter(([, v]) => v.views >= 2 && !v.clicked).map(([h]) => h));
+}
+
 export const JOURNEY_LIMIT = 30;
 
 // Rækker (nyeste først) → de seneste `limit` besøgende, hver med sine sider i

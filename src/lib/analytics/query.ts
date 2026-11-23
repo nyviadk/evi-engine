@@ -3,6 +3,7 @@ import {
   clamp_days,
   empty_stats,
   find_burst_bots,
+  find_unclicked_visitors,
   to_journeys,
   JOURNEY_LIMIT,
   type DayCount,
@@ -170,12 +171,14 @@ export async function query_stats(
     // Rå rækker til robot-bølgerne. Fejler forespørgslen, er listen tom, og der
     // filtreres bare ingen bølger fra.
     q(
-      `SELECT timestamp, blob8 AS visitor, blob4 AS source, blob10 AS asn FROM ${DATASET} WHERE ${prod} AND blob8 != '' ORDER BY timestamp DESC LIMIT 10000`,
+      `SELECT timestamp, blob8 AS visitor, blob4 AS source, blob5 AS from_path, blob10 AS asn FROM ${DATASET} WHERE ${prod} AND blob8 != '' ORDER BY timestamp DESC LIMIT 10000`,
     ),
   ]);
   const is_hash = (h: string) => /^[0-9a-f]{1,64}$/.test(h);
   const dev_hashes = new Set(staging.map((r) => String(r.h ?? "")).filter(is_hash));
-  const bot_hashes = [...find_burst_bots(recent)].filter((h) => is_hash(h) && !dev_hashes.has(h));
+  const bot_hashes = [
+    ...new Set([...find_burst_bots(recent), ...find_unclicked_visitors(recent)]),
+  ].filter((h) => is_hash(h) && !dev_hashes.has(h));
   const excluded = [...dev_hashes, ...bot_hashes];
   const exclude = excluded.length
     ? ` AND blob8 NOT IN (${excluded.map((h) => `'${h}'`).join(",")})`
