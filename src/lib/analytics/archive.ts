@@ -24,7 +24,7 @@ const ROWS_PER_INSERT = 6;
 
 const ANONYMIZE_AFTER_DAYS = 365;
 // Hæv, når filtrene i classify_day ændres: døgn med besøgskode mærkes så om.
-export const CLASSIFY_VERSION = 2;
+export const CLASSIFY_VERSION = 3;
 
 export const SCHEMA = [
   // excluded: hvorfor besøget blev sorteret fra ("dev", "burst", "unclicked"),

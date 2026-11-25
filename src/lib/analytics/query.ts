@@ -58,6 +58,9 @@ export const DATACENTER_ASNS = [
   "207990", // HostRoyale (hosting + proxy)
   "30633", // Leaseweb USA
   "12876", // Scaleway
+  "150436", // BytePlus (ByteDance cloud, deres crawler)
+  "200373", // 3xK Tech (hosting + VPN)
+  "35830", // Fine Group Servers Solutions
 ];
 
 // Vores egne browser-tjek af live-domænet, før de sendte "evi-check-bot" i UA'en

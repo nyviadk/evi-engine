@@ -151,7 +151,7 @@ test("arkivets SQL: skema, indsættelse i blokke og anonymisering i SQLite", asy
     { ...sql.prepare("SELECT visitors, visitors_human, visitors_bot FROM daily_visitors WHERE day = '2026-11-20' AND repo = 'myplanio'").get() },
     { visitors: 6, visitors_human: 4, visitors_bot: 1 },
   );
-  assert.equal(sql.prepare("SELECT version FROM classified_days WHERE day = '2026-11-20'").get()?.version, 2);
+  assert.equal(sql.prepare("SELECT version FROM classified_days WHERE day = '2026-11-20'").get()?.version, 3);
 
   await anonymize_day(db, "2026-11-20");
   assert.equal(sql.prepare("SELECT count(*) AS n FROM pageviews WHERE visitor != ''").get()?.n, 0);
